@@ -1,5 +1,5 @@
 //----------------------------------------------------------------------
-// Copyright (c) 2012, Codalogic Ltd
+// Copyright (c) 2012, Codalogic Ltd (http://www.codalogic.com)
 // All rights reserved.
 //
 // The license for this file is based on the BSD-3-Clause license
