@@ -13,7 +13,7 @@ void basic_test()
 	TTODOX( 1 == 0 );
 }
 
-static c_clunit t1(basic_test);
+static cl::clunit t1(basic_test);
 
 int main( int argc, char * argv[] )
 {

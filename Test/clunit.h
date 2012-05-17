@@ -16,18 +16,20 @@
 #include <ctime>
 #include <crtdbg.h>
 
+namespace cl {
+
 #define OutputDebugString  OutputDebugStringA
 extern "C" __declspec(dllimport) void __stdcall OutputDebugStringA( const char * lpOutputString );
 
-#define TINIT( x ) c_clunit::tout() << "\n\n    " << x << " (" << __FILE__ << ")\n    ==========================\n"; OutputDebugString( x "\n" )
-#define TDOC( x ) c_clunit::tout() << "      " << x << "\n"
-#define TTODO( x ) c_clunit::add_todo( x, __FILE__, __LINE__ )
-#define TTODOX( x ) { bool t=(x); c_clunit::add_todo( (std::string( #x ) + ((t)?" (passing)":" (failing)")).c_str(), __FILE__, __LINE__ ); }
-#define TSETUP( x ) c_clunit::tout() << "      : " << #x << '\n'; x
-#define TTEST( x ) { bool t=(x); if( !(t) ) {c_clunit::tout() << "not "; ++c_clunit::errors;}else{c_clunit::tout()<<"    ";} ++c_clunit::tests; c_clunit::tout() << "ok: " << #x; if( !(t) ) c_clunit::tout() << " (" << __LINE__ << ")"; c_clunit::tout() << "\n"; }
-#define TRUNALL() { c_clunit::run(); c_clunit::report(); if( c_clunit::errors > 255 ) return 255; return c_clunit::errors; }
+#define TINIT( x ) cl::clunit::tout() << "\n\n    " << x << " (" << __FILE__ << ")\n    ==========================\n"; OutputDebugString( x "\n" )
+#define TDOC( x ) cl::clunit::tout() << "      " << x << "\n"
+#define TTODO( x ) cl::clunit::add_todo( x, __FILE__, __LINE__ )
+#define TTODOX( x ) { bool t=(x); cl::clunit::add_todo( (std::string( #x ) + ((t)?" (passing)":" (failing)")).c_str(), __FILE__, __LINE__ ); }
+#define TSETUP( x ) cl::clunit::tout() << "      : " << #x << '\n'; x
+#define TTEST( x ) { bool t=(x); if( !(t) ) {cl::clunit::tout() << "not "; ++cl::clunit::errors;}else{cl::clunit::tout()<<"    ";} ++cl::clunit::tests; cl::clunit::tout() << "ok: " << #x; if( !(t) ) cl::clunit::tout() << " (" << __LINE__ << ")"; cl::clunit::tout() << "\n"; }
+#define TRUNALL() { cl::clunit::run(); cl::clunit::report(); if( cl::clunit::errors > 255 ) return 255; return cl::clunit::errors; }
 
-class c_clunit
+class clunit
 {
 public:
 	typedef void(*job_func_ptr)() ;
@@ -42,7 +44,7 @@ private:
 public:
 	static int tests;
 	static int errors;
-	c_clunit( job_func_ptr job ) { get_jobs().push_back( job ); }
+	clunit( job_func_ptr job ) { get_jobs().push_back( job ); }
 	static void add_todo( const char * todo, const char * file, int line );
 	static void run();
 	static std::ostream & tout();
@@ -51,20 +53,20 @@ public:
 };
 
 #ifdef CLUNIT_HOME
-	bool c_clunit::first = true;
-	int c_clunit::tests = 0;
-	int c_clunit::errors = 0;
-	c_clunit::job_list & c_clunit::get_jobs()
+	bool clunit::first = true;
+	int clunit::tests = 0;
+	int clunit::errors = 0;
+	clunit::job_list & clunit::get_jobs()
 	{
 		static job_list jobs;
 		return jobs;
 	}
-	c_clunit::todo_list & c_clunit::get_todos()
+	clunit::todo_list & clunit::get_todos()
 	{
 		static todo_list todos;
 		return todos;
 	}
-	std::ostream & c_clunit::tout()
+	std::ostream & clunit::tout()
 	{
 #ifdef CLUNIT_OUT
 		static std::ofstream o_tout( CLUNIT_OUT );
@@ -74,13 +76,13 @@ public:
 		if( first ) { time_t t=time(NULL); o_tout << ctime(&t) << '\n'; first = false; }
 		return o_tout;
 	}
-	void c_clunit::add_todo( const char * todo, const char * file, int line )
+	void clunit::add_todo( const char * todo, const char * file, int line )
 	{
 		std::ostringstream report;
 		report << todo << " [" << file << ":" << line << "]";
 		get_todos().push_back( report.str() );
 	}
-	void c_clunit::run()
+	void clunit::run()
 	{
 		{
 		// The iostream (and possibly string) functions dynamically allocate memory
@@ -125,7 +127,7 @@ public:
 
 		TTEST( _CrtCheckMemory() != 0 );
 	}
-	void c_clunit::report()
+	void clunit::report()
 	{
 		if( ! get_todos().empty() )
 		{
@@ -144,8 +146,8 @@ public:
 	}
 #endif
 
-// clunit test
-// To use clunit, create a function in a test file that has a similar format to the 
+// cl::clunit test
+// To use cl::clunit, create a function in a test file that has a similar format to the 
 // example below.  Then assign the pseudo return value of the function to a global 
 // variable.  This will ensure that the test function is called before main is entered. 
 // In main, call the TSUMMARY function.
@@ -169,12 +171,14 @@ public:
 		return 0;						// Must return something!
 	}
 
-	static c_clunit t1( basic_test );	// Ensure basic_test is registered for calling
+	static cl::clunit t1( basic_test );	// Ensure basic_test is registered for calling
 
 	void main()
 	{
 		TRUNALL();						// Print final pass/fail result
 	}
 */
+
+} // End of namespace cl
 
 #endif CLUNIT

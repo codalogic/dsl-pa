@@ -1,6 +1,6 @@
-Thu May 17 14:05:37 2012
+Thu May 17 17:23:36 2012
 
-not ok: ! _CrtMemDifference( &s3, &s1, &s2 ) (118)
+not ok: ! _CrtMemDifference( &s3, &s1, &s2 ) (120)
     ok: _CrtCheckMemory() != 0
 TODOs (2):
 ------------------------
