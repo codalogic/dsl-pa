@@ -1,0 +1,9 @@
+Thu May 17 12:36:47 2012
+
+not ok: ! _CrtMemDifference( &s3, &s1, &s2 ) (108)
+    ok: _CrtCheckMemory() != 0
+TODOs (2):
+------------------------
+- Master line counting
+- 1 == 0 (failing)
+1 error(s) of 2 test(s)
