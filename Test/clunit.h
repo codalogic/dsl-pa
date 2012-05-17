@@ -10,6 +10,7 @@
 #include <iostream>
 #include <fstream>
 #include <strstream>
+#include <sstream>
 #include <vector>
 #include <string>
 #include <ctime>
@@ -20,8 +21,8 @@ extern "C" __declspec(dllimport) void __stdcall OutputDebugStringA( const char *
 
 #define TINIT( x ) c_clunit::tout() << "\n\n    " << x << " (" << __FILE__ << ")\n    ==========================\n"; OutputDebugString( x "\n" )
 #define TDOC( x ) c_clunit::tout() << "      " << x << "\n"
-#define TTODO( x ) c_clunit::add_todo( x )
-#define TTODOX( x ) { bool t=(x); c_clunit::add_todo( (std::string( #x ) + ((t)?" (passing)":" (failing)")).c_str() ); }
+#define TTODO( x ) c_clunit::add_todo( x, __FILE__, __LINE__ )
+#define TTODOX( x ) { bool t=(x); c_clunit::add_todo( (std::string( #x ) + ((t)?" (passing)":" (failing)")).c_str(), __FILE__, __LINE__ ); }
 #define TSETUP( x ) c_clunit::tout() << "      : " << #x << '\n'; x
 #define TTEST( x ) { bool t=(x); if( !(t) ) {c_clunit::tout() << "not "; ++c_clunit::errors;}else{c_clunit::tout()<<"    ";} ++c_clunit::tests; c_clunit::tout() << "ok: " << #x; if( !(t) ) c_clunit::tout() << " (" << __LINE__ << ")"; c_clunit::tout() << "\n"; }
 #define TRUNALL() { c_clunit::run(); c_clunit::report(); if( c_clunit::errors > 255 ) return 255; return c_clunit::errors; }
@@ -42,10 +43,11 @@ public:
 	static int tests;
 	static int errors;
 	c_clunit( job_func_ptr job ) { get_jobs().push_back( job ); }
-	static void add_todo( const char * todo ) { get_todos().push_back( todo ); }
+	static void add_todo( const char * todo, const char * file, int line );
 	static void run();
 	static std::ostream & tout();
 	static void report();
+	static void clear() { get_jobs().clear(); get_todos().clear(); }
 };
 
 #ifdef CLUNIT_HOME
@@ -72,6 +74,12 @@ public:
 		if( first ) { time_t t=time(NULL); o_tout << ctime(&t) << '\n'; first = false; }
 		return o_tout;
 	}
+	void c_clunit::add_todo( const char * todo, const char * file, int line )
+	{
+		std::ostringstream report;
+		report << todo << " [" << file << ":" << line << "]";
+		get_todos().push_back( report.str() );
+	}
 	void c_clunit::run()
 	{
 		{
@@ -80,26 +88,28 @@ public:
 		// -ends.  So that these allocations do not muck up the heap checking stats,
 		// -dummy uses of the libraries are made so that they are initialised.  We
 		// -can then checkpoint the heap after this point.
-		std::ostrstream l_t1;
-		l_t1 << "" << 12;
+		std::ostrstream t1;
+		t1 << "" << 12;
+		std::ostringstream t2;
+		t2 << "" << 12;
 		tout() << "";
 		}
 
 		job_list::iterator task( get_jobs().begin() );
 		while( task != get_jobs().end() )
-			{ 
+		{ 
 			_CrtMemState s1, s2, s3;
 			// Store a memory checkpoint in the s1 memory-state structure
 			_CrtMemCheckpoint( &s1 );
 
 			try
-				{
+			{
 				(*task)(); 
-				}
+			}
 			catch(...)
-				{
+			{
 				TTEST( "Unhandled exception" == NULL );		// Force fail case
-				}
+			}
 			
 			++task;
 
@@ -107,11 +117,11 @@ public:
 			_CrtMemCheckpoint( &s2 );
 			TTEST( ! _CrtMemDifference( &s3, &s1, &s2 ) );
 			if ( _CrtMemDifference( &s3, &s1, &s2 ) )
-				{
+			{
 				_CrtMemDumpStatistics( &s3 );
 				_CrtMemDumpAllObjectsSince( &s1 );
-				}
 			}
+		}
 
 		TTEST( _CrtCheckMemory() != 0 );
 	}
