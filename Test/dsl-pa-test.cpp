@@ -38,9 +38,6 @@
 
 void basic_test()
 {
-	TTODO( "Master line counting" );
-	TTODOX( 1 == 0 );
-	TTODO( "Another test" );
 }
 
 static cl::clunit t1(basic_test);
