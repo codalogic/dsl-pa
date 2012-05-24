@@ -77,25 +77,6 @@ public:
 	virtual void location_pop() = 0;
 };
 
-class location_logger
-{
-	// Allows RAII operation of the reader locations to ensure that
-	// location_pop() is not forgotten!
-
-private:
-	reader & r_reader;
-
-public:
-	location_logger( reader & r_reader_in ) : r_reader( r_reader_in )
-	{
-		r_reader.location_push();
-	}
-	~location_logger()
-	{
-		r_reader.location_pop();
-	}
-};
-
 class reader_string
 {
 private:
@@ -132,6 +113,25 @@ public:
 	virtual void location_pop()
 	{
 		location_buffer.pop();
+	}
+};
+
+class location_logger
+{
+	// Allows RAII operation of the reader locations to ensure that
+	// location_pop() is not forgotten!
+
+private:
+	reader & r_reader;
+
+public:
+	location_logger( reader & r_reader_in ) : r_reader( r_reader_in )
+	{
+		r_reader.location_push();
+	}
+	~location_logger()
+	{
+		r_reader.location_pop();
 	}
 };
 
