@@ -228,7 +228,7 @@ private:
 			++n_tests;
 			tout() << "ok: " << what;
 			if( ! is_passed ) 
-				tout() << " (" << __LINE__ << ")";
+				tout() << " (" << line << ")";
 			tout() << "\n";
 			return is_passed;
 		}
@@ -251,7 +251,7 @@ private:
 					task != task_end;
 					++task )
 			{ 
-#ifdef _MSC_VER
+#if defined( _MSC_VER ) && defined( _DEBUG )
 				_CrtMemState s1, s2, s3;
 				// Store a memory checkpoint in the s1 memory-state structure
 				_CrtMemCheckpoint( &s1 );
@@ -267,7 +267,7 @@ private:
 					TTEST( "Unhandled exception" == NULL );		// Force fail case
 				}
 
-#ifdef _MSC_VER
+#if defined( _MSC_VER ) && defined( _DEBUG )
 				// Store a 2nd memory checkpoint in s2
 				_CrtMemCheckpoint( &s2 );
 				TTEST( ! _CrtMemDifference( &s3, &s1, &s2 ) );
@@ -279,7 +279,7 @@ private:
 #endif
 			}
 
-#ifdef _MSC_VER
+#if defined( _MSC_VER ) && defined( _DEBUG )
 			TTEST( _CrtCheckMemory() != 0 );
 #endif
 		}
