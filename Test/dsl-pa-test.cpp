@@ -35,7 +35,7 @@
 
 #include "clunit.h"
 
-#include "dsl-pa.h"
+#include "dsl-pa/dsl-pa.h"
 
 using namespace cl;
 
