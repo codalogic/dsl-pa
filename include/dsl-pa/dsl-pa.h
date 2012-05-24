@@ -72,9 +72,9 @@ public:
 	// i.e. you can call location_top() many times and the return location
 	// won't be deleted.  When the recorded location is no longer required,
 	// do location_pop().  See also class location_logger.
-	virtual void location_push() = 0;
-	virtual void location_top() = 0;
-	virtual void location_pop() = 0;
+	virtual bool location_push() = 0;
+	virtual bool location_top() = 0;
+	virtual bool location_pop() = 0;
 };
 
 class reader_string
@@ -99,20 +99,21 @@ public:
 		return reader::R_EOI;
 	}
 
-	virtual void location_push()
+	virtual bool location_push()
 	{
 		location_buffer.push( index );
+		return true;
 	}
-
-	virtual void location_top()
+	virtual bool location_top()
 	{
 		if( ! location_buffer.empty() )
 			index = location_buffer.top();
+		return true;
 	}
-
-	virtual void location_pop()
+	virtual bool location_pop()
 	{
 		location_buffer.pop();
+		return true;
 	}
 };
 
