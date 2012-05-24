@@ -55,18 +55,20 @@ class reader
 {
 private:
 	std::stack< char > unget_buffer;
-	char peek_char;
+	char current_char;
 
 	virtual char get_next_input() = 0;
 
 public:
 	enum { R_EOI = 0 };	// Constant for "Reader End Of Input"	
 
-	reader() : peek_char( R_EOI ) {}
+	reader() : current_char( R_EOI ) {}
 
 	char get();
-	char peek() const { return peek_char; }
+	char current() const { return current_char; }
+	void unget() { unget( current() ); }	// Unget with argument ungets current char
 	void unget( char c ) { unget_buffer.push( c ); }
+	char peek() { get(); unget(); return current(); }
 
 	// Recording input locations and rewinding is based on stack operations.
 	// i.e. you can call location_top() many times and the return location
@@ -77,37 +79,39 @@ public:
 	virtual bool location_pop() = 0;
 };
 
-class reader_string
+class reader_string : public reader
 {
 private:
-	const std::string & r_input;
-	size_t index;
-	std::stack< size_t > location_buffer;
+	const char * p_input;
+	std::stack< const char * > location_buffer;
 
 public:
+	reader_string( const char * p_input_in )
+		:
+		p_input( p_input_in )
+	{}
 	reader_string( const std::string & r_input_in )
 		:
-		r_input( r_input_in ),
-		index( 0 )
+		p_input( r_input_in.c_str() )
 	{}
 
 	virtual char get_next_input()
 	{
-		if( index < r_input.size() )
-			return r_input[index++];
+		if( *p_input )
+			return *p_input++;
 		
 		return reader::R_EOI;
 	}
 
 	virtual bool location_push()
 	{
-		location_buffer.push( index );
+		location_buffer.push( p_input );
 		return true;
 	}
 	virtual bool location_top()
 	{
 		if( ! location_buffer.empty() )
-			index = location_buffer.top();
+			p_input = location_buffer.top();
 		return true;
 	}
 	virtual bool location_pop()

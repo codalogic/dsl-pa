@@ -1,34 +1,4 @@
-Tests run on Thu May 24 12:27:01 2012
-
-
-    dsl_pa::set() operation [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:44]
-    ==========================
-      : int i = 0
-      : dsl_pa::set( i, 1 )
-    ok: i == 1
-      : dsl_pa::set( e, COLD )
-    ok: e == COLD
-    ok: ! _CrtMemDifference( &s3, &s1, &s2 )
-
-
-    dsl pa class tests [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:57]
-    ==========================
-    ok: ! _CrtMemDifference( &s3, &s1, &s2 )
-
-
-    Reader tests [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:42]
-    ==========================
-    ok: ! _CrtMemDifference( &s3, &s1, &s2 )
-
-
-    String reader tests [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:55]
-    ==========================
-    ok: ! _CrtMemDifference( &s3, &s1, &s2 )
-
-
-    File reader tests [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:68]
-    ==========================
-    ok: ! _CrtMemDifference( &s3, &s1, &s2 )
+Tests run on Thu May 24 18:34:20 2012
 
 
     Alphabet tests [c:\home\pete\sw\dsl-pa\test\alphabet-test.cpp:42]
@@ -46,21 +16,131 @@ Tests run on Thu May 24 12:27:01 2012
     ok: my_ws_alphabet.is_wanted( '\t' )
     ok: ! my_ws_alphabet.is_wanted( 'A' )
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
+
+
+    dsl_pa::set() operation [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:44]
+    ==========================
+      : int i = 0
+      : dsl_pa::set( i, 1 )
+    ok: i == 1
+      : dsl_pa::set( e, COLD )
+    ok: e == COLD
+    ok: ! _CrtMemDifference( &s3, &s1, &s2 )
+
+
+    dsl pa class tests [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:57]
+    ==========================
+    ok: ! _CrtMemDifference( &s3, &s1, &s2 )
+
+
+    String reader basic tests [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:42]
+    ==========================
+      : reader_string my_reader( "abcd" )
+    ok: my_reader.get() == 'a'
+    ok: my_reader.current() == 'a'
+    ok: my_reader.current() == 'a'
+    ok: my_reader.get() == 'b'
+    ok: my_reader.current() == 'b'
+    ok: my_reader.get() == 'c'
+    ok: my_reader.get() == 'd'
+    ok: my_reader.get() == reader::R_EOI
+    ok: my_reader.current() == reader::R_EOI
+      : reader_string my_reader_empty( "" )
+    ok: my_reader_empty.get() == reader::R_EOI
+    ok: my_reader_empty.current() == reader::R_EOI
+    ok: ! _CrtMemDifference( &s3, &s1, &s2 )
+
+
+    String reader location tests [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:66]
+    ==========================
+      : reader_string my_reader( "abcdef" )
+    ok: my_reader.get() == 'a'
+    ok: my_reader.current() == 'a'
+    ok: my_reader.current() == 'a'
+    ok: my_reader.get() == 'b'
+    ok: my_reader.current() == 'b'
+    ok: my_reader.location_push()
+    ok: my_reader.get() == 'c'
+    ok: my_reader.get() == 'd'
+    ok: my_reader.location_push()
+    ok: my_reader.get() == 'e'
+    ok: my_reader.get() == 'f'
+    ok: my_reader.get() == reader::R_EOI
+    ok: my_reader.get() == reader::R_EOI
+    ok: my_reader.location_top()
+    ok: my_reader.get() == 'e'
+    ok: my_reader.get() == 'f'
+    ok: my_reader.location_top()
+    ok: my_reader.get() == 'e'
+    ok: my_reader.get() == 'f'
+    ok: my_reader.location_pop()
+    ok: my_reader.location_top()
+    ok: my_reader.get() == 'c'
+    ok: my_reader.get() == 'd'
+    ok: ! _CrtMemDifference( &s3, &s1, &s2 )
+
+
+    String reader unget/peek tests [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:103]
+    ==========================
+      : reader_string my_reader( "abcdef" )
+    ok: my_reader.get() == 'a'
+    ok: my_reader.get() == 'b'
+      : my_reader.unget()
+    ok: my_reader.current() == 'b'
+    ok: my_reader.get() == 'b'
+      : my_reader.unget()
+    ok: my_reader.current() == 'b'
+    ok: my_reader.get() == 'b'
+      : my_reader.unget( 'z' )
+      : my_reader.unget( 'y' )
+    ok: my_reader.current() == 'b'
+    ok: my_reader.get() == 'y'
+    ok: my_reader.get() == 'z'
+      Test peek()
+    ok: my_reader.get() == 'c'
+    ok: my_reader.peek() == 'd'
+    ok: my_reader.peek() == 'd'
+    ok: my_reader.get() == 'd'
+    ok: my_reader.peek() == 'e'
+    ok: my_reader.get() == 'e'
+    ok: ! _CrtMemDifference( &s3, &s1, &s2 )
+
+
+    String reader location logger tests [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:132]
+    ==========================
+      : reader_string my_reader( "abcdef" )
+    ok: my_reader.get() == 'a'
+    ok: my_reader.current() == 'a'
+    ok: my_reader.current() == 'a'
+    ok: my_reader.get() == 'b'
+    ok: my_reader.current() == 'b'
+    ok: my_reader.location_push()
+    ok: my_reader.get() == 'c'
+    ok: my_reader.get() == 'd'
+      : location_logger my_location_logger( my_reader )
+    ok: my_reader.get() == 'e'
+    ok: my_reader.get() == 'f'
+    ok: my_reader.get() == reader::R_EOI
+    ok: my_reader.get() == reader::R_EOI
+    ok: my_reader.location_top()
+    ok: my_reader.get() == 'e'
+    ok: my_reader.get() == 'f'
+    ok: my_reader.location_top()
+    ok: my_reader.get() == 'e'
+    ok: my_reader.get() == 'f'
+    ok: my_reader.location_top()
+    ok: my_reader.get() == 'c'
+    ok: my_reader.get() == 'd'
+    ok: ! _CrtMemDifference( &s3, &s1, &s2 )
+
+
+    File reader tests [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:171]
+    ==========================
+    ok: ! _CrtMemDifference( &s3, &s1, &s2 )
     ok: _CrtCheckMemory() != 0
 
-TODOs (12):
+TODOs (1):
 ------------------------
-- Test Reader [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:44]
-- Test basic reader get operation including with 0 length input [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:46]
-- Test reader unget then re-get etc [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:48]
-- Test reader peek [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:50]
-- String reader tests [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:57]
-- Basic string read [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:59]
-- location_push, location_top and location_pop operations [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:61]
-- Test location_logger class [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:63]
-- File reader tests [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:70]
-- Basic file read [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:72]
-- location_push, location_top and location_pop operations [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:74]
-- Test location_logger class [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:76]
+- File reader tests [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:173]
 
-0 error(s), 12 todo(s), 18 test(s)
+0 error(s), 1 todo(s), 90 test(s)

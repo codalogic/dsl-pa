@@ -44,14 +44,14 @@ char reader::get()
 {
 	if( ! unget_buffer.empty() )
 	{
-		peek_char = unget_buffer.top();
+		current_char = unget_buffer.top();
 		unget_buffer.pop();
 	}
 	else
 	{
-		peek_char = get_next_input();
+		current_char = get_next_input();
 	}
-	return peek_char;
+	return current_char;
 }
 
 } // End of namespace cl

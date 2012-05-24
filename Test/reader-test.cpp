@@ -37,30 +37,133 @@
 
 using namespace cl;
 
-TFUNCTION( reader_test )
+TFUNCTION( string_reader_basic_test )
 {
-	TBEGIN( "Reader tests" );
+	TBEGIN( "String reader basic tests" );
 	
-	TTODO( "Test Reader" );
+	TSETUP( reader_string my_reader( "abcd" ) );
 	
-	TTODO( "Test basic reader get operation including with 0 length input" );
+	TTEST( my_reader.get() == 'a' );
+	TTEST( my_reader.current() == 'a' );
+	TTEST( my_reader.current() == 'a' );	// Can read current() multiple times
+	TTEST( my_reader.get() == 'b' );
+	TTEST( my_reader.current() == 'b' );
 
-	TTODO( "Test reader unget then re-get etc" );
-
-	TTODO( "Test reader peek" );
+	TTEST( my_reader.get() == 'c' );
+	TTEST( my_reader.get() == 'd' );
+	
+	TTEST( my_reader.get() == reader::R_EOI );
+	TTEST( my_reader.current() == reader::R_EOI );
+	
+	TSETUP( reader_string my_reader_empty( "" ) );
+	
+	TTEST( my_reader_empty.get() == reader::R_EOI );
+	TTEST( my_reader_empty.current() == reader::R_EOI );
 }
 
-TFUNCTION( string_reader_test )
+TFUNCTION( string_reader_location_test )
 {
-	TBEGIN( "String reader tests" );
+	TBEGIN( "String reader location tests" );
 	
-	TTODO( "String reader tests" );
+	TSETUP( reader_string my_reader( "abcdef" ) );
 	
-	TTODO( "Basic string read" );
+	TTEST( my_reader.get() == 'a' );
+	TTEST( my_reader.current() == 'a' );
+	TTEST( my_reader.current() == 'a' );	// Can read current() multiple times
+	TTEST( my_reader.get() == 'b' );
+	TTEST( my_reader.current() == 'b' );
+
+	TTEST( my_reader.location_push() );	// Not really a test, but we want to ensure it returns true
 	
-	TTODO( "location_push, location_top and location_pop operations" );
+	TTEST( my_reader.get() == 'c' );
+	TTEST( my_reader.get() == 'd' );
+
+	TTEST( my_reader.location_push() );	// Not really a test, but we want to ensure it returns true
+
+	TTEST( my_reader.get() == 'e' );
+	TTEST( my_reader.get() == 'f' );
+	TTEST( my_reader.get() == reader::R_EOI );
+	TTEST( my_reader.get() == reader::R_EOI );	// Should be able to repeatedly call get() once read end of input
 	
-	TTODO( "Test location_logger class" );
+	TTEST( my_reader.location_top() );	// Not really a test, but we want to ensure it returns true
+	TTEST( my_reader.get() == 'e' );
+	TTEST( my_reader.get() == 'f' );
+	TTEST( my_reader.location_top() );	// Not really a test, but we want to ensure it returns true
+	TTEST( my_reader.get() == 'e' );
+	TTEST( my_reader.get() == 'f' );
+	
+	TTEST( my_reader.location_pop() );	// Not really a test, but we want to ensure it returns true
+	TTEST( my_reader.location_top() );	// Not really a test, but we want to ensure it returns true
+	TTEST( my_reader.get() == 'c' );
+	TTEST( my_reader.get() == 'd' );
+}
+
+TFUNCTION( string_reader_unget_test )
+{
+	TBEGIN( "String reader unget/peek tests" );
+	
+	TSETUP( reader_string my_reader( "abcdef" ) );
+	
+	TTEST( my_reader.get() == 'a' );
+	TTEST( my_reader.get() == 'b' );
+	TSETUP( my_reader.unget() );
+	TTEST( my_reader.current() == 'b' );	// current() char not affected by unget() (i.e. doesn't make current() return 'a' here)
+	TTEST( my_reader.get() == 'b' );
+	TSETUP( my_reader.unget() );
+	TTEST( my_reader.current() == 'b' );	// current() char not affected by unget()
+	TTEST( my_reader.get() == 'b' );
+	TSETUP( my_reader.unget( 'z' ) );
+	TSETUP( my_reader.unget( 'y' ) );
+	TTEST( my_reader.current() == 'b' );	// current() char not affected by unget()
+	TTEST( my_reader.get() == 'y' );		// ungetted chars returned in reverse order to what they were unget()ted
+	TTEST( my_reader.get() == 'z' );
+	
+	TDOC( "Test peek()" );
+	TTEST( my_reader.get() == 'c' );
+	TTEST( my_reader.peek() == 'd' );
+	TTEST( my_reader.peek() == 'd' );
+	TTEST( my_reader.get() == 'd' );
+	TTEST( my_reader.peek() == 'e' );
+	TTEST( my_reader.get() == 'e' );
+}
+
+TFUNCTION( string_reader_location_logger_test )
+{
+	TBEGIN( "String reader location logger tests" );
+	
+	
+	TSETUP( reader_string my_reader( "abcdef" ) );
+	
+	TTEST( my_reader.get() == 'a' );
+	TTEST( my_reader.current() == 'a' );
+	TTEST( my_reader.current() == 'a' );	// Can read current() multiple times
+	TTEST( my_reader.get() == 'b' );
+	TTEST( my_reader.current() == 'b' );
+
+	TTEST( my_reader.location_push() );	// Not really a test, but we want to ensure it returns true
+	
+	TTEST( my_reader.get() == 'c' );
+	TTEST( my_reader.get() == 'd' );
+	
+	{	// Control scope of my_location_logger
+	TSETUP( location_logger my_location_logger( my_reader ) );
+
+	TTEST( my_reader.get() == 'e' );
+	TTEST( my_reader.get() == 'f' );
+	TTEST( my_reader.get() == reader::R_EOI );
+	TTEST( my_reader.get() == reader::R_EOI );	// Should be able to repeatedly call get() once read end of input
+	
+	TTEST( my_reader.location_top() );	// Not really a test, but we want to ensure it returns true
+	TTEST( my_reader.get() == 'e' );
+	TTEST( my_reader.get() == 'f' );
+	TTEST( my_reader.location_top() );	// Not really a test, but we want to ensure it returns true
+	TTEST( my_reader.get() == 'e' );
+	}	// End of my_location_logger scope
+	
+	TTEST( my_reader.get() == 'f' );
+	TTEST( my_reader.location_top() );	// Not really a test, but we want to ensure it returns true
+	TTEST( my_reader.get() == 'c' );
+	TTEST( my_reader.get() == 'd' );
 }
 
 TFUNCTION( file_reader_test )
@@ -68,10 +171,4 @@ TFUNCTION( file_reader_test )
 	TBEGIN( "File reader tests" );
 	
 	TTODO( "File reader tests" );
-	
-	TTODO( "Basic file read" );
-	
-	TTODO( "location_push, location_top and location_pop operations" );
-	
-	TTODO( "Test location_logger class" );
 }
