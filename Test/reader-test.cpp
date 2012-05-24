@@ -31,27 +31,47 @@
 // POSSIBILITY OF SUCH DAMAGE.
 //----------------------------------------------------------------------------
 
-//----------------------------------------------------------------------------
-// See dsl-pa.h and README.html at https://github.com/codalogic/dsl-pa for
-// more information.
-//----------------------------------------------------------------------------
+#include "clunit.h"
 
 #include "dsl-pa.h"
 
-namespace cl {
+using namespace cl;
 
-char reader::get()
+TFUNCTION( reader_test )
 {
-	if( ! unget_buffer.empty() )
-	{
-		peek_char = unget_buffer.top();
-		unget_buffer.pop();
-	}
-	else
-	{
-		peek_char = get_next_input();
-	}
-	return peek_char;
+	TBEGIN( "Reader tests" );
+	
+	TTODO( "Test Reader" );
+	
+	TTODO( "Test basic reader get operation including with 0 length input" );
+
+	TTODO( "Test reader unget then re-get etc" );
+
+	TTODO( "Test reader peek" );
 }
 
-} // End of namespace cl
+TFUNCTION( string_reader_test )
+{
+	TBEGIN( "String reader tests" );
+	
+	TTODO( "String reader tests" );
+	
+	TTODO( "Basic string read" );
+	
+	TTODO( "location_push, location_top and location_pop operations" );
+	
+	TTODO( "Test location_logger class" );
+}
+
+TFUNCTION( file_reader_test )
+{
+	TBEGIN( "File reader tests" );
+	
+	TTODO( "File reader tests" );
+	
+	TTODO( "Basic file read" );
+	
+	TTODO( "location_push, location_top and location_pop operations" );
+	
+	TTODO( "Test location_logger class" );
+}

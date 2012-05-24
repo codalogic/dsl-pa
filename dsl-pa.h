@@ -41,3 +41,119 @@
 // a value, such as an integer, that can be implicitly converted to a bool. 
 // For more information see README.html at https://github.com/codalogic/dsl-pa 
 //----------------------------------------------------------------------------
+
+#ifndef CL_DSL_PA
+#define CL_DSL_PA
+
+#include <string>
+#include <vector>
+#include <stack>
+
+namespace cl {
+
+class reader
+{
+private:
+	std::stack< char > unget_buffer;
+	char peek_char;
+
+	virtual char get_next_input() = 0;
+
+public:
+	enum { R_EOI = 0 };	// Constant for "Reader End Of Input"	
+
+	reader() : peek_char( R_EOI ) {}
+
+	char get();
+	char peek() const { return peek_char; }
+	void unget( char c ) { unget_buffer.push( c ); }
+
+	// Recording input locations and rewinding is based on stack operations.
+	// i.e. you can call location_top() many times and the return location
+	// won't be deleted.  When the recorded location is no longer required,
+	// do location_pop().  See also class location_logger.
+	virtual void location_push() = 0;
+	virtual void location_top() = 0;
+	virtual void location_pop() = 0;
+};
+
+class location_logger
+{
+	// Allows RAII operation of the reader locations to ensure that
+	// location_pop() is not forgotten!
+
+private:
+	reader & r_reader;
+
+public:
+	location_logger( reader & r_reader_in ) : r_reader( r_reader_in )
+	{
+		r_reader.location_push();
+	}
+	~location_logger()
+	{
+		r_reader.location_pop();
+	}
+};
+
+class reader_string
+{
+private:
+	const std::string & r_input;
+	size_t index;
+	std::stack< size_t > location_buffer;
+
+public:
+	reader_string( const std::string & r_input_in )
+		:
+		r_input( r_input_in ),
+		index( 0 )
+	{}
+
+	virtual char get_next_input()
+	{
+		if( index < r_input.size() )
+			return r_input[index++];
+		
+		return reader::R_EOI;
+	}
+
+	virtual void location_push()
+	{
+		location_buffer.push( index );
+	}
+
+	virtual void location_top()
+	{
+		if( ! location_buffer.empty() )
+			index = location_buffer.top();
+	}
+
+	virtual void location_pop()
+	{
+		location_buffer.pop();
+	}
+};
+
+class alphabet
+{
+public:
+	virtual bool is_wanted( char c ) = 0;
+};
+
+class dsl_pa
+{
+public:
+	// set() allows setting of state information within a set of 
+	// shortcut operators
+	template< typename T >
+	static bool set( T & r_variable, const T & r_value )
+	{
+		r_variable = r_value;
+		return true;
+	}
+};
+
+} // End of namespace cl
+
+#endif // CL_DSL_PA

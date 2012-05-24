@@ -33,26 +33,10 @@
 // POSSIBILITY OF SUCH DAMAGE.
 //----------------------------------------------------------------------
 
+#define CLUNIT_HOME
 #include "clunit.h"
 
-#include "dsl-pa.h"
-
-using namespace cl;
-
-TFUNCTION( dsl_pa_set_test )
+int main( int argc, char * argv[] )
 {
-	TBEGIN( "dsl_pa::set() operation" );
-	
-	TSETUP( int i = 0 );
-	TSETUP( dsl_pa::set( i, 1 ) );
-	TTEST( i == 1 );
-	
-	enum { HOT, COLD } e = HOT;
-	TSETUP( dsl_pa::set( e, COLD ) );
-	TTEST( e == COLD );
-}
-
-TFUNCTION( dsl_pa_test )
-{
-	TBEGIN( "dsl pa class tests" );
+	TRUNALL();
 }

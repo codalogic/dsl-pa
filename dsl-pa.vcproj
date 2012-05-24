@@ -41,6 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
+				AdditionalIncludeDirectories="$(ProjectDir)"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -116,6 +117,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
+				AdditionalIncludeDirectories="$(ProjectDir)"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
@@ -175,11 +177,23 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
+				RelativePath=".\Test\alphabet-test.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Test\clunit.h"
 				>
 			</File>
 			<File
 				RelativePath=".\Test\dsl-pa-test.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Test\main-test.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Test\reader-test.cpp"
 				>
 			</File>
 		</Filter>

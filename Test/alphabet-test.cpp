@@ -31,27 +31,15 @@
 // POSSIBILITY OF SUCH DAMAGE.
 //----------------------------------------------------------------------------
 
-//----------------------------------------------------------------------------
-// See dsl-pa.h and README.html at https://github.com/codalogic/dsl-pa for
-// more information.
-//----------------------------------------------------------------------------
+#include "clunit.h"
 
 #include "dsl-pa.h"
 
-namespace cl {
+using namespace cl;
 
-char reader::get()
+TFUNCTION( alphabet_test )
 {
-	if( ! unget_buffer.empty() )
-	{
-		peek_char = unget_buffer.top();
-		unget_buffer.pop();
-	}
-	else
-	{
-		peek_char = get_next_input();
-	}
-	return peek_char;
-}
+	TBEGIN( "Alphabet tests" );
 
-} // End of namespace cl
+	TTODO( "Alphabet tests" );
+}
