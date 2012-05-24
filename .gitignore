@@ -10,3 +10,16 @@
 *.lai
 *.la
 *.a
+
+# Visual Studio bits (Added by PJC)
+*.pch
+*.suo
+*.obj
+*.ilk
+*.lib
+*.exe
+*.dep
+*.pdb
+*.ncb
+*.idb
+*.htm
