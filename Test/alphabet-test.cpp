@@ -40,6 +40,25 @@ using namespace cl;
 TFUNCTION( alphabet_test )
 {
 	TBEGIN( "Alphabet tests" );
-
-	TTODO( "Alphabet tests" );
+	
+	TDOC( "Word char alphabet" );
+	alphabet_word_char my_alphabet;
+	
+	TTEST( my_alphabet.is_wanted( 'b' ) );
+	TTEST( ! my_alphabet.is_wanted( '$' ) );
+	TTEST( ! my_alphabet.is_wanted( ' ' ) );
+	
+	TDOC( "Check word char alphabet polymorphism!" );
+	alphabet * p_my_alphabet = &my_alphabet;
+	
+	TTEST( p_my_alphabet->is_wanted( 'b' ) );
+	TTEST( ! p_my_alphabet->is_wanted( '$' ) );
+	TTEST( ! p_my_alphabet->is_wanted( ' ' ) );
+	
+	TDOC( "Whitespace alphabet" );
+	alphabet_ws my_ws_alphabet;
+	
+	TTEST( my_ws_alphabet.is_wanted( ' ' ) );
+	TTEST( my_ws_alphabet.is_wanted( '\t' ) );
+	TTEST( ! my_ws_alphabet.is_wanted( 'A' ) );
 }

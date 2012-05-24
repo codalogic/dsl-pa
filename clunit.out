@@ -1,4 +1,4 @@
-Tests run on Thu May 24 12:09:52 2012
+Tests run on Thu May 24 12:27:01 2012
 
 
     dsl_pa::set() operation [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:44]
@@ -33,10 +33,22 @@ Tests run on Thu May 24 12:09:52 2012
 
     Alphabet tests [c:\home\pete\sw\dsl-pa\test\alphabet-test.cpp:42]
     ==========================
+      Word char alphabet
+    ok: my_alphabet.is_wanted( 'b' )
+    ok: ! my_alphabet.is_wanted( '$' )
+    ok: ! my_alphabet.is_wanted( ' ' )
+      Check word char alphabet polymorphism!
+    ok: p_my_alphabet->is_wanted( 'b' )
+    ok: ! p_my_alphabet->is_wanted( '$' )
+    ok: ! p_my_alphabet->is_wanted( ' ' )
+      Whitespace alphabet
+    ok: my_ws_alphabet.is_wanted( ' ' )
+    ok: my_ws_alphabet.is_wanted( '\t' )
+    ok: ! my_ws_alphabet.is_wanted( 'A' )
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
     ok: _CrtCheckMemory() != 0
 
-TODOs (13):
+TODOs (12):
 ------------------------
 - Test Reader [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:44]
 - Test basic reader get operation including with 0 length input [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:46]
@@ -50,6 +62,5 @@ TODOs (13):
 - Basic file read [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:72]
 - location_push, location_top and location_pop operations [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:74]
 - Test location_logger class [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:76]
-- Alphabet tests [c:\home\pete\sw\dsl-pa\test\alphabet-test.cpp:44]
 
-0 error(s), 13 todo(s), 9 test(s)
+0 error(s), 12 todo(s), 18 test(s)
