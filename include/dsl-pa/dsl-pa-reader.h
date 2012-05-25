@@ -48,6 +48,7 @@
 #include <string>
 #include <vector>
 #include <stack>
+#include <fstream>
 
 namespace cl {
 
@@ -113,6 +114,48 @@ public:
 	{
 		if( ! location_buffer.empty() )
 			p_input = location_buffer.top();
+		return true;
+	}
+	virtual bool location_pop()
+	{
+		location_buffer.pop();
+		return true;
+	}
+};
+
+class reader_file : public reader
+{
+private:
+	std::ifstream fin;
+	std::stack< std::ifstream::pos_type > location_buffer;
+
+public:
+	reader_file( const char * p_input_in )
+		:
+		fin( p_input_in, std::ios::binary )
+	{}
+
+	virtual char get_next_input()
+	{
+		int c = fin.get();
+		if( c == -1 )
+			return reader::R_EOI;
+		return static_cast<char>( c );
+	}
+
+	virtual bool location_push()
+	{
+		location_buffer.push( fin.tellg() );
+		return true;
+	}
+	virtual bool location_top()
+	{
+		if( ! location_buffer.empty() )
+		{
+			if( fin.eof() )
+				fin.clear();
+			fin.seekg( location_buffer.top() );
+		}
 		return true;
 	}
 	virtual bool location_pop()

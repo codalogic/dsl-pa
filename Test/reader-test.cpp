@@ -62,7 +62,20 @@ class reader_factory_file : public reader_factory
 public:
 	virtual reader * create( const char * p_data ) const
 	{
-		TTODO( "create reader_factory_file::create();" );
+		const char * p_test_data_file_name = "FoxdfEr43De.txt";
+		
+		{
+		std::ofstream fout( p_test_data_file_name );
+		
+		TTEST( fout.is_open() );
+		
+		if( ! fout.is_open() )
+			return 0;
+		
+		fout << p_data;
+		}
+		
+		return new reader_file( p_test_data_file_name );
 	}
 	virtual const char * form_name() const
 	{
@@ -74,7 +87,8 @@ void reader_basic_test( reader_factory & r_reader_factory )
 {
 	TBEGIN( (std::string( r_reader_factory.form_name() ) + " reader basic tests").c_str() );
 	
-	TSETUP( std::auto_ptr< reader > p_reader( r_reader_factory.create( "abcd" ) ) );
+	TSETUP( std::auto_ptr< reader > p_reader( r_reader_factory.create( "abc d" ) ) );
+	TCRITICALTEST( p_reader.get() != 0 );
 	
 	TTEST( p_reader->get() == 'a' );
 	TTEST( p_reader->current() == 'a' );
@@ -83,12 +97,14 @@ void reader_basic_test( reader_factory & r_reader_factory )
 	TTEST( p_reader->current() == 'b' );
 
 	TTEST( p_reader->get() == 'c' );
+	TTEST( p_reader->get() == ' ' );
 	TTEST( p_reader->get() == 'd' );
 	
 	TTEST( p_reader->get() == reader::R_EOI );
 	TTEST( p_reader->current() == reader::R_EOI );
 	
 	TSETUP( std::auto_ptr< reader > p_reader_empty( r_reader_factory.create( "" ) ) );
+	TCRITICALTEST( p_reader_empty.get() != 0 );
 	
 	TTEST( p_reader_empty->get() == reader::R_EOI );
 	TTEST( p_reader_empty->current() == reader::R_EOI );
@@ -99,6 +115,7 @@ void reader_location_test( reader_factory & r_reader_factory )
 	TBEGIN( (std::string( r_reader_factory.form_name() ) + " reader location tests").c_str() );
 	
 	TSETUP( std::auto_ptr< reader > p_reader( r_reader_factory.create( "abcdef" ) ) );
+	TCRITICALTEST( p_reader.get() != 0 );
 	
 	TTEST( p_reader->get() == 'a' );
 	TTEST( p_reader->current() == 'a' );
@@ -136,6 +153,7 @@ void reader_unget_test( reader_factory & r_reader_factory )
 	TBEGIN( (std::string( r_reader_factory.form_name() ) + " reader unget/peek tests").c_str() );
 	
 	TSETUP( std::auto_ptr< reader > p_reader( r_reader_factory.create( "abcdef" ) ) );
+	TCRITICALTEST( p_reader.get() != 0 );
 	
 	TTEST( p_reader->get() == 'a' );
 	TTEST( p_reader->get() == 'b' );
@@ -165,6 +183,7 @@ void reader_location_logger_test( reader_factory & r_reader_factory )
 	TBEGIN( (std::string( r_reader_factory.form_name() ) + " reader location logger tests").c_str() );
 
 	TSETUP( std::auto_ptr< reader > p_reader( r_reader_factory.create( "abcdef" ) ) );
+	TCRITICALTEST( p_reader.get() != 0 );
 	
 	TTEST( p_reader->get() == 'a' );
 	TTEST( p_reader->current() == 'a' );
@@ -215,5 +234,7 @@ TFUNCTION( string_reader_test )
 
 TFUNCTION( file_reader_test )
 {
-	TTODO( "File reader tests" );
+	TBEGIN( "File reader tests" );
+	
+	all_reader_tests( reader_factory_file() );
 }
