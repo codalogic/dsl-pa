@@ -1,4 +1,4 @@
-Tests run on Fri May 25 08:00:19 2012
+Tests run on Fri May 25 08:04:17 2012
 
 
     Alphabet tests [c:\home\pete\sw\dsl-pa\test\alphabet-test.cpp:42]
@@ -33,8 +33,97 @@ Tests run on Fri May 25 08:00:19 2012
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
 
-    String reader tests [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:208]
+    String reader tests [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:211]
     ==========================
+    String reader basic tests [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:75]
+    ==========================
+      : std::auto_ptr< reader > p_reader( r_reader_factory.create( "abcd" ) )
+    ok: p_reader->get() == 'a'
+    ok: p_reader->current() == 'a'
+    ok: p_reader->current() == 'a'
+    ok: p_reader->get() == 'b'
+    ok: p_reader->current() == 'b'
+    ok: p_reader->get() == 'c'
+    ok: p_reader->get() == 'd'
+    ok: p_reader->get() == reader::R_EOI
+    ok: p_reader->current() == reader::R_EOI
+      : std::auto_ptr< reader > p_reader_empty( r_reader_factory.create( "" ) )
+    ok: p_reader_empty->get() == reader::R_EOI
+    ok: p_reader_empty->current() == reader::R_EOI
+    String reader location tests [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:99]
+    ==========================
+      : std::auto_ptr< reader > p_reader( r_reader_factory.create( "abcdef" ) )
+    ok: p_reader->get() == 'a'
+    ok: p_reader->current() == 'a'
+    ok: p_reader->current() == 'a'
+    ok: p_reader->get() == 'b'
+    ok: p_reader->current() == 'b'
+    ok: p_reader->location_push()
+    ok: p_reader->get() == 'c'
+    ok: p_reader->get() == 'd'
+    ok: p_reader->location_push()
+    ok: p_reader->get() == 'e'
+    ok: p_reader->get() == 'f'
+    ok: p_reader->get() == reader::R_EOI
+    ok: p_reader->get() == reader::R_EOI
+    ok: p_reader->location_top()
+    ok: p_reader->get() == 'e'
+    ok: p_reader->get() == 'f'
+    ok: p_reader->location_top()
+    ok: p_reader->get() == 'e'
+    ok: p_reader->get() == 'f'
+    ok: p_reader->location_pop()
+    ok: p_reader->location_top()
+    ok: p_reader->get() == 'c'
+    ok: p_reader->get() == 'd'
+    String reader unget/peek tests [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:136]
+    ==========================
+      : std::auto_ptr< reader > p_reader( r_reader_factory.create( "abcdef" ) )
+    ok: p_reader->get() == 'a'
+    ok: p_reader->get() == 'b'
+      : p_reader->unget()
+    ok: p_reader->current() == 'b'
+    ok: p_reader->get() == 'b'
+      : p_reader->unget()
+    ok: p_reader->current() == 'b'
+    ok: p_reader->get() == 'b'
+      : p_reader->unget( 'z' )
+      : p_reader->unget( 'y' )
+    ok: p_reader->current() == 'b'
+    ok: p_reader->get() == 'y'
+    ok: p_reader->get() == 'z'
+      Test peek()
+    ok: p_reader->get() == 'c'
+    ok: p_reader->peek() == 'd'
+    ok: p_reader->peek() == 'd'
+    ok: p_reader->get() == 'd'
+    ok: p_reader->peek() == 'e'
+    ok: p_reader->get() == 'e'
+    String reader location logger tests [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:165]
+    ==========================
+      : std::auto_ptr< reader > p_reader( r_reader_factory.create( "abcdef" ) )
+    ok: p_reader->get() == 'a'
+    ok: p_reader->current() == 'a'
+    ok: p_reader->current() == 'a'
+    ok: p_reader->get() == 'b'
+    ok: p_reader->current() == 'b'
+    ok: p_reader->location_push()
+    ok: p_reader->get() == 'c'
+    ok: p_reader->get() == 'd'
+      : location_logger my_location_logger( *p_reader )
+    ok: p_reader->get() == 'e'
+    ok: p_reader->get() == 'f'
+    ok: p_reader->get() == reader::R_EOI
+    ok: p_reader->get() == reader::R_EOI
+    ok: p_reader->location_top()
+    ok: p_reader->get() == 'e'
+    ok: p_reader->get() == 'f'
+    ok: p_reader->location_top()
+    ok: p_reader->get() == 'e'
+    ok: p_reader->get() == 'f'
+    ok: p_reader->location_top()
+    ok: p_reader->get() == 'c'
+    ok: p_reader->get() == 'd'
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
 
@@ -43,6 +132,6 @@ Tests run on Fri May 25 08:00:19 2012
 
 TODOs (1):
 ------------------------
-- File reader tests [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:214]
+- File reader tests [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:218]
 
-0 error(s), 1 todo(s), 17 test(s)
+0 error(s), 1 todo(s), 87 test(s)

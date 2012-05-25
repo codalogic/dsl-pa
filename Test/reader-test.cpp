@@ -160,7 +160,7 @@ void reader_unget_test( reader_factory & r_reader_factory )
 	TTEST( p_reader->get() == 'e' );
 }
 
-void string_reader_location_logger_test( reader_factory & r_reader_factory )
+void reader_location_logger_test( reader_factory & r_reader_factory )
 {
 	TBEGIN( (std::string( r_reader_factory.form_name() ) + " reader location logger tests").c_str() );
 
@@ -201,12 +201,16 @@ void string_reader_location_logger_test( reader_factory & r_reader_factory )
 void all_reader_tests( reader_factory & r_reader_factory )
 {
 	reader_basic_test( r_reader_factory );
+	reader_location_test( r_reader_factory );
+	reader_unget_test( r_reader_factory );
+	reader_location_logger_test( r_reader_factory );
 }
 
 TFUNCTION( string_reader_test )
 {
 	TBEGIN( "String reader tests" );
 	
+	all_reader_tests( reader_factory_string() );
 }
 
 TFUNCTION( file_reader_test )
