@@ -1,4 +1,4 @@
-Tests run on Fri May 25 21:36:39 2012
+Tests run on Fri May 25 22:08:53 2012
 
 
     Alphabet tests [c:\home\pete\sw\dsl-pa\test\alphabet-test.cpp:42]
@@ -51,9 +51,21 @@ Tests run on Fri May 25 21:36:39 2012
 
     Alphabet typedefed tests [c:\home\pete\sw\dsl-pa\test\alphabet-test.cpp:106]
     ==========================
+    ok: number().is_wanted( '1' )
+    ok: name().is_wanted( 'g' )
+    ok: ! name().is_wanted( '1' )
+    ok: invert( number() ).is_wanted( 'x' )
+    ok: either( name(), number() ).is_wanted( '5' )
+    ok: either( name(), number() ).is_wanted( 'j' )
+    ok: ! _CrtMemDifference( &s3, &s1, &s2 )
+
+
+    Alphabet short_alphabets tests [c:\home\pete\sw\dsl-pa\test\alphabet-test.cpp:128]
+    ==========================
     ok: digit().is_wanted( '1' )
     ok: not( digit() ).is_wanted( 'x' )
     ok: or( ws(), digit() ).is_wanted( '5' )
+    ok: alpha().is_wanted( 'a' )
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
 
@@ -348,4 +360,4 @@ Tests run on Fri May 25 21:36:39 2012
     ok: p_reader->get() == 'd'
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
     ok: _CrtCheckMemory() != 0
-0 error(s), 0 todo(s), 267 test(s)
+0 error(s), 0 todo(s), 275 test(s)

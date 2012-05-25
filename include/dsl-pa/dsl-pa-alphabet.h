@@ -102,6 +102,15 @@ public:
 	}
 };
 
+class alphabet_alpha : public alphabet
+{
+public:
+	virtual bool is_wanted( char c ) const
+	{
+		return is_alpha( c );
+	}
+};
+
 class alphabet_word_char : public alphabet
 {
 public:
@@ -170,6 +179,18 @@ public:
 				r_alphabet_2.is_wanted( c );
 	}
 };
+
+namespace short_alphabets {
+	typedef alphabet_ws					ws;
+	typedef alphabet_digit				digit;
+	typedef alphabet_hex				hex;
+	typedef alphabet_alpha				alpha;
+	typedef alphabet_word_first_char	word_first_char;
+	typedef alphabet_word_char			word_char;
+	typedef alphabet_uni				uni;
+	typedef alphabet_not				not;
+	typedef alphabet_or					or;
+} // End of namespace short_alphabets
 
 } // End of namespace cl
 

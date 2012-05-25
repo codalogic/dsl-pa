@@ -105,16 +105,37 @@ TFUNCTION( alphabet_typedefed_test )
 {
 	TBEGIN( "Alphabet typedefed tests" );
 	
+	// At times it my be appropriate to assign a name to a alphabet that is
+	// more appropriate to the language being pasred.  This can be done with
+	// typedefs.
+	
+	typedef alphabet_digit	number;
+	typedef alphabet_alpha	name;
+	typedef alphabet_ws		whitespace;
+	typedef alphabet_not	invert;
+	typedef alphabet_or		either;
+	
+	TTEST( number().is_wanted( '1' ) );
+	TTEST( name().is_wanted( 'g' ) );
+	TTEST( ! name().is_wanted( '1' ) );
+	TTEST( invert( number() ).is_wanted( 'x' ) );
+	TTEST( either( name(), number() ).is_wanted( '5' ) );
+	TTEST( either( name(), number() ).is_wanted( 'j' ) );
+}
+
+TFUNCTION( alphabet_short_alphabets_test )
+{
+	TBEGIN( "Alphabet short_alphabets tests" );
+	
 	// As a general library it is important to be aware of the potential for
-	// name clashes. However, in your own code it my be more appropriate to 
-	// use typedefs to be able to use shorted names.
+	// name clashes. However, optionally using namespace cl::short_alphabets
+	// allows you to use shorted names.  Note that using namespace can be 
+	// used on a per function basis.
 	
-	typedef alphabet_digit	digit;
-	typedef alphabet_ws		ws;
-	typedef alphabet_not	not;
-	typedef alphabet_or		or;
-	
+	using namespace cl::short_alphabets;
+
 	TTEST( digit().is_wanted( '1' ) );
 	TTEST( not( digit() ).is_wanted( 'x' ) );
 	TTEST( or( ws(), digit() ).is_wanted( '5' ) );
+	TTEST( alpha().is_wanted( 'a' ) );
 }
