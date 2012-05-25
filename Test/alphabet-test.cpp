@@ -100,3 +100,21 @@ TFUNCTION( alphabet_combiners_test )
 	TTEST( alphabet_or( alphabet_ws(), alphabet_or( alphabet_digit(), alphabet_uni() ) ).is_wanted( '\x80' ) );
 	TTEST( ! alphabet_or( alphabet_ws(), alphabet_or( alphabet_digit(), alphabet_uni() ) ).is_wanted( '$' ) );
 }
+
+TFUNCTION( alphabet_typedefed_test )
+{
+	TBEGIN( "Alphabet typedefed tests" );
+	
+	// As a general library it is important to be aware of the potential for
+	// name clashes. However, in your own code it my be more appropriate to 
+	// use typedefs to be able to use shorted names.
+	
+	typedef alphabet_digit	digit;
+	typedef alphabet_ws		ws;
+	typedef alphabet_not	not;
+	typedef alphabet_or		or;
+	
+	TTEST( digit().is_wanted( '1' ) );
+	TTEST( not( digit() ).is_wanted( 'x' ) );
+	TTEST( or( ws(), digit() ).is_wanted( '5' ) );
+}
