@@ -61,4 +61,42 @@ TFUNCTION( alphabet_test )
 	TTEST( my_ws_alphabet.is_wanted( ' ' ) );
 	TTEST( my_ws_alphabet.is_wanted( '\t' ) );
 	TTEST( ! my_ws_alphabet.is_wanted( 'A' ) );
+	
+	TDOC( "Digit alphabet" );
+	alphabet_digit my_digit_alphabet;
+	TTEST( my_digit_alphabet.is_wanted( '0' ) );
+	TTEST( my_digit_alphabet.is_wanted( '5' ) );
+	TTEST( my_digit_alphabet.is_wanted( '9' ) );
+	TTEST( ! my_digit_alphabet.is_wanted( 'a' ) );
+	
+	TDOC( "Hex alphabet" );
+	alphabet_hex my_hex_alphabet;
+	TTEST( my_hex_alphabet.is_wanted( '0' ) );
+	TTEST( my_hex_alphabet.is_wanted( '5' ) );
+	TTEST( my_hex_alphabet.is_wanted( '9' ) );
+	TTEST( my_hex_alphabet.is_wanted( 'A' ) );
+	TTEST( my_hex_alphabet.is_wanted( 'C' ) );
+	TTEST( my_hex_alphabet.is_wanted( 'F' ) );
+	TTEST( my_hex_alphabet.is_wanted( 'a' ) );
+	TTEST( my_hex_alphabet.is_wanted( 'c' ) );
+	TTEST( my_hex_alphabet.is_wanted( 'f' ) );
+	TTEST( ! my_hex_alphabet.is_wanted( 'G' ) );
+}
+
+TFUNCTION( alphabet_combiners_test )
+{
+	TBEGIN( "Alphabet combiners tests" );
+	
+	TTEST( alphabet_digit().is_wanted( '1' ) );
+	TTEST( alphabet_not( alphabet_digit() ).is_wanted( 'x' ) );
+	TTEST( alphabet_or( alphabet_ws(), alphabet_digit() ).is_wanted( '5' ) );
+	TTEST( alphabet_or( alphabet_ws(), alphabet_digit() ).is_wanted( ' ' ) );
+	TTEST( ! alphabet_or( alphabet_ws(), alphabet_digit() ).is_wanted( 'x' ) );
+	TTEST( alphabet_not( alphabet_or( alphabet_ws(), alphabet_digit() ) ).is_wanted( 'x' ) );
+	
+	// OR together more than two alphabets as follows:
+	TTEST( alphabet_or( alphabet_ws(), alphabet_or( alphabet_digit(), alphabet_uni() ) ).is_wanted( ' ' ) );
+	TTEST( alphabet_or( alphabet_ws(), alphabet_or( alphabet_digit(), alphabet_uni() ) ).is_wanted( '5' ) );
+	TTEST( alphabet_or( alphabet_ws(), alphabet_or( alphabet_digit(), alphabet_uni() ) ).is_wanted( '\x80' ) );
+	TTEST( ! alphabet_or( alphabet_ws(), alphabet_or( alphabet_digit(), alphabet_uni() ) ).is_wanted( '$' ) );
 }

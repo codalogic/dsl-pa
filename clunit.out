@@ -1,4 +1,4 @@
-Tests run on Fri May 25 11:43:53 2012
+Tests run on Fri May 25 21:26:42 2012
 
 
     Alphabet tests [c:\home\pete\sw\dsl-pa\test\alphabet-test.cpp:42]
@@ -15,6 +15,37 @@ Tests run on Fri May 25 11:43:53 2012
     ok: my_ws_alphabet.is_wanted( ' ' )
     ok: my_ws_alphabet.is_wanted( '\t' )
     ok: ! my_ws_alphabet.is_wanted( 'A' )
+      Digit alphabet
+    ok: my_digit_alphabet.is_wanted( '0' )
+    ok: my_digit_alphabet.is_wanted( '5' )
+    ok: my_digit_alphabet.is_wanted( '9' )
+    ok: ! my_digit_alphabet.is_wanted( 'a' )
+      Hex alphabet
+    ok: my_hex_alphabet.is_wanted( '0' )
+    ok: my_hex_alphabet.is_wanted( '5' )
+    ok: my_hex_alphabet.is_wanted( '9' )
+    ok: my_hex_alphabet.is_wanted( 'A' )
+    ok: my_hex_alphabet.is_wanted( 'C' )
+    ok: my_hex_alphabet.is_wanted( 'F' )
+    ok: my_hex_alphabet.is_wanted( 'a' )
+    ok: my_hex_alphabet.is_wanted( 'c' )
+    ok: my_hex_alphabet.is_wanted( 'f' )
+    ok: ! my_hex_alphabet.is_wanted( 'G' )
+    ok: ! _CrtMemDifference( &s3, &s1, &s2 )
+
+
+    Alphabet combiners tests [c:\home\pete\sw\dsl-pa\test\alphabet-test.cpp:88]
+    ==========================
+    ok: alphabet_digit().is_wanted( '1' )
+    ok: alphabet_not( alphabet_digit() ).is_wanted( 'x' )
+    ok: alphabet_or( alphabet_ws(), alphabet_digit() ).is_wanted( '5' )
+    ok: alphabet_or( alphabet_ws(), alphabet_digit() ).is_wanted( ' ' )
+    ok: ! alphabet_or( alphabet_ws(), alphabet_digit() ).is_wanted( 'x' )
+    ok: alphabet_not( alphabet_or( alphabet_ws(), alphabet_digit() ) ).is_wanted( 'x' )
+    ok: alphabet_or( alphabet_ws(), alphabet_or( alphabet_digit(), alphabet_uni() ) ).is_wanted( ' ' )
+    ok: alphabet_or( alphabet_ws(), alphabet_or( alphabet_digit(), alphabet_uni() ) ).is_wanted( '5' )
+    ok: alphabet_or( alphabet_ws(), alphabet_or( alphabet_digit(), alphabet_uni() ) ).is_wanted( '\x80' )
+    ok: ! alphabet_or( alphabet_ws(), alphabet_or( alphabet_digit(), alphabet_uni() ) ).is_wanted( '$' )
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
 
@@ -309,4 +340,4 @@ Tests run on Fri May 25 11:43:53 2012
     ok: p_reader->get() == 'd'
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
     ok: _CrtCheckMemory() != 0
-0 error(s), 0 todo(s), 238 test(s)
+0 error(s), 0 todo(s), 263 test(s)

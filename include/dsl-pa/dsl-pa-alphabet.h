@@ -41,27 +41,133 @@ namespace cl {
 class alphabet
 {
 public:
-	virtual bool is_wanted( char c ) = 0;
+	virtual bool is_wanted( char c ) const = 0;
+
+	// Helper functions.  <cctype> functions are often not 8-bit safe
+	static bool is_7bit( char c )
+	{
+		return c >= 0 && c <= 0x7f;	
+	}
+	static bool is_space( char c )
+	{
+		return is_7bit( c ) && isspace( c );	
+	}
+	static bool is_digit( char c )
+	{
+		return '0' <= c && c <= '9';
+	}
+	static bool is_alpha( char c )
+	{
+		return 'a' <= c && c <= 'z' ||
+				'A' <= c && c <= 'Z';
+	}
+	static bool is_hex( char c )
+	{
+		return is_digit( c ) ||
+				'a' <= c && c <= 'f' ||
+				'A' <= c && c <= 'F';
+	}
+	static bool is_utf8_multibyte( char c )
+	{
+		return ! is_7bit( c );
+	}
 };
+
+// Common alphabets
 
 class alphabet_ws : public alphabet
 {
 public:
-	virtual bool is_wanted( char c )
+	virtual bool is_wanted( char c ) const
 	{
-		return c < 0x7f && isspace( c );
+		return is_space( c );
+	}
+};
+
+class alphabet_digit : public alphabet
+{
+public:
+	virtual bool is_wanted( char c ) const
+	{
+		return is_digit( c );
+	}
+};
+
+class alphabet_hex : public alphabet
+{
+public:
+	virtual bool is_wanted( char c ) const
+	{
+		return is_hex( c );
 	}
 };
 
 class alphabet_word_char : public alphabet
 {
 public:
-	virtual bool is_wanted( char c )
+	virtual bool is_wanted( char c ) const
 	{
-		return 'a' <= c && c <= 'z' ||
-				'A' <= c && c <= 'Z' ||
-				'0' <= c && c <= '9' ||
+		return is_alpha( c ) ||
+				is_digit( c ) ||
 				'_' == c;
+	}
+};
+
+class alphabet_word_first_char : public alphabet
+{
+public:
+	virtual bool is_wanted( char c ) const
+	{
+		return is_alpha( c ) || '_' == c;
+	}
+};
+
+class alphabet_uni : public alphabet // char is part of a non-ASCII Unicode sequence
+{
+public:
+	virtual bool is_wanted( char c ) const
+	{
+		return is_utf8_multibyte( c );
+	}
+};
+
+// alphabet combiners - These classes allow combining alphabets.  However, it is
+// probably more preferable to create your own alphabet classes than rely 
+// extensively on these classes.
+
+class alphabet_not : public alphabet
+{
+private:
+	const alphabet & r_alphabet;
+
+public:
+	alphabet_not( const alphabet & r_alphabet_in )
+		: r_alphabet( r_alphabet_in )
+	{}
+	virtual bool is_wanted( char c ) const
+	{
+		return ! r_alphabet.is_wanted( c );
+	}
+};
+
+class alphabet_or : public alphabet
+{
+private:
+	const alphabet & r_alphabet_1;
+	const alphabet & r_alphabet_2;
+
+public:
+	alphabet_or(
+			const alphabet & r_alphabet_1_in,
+			const alphabet & r_alphabet_2_in )
+		:
+		r_alphabet_1( r_alphabet_1_in ),
+		r_alphabet_2( r_alphabet_2_in )
+	{}
+	virtual bool is_wanted( char c ) const
+	{
+		return r_alphabet_1.is_wanted( c ) ||
+				r_alphabet_2.is_wanted( c );
 	}
 };
 
