@@ -180,7 +180,7 @@ public:
 	}
 };
 
-namespace short_alphabets {
+namespace /*cl::*/ short_alphabets {
 	typedef alphabet_ws					ws;
 	typedef alphabet_digit				digit;
 	typedef alphabet_hex				hex;
@@ -190,7 +190,7 @@ namespace short_alphabets {
 	typedef alphabet_uni				uni;
 	typedef alphabet_not				not;
 	typedef alphabet_or					or;
-} // End of namespace short_alphabets
+} // End of namespace cl::short_alphabets
 
 } // End of namespace cl
 
