@@ -65,7 +65,7 @@ public:
 		const char * p_test_data_file_name = "FoxdfEr43De.txt";
 		
 		{
-		std::ofstream fout( p_test_data_file_name );
+		std::ofstream fout( p_test_data_file_name, std::ios::binary );
 		
 		TTEST( fout.is_open() );
 		
@@ -148,6 +148,68 @@ void reader_location_test( reader_factory & r_reader_factory )
 	TTEST( p_reader->get() == 'd' );
 }
 
+void reader_location_with_newline_test( reader_factory & r_reader_factory )
+{
+	// These are primarily for the file input mode, but might as well test with string also
+	
+	TBEGIN( (std::string( r_reader_factory.form_name() ) + " reader location with newline tests").c_str() );
+	
+	{
+	TSETUP( std::auto_ptr< reader > p_reader( r_reader_factory.create( "abc\ndef" ) ) );
+	TCRITICALTEST( p_reader.get() != 0 );
+	
+	TTEST( p_reader->get() == 'a' );
+	TTEST( p_reader->get() == 'b' );
+
+	TTEST( p_reader->location_push() );	// locatioin_push() before newline
+	
+	TTEST( p_reader->get() == 'c' );
+	TTEST( p_reader->get() == '\n' );
+	TTEST( p_reader->get() == 'd' );
+
+	TTEST( p_reader->location_push() );	// locatioin_push() after newline
+
+	TTEST( p_reader->get() == 'e' );
+	TTEST( p_reader->get() == 'f' );
+	
+	TTEST( p_reader->location_top() );
+	TTEST( p_reader->get() == 'e' );
+	
+	TTEST( p_reader->location_pop() );
+
+	TTEST( p_reader->location_top() );
+	TTEST( p_reader->get() == 'c' );
+	}
+	
+	{
+	TSETUP( std::auto_ptr< reader > p_reader( r_reader_factory.create( "abc\r\ndef" ) ) );
+	TCRITICALTEST( p_reader.get() != 0 );
+	
+	TTEST( p_reader->get() == 'a' );
+	TTEST( p_reader->get() == 'b' );
+
+	TTEST( p_reader->location_push() );	// locatioin_push() before newline
+	
+	TTEST( p_reader->get() == 'c' );
+	TTEST( p_reader->get() == '\r' );
+	TTEST( p_reader->get() == '\n' );
+	TTEST( p_reader->get() == 'd' );
+
+	TTEST( p_reader->location_push() );	// locatioin_push() after newline
+
+	TTEST( p_reader->get() == 'e' );
+	TTEST( p_reader->get() == 'f' );
+	
+	TTEST( p_reader->location_top() );
+	TTEST( p_reader->get() == 'e' );
+	
+	TTEST( p_reader->location_pop() );
+
+	TTEST( p_reader->location_top() );
+	TTEST( p_reader->get() == 'c' );
+	}
+}
+
 void reader_unget_test( reader_factory & r_reader_factory )
 {
 	TBEGIN( (std::string( r_reader_factory.form_name() ) + " reader unget/peek tests").c_str() );
@@ -221,6 +283,7 @@ void all_reader_tests( reader_factory & r_reader_factory )
 {
 	reader_basic_test( r_reader_factory );
 	reader_location_test( r_reader_factory );
+	reader_location_with_newline_test( r_reader_factory );
 	reader_unget_test( r_reader_factory );
 	reader_location_logger_test( r_reader_factory );
 }
