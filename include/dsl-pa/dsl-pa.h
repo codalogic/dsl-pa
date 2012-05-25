@@ -63,6 +63,7 @@ public:
 	enum { R_EOI = 0 };	// Constant for "Reader End Of Input"	
 
 	reader() : current_char( R_EOI ) {}
+	virtual ~reader() {}
 
 	char get();
 	char current() const { return current_char; }
