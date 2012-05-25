@@ -31,22 +31,40 @@
 // POSSIBILITY OF SUCH DAMAGE.
 //----------------------------------------------------------------------------
 
-//----------------------------------------------------------------------------
-// dsl-pa is a Domain Specific Language Parsing Assistant library designed to
-// take advantage of the C++ logic shortcut operators such as && and ||.
-// dsl-pa function calls extract sections of language input based on a
-// specified alphabet.  Calls to dsl-pa functions are combined using the C++ 
-// shortcut operators in order to parse a language in a reasonably compact 
-// form.  Consequently all dsl-pa functions return either a boolean value or 
-// a value, such as an integer, that can be implicitly converted to a bool. 
-// For more information see README.html at https://github.com/codalogic/dsl-pa 
-//----------------------------------------------------------------------------
+#ifndef CL_DSL_PA_ALPHABET
+#define CL_DSL_PA_ALPHABET
 
-#ifndef CL_DSL_PA
-#define CL_DSL_PA
+#include <cctype>
 
-#include "dsl-pa-reader.h"
-#include "dsl-pa-alphabet.h"
-#include "dsl-pa-dsl-pa.h"
+namespace cl {
 
-#endif // CL_DSL_PA
+class alphabet
+{
+public:
+	virtual bool is_wanted( char c ) = 0;
+};
+
+class alphabet_ws : public alphabet
+{
+public:
+	virtual bool is_wanted( char c )
+	{
+		return c < 0x7f && isspace( c );
+	}
+};
+
+class alphabet_word_char : public alphabet
+{
+public:
+	virtual bool is_wanted( char c )
+	{
+		return 'a' <= c && c <= 'z' ||
+				'A' <= c && c <= 'Z' ||
+				'0' <= c && c <= '9' ||
+				'_' == c;
+	}
+};
+
+} // End of namespace cl
+
+#endif // CL_DSL_PA_ALPHABET

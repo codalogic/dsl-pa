@@ -42,11 +42,26 @@
 // For more information see README.html at https://github.com/codalogic/dsl-pa 
 //----------------------------------------------------------------------------
 
-#ifndef CL_DSL_PA
-#define CL_DSL_PA
+#ifndef CL_DSL_PA_DSL_PA
+#define CL_DSL_PA_DSL_PA
 
-#include "dsl-pa-reader.h"
-#include "dsl-pa-alphabet.h"
-#include "dsl-pa-dsl-pa.h"
+#include <string>
 
-#endif // CL_DSL_PA
+namespace cl {
+
+class dsl_pa
+{
+public:
+	// set() allows setting of state information within a set of 
+	// shortcut operators
+	template< typename T >
+	static bool set( T & r_variable, const T & r_value )
+	{
+		r_variable = r_value;
+		return true;
+	}
+};
+
+} // End of namespace cl
+
+#endif // CL_DSL_PA_DSL_PA

@@ -42,11 +42,105 @@
 // For more information see README.html at https://github.com/codalogic/dsl-pa 
 //----------------------------------------------------------------------------
 
-#ifndef CL_DSL_PA
-#define CL_DSL_PA
+#ifndef CL_DSL_PA_READER
+#define CL_DSL_PA_READER
 
-#include "dsl-pa-reader.h"
-#include "dsl-pa-alphabet.h"
-#include "dsl-pa-dsl-pa.h"
+#include <string>
+#include <vector>
+#include <stack>
 
-#endif // CL_DSL_PA
+namespace cl {
+
+class reader
+{
+private:
+	std::stack< char > unget_buffer;
+	char current_char;
+
+	virtual char get_next_input() = 0;
+
+public:
+	enum { R_EOI = 0 };	// Constant for "Reader End Of Input"	
+
+	reader() : current_char( R_EOI ) {}
+	virtual ~reader() {}
+
+	char get();
+	char current() const { return current_char; }
+	void unget() { unget( current() ); }	// Unget with argument ungets current char
+	void unget( char c ) { unget_buffer.push( c ); }
+	char peek() { get(); unget(); return current(); }
+
+	// Recording input locations and rewinding is based on stack operations.
+	// i.e. you can call location_top() many times and the return location
+	// won't be deleted.  When the recorded location is no longer required,
+	// do location_pop().  See also class location_logger.
+	virtual bool location_push() = 0;
+	virtual bool location_top() = 0;
+	virtual bool location_pop() = 0;
+};
+
+class reader_string : public reader
+{
+private:
+	const char * p_input;
+	std::stack< const char * > location_buffer;
+
+public:
+	reader_string( const char * p_input_in )
+		:
+		p_input( p_input_in )
+	{}
+	reader_string( const std::string & r_input_in )
+		:
+		p_input( r_input_in.c_str() )
+	{}
+
+	virtual char get_next_input()
+	{
+		if( *p_input )
+			return *p_input++;
+		
+		return reader::R_EOI;
+	}
+
+	virtual bool location_push()
+	{
+		location_buffer.push( p_input );
+		return true;
+	}
+	virtual bool location_top()
+	{
+		if( ! location_buffer.empty() )
+			p_input = location_buffer.top();
+		return true;
+	}
+	virtual bool location_pop()
+	{
+		location_buffer.pop();
+		return true;
+	}
+};
+
+class location_logger
+{
+	// Allows RAII operation of the reader locations to ensure that
+	// location_pop() is not forgotten!
+
+private:
+	reader & r_reader;
+
+public:
+	location_logger( reader & r_reader_in ) : r_reader( r_reader_in )
+	{
+		r_reader.location_push();
+	}
+	~location_logger()
+	{
+		r_reader.location_pop();
+	}
+};
+
+} // End of namespace cl
+
+#endif // CL_DSL_PA_READER
