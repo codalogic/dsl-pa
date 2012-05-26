@@ -56,11 +56,11 @@ TFUNCTION( alphabet_test )
 	TTEST( ! p_my_alphabet->is_wanted( ' ' ) );
 	
 	TDOC( "Whitespace alphabet" );
-	alphabet_ws my_ws_alphabet;
+	alphabet_space my_space_alphabet;
 	
-	TTEST( my_ws_alphabet.is_wanted( ' ' ) );
-	TTEST( my_ws_alphabet.is_wanted( '\t' ) );
-	TTEST( ! my_ws_alphabet.is_wanted( 'A' ) );
+	TTEST( my_space_alphabet.is_wanted( ' ' ) );
+	TTEST( my_space_alphabet.is_wanted( '\t' ) );
+	TTEST( ! my_space_alphabet.is_wanted( 'A' ) );
 	
 	TDOC( "Digit alphabet" );
 	alphabet_digit my_digit_alphabet;
@@ -89,16 +89,16 @@ TFUNCTION( alphabet_combiners_test )
 	
 	TTEST( alphabet_digit().is_wanted( '1' ) );
 	TTEST( alphabet_not( alphabet_digit() ).is_wanted( 'x' ) );
-	TTEST( alphabet_or( alphabet_ws(), alphabet_digit() ).is_wanted( '5' ) );
-	TTEST( alphabet_or( alphabet_ws(), alphabet_digit() ).is_wanted( ' ' ) );
-	TTEST( ! alphabet_or( alphabet_ws(), alphabet_digit() ).is_wanted( 'x' ) );
-	TTEST( alphabet_not( alphabet_or( alphabet_ws(), alphabet_digit() ) ).is_wanted( 'x' ) );
+	TTEST( alphabet_or( alphabet_space(), alphabet_digit() ).is_wanted( '5' ) );
+	TTEST( alphabet_or( alphabet_space(), alphabet_digit() ).is_wanted( ' ' ) );
+	TTEST( ! alphabet_or( alphabet_space(), alphabet_digit() ).is_wanted( 'x' ) );
+	TTEST( alphabet_not( alphabet_or( alphabet_space(), alphabet_digit() ) ).is_wanted( 'x' ) );
 	
 	// OR together more than two alphabets as follows:
-	TTEST( alphabet_or( alphabet_ws(), alphabet_or( alphabet_digit(), alphabet_uni() ) ).is_wanted( ' ' ) );
-	TTEST( alphabet_or( alphabet_ws(), alphabet_or( alphabet_digit(), alphabet_uni() ) ).is_wanted( '5' ) );
-	TTEST( alphabet_or( alphabet_ws(), alphabet_or( alphabet_digit(), alphabet_uni() ) ).is_wanted( '\x80' ) );
-	TTEST( ! alphabet_or( alphabet_ws(), alphabet_or( alphabet_digit(), alphabet_uni() ) ).is_wanted( '$' ) );
+	TTEST( alphabet_or( alphabet_space(), alphabet_or( alphabet_digit(), alphabet_uni() ) ).is_wanted( ' ' ) );
+	TTEST( alphabet_or( alphabet_space(), alphabet_or( alphabet_digit(), alphabet_uni() ) ).is_wanted( '5' ) );
+	TTEST( alphabet_or( alphabet_space(), alphabet_or( alphabet_digit(), alphabet_uni() ) ).is_wanted( '\x80' ) );
+	TTEST( ! alphabet_or( alphabet_space(), alphabet_or( alphabet_digit(), alphabet_uni() ) ).is_wanted( '$' ) );
 }
 
 TFUNCTION( alphabet_typedefed_test )
@@ -111,7 +111,7 @@ TFUNCTION( alphabet_typedefed_test )
 	
 	typedef alphabet_digit	number;
 	typedef alphabet_alpha	name;
-	typedef alphabet_ws		whitespace;
+	typedef alphabet_space	whitespace;
 	typedef alphabet_not	invert;
 	typedef alphabet_or		either;
 	
@@ -136,6 +136,6 @@ TFUNCTION( alphabet_short_alphabets_test )
 
 	TTEST( digit().is_wanted( '1' ) );
 	TTEST( not( digit() ).is_wanted( 'x' ) );
-	TTEST( or( wspace(), digit() ).is_wanted( '5' ) );
+	TTEST( or( space(), digit() ).is_wanted( '5' ) );
 	TTEST( alpha().is_wanted( 'a' ) );
 }

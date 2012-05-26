@@ -75,7 +75,7 @@ public:
 
 // Common alphabets
 
-class alphabet_ws : public alphabet
+class alphabet_space : public alphabet
 {
 public:
 	virtual bool is_wanted( char c ) const
@@ -111,6 +111,15 @@ public:
 	}
 };
 
+class alphabet_word_first_char : public alphabet	// Based on Perl's \w
+{
+public:
+	virtual bool is_wanted( char c ) const
+	{
+		return is_alpha( c ) || '_' == c;
+	}
+};
+
 class alphabet_word_char : public alphabet
 {
 public:
@@ -119,15 +128,6 @@ public:
 		return is_alpha( c ) ||
 				is_digit( c ) ||
 				'_' == c;
-	}
-};
-
-class alphabet_word_first_char : public alphabet
-{
-public:
-	virtual bool is_wanted( char c ) const
-	{
-		return is_alpha( c ) || '_' == c;
 	}
 };
 
@@ -181,7 +181,7 @@ public:
 };
 
 namespace /*cl::*/ short_alphabets {
-	typedef alphabet_ws					wspace;
+	typedef alphabet_space				space;
 	typedef alphabet_digit				digit;
 	typedef alphabet_hex				hex;
 	typedef alphabet_alpha				alpha;
