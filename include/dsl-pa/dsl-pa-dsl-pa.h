@@ -133,6 +133,7 @@ public:
 	size_t /*num chars read*/ sci_num( double * p_float );
 
 	// Low-level reader access
+	reader & get_reader() { return r_reader; }	// Primarily for use with location_logger class
 	char get() { return r_reader.get(); }
 	char current() const { return r_reader.current(); }
 	bool unget() { r_reader.unget(); return true; }

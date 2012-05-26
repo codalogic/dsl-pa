@@ -1,4 +1,4 @@
-Tests run on Sat May 26 20:40:46 2012
+Tests run on Sat May 26 21:02:58 2012
 
 
     Alphabet tests [c:\home\pete\sw\dsl-pa\test\alphabet-test.cpp:42]
@@ -124,10 +124,15 @@ Tests run on Sat May 26 20:40:46 2012
     ok: my_dsl_pa.location_top()
     ok: my_dsl_pa.get() == 'c'
     ok: my_dsl_pa.location_pop()
+      : location_logger my_location_logger( my_dsl_pa.get_reader() )
+    ok: my_dsl_pa.get() == 'd'
+    ok: my_dsl_pa.get() == 'e'
+    ok: my_dsl_pa.location_top()
+    ok: my_dsl_pa.get() == 'd'
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
 
-    dsl pa class tests [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:182]
+    dsl pa class tests [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:190]
     ==========================
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
@@ -553,4 +558,4 @@ TODOs (1):
 ------------------------
 - Add line counting functionality to reader class [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:329]
 
-0 error(s), 1 todo(s), 416 test(s)
+0 error(s), 1 todo(s), 420 test(s)
