@@ -66,6 +66,13 @@ public:
 class dsl_pa
 {
 public:
+	virtual ~dsl_pa() {}
+
+	// parse() provides a hook to allow use with factories that return
+	// 'abstract' parsers.  If desired, implement parse() in a derived class to
+	// initiate parsing.
+	virtual bool parse() { return false; }
+
 	static bool optional( bool result_in )
 	{
 		// Essentially ignore the result of the function that generated the input argument.
