@@ -1,4 +1,4 @@
-Tests run on Sat May 26 10:40:49 2012
+Tests run on Sat May 26 11:26:44 2012
 
 
     Alphabet tests [c:\home\pete\sw\dsl-pa\test\alphabet-test.cpp:42]
@@ -66,38 +66,6 @@ Tests run on Sat May 26 10:40:49 2012
     ok: not( digit() ).is_wanted( 'x' )
     ok: or( ws(), digit() ).is_wanted( '5' )
     ok: alpha().is_wanted( 'a' )
-    ok: ! _CrtMemDifference( &s3, &s1, &s2 )
-
-
-    dsl_pa::set() operation [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:44]
-    ==========================
-      : int i = 0
-      : dsl_pa::set( i, 1 )
-    ok: i == 1
-      : dsl_pa::set( e, COLD )
-    ok: e == COLD
-    ok: ! _CrtMemDifference( &s3, &s1, &s2 )
-
-
-    dsl_pa::clear() operation [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:57]
-    ==========================
-    ok: ! v.empty()
-    ok: dsl_pa::clear( v )
-    ok: v.empty()
-    ok: ! _CrtMemDifference( &s3, &s1, &s2 )
-
-
-    dsl_pa::error() operation [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:67]
-    ==========================
-    ok: is_thrown
-    ok: is_thrown
-    ok: r_exception.get_code() == 12
-    ok: is_thrown
-    ok: ! _CrtMemDifference( &s3, &s1, &s2 )
-
-
-    dsl pa class tests [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:121]
-    ==========================
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
 
@@ -516,10 +484,49 @@ Tests run on Sat May 26 10:40:49 2012
     Reader line counting tests [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:327]
     ==========================
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
+
+
+    dsl_pa::optional() operation [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:54]
+    ==========================
+    ok: dsl_pa::optional( is_false_optional_test_helper() )
+    ok: dsl_pa::optional( is_true_optional_test_helper() )
+    ok: ! _CrtMemDifference( &s3, &s1, &s2 )
+
+
+    dsl_pa::set() operation [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:62]
+    ==========================
+      : int i = 0
+      : dsl_pa::set( i, 1 )
+    ok: i == 1
+      : dsl_pa::set( e, COLD )
+    ok: e == COLD
+    ok: ! _CrtMemDifference( &s3, &s1, &s2 )
+
+
+    dsl_pa::clear() operation [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:75]
+    ==========================
+    ok: ! v.empty()
+    ok: dsl_pa::clear( v )
+    ok: v.empty()
+    ok: ! _CrtMemDifference( &s3, &s1, &s2 )
+
+
+    dsl_pa::error() operation [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:85]
+    ==========================
+    ok: is_thrown
+    ok: is_thrown
+    ok: r_exception.get_code() == 12
+    ok: is_thrown
+    ok: ! _CrtMemDifference( &s3, &s1, &s2 )
+
+
+    dsl pa class tests [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:139]
+    ==========================
+    ok: ! _CrtMemDifference( &s3, &s1, &s2 )
     ok: _CrtCheckMemory() != 0
 
 TODOs (1):
 ------------------------
 - Add line counting functionality to reader class [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:329]
 
-0 error(s), 1 todo(s), 393 test(s)
+0 error(s), 1 todo(s), 396 test(s)

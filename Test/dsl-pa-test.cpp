@@ -39,6 +39,24 @@
 
 using namespace cl;
 
+static bool is_false_optional_test_helper()
+{
+	return false;
+}
+
+static bool is_true_optional_test_helper()
+{
+	return true;
+}
+
+TFUNCTION( dsl_pa_optional_test )
+{
+	TBEGIN( "dsl_pa::optional() operation" );
+	
+	TTEST( dsl_pa::optional( is_false_optional_test_helper() ) );
+	TTEST( dsl_pa::optional( is_true_optional_test_helper() ) );
+}
+
 TFUNCTION( dsl_pa_set_test )
 {
 	TBEGIN( "dsl_pa::set() operation" );

@@ -66,6 +66,13 @@ public:
 class dsl_pa
 {
 public:
+	static bool optional( bool result_in )
+	{
+		// Essentially ignore the result of the function that generated the input argument.
+		// e.g. allows optional( ws() ); etc.
+		(void)result_in;	// Avoid unused parameter warning
+		return true;
+	}
 	// set() allows setting of state information within a set of 
 	// shortcut operators
 	template< typename T >
