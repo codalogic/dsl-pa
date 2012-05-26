@@ -193,7 +193,7 @@ TFUNCTION( dsl_pa_ws_test )
 	reader_string my_reader( "ab  cdef" );
 	dsl_pa pa( my_reader );
 	
-	TTEST( pa.get() && pa.get() && pa.ws() );
+	TTEST( pa.get() == 'a' && pa.get() == 'b' && pa.ws() );
 	
 	TTEST( pa.get() == 'c' );
 	}
@@ -202,7 +202,7 @@ TFUNCTION( dsl_pa_ws_test )
 	reader_string my_reader( "abcdef" );
 	dsl_pa pa( my_reader );
 	
-	TTEST( pa.get() && pa.get() );
+	TTEST( pa.get() == 'a' && pa.get() == 'b' );
 	TTEST( ! pa.ws() );
 	
 	TTEST( pa.get() == 'c' );
@@ -212,7 +212,7 @@ TFUNCTION( dsl_pa_ws_test )
 	reader_string my_reader( "abcdef" );
 	dsl_pa pa( my_reader );
 	
-	TTEST( pa.get() && pa.get() && pa.opt_ws() );
+	TTEST( pa.get() == 'a' && pa.get() == 'b' && pa.opt_ws() );
 	
 	TTEST( pa.get() == 'c' );
 	}

@@ -1,4 +1,4 @@
-Tests run on Sat May 26 21:14:20 2012
+Tests run on Sat May 26 21:16:07 2012
 
 
     Alphabet tests [c:\home\pete\sw\dsl-pa\test\alphabet-test.cpp:42]
@@ -134,12 +134,12 @@ Tests run on Sat May 26 21:14:20 2012
 
     dsl pa ws tests [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:190]
     ==========================
-    ok: pa.get() && pa.get() && pa.ws()
+    ok: pa.get() == 'a' && pa.get() == 'b' && pa.ws()
     ok: pa.get() == 'c'
-    ok: pa.get() && pa.get()
+    ok: pa.get() == 'a' && pa.get() == 'b'
     ok: ! pa.ws()
     ok: pa.get() == 'c'
-    ok: pa.get() && pa.get() && pa.opt_ws()
+    ok: pa.get() == 'a' && pa.get() == 'b' && pa.opt_ws()
     ok: pa.get() == 'c'
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
