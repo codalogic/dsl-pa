@@ -57,6 +57,19 @@ public:
 	}
 };
 
+class reader_factory_mem_buf : public reader_factory
+{
+public:
+	virtual reader * create( const char * p_data ) const
+	{
+		return new reader_mem_buf( p_data, strlen( p_data ) );
+	}
+	virtual const char * form_name() const
+	{
+		return "Mem buf";
+	}
+};
+
 class reader_factory_file : public reader_factory
 {
 public:
@@ -300,4 +313,18 @@ TFUNCTION( file_reader_test )
 	TBEGIN( "File reader tests" );
 	
 	all_reader_tests( reader_factory_file() );
+}
+
+TFUNCTION( mem_buf_reader_test )
+{
+	TBEGIN( "Mem buf reader tests" );
+	
+	all_reader_tests( reader_factory_mem_buf() );
+}
+
+TFUNCTION( reader_line_counting_test )
+{
+	TBEGIN( "Reader line counting tests" );
+	
+	TTODO( "Add line counting functionality to reader class" );
 }

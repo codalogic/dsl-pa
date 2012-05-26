@@ -1,4 +1,4 @@
-Tests run on Fri May 25 22:15:04 2012
+Tests run on Sat May 26 09:26:56 2012
 
 
     Alphabet tests [c:\home\pete\sw\dsl-pa\test\alphabet-test.cpp:42]
@@ -84,9 +84,9 @@ Tests run on Fri May 25 22:15:04 2012
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
 
-    String reader tests [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:293]
+    String reader tests [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:306]
     ==========================
-    String reader basic tests [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:88]
+    String reader basic tests [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:101]
     ==========================
       : std::auto_ptr< reader > p_reader( r_reader_factory.create( "abc d" ) )
     ok: p_reader.get() != 0
@@ -104,7 +104,7 @@ Tests run on Fri May 25 22:15:04 2012
     ok: p_reader_empty.get() != 0
     ok: p_reader_empty->get() == reader::R_EOI
     ok: p_reader_empty->current() == reader::R_EOI
-    String reader location tests [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:115]
+    String reader location tests [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:128]
     ==========================
       : std::auto_ptr< reader > p_reader( r_reader_factory.create( "abcdef" ) )
     ok: p_reader.get() != 0
@@ -131,7 +131,7 @@ Tests run on Fri May 25 22:15:04 2012
     ok: p_reader->location_top()
     ok: p_reader->get() == 'c'
     ok: p_reader->get() == 'd'
-    String reader location with newline tests [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:155]
+    String reader location with newline tests [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:168]
     ==========================
       : std::auto_ptr< reader > p_reader( r_reader_factory.create( "abc\ndef" ) )
     ok: p_reader.get() != 0
@@ -166,7 +166,7 @@ Tests run on Fri May 25 22:15:04 2012
     ok: p_reader->location_pop()
     ok: p_reader->location_top()
     ok: p_reader->get() == 'c'
-    String reader unget/peek tests [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:215]
+    String reader unget/peek tests [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:228]
     ==========================
       : std::auto_ptr< reader > p_reader( r_reader_factory.create( "abcdef" ) )
     ok: p_reader.get() != 0
@@ -190,7 +190,7 @@ Tests run on Fri May 25 22:15:04 2012
     ok: p_reader->get() == 'd'
     ok: p_reader->peek() == 'e'
     ok: p_reader->get() == 'e'
-    String reader location logger tests [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:245]
+    String reader location logger tests [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:258]
     ==========================
       : std::auto_ptr< reader > p_reader( r_reader_factory.create( "abcdef" ) )
     ok: p_reader.get() != 0
@@ -219,9 +219,9 @@ Tests run on Fri May 25 22:15:04 2012
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
 
-    File reader tests [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:300]
+    File reader tests [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:313]
     ==========================
-    File reader basic tests [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:88]
+    File reader basic tests [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:101]
     ==========================
       : std::auto_ptr< reader > p_reader( r_reader_factory.create( "abc d" ) )
     ok: fout.is_open()
@@ -241,7 +241,7 @@ Tests run on Fri May 25 22:15:04 2012
     ok: p_reader_empty.get() != 0
     ok: p_reader_empty->get() == reader::R_EOI
     ok: p_reader_empty->current() == reader::R_EOI
-    File reader location tests [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:115]
+    File reader location tests [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:128]
     ==========================
       : std::auto_ptr< reader > p_reader( r_reader_factory.create( "abcdef" ) )
     ok: fout.is_open()
@@ -269,7 +269,7 @@ Tests run on Fri May 25 22:15:04 2012
     ok: p_reader->location_top()
     ok: p_reader->get() == 'c'
     ok: p_reader->get() == 'd'
-    File reader location with newline tests [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:155]
+    File reader location with newline tests [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:168]
     ==========================
       : std::auto_ptr< reader > p_reader( r_reader_factory.create( "abc\ndef" ) )
     ok: fout.is_open()
@@ -306,7 +306,7 @@ Tests run on Fri May 25 22:15:04 2012
     ok: p_reader->location_pop()
     ok: p_reader->location_top()
     ok: p_reader->get() == 'c'
-    File reader unget/peek tests [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:215]
+    File reader unget/peek tests [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:228]
     ==========================
       : std::auto_ptr< reader > p_reader( r_reader_factory.create( "abcdef" ) )
     ok: fout.is_open()
@@ -331,7 +331,7 @@ Tests run on Fri May 25 22:15:04 2012
     ok: p_reader->get() == 'd'
     ok: p_reader->peek() == 'e'
     ok: p_reader->get() == 'e'
-    File reader location logger tests [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:245]
+    File reader location logger tests [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:258]
     ==========================
       : std::auto_ptr< reader > p_reader( r_reader_factory.create( "abcdef" ) )
     ok: fout.is_open()
@@ -358,6 +358,151 @@ Tests run on Fri May 25 22:15:04 2012
     ok: p_reader->location_top()
     ok: p_reader->get() == 'c'
     ok: p_reader->get() == 'd'
+    ok: ! _CrtMemDifference( &s3, &s1, &s2 )
+
+
+    Mem buf reader tests [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:320]
+    ==========================
+    Mem buf reader basic tests [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:101]
+    ==========================
+      : std::auto_ptr< reader > p_reader( r_reader_factory.create( "abc d" ) )
+    ok: p_reader.get() != 0
+    ok: p_reader->get() == 'a'
+    ok: p_reader->current() == 'a'
+    ok: p_reader->current() == 'a'
+    ok: p_reader->get() == 'b'
+    ok: p_reader->current() == 'b'
+    ok: p_reader->get() == 'c'
+    ok: p_reader->get() == ' '
+    ok: p_reader->get() == 'd'
+    ok: p_reader->get() == reader::R_EOI
+    ok: p_reader->current() == reader::R_EOI
+      : std::auto_ptr< reader > p_reader_empty( r_reader_factory.create( "" ) )
+    ok: p_reader_empty.get() != 0
+    ok: p_reader_empty->get() == reader::R_EOI
+    ok: p_reader_empty->current() == reader::R_EOI
+    Mem buf reader location tests [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:128]
+    ==========================
+      : std::auto_ptr< reader > p_reader( r_reader_factory.create( "abcdef" ) )
+    ok: p_reader.get() != 0
+    ok: p_reader->get() == 'a'
+    ok: p_reader->current() == 'a'
+    ok: p_reader->current() == 'a'
+    ok: p_reader->get() == 'b'
+    ok: p_reader->current() == 'b'
+    ok: p_reader->location_push()
+    ok: p_reader->get() == 'c'
+    ok: p_reader->get() == 'd'
+    ok: p_reader->location_push()
+    ok: p_reader->get() == 'e'
+    ok: p_reader->get() == 'f'
+    ok: p_reader->get() == reader::R_EOI
+    ok: p_reader->get() == reader::R_EOI
+    ok: p_reader->location_top()
+    ok: p_reader->get() == 'e'
+    ok: p_reader->get() == 'f'
+    ok: p_reader->location_top()
+    ok: p_reader->get() == 'e'
+    ok: p_reader->get() == 'f'
+    ok: p_reader->location_pop()
+    ok: p_reader->location_top()
+    ok: p_reader->get() == 'c'
+    ok: p_reader->get() == 'd'
+    Mem buf reader location with newline tests [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:168]
+    ==========================
+      : std::auto_ptr< reader > p_reader( r_reader_factory.create( "abc\ndef" ) )
+    ok: p_reader.get() != 0
+    ok: p_reader->get() == 'a'
+    ok: p_reader->get() == 'b'
+    ok: p_reader->location_push()
+    ok: p_reader->get() == 'c'
+    ok: p_reader->get() == '\n'
+    ok: p_reader->get() == 'd'
+    ok: p_reader->location_push()
+    ok: p_reader->get() == 'e'
+    ok: p_reader->get() == 'f'
+    ok: p_reader->location_top()
+    ok: p_reader->get() == 'e'
+    ok: p_reader->location_pop()
+    ok: p_reader->location_top()
+    ok: p_reader->get() == 'c'
+      : std::auto_ptr< reader > p_reader( r_reader_factory.create( "abc\r\ndef" ) )
+    ok: p_reader.get() != 0
+    ok: p_reader->get() == 'a'
+    ok: p_reader->get() == 'b'
+    ok: p_reader->location_push()
+    ok: p_reader->get() == 'c'
+    ok: p_reader->get() == '\r'
+    ok: p_reader->get() == '\n'
+    ok: p_reader->get() == 'd'
+    ok: p_reader->location_push()
+    ok: p_reader->get() == 'e'
+    ok: p_reader->get() == 'f'
+    ok: p_reader->location_top()
+    ok: p_reader->get() == 'e'
+    ok: p_reader->location_pop()
+    ok: p_reader->location_top()
+    ok: p_reader->get() == 'c'
+    Mem buf reader unget/peek tests [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:228]
+    ==========================
+      : std::auto_ptr< reader > p_reader( r_reader_factory.create( "abcdef" ) )
+    ok: p_reader.get() != 0
+    ok: p_reader->get() == 'a'
+    ok: p_reader->get() == 'b'
+      : p_reader->unget()
+    ok: p_reader->current() == 'b'
+    ok: p_reader->get() == 'b'
+      : p_reader->unget()
+    ok: p_reader->current() == 'b'
+    ok: p_reader->get() == 'b'
+      : p_reader->unget( 'z' )
+      : p_reader->unget( 'y' )
+    ok: p_reader->current() == 'b'
+    ok: p_reader->get() == 'y'
+    ok: p_reader->get() == 'z'
+      Test peek()
+    ok: p_reader->get() == 'c'
+    ok: p_reader->peek() == 'd'
+    ok: p_reader->peek() == 'd'
+    ok: p_reader->get() == 'd'
+    ok: p_reader->peek() == 'e'
+    ok: p_reader->get() == 'e'
+    Mem buf reader location logger tests [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:258]
+    ==========================
+      : std::auto_ptr< reader > p_reader( r_reader_factory.create( "abcdef" ) )
+    ok: p_reader.get() != 0
+    ok: p_reader->get() == 'a'
+    ok: p_reader->current() == 'a'
+    ok: p_reader->current() == 'a'
+    ok: p_reader->get() == 'b'
+    ok: p_reader->current() == 'b'
+    ok: p_reader->location_push()
+    ok: p_reader->get() == 'c'
+    ok: p_reader->get() == 'd'
+      : location_logger my_location_logger( *p_reader )
+    ok: p_reader->get() == 'e'
+    ok: p_reader->get() == 'f'
+    ok: p_reader->get() == reader::R_EOI
+    ok: p_reader->get() == reader::R_EOI
+    ok: p_reader->location_top()
+    ok: p_reader->get() == 'e'
+    ok: p_reader->get() == 'f'
+    ok: p_reader->location_top()
+    ok: p_reader->get() == 'e'
+    ok: p_reader->get() == 'f'
+    ok: p_reader->location_top()
+    ok: p_reader->get() == 'c'
+    ok: p_reader->get() == 'd'
+    ok: ! _CrtMemDifference( &s3, &s1, &s2 )
+
+
+    Reader line counting tests [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:327]
+    ==========================
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
     ok: _CrtCheckMemory() != 0
-0 error(s), 0 todo(s), 275 test(s)
+
+TODOs (1):
+------------------------
+- Add line counting functionality to reader class [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:329]
+
+0 error(s), 1 todo(s), 384 test(s)

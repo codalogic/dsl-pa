@@ -60,6 +60,10 @@ private:
 
 	virtual char get_next_input() = 0;
 
+	virtual void source_location_push() = 0;
+	virtual void source_location_top() = 0;
+	virtual void source_location_pop() = 0;
+
 public:
 	enum { R_EOI = 0 };	// Constant for "Reader End Of Input"	
 
@@ -76,9 +80,23 @@ public:
 	// i.e. you can call location_top() many times and the return location
 	// won't be deleted.  When the recorded location is no longer required,
 	// do location_pop().  See also class location_logger.
-	virtual bool location_push() = 0;
-	virtual bool location_top() = 0;
-	virtual bool location_pop() = 0;
+	bool location_push()
+	{
+		source_location_push();
+		return true;
+	}
+	
+	bool location_top()
+	{
+		source_location_top();
+		return true;
+	}
+	
+	bool location_pop()
+	{
+		source_location_pop();
+		return true;
+	}
 };
 
 class reader_string : public reader
@@ -105,21 +123,61 @@ public:
 		return reader::R_EOI;
 	}
 
-	virtual bool location_push()
+	virtual void source_location_push()
 	{
 		location_buffer.push( p_input );
-		return true;
 	}
-	virtual bool location_top()
+	virtual void source_location_top()
 	{
 		if( ! location_buffer.empty() )
 			p_input = location_buffer.top();
-		return true;
 	}
-	virtual bool location_pop()
+	virtual void source_location_pop()
 	{
 		location_buffer.pop();
-		return true;
+	}
+};
+
+class reader_mem_buf : public reader
+{
+private:
+	const char * p_begin, * p_current, * p_end;
+	std::stack< const char * > location_buffer;
+
+public:
+	reader_mem_buf( const char * p_begin_in, size_t size )
+		:
+		p_begin( p_begin_in ),
+		p_current( p_begin_in ),
+		p_end( p_begin_in + size )
+	{}
+	reader_mem_buf( const std::vector< char > & r_in )	// A vector seems a good place to collect data from a socket etc.
+		:
+		p_begin( &r_in[0] ),
+		p_current( &r_in[0] ),
+		p_end( &r_in[0] + r_in.size() )
+	{}
+
+	virtual char get_next_input()
+	{
+		if( p_current != p_end )
+			return *p_current++;
+		
+		return reader::R_EOI;
+	}
+
+	virtual void source_location_push()
+	{
+		location_buffer.push( p_current );
+	}
+	virtual void source_location_top()
+	{
+		if( ! location_buffer.empty() )
+			p_current = location_buffer.top();
+	}
+	virtual void source_location_pop()
+	{
+		location_buffer.pop();
 	}
 };
 
@@ -143,12 +201,11 @@ public:
 		return static_cast<char>( c );
 	}
 
-	virtual bool location_push()
+	virtual void source_location_push()
 	{
 		location_buffer.push( fin.tellg() );
-		return true;
 	}
-	virtual bool location_top()
+	virtual void source_location_top()
 	{
 		if( ! location_buffer.empty() )
 		{
@@ -156,12 +213,10 @@ public:
 				fin.clear();
 			fin.seekg( location_buffer.top() );
 		}
-		return true;
 	}
-	virtual bool location_pop()
+	virtual void source_location_pop()
 	{
 		location_buffer.pop();
-		return true;
 	}
 };
 
