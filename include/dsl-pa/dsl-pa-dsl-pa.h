@@ -49,6 +49,20 @@
 
 namespace cl {
 
+class dsl_pa_recoverable_exception : public std::exception
+{
+public:
+	dsl_pa_recoverable_exception( const char * const what ) : std::exception( what )
+	{}
+};
+
+class dsl_pa_fatal_exception : public std::exception
+{
+public:
+	dsl_pa_fatal_exception( const char * const what ) : std::exception( what )
+	{}
+};
+
 class dsl_pa
 {
 public:
@@ -59,6 +73,28 @@ public:
 	{
 		r_variable = r_value;
 		return true;
+	}
+	template< typename T >
+	static bool clear( T & r_value )
+	{
+		r_value.clear();
+		return true;
+	}
+	template< typename T >
+	static bool error( const T & r_exception )	// To throw custom exceptions
+	{
+		throw T( r_exception );
+		return true;	// Won't be called!
+	}
+	static bool error( const char * p_what )
+	{
+		throw dsl_pa_recoverable_exception( p_what );
+		return true;	// Won't be called!
+	}
+	static bool error_fatal( const char * p_what )
+	{
+		throw dsl_pa_fatal_exception( p_what );
+		return true;	// Won't be called!
 	}
 };
 

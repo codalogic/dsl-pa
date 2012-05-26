@@ -52,6 +52,70 @@ TFUNCTION( dsl_pa_set_test )
 	TTEST( e == COLD );
 }
 
+TFUNCTION( dsl_pa_clear_test )
+{
+	TBEGIN( "dsl_pa::clear() operation" );
+	
+	std::string v( "abc" );
+	TTEST( ! v.empty() );
+	TTEST( dsl_pa::clear( v ) );	// Test to ensure it returns true
+	TTEST( v.empty() );
+}
+
+TFUNCTION( dsl_pa_error_test )
+{
+	TBEGIN( "dsl_pa::error() operation" );
+
+	{
+	bool is_thrown = false;
+	try
+	{
+		dsl_pa::error( "Expected other input" );
+	}
+	catch( const dsl_pa_recoverable_exception & )
+	{
+		is_thrown = true;
+	}
+	TTEST( is_thrown );
+	}
+
+	{
+	bool is_thrown = false;
+	try
+	{
+		dsl_pa::error_fatal( "Expected other input" );
+	}
+	catch( const dsl_pa_fatal_exception & )
+	{
+		is_thrown = true;
+	}
+	TTEST( is_thrown );
+	}
+
+	{
+	class my_exception
+	{
+	private:
+		int error_code;
+	public:
+		my_exception( int error_code_in ) : error_code( error_code_in ) {}
+		int get_code() const { return error_code; }
+	};
+	
+	bool is_thrown = false;
+	try
+	{
+		dsl_pa::error( my_exception( 12 ) );
+	}
+	catch( const my_exception & r_exception )
+	{
+		is_thrown = true;
+		TTEST( r_exception.get_code() == 12 );
+	}
+	TTEST( is_thrown );
+	}
+}
+
 TFUNCTION( dsl_pa_test )
 {
 	TBEGIN( "dsl pa class tests" );
