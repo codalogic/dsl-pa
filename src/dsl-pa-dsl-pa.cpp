@@ -40,16 +40,18 @@
 
 namespace cl {
 
+using namespace short_alphabets;
+
 bool dsl_pa::ws()
 {
 	char c = get();
-	if( ! alphabet::is_space( c ) )
+	if( ! is_space( c ) )
 	{
 		unget();
 		return false;
 	}
 	
-	while( alphabet::is_space( get() ) )
+	while( is_space( get() ) )
 	{}
 	
 	unget();

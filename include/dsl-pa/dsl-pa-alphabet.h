@@ -190,6 +190,13 @@ namespace /*cl::*/ short_alphabets {
 	typedef alphabet_uni				uni;
 	typedef alphabet_not				not;
 	typedef alphabet_or					or;
+	
+	bool is_7bit( char c )	{ return alphabet::is_7bit( c ); }
+	bool is_space( char c ) { return alphabet::is_space( c ); }
+	bool is_digit( char c ) { return alphabet::is_digit( c ); }
+	bool is_alpha( char c ) { return alphabet::is_alpha( c ); }
+	bool is_hex( char c )	{ return alphabet::is_hex( c ); }
+	bool is_utf8_multibyte( char c ) { return alphabet::is_utf8_multibyte( c ); }
 } // End of namespace cl::short_alphabets
 
 } // End of namespace cl
