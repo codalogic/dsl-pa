@@ -73,13 +73,12 @@ public:
 	// initiate parsing.
 	virtual bool parse() { return false; }
 
-	static bool optional( bool result_in )
-	{
-		// Essentially ignore the result of the function that generated the input argument.
-		// e.g. allows optional( ws() ); etc.
-		(void)result_in;	// Avoid unused parameter warning
-		return true;
-	}
+	// optional() essentially ignore the result of the function that generated
+	// the input argument. e.g. allows optional( ws() ); etc.
+	static bool optional( bool ) { return true; }
+	static bool optional( size_t ) { return true; }	// Overloads to avoid performance warnings due to convertin size_t to bool
+	static bool optional( int ) { return true; }
+
 	// set() allows setting of state information within a set of 
 	// shortcut operators
 	template< typename T >

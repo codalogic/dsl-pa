@@ -1,4 +1,4 @@
-Tests run on Sat May 26 14:05:21 2012
+Tests run on Sat May 26 19:45:44 2012
 
 
     Alphabet tests [c:\home\pete\sw\dsl-pa\test\alphabet-test.cpp:42]
@@ -486,14 +486,17 @@ Tests run on Sat May 26 14:05:21 2012
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
 
-    dsl_pa::optional() operation [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:54]
+    dsl_pa::optional() operation [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:69]
     ==========================
     ok: dsl_pa::optional( is_false_optional_test_helper() )
     ok: dsl_pa::optional( is_true_optional_test_helper() )
+    ok: dsl_pa::optional( size_0_optional_test_helper() )
+    ok: dsl_pa::optional( size_12_optional_test_helper() )
+    ok: dsl_pa::optional( int_minus_2_optional_test_helper() )
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
 
-    dsl_pa::set() operation [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:62]
+    dsl_pa::set() operation [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:80]
     ==========================
       : int i = 0
       : dsl_pa::set( i, 1 )
@@ -503,7 +506,7 @@ Tests run on Sat May 26 14:05:21 2012
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
 
-    dsl_pa::clear() operation [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:75]
+    dsl_pa::clear() operation [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:93]
     ==========================
     ok: ! v.empty()
     ok: dsl_pa::clear( v )
@@ -511,7 +514,7 @@ Tests run on Sat May 26 14:05:21 2012
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
 
-    dsl_pa::error() operation [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:85]
+    dsl_pa::error() operation [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:103]
     ==========================
     ok: is_thrown
     ok: is_thrown
@@ -520,7 +523,7 @@ Tests run on Sat May 26 14:05:21 2012
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
 
-    dsl pa class tests [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:139]
+    dsl pa class tests [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:157]
     ==========================
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
     ok: _CrtCheckMemory() != 0
@@ -529,4 +532,4 @@ TODOs (1):
 ------------------------
 - Add line counting functionality to reader class [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:329]
 
-0 error(s), 1 todo(s), 396 test(s)
+0 error(s), 1 todo(s), 399 test(s)

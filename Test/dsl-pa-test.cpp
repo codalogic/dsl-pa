@@ -49,12 +49,30 @@ static bool is_true_optional_test_helper()
 	return true;
 }
 
+static size_t size_0_optional_test_helper()
+{
+	return 0;
+}
+
+static size_t size_12_optional_test_helper()
+{
+	return 12;
+}
+
+static size_t int_minus_2_optional_test_helper()
+{
+	return -2;
+}
+
 TFUNCTION( dsl_pa_optional_test )
 {
 	TBEGIN( "dsl_pa::optional() operation" );
 	
 	TTEST( dsl_pa::optional( is_false_optional_test_helper() ) );
 	TTEST( dsl_pa::optional( is_true_optional_test_helper() ) );
+	TTEST( dsl_pa::optional( size_0_optional_test_helper() ) );
+	TTEST( dsl_pa::optional( size_12_optional_test_helper() ) );
+	TTEST( dsl_pa::optional( int_minus_2_optional_test_helper() ) );
 }
 
 TFUNCTION( dsl_pa_set_test )
