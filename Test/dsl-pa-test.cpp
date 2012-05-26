@@ -185,6 +185,39 @@ TFUNCTION( dsl_pa_low_level_read_test )
 	}
 }
 
+TFUNCTION( dsl_pa_ws_test )
+{
+	TBEGIN( "dsl pa ws tests" );
+	
+	{
+	reader_string my_reader( "ab  cdef" );
+	dsl_pa pa( my_reader );
+	
+	TTEST( pa.get() && pa.get() && pa.ws() );
+	
+	TTEST( pa.get() == 'c' );
+	}
+	
+	{
+	reader_string my_reader( "abcdef" );
+	dsl_pa pa( my_reader );
+	
+	TTEST( pa.get() && pa.get() );
+	TTEST( ! pa.ws() );
+	
+	TTEST( pa.get() == 'c' );
+	}
+	
+	{
+	reader_string my_reader( "abcdef" );
+	dsl_pa pa( my_reader );
+	
+	TTEST( pa.get() && pa.get() && pa.opt_ws() );
+	
+	TTEST( pa.get() == 'c' );
+	}
+}
+
 TFUNCTION( dsl_pa_test )
 {
 	TBEGIN( "dsl pa class tests" );
