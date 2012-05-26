@@ -1,4 +1,4 @@
-Tests run on Sat May 26 19:45:44 2012
+Tests run on Sat May 26 19:49:58 2012
 
 
     Alphabet tests [c:\home\pete\sw\dsl-pa\test\alphabet-test.cpp:42]
@@ -64,7 +64,7 @@ Tests run on Sat May 26 19:45:44 2012
     ==========================
     ok: digit().is_wanted( '1' )
     ok: not( digit() ).is_wanted( 'x' )
-    ok: or( ws(), digit() ).is_wanted( '5' )
+    ok: or( wspace(), digit() ).is_wanted( '5' )
     ok: alpha().is_wanted( 'a' )
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 

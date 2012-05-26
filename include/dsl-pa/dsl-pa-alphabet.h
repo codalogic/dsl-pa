@@ -181,7 +181,7 @@ public:
 };
 
 namespace /*cl::*/ short_alphabets {
-	typedef alphabet_ws					ws;
+	typedef alphabet_ws					wspace;
 	typedef alphabet_digit				digit;
 	typedef alphabet_hex				hex;
 	typedef alphabet_alpha				alpha;
