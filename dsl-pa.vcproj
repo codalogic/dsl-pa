@@ -207,15 +207,19 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\dsl-pa-dsl-pa.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\include\dsl-pa\dsl-pa-dsl-pa.h"
 				>
 			</File>
 			<File
-				RelativePath=".\include\dsl-pa\dsl-pa-reader.h"
+				RelativePath=".\src\dsl-pa-reader.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\src\dsl-pa.cpp"
+				RelativePath=".\include\dsl-pa\dsl-pa-reader.h"
 				>
 			</File>
 			<File

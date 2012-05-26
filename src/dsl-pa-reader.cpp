@@ -36,7 +36,7 @@
 // more information.
 //----------------------------------------------------------------------------
 
-#include "dsl-pa/dsl-pa.h"
+#include "dsl-pa/dsl-pa-reader.h"
 
 namespace cl {
 

@@ -152,6 +152,31 @@ TFUNCTION( dsl_pa_error_test )
 	}
 }
 
+TFUNCTION( dsl_pa_low_level_read_test )
+{
+	TBEGIN( "dsl pa low level read tests" );
+	
+	reader_string my_reader( "abcdef" );
+	dsl_pa my_dsl_pa( my_reader );
+	
+	TTEST( my_dsl_pa.get() == 'a' );
+	TTEST( my_dsl_pa.get() == 'b' );
+	TTEST( my_dsl_pa.current() == 'b' );
+	TTEST( my_dsl_pa.current() == 'b' );
+	TTEST( my_dsl_pa.location_push() );
+	TTEST( my_dsl_pa.unget() );	// Check true is returned
+	TTEST( my_dsl_pa.get() == 'b' );
+	TTEST( my_dsl_pa.unget( 'l' ) );	// Check true is returned
+	TTEST( my_dsl_pa.get() == 'l' );
+	TTEST( my_dsl_pa.peek() == 'c' );
+	TTEST( my_dsl_pa.get() == 'c' );
+	TTEST( my_dsl_pa.get() == 'd' );
+	TTEST( my_dsl_pa.get() == 'e' );
+	TTEST( my_dsl_pa.location_top() );
+	TTEST( my_dsl_pa.get() == 'c' );
+	TTEST( my_dsl_pa.location_pop() );
+}
+
 TFUNCTION( dsl_pa_test )
 {
 	TBEGIN( "dsl pa class tests" );

@@ -47,6 +47,9 @@
 
 #include <string>
 
+#include "dsl-pa-reader.h"
+#include "dsl-pa-alphabet.h"
+
 namespace cl {
 
 class dsl_pa_recoverable_exception : public std::exception
@@ -65,7 +68,11 @@ public:
 
 class dsl_pa
 {
+private:
+	reader & r_reader;
+
 public:
+	dsl_pa( reader & r_reader_in ) : r_reader( r_reader_in ) {}
 	virtual ~dsl_pa() {}
 
 	// parse() provides a hook to allow use with factories that return
@@ -109,6 +116,31 @@ public:
 		throw dsl_pa_fatal_exception( p_what );
 		return true;	// Won't be called!
 	}
+	
+	// Type specific parsing functions
+	bool ws();
+	bool opt_ws();
+	
+	size_t /*num chars read*/ int_num( std::string * p_num );
+	size_t /*num chars read*/ int_num( int * p_int );
+	size_t /*num chars read*/ uint_num( std::string * p_num );
+	size_t /*num chars read*/ uint_num( int * p_int );
+	size_t /*num chars read*/ float_num( std::string * p_num );
+	size_t /*num chars read*/ float_num( float * p_float );
+	size_t /*num chars read*/ float_num( double * p_float );
+	size_t /*num chars read*/ sci_num( std::string * p_num );
+	size_t /*num chars read*/ sci_num( float * p_float );
+	size_t /*num chars read*/ sci_num( double * p_float );
+
+	// Low-level reader access
+	char get() { return r_reader.get(); }
+	char current() const { return r_reader.current(); }
+	bool unget() { r_reader.unget(); return true; }
+	bool unget( char c ) { r_reader.unget( c ); return true; }
+	char peek() { return r_reader.peek(); }
+	bool location_push() { return r_reader.location_push(); }	// See reader class for documentation
+	bool location_top() { return r_reader.location_top(); }
+	bool location_pop() { return r_reader.location_pop(); }
 };
 
 } // End of namespace cl
