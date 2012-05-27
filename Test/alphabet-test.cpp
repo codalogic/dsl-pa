@@ -139,6 +139,9 @@ TFUNCTION( alphabet_short_alphabets_test )
 	TTEST( or( space(), digit() ).is_wanted( '5' ) );
 	TTEST( alpha().is_wanted( 'a' ) );
 	
+	TTEST( linear_space().is_wanted( ' ' ) );
+	TTEST( linear_space().is_wanted( '\t' ) );
+	TTEST( ! linear_space().is_wanted( 'x' ) );
 	TTEST( sign().is_wanted( '+' ) );
 	TTEST( sign().is_wanted( '-' ) );
 	TTEST( ! sign().is_wanted( 'x' ) );

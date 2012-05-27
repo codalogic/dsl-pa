@@ -1,4 +1,4 @@
-Tests run on Sun May 27 16:32:10 2012
+Tests run on Sun May 27 16:36:53 2012
 
 
     Alphabet tests [c:\home\pete\sw\dsl-pa\test\alphabet-test.cpp:42]
@@ -66,6 +66,9 @@ Tests run on Sun May 27 16:32:10 2012
     ok: not( digit() ).is_wanted( 'x' )
     ok: or( space(), digit() ).is_wanted( '5' )
     ok: alpha().is_wanted( 'a' )
+    ok: linear_space().is_wanted( ' ' )
+    ok: linear_space().is_wanted( '\t' )
+    ok: ! linear_space().is_wanted( 'x' )
     ok: sign().is_wanted( '+' )
     ok: sign().is_wanted( '-' )
     ok: ! sign().is_wanted( 'x' )
@@ -598,4 +601,4 @@ TODOs (1):
 ------------------------
 - Add line counting functionality to reader class [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:341]
 
-0 error(s), 1 todo(s), 452 test(s)
+0 error(s), 1 todo(s), 455 test(s)

@@ -84,6 +84,15 @@ public:
 	}
 };
 
+class alphabet_linear_space : public alphabet	// Non-newline space chars
+{
+public:
+	virtual bool is_wanted( char c ) const
+	{
+		return c == ' ' || c == '\t';
+	}
+};
+
 class alphabet_digit : public alphabet
 {
 public:
@@ -256,6 +265,7 @@ public:
 
 namespace /*cl::*/ short_alphabets {
 	typedef alphabet_space				space;
+	typedef alphabet_linear_space		linear_space;
 	typedef alphabet_digit				digit;
 	typedef alphabet_hex				hex;
 	typedef alphabet_alpha				alpha;
