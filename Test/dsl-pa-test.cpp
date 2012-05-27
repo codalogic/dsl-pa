@@ -178,7 +178,8 @@ TFUNCTION( dsl_pa_low_level_read_test )
 	
 	{
 	TSETUP( location_logger my_location_logger( my_dsl_pa.get_reader() ) );
-	TTEST( my_dsl_pa.get() == 'd' );
+	TTEST( ! my_dsl_pa.is_char( 'x' ) );
+	TTEST( my_dsl_pa.is_char( 'd' ) );
 	TTEST( my_dsl_pa.get() == 'e' );
 	TTEST( my_dsl_pa.location_top() );
 	TTEST( my_dsl_pa.get() == 'd' );

@@ -1,4 +1,4 @@
-Tests run on Sun May 27 16:19:15 2012
+Tests run on Sun May 27 16:32:10 2012
 
 
     Alphabet tests [c:\home\pete\sw\dsl-pa\test\alphabet-test.cpp:42]
@@ -143,14 +143,15 @@ Tests run on Sun May 27 16:19:15 2012
     ok: my_dsl_pa.get() == 'c'
     ok: my_dsl_pa.location_pop()
       : location_logger my_location_logger( my_dsl_pa.get_reader() )
-    ok: my_dsl_pa.get() == 'd'
+    ok: ! my_dsl_pa.is_char( 'x' )
+    ok: my_dsl_pa.is_char( 'd' )
     ok: my_dsl_pa.get() == 'e'
     ok: my_dsl_pa.location_top()
     ok: my_dsl_pa.get() == 'd'
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
 
-    dsl pa ws tests [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:190]
+    dsl pa ws tests [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:191]
     ==========================
     ok: pa.get() == 'a' && pa.get() == 'b' && pa.ws()
     ok: pa.get() == 'c'
@@ -162,7 +163,7 @@ Tests run on Sun May 27 16:19:15 2012
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
 
-    dsl pa class tests [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:223]
+    dsl pa class tests [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:224]
     ==========================
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
@@ -579,13 +580,22 @@ Tests run on Sun May 27 16:19:15 2012
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
 
-    Reader line counting tests [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:327]
+    Is char reader tests [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:327]
+    ==========================
+    ok: ! my_reader.is_char( 'x' )
+    ok: my_reader.is_char( 'a' )
+    ok: ! my_reader.is_char( 'x' )
+    ok: my_reader.is_char( 'b' )
+    ok: ! _CrtMemDifference( &s3, &s1, &s2 )
+
+
+    Reader line counting tests [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:339]
     ==========================
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
     ok: _CrtCheckMemory() != 0
 
 TODOs (1):
 ------------------------
-- Add line counting functionality to reader class [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:329]
+- Add line counting functionality to reader class [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:341]
 
-0 error(s), 1 todo(s), 446 test(s)
+0 error(s), 1 todo(s), 452 test(s)

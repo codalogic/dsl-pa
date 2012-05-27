@@ -139,6 +139,7 @@ public:
 	bool unget() { r_reader.unget(); return true; }
 	bool unget( char c ) { r_reader.unget( c ); return true; }
 	char peek() { return r_reader.peek(); }
+	bool is_char( char c ) { return r_reader.is_char( c ); }
 	bool location_push() { return r_reader.location_push(); }	// See reader class for documentation
 	bool location_top() { return r_reader.location_top(); }
 	bool location_pop() { return r_reader.location_pop(); }

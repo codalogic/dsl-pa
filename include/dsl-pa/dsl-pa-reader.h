@@ -75,6 +75,13 @@ public:
 	void unget() { unget( current() ); }	// Unget with argument ungets current char
 	void unget( char c ) { unget_buffer.push( c ); }
 	char peek() { get(); unget(); return current(); }
+	bool is_char( char c )
+	{	
+		bool is_c = (c == get());
+		if( ! is_c )
+			unget();
+		return is_c;
+	}
 
 	// Recording input locations and rewinding is based on stack operations.
 	// i.e. you can call location_top() many times and the return location
