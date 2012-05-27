@@ -1,4 +1,4 @@
-Tests run on Sat May 26 21:27:41 2012
+Tests run on Sun May 27 16:19:15 2012
 
 
     Alphabet tests [c:\home\pete\sw\dsl-pa\test\alphabet-test.cpp:42]
@@ -66,6 +66,24 @@ Tests run on Sat May 26 21:27:41 2012
     ok: not( digit() ).is_wanted( 'x' )
     ok: or( space(), digit() ).is_wanted( '5' )
     ok: alpha().is_wanted( 'a' )
+    ok: sign().is_wanted( '+' )
+    ok: sign().is_wanted( '-' )
+    ok: ! sign().is_wanted( 'x' )
+    ok: point().is_wanted( '.' )
+    ok: ! point().is_wanted( 'x' )
+    ok: dot().is_wanted( '.' )
+    ok: ! dot().is_wanted( 'x' )
+    ok: exponent().is_wanted( 'e' )
+    ok: exponent().is_wanted( 'E' )
+    ok: ! exponent().is_wanted( 'x' )
+    ok: dash().is_wanted( '-' )
+    ok: ! dash().is_wanted( 'x' )
+    ok: colon().is_wanted( ':' )
+    ok: ! colon().is_wanted( 'x' )
+    ok: semicolon().is_wanted( ';' )
+    ok: ! semicolon().is_wanted( 'x' )
+    ok: comma().is_wanted( ',' )
+    ok: ! comma().is_wanted( 'x' )
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
 
@@ -570,4 +588,4 @@ TODOs (1):
 ------------------------
 - Add line counting functionality to reader class [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:329]
 
-0 error(s), 1 todo(s), 428 test(s)
+0 error(s), 1 todo(s), 446 test(s)

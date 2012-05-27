@@ -138,4 +138,23 @@ TFUNCTION( alphabet_short_alphabets_test )
 	TTEST( not( digit() ).is_wanted( 'x' ) );
 	TTEST( or( space(), digit() ).is_wanted( '5' ) );
 	TTEST( alpha().is_wanted( 'a' ) );
+	
+	TTEST( sign().is_wanted( '+' ) );
+	TTEST( sign().is_wanted( '-' ) );
+	TTEST( ! sign().is_wanted( 'x' ) );
+	TTEST( point().is_wanted( '.' ) );
+	TTEST( ! point().is_wanted( 'x' ) );
+	TTEST( dot().is_wanted( '.' ) );
+	TTEST( ! dot().is_wanted( 'x' ) );
+	TTEST( exponent().is_wanted( 'e' ) );
+	TTEST( exponent().is_wanted( 'E' ) );
+	TTEST( ! exponent().is_wanted( 'x' ) );
+	TTEST( dash().is_wanted( '-' ) );
+	TTEST( ! dash().is_wanted( 'x' ) );
+	TTEST( colon().is_wanted( ':' ) );
+	TTEST( ! colon().is_wanted( 'x' ) );
+	TTEST( semicolon().is_wanted( ';' ) );
+	TTEST( ! semicolon().is_wanted( 'x' ) );
+	TTEST( comma().is_wanted( ',' ) );
+	TTEST( ! comma().is_wanted( 'x' ) );
 }

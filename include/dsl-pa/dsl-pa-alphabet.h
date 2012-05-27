@@ -140,6 +140,80 @@ public:
 	}
 };
 
+class alphabet_sign : public alphabet
+{
+public:
+	virtual bool is_wanted( char c ) const
+	{
+		return c == '-' || c == '+';
+	}
+};
+
+class alphabet_point : public alphabet
+{
+public:
+	virtual bool is_wanted( char c ) const
+	{
+		return c == '.';
+	}
+};
+
+typedef alphabet_point alphabet_dot;
+
+class alphabet_dash : public alphabet
+{
+public:
+	virtual bool is_wanted( char c ) const
+	{
+		return c == '-';
+	}
+};
+
+class alphabet_colon : public alphabet
+{
+public:
+	virtual bool is_wanted( char c ) const
+	{
+		return c == ':';
+	}
+};
+
+class alphabet_semicolon : public alphabet
+{
+public:
+	virtual bool is_wanted( char c ) const
+	{
+		return c == ';';
+	}
+};
+
+class alphabet_comma : public alphabet
+{
+public:
+	virtual bool is_wanted( char c ) const
+	{
+		return c == ',';
+	}
+};
+
+class alphabet_E : public alphabet	// For floating point numbers
+{
+public:
+	virtual bool is_wanted( char c ) const
+	{
+		return c == 'e' || c == 'E';
+	}
+};
+
+class alphabet_T : public alphabet	// For ISO datetime
+{
+public:
+	virtual bool is_wanted( char c ) const
+	{
+		return c == 'T';
+	}
+};
+
 // alphabet combiners - These classes allow combining alphabets.  However, it is
 // probably more preferable to create your own alphabet classes than rely 
 // extensively on these classes.
@@ -190,6 +264,15 @@ namespace /*cl::*/ short_alphabets {
 	typedef alphabet_uni				uni;
 	typedef alphabet_not				not;
 	typedef alphabet_or					or;
+	typedef alphabet_sign				sign;
+	typedef alphabet_point				point;
+	typedef alphabet_dot				dot;
+	typedef alphabet_dash				dash;
+	typedef alphabet_colon				colon;
+	typedef alphabet_semicolon			semicolon;
+	typedef alphabet_comma				comma;
+	typedef alphabet_E					exponent;
+	// typedef alphabet_T				T;	// Not sensible to have a short version
 	
 	inline bool is_7bit( char c )	{ return alphabet::is_7bit( c ); }
 	inline bool is_space( char c )	{ return alphabet::is_space( c ); }
