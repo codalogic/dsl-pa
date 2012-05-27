@@ -38,49 +38,87 @@
 
 namespace cl {
 
-class alphabet
-{
-public:
-	virtual bool is_wanted( char c ) const = 0;
-
+namespace /*cl::*/alphabet_helpers {
 	// Helper functions.  <cctype> functions are often not 8-bit safe
-	static bool is_7bit( char c )
+	inline bool is_7bit( char c )
 	{
 		return c >= 0 && c <= 0x7f;	
 	}
-	static bool is_space( char c )
+	inline bool is_space( char c )
 	{
 		return is_7bit( c ) && isspace( c );	
 	}
-	static bool is_digit( char c )
+	inline bool is_digit( char c )
 	{
 		return '0' <= c && c <= '9';
 	}
-	static bool is_alpha( char c )
+	inline bool is_alpha( char c )
 	{
 		return 'a' <= c && c <= 'z' ||
 				'A' <= c && c <= 'Z';
 	}
-	static bool is_hex( char c )
+	inline bool is_hex( char c )
 	{
 		return is_digit( c ) ||
 				'a' <= c && c <= 'f' ||
 				'A' <= c && c <= 'F';
 	}
-	static bool is_utf8_multibyte( char c )
+	inline bool is_utf8_multibyte( char c )
 	{
 		return ! is_7bit( c );
 	}
+	inline size_t char_to_size_t( char c )
+	{
+		// Convert char to range 0 to 255. Helper for indexing into array.
+		return static_cast< size_t >( static_cast< unsigned char >( c ) );
+	}
+}	// End of namespace cl::*/alphabet_helpers
+
+class alphabet
+{
+public:
+	virtual bool is_wanted( char c ) const = 0;
 };
 
 // Common alphabets
+
+class char_index
+{
+private:
+	typedef char char_index_array[256];
+	char_index_array index;	
+
+public:
+	char_index();
+	void clear();
+	void set( char c );
+	void set_range( char start, char end );
+	void set_inverted_range( char start, char end );
+	void invert();
+	void merge( const char_index & r_rhs );
+
+	bool is_set( char c ) const;
+};
+
+class alphabet_char_class : public alphabet
+{
+private:
+	char_index wanted_chars;
+
+public:
+	alphabet_char_class( const char * p_class_spec );
+	virtual bool is_wanted( char c ) const
+	{
+		return wanted_chars.is_set( c );
+	}
+};
 
 class alphabet_space : public alphabet
 {
 public:
 	virtual bool is_wanted( char c ) const
 	{
-		return is_space( c );
+		return alphabet_helpers::is_space( c );
 	}
 };
 
@@ -98,7 +136,7 @@ class alphabet_digit : public alphabet
 public:
 	virtual bool is_wanted( char c ) const
 	{
-		return is_digit( c );
+		return alphabet_helpers::is_digit( c );
 	}
 };
 
@@ -107,7 +145,7 @@ class alphabet_hex : public alphabet
 public:
 	virtual bool is_wanted( char c ) const
 	{
-		return is_hex( c );
+		return alphabet_helpers::is_hex( c );
 	}
 };
 
@@ -116,7 +154,7 @@ class alphabet_alpha : public alphabet
 public:
 	virtual bool is_wanted( char c ) const
 	{
-		return is_alpha( c );
+		return alphabet_helpers::is_alpha( c );
 	}
 };
 
@@ -125,7 +163,7 @@ class alphabet_word_first_char : public alphabet	// Based on Perl's \w
 public:
 	virtual bool is_wanted( char c ) const
 	{
-		return is_alpha( c ) || '_' == c;
+		return alphabet_helpers::is_alpha( c ) || '_' == c;
 	}
 };
 
@@ -134,8 +172,8 @@ class alphabet_word_char : public alphabet
 public:
 	virtual bool is_wanted( char c ) const
 	{
-		return is_alpha( c ) ||
-				is_digit( c ) ||
+		return alphabet_helpers::is_alpha( c ) ||
+				alphabet_helpers::is_digit( c ) ||
 				'_' == c;
 	}
 };
@@ -145,7 +183,7 @@ class alphabet_uni : public alphabet // char is part of a non-ASCII Unicode sequ
 public:
 	virtual bool is_wanted( char c ) const
 	{
-		return is_utf8_multibyte( c );
+		return alphabet_helpers::is_utf8_multibyte( c );
 	}
 };
 
@@ -283,13 +321,6 @@ namespace /*cl::*/ short_alphabets {
 	typedef alphabet_comma				comma;
 	typedef alphabet_E					exponent;
 	// typedef alphabet_T				T;	// Not sensible to have a short version
-	
-	inline bool is_7bit( char c )	{ return alphabet::is_7bit( c ); }
-	inline bool is_space( char c )	{ return alphabet::is_space( c ); }
-	inline bool is_digit( char c )	{ return alphabet::is_digit( c ); }
-	inline bool is_alpha( char c )	{ return alphabet::is_alpha( c ); }
-	inline bool is_hex( char c )	{ return alphabet::is_hex( c ); }
-	inline bool is_utf8_multibyte( char c ) { return alphabet::is_utf8_multibyte( c ); }
 } // End of namespace cl::short_alphabets
 
 } // End of namespace cl

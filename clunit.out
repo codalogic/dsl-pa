@@ -1,4 +1,4 @@
-Tests run on Sun May 27 16:36:53 2012
+Tests run on Sun May 27 22:39:38 2012
 
 
     Alphabet tests [c:\home\pete\sw\dsl-pa\test\alphabet-test.cpp:42]
@@ -87,6 +87,89 @@ Tests run on Sun May 27 16:36:53 2012
     ok: ! semicolon().is_wanted( 'x' )
     ok: comma().is_wanted( ',' )
     ok: ! comma().is_wanted( 'x' )
+    ok: ! _CrtMemDifference( &s3, &s1, &s2 )
+
+
+    Alphabet char_to_size_t tests [c:\home\pete\sw\dsl-pa\test\alphabet-test.cpp:167]
+    ==========================
+    ok: alphabet_helpers::char_to_size_t( 0 ) == 0
+    ok: alphabet_helpers::char_to_size_t( 10 ) == 10
+    ok: alphabet_helpers::char_to_size_t( -2 ) == 254
+    ok: char_to_size_t( 30 ) == 30
+    ok: ! _CrtMemDifference( &s3, &s1, &s2 )
+
+
+     Alphabet char_index tests [c:\home\pete\sw\dsl-pa\test\alphabet-test.cpp:180]
+    ==========================
+    ok: ! my_index.is_set( 'a' )
+    ok: ! my_index.is_set( 'b' )
+    ok: ! my_index.is_set( 'c' )
+    ok: ! my_index.is_set( 'd' )
+    ok: ! my_index.is_set( 'e' )
+    ok: ! my_index.is_set( 'f' )
+    ok: ! my_index.is_set( 'a' )
+    ok: my_index.is_set( 'b' )
+    ok: my_index.is_set( 'c' )
+    ok: my_index.is_set( 'd' )
+    ok: my_index.is_set( 'e' )
+    ok: ! my_index.is_set( 'f' )
+    ok: ! my_index.is_set( 'a' )
+    ok: my_index.is_set( 'b' )
+    ok: my_index.is_set( 'c' )
+    ok: my_index.is_set( 'd' )
+    ok: my_index.is_set( 'e' )
+    ok: ! my_index.is_set( 'f' )
+    ok: my_index.is_set( 'g' )
+    ok: my_index.is_set( 'h' )
+    ok: my_index.is_set( 'i' )
+    ok: my_index.is_set( 'j' )
+    ok: ! my_index.is_set( 'k' )
+    ok: my_index.is_set( 'a' )
+    ok: my_index.is_set( 'b' )
+    ok: my_index.is_set( 'c' )
+    ok: my_index.is_set( 'd' )
+    ok: my_index.is_set( 'e' )
+    ok: my_index.is_set( 'f' )
+    ok: my_index.is_set( 'g' )
+    ok: my_index.is_set( 'h' )
+    ok: my_index.is_set( 'i' )
+    ok: my_index.is_set( 'j' )
+    ok: my_index.is_set( 'k' )
+    ok: ! my_index.is_set( 'w' )
+    ok: ! my_index.is_set( 'x' )
+    ok: ! my_index.is_set( 'y' )
+    ok: ! my_index.is_set( 'z' )
+    ok: ! my_index.is_set( 'x' )
+    ok: my_index.is_set( 'x' )
+    ok: ! my_index.is_set( 'a' )
+    ok: ! my_index.is_set( 'b' )
+    ok: ! my_index.is_set( 'c' )
+    ok: ! my_index.is_set( 'd' )
+    ok: ! my_index.is_set( 'e' )
+    ok: ! my_index.is_set( 'f' )
+    ok: ! my_index.is_set( 'g' )
+    ok: ! my_index.is_set( 'h' )
+    ok: ! my_index.is_set( 'i' )
+    ok: ! my_index.is_set( 'j' )
+    ok: ! my_index.is_set( 'k' )
+    ok: my_index.is_set( 'w' )
+    ok: ! my_index.is_set( 'x' )
+    ok: my_index.is_set( 'y' )
+    ok: my_index.is_set( 'z' )
+    ok: ! my_index.is_set( 'a' )
+    ok: my_index.is_set( 'b' )
+    ok: my_index.is_set( 'c' )
+    ok: my_index.is_set( 'd' )
+    ok: my_index.is_set( 'e' )
+    ok: ! my_index.is_set( 'f' )
+    ok: ! _CrtMemDifference( &s3, &s1, &s2 )
+
+
+     Alphabet_char_class tests [c:\home\pete\sw\dsl-pa\test\alphabet-test.cpp:270]
+    ==========================
+      : alphabet_char_class my_char_class( "a-z" )
+not ok: my_char_class.is_wanted( 'a' ) (273)
+    ok: ! my_char_class.is_wanted( '$' )
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
 
@@ -601,4 +684,4 @@ TODOs (1):
 ------------------------
 - Add line counting functionality to reader class [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:341]
 
-0 error(s), 1 todo(s), 455 test(s)
+1 error(s), 1 todo(s), 525 test(s)

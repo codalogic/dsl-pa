@@ -36,32 +36,69 @@
 // more information.
 //----------------------------------------------------------------------------
 
-#include "dsl-pa/dsl-pa-dsl-pa.h"
+#include "dsl-pa/dsl-pa-alphabet.h"
 
 namespace cl {
 
-using namespace alphabet_helpers;
+using namespace cl::alphabet_helpers;
 
-bool dsl_pa::ws()
+char_index::char_index()
 {
-	char c = get();
-	if( ! is_space( c ) )
-	{
-		unget();
-		return false;
-	}
-	
-	while( is_space( get() ) )
-	{}
-	
-	unget();
-	
-	return true;
+	clear();
 }
 
-bool dsl_pa::opt_ws()
+void char_index::clear()
 {
-	return optional( ws() );
+	for( size_t i=0; i<sizeof( char_index_array ); ++i )
+		index[i] = 0;
+}
+
+void char_index::set( char c )
+{
+	index[ char_to_size_t( c ) ] = 1;
+}
+
+void char_index::set_range( char start, char end )
+{
+	size_t start_index = char_to_size_t( start );
+	size_t end_index = char_to_size_t( end );
+	for( size_t i = start_index; i <= end_index; ++i )
+		index[i] = 1;
+}
+
+void char_index::set_inverted_range( char start, char end )
+{
+	char_index non_invert_char_index;
+
+	non_invert_char_index.set_range( start, end );
+	non_invert_char_index.invert();
+	merge( non_invert_char_index );
+}
+
+void char_index::invert()
+{
+	for( size_t i=0; i<sizeof( char_index_array ); ++i )
+	{
+		if( index[i] == 0 )
+			index[i] = 1;
+		else
+			index[i] = 0;
+	}
+}
+
+void char_index::merge( const char_index & r_rhs )
+{
+	for( size_t i=0; i<sizeof( char_index_array ); ++i )
+		index[i] |= r_rhs.index[i];
+}
+
+bool char_index::is_set( char c ) const
+{
+	return index[ char_to_size_t( c ) ] != 0;
+}
+
+alphabet_char_class::alphabet_char_class( const char * p_class_spec )
+{
 }
 
 } // End of namespace cl

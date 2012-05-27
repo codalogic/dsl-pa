@@ -161,3 +161,115 @@ TFUNCTION( alphabet_short_alphabets_test )
 	TTEST( comma().is_wanted( ',' ) );
 	TTEST( ! comma().is_wanted( 'x' ) );
 }
+
+TFUNCTION( alphabet_char_to_size_t_test )
+{
+	TBEGIN( "Alphabet char_to_size_t tests" );
+	
+	TTEST( alphabet_helpers::char_to_size_t( 0 ) == 0 );
+	TTEST( alphabet_helpers::char_to_size_t( 10 ) == 10 );
+	TTEST( alphabet_helpers::char_to_size_t( -2 ) == 254 );
+	
+	using namespace cl::alphabet_helpers;
+
+	TTEST( char_to_size_t( 30 ) == 30 );
+}
+
+TFUNCTION( alphabet_char_index_test )
+{
+	TBEGIN( " Alphabet char_index tests" );
+	
+	char_index my_index;
+	
+	TTEST( ! my_index.is_set( 'a' ) );
+	TTEST( ! my_index.is_set( 'b' ) );
+	TTEST( ! my_index.is_set( 'c' ) );
+	TTEST( ! my_index.is_set( 'd' ) );
+	TTEST( ! my_index.is_set( 'e' ) );
+	TTEST( ! my_index.is_set( 'f' ) );
+	
+	my_index.set_range( 'b', 'e' );
+	
+	TTEST( ! my_index.is_set( 'a' ) );
+	TTEST( my_index.is_set( 'b' ) );
+	TTEST( my_index.is_set( 'c' ) );
+	TTEST( my_index.is_set( 'd' ) );
+	TTEST( my_index.is_set( 'e' ) );
+	TTEST( ! my_index.is_set( 'f' ) );
+	
+	my_index.set_range( 'g', 'j' );
+	
+	TTEST( ! my_index.is_set( 'a' ) );
+	TTEST( my_index.is_set( 'b' ) );
+	TTEST( my_index.is_set( 'c' ) );
+	TTEST( my_index.is_set( 'd' ) );
+	TTEST( my_index.is_set( 'e' ) );
+	TTEST( ! my_index.is_set( 'f' ) );
+	TTEST( my_index.is_set( 'g' ) );
+	TTEST( my_index.is_set( 'h' ) );
+	TTEST( my_index.is_set( 'i' ) );
+	TTEST( my_index.is_set( 'j' ) );
+	TTEST( ! my_index.is_set( 'k' ) );
+	
+	my_index.set_inverted_range( 'w', 'z' );
+	
+	TTEST( my_index.is_set( 'a' ) );
+	TTEST( my_index.is_set( 'b' ) );
+	TTEST( my_index.is_set( 'c' ) );
+	TTEST( my_index.is_set( 'd' ) );
+	TTEST( my_index.is_set( 'e' ) );
+	TTEST( my_index.is_set( 'f' ) );
+	TTEST( my_index.is_set( 'g' ) );
+	TTEST( my_index.is_set( 'h' ) );
+	TTEST( my_index.is_set( 'i' ) );
+	TTEST( my_index.is_set( 'j' ) );
+	TTEST( my_index.is_set( 'k' ) );
+	TTEST( ! my_index.is_set( 'w' ) );
+	TTEST( ! my_index.is_set( 'x' ) );
+	TTEST( ! my_index.is_set( 'y' ) );
+	TTEST( ! my_index.is_set( 'z' ) );
+	
+	TTEST( ! my_index.is_set( 'x' ) );
+	my_index.set( 'x' );
+	TTEST( my_index.is_set( 'x' ) );
+	
+	my_index.invert();
+	
+	TTEST( ! my_index.is_set( 'a' ) );
+	TTEST( ! my_index.is_set( 'b' ) );
+	TTEST( ! my_index.is_set( 'c' ) );
+	TTEST( ! my_index.is_set( 'd' ) );
+	TTEST( ! my_index.is_set( 'e' ) );
+	TTEST( ! my_index.is_set( 'f' ) );
+	TTEST( ! my_index.is_set( 'g' ) );
+	TTEST( ! my_index.is_set( 'h' ) );
+	TTEST( ! my_index.is_set( 'i' ) );
+	TTEST( ! my_index.is_set( 'j' ) );
+	TTEST( ! my_index.is_set( 'k' ) );
+	TTEST( my_index.is_set( 'w' ) );
+	TTEST( ! my_index.is_set( 'x' ) );
+	TTEST( my_index.is_set( 'y' ) );
+	TTEST( my_index.is_set( 'z' ) );
+	
+	char_index other_index;
+	
+	other_index.set_range( 'b', 'e' );
+	
+	my_index.merge( other_index );
+
+	TTEST( ! my_index.is_set( 'a' ) );
+	TTEST( my_index.is_set( 'b' ) );
+	TTEST( my_index.is_set( 'c' ) );
+	TTEST( my_index.is_set( 'd' ) );
+	TTEST( my_index.is_set( 'e' ) );
+	TTEST( ! my_index.is_set( 'f' ) );
+}
+
+TFUNCTION( alphabet_char_class_test )
+{
+	TBEGIN( " Alphabet_char_class tests" );
+	
+	TSETUP( alphabet_char_class my_char_class( "a-z" ) );
+	TTEST( my_char_class.is_wanted( 'a' ) );
+	TTEST( ! my_char_class.is_wanted( '$' ) );
+}
