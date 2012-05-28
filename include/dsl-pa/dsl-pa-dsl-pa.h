@@ -152,6 +152,8 @@ public:
 	bool ws();
 	bool opt_ws();
 	
+	bool /*is_parsed*/ get_bool( std::string * p_input );
+	bool /*is_parsed*/ get_bool( bool * p_bool );
 	size_t /*num chars read*/ get_int( std::string * p_num );
 	size_t /*num chars read*/ get_int( int * p_int );
 	size_t /*num chars read*/ get_uint( std::string * p_num );

@@ -189,6 +189,17 @@ bool dsl_pa::opt_ws()
 	return optional( ws() );
 }
 
+bool /*is_parsed*/ dsl_pa::get_bool( std::string * p_input )
+{
+	return get_ifixed( p_input, "true" ) || get_ifixed( p_input, "false" );
+}
+
+bool /*is_parsed*/ dsl_pa::get_bool( bool * p_bool )
+{
+	return (ifixed( "true" ) && set( *p_bool, true )) || 
+			(ifixed( "false" ) && set( *p_bool, false ));
+}
+	
 size_t /*num chars read*/ dsl_pa::get_int( std::string * p_num )
 {
 	location_logger location( r_reader );
