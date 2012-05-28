@@ -96,6 +96,14 @@ public:
 		r_variable = r_value;
 		return true;
 	}
+	// record() allows recording the return values of parsing functions in the 
+	// middle of a sequence of shortcut operators
+	template< typename T, typename U >
+	static const U & record( T & r_variable, const U & r_value )
+	{
+		r_variable = r_value;
+		return r_value;
+	}
 	template< typename T >
 	static bool clear( T & r_value )
 	{

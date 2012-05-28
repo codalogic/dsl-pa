@@ -73,7 +73,7 @@ public:
 	char get();
 	char current() const { return current_char; }
 	void unget() { unget( current() ); }	// Unget with argument ungets current char
-	void unget( char c ) { if( c != R_EOI ) unget_buffer.push( c ); }
+	void unget( char c ) { if( c != R_EOI ) unget_buffer.push( c ); }	// The if() condition is important because we tweak the location of a location_push() using the number of stored unget chars!
 	char peek() { get(); unget(); return current(); }
 	bool is_char( char c )
 	{	

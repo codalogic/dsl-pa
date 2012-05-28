@@ -88,6 +88,19 @@ TFUNCTION( dsl_pa_set_test )
 	TTEST( e == COLD );
 }
 
+TFUNCTION( dsl_pa_record_test )
+{
+	TBEGIN( "dsl_pa::record() operation" );
+	
+	TSETUP( bool t1 = false );
+	TSETUP( dsl_pa::record( t1, true ) );
+	TTEST( t1 == true );
+	
+	TSETUP( bool t2 = true );
+	TSETUP( dsl_pa::record( t2, false ) );
+	TTEST( t2 == false );
+}
+
 TFUNCTION( dsl_pa_clear_test )
 {
 	TBEGIN( "dsl_pa::clear() operation" );
@@ -528,6 +541,7 @@ TFUNCTION( dsl_pa_number_parse_test )
 	dsl_pa_sci_float_test( "1e+", 1.0f, true, 'e' );
 	// The following should fail
 	dsl_pa_sci_float_test( "-", 0.0f, false, '-' );
+	dsl_pa_sci_float_test( "--1", 0.0f, false, '-' );
 	dsl_pa_sci_float_test( ".", 0.0f, false, '.' );
 	dsl_pa_sci_float_test( "-e", 0.0f, false, '-' );
 	dsl_pa_sci_float_test( "", 0.0f, false, '\0' );
