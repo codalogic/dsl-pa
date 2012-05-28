@@ -91,10 +91,10 @@ private:
 public:
 	char_index();
 	void clear();
-	void set( char c );
-	void set_range( char start, char end );
-	void set_inverted_range( char start, char end );
-	void invert();
+	char_index & set( char c );
+	char_index & set_range( char start, char end );
+	char_index & set_inverted_range( char start, char end );
+	char_index & invert();
 	void merge( const char_index & r_rhs );
 
 	bool is_set( char c ) const;
@@ -106,7 +106,7 @@ private:
 	char_index wanted_chars;
 
 public:
-	alphabet_char_class( const char * p_class_spec );
+	alphabet_char_class( const char * p_char_class_spec );
 	virtual bool is_wanted( char c ) const
 	{
 		return wanted_chars.is_set( c );

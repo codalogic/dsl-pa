@@ -263,6 +263,25 @@ TFUNCTION( alphabet_char_index_test )
 	TTEST( my_index.is_set( 'd' ) );
 	TTEST( my_index.is_set( 'e' ) );
 	TTEST( ! my_index.is_set( 'f' ) );
+	
+	my_index.clear();
+	TTEST( ! my_index.is_set( 'a' ) );
+	TTEST( ! my_index.is_set( 'b' ) );
+	TTEST( ! my_index.is_set( 'c' ) );
+	TTEST( ! my_index.is_set( 'd' ) );
+	TTEST( ! my_index.is_set( 'e' ) );
+	TTEST( ! my_index.is_set( 'f' ) );
+	TTEST( ! my_index.is_set( 'g' ) );
+	TTEST( ! my_index.is_set( 'h' ) );
+
+	TDOC( "Test chained operations" );
+	
+	my_index.merge( char_index().set_range( 'b', 'd' ).set_range( 'f', 'h' ).invert() );
+	
+	TTEST( my_index.is_set( 'a' ) );
+	TTEST( ! my_index.is_set( 'b' ) );
+	TTEST( my_index.is_set( 'e' ) );
+	TTEST( ! my_index.is_set( 'f' ) );
 }
 
 TFUNCTION( alphabet_char_class_test )

@@ -1,4 +1,4 @@
-Tests run on Sun May 27 22:39:38 2012
+Tests run on Mon May 28 11:08:45 2012
 
 
     Alphabet tests [c:\home\pete\sw\dsl-pa\test\alphabet-test.cpp:42]
@@ -162,13 +162,26 @@ Tests run on Sun May 27 22:39:38 2012
     ok: my_index.is_set( 'd' )
     ok: my_index.is_set( 'e' )
     ok: ! my_index.is_set( 'f' )
+    ok: ! my_index.is_set( 'a' )
+    ok: ! my_index.is_set( 'b' )
+    ok: ! my_index.is_set( 'c' )
+    ok: ! my_index.is_set( 'd' )
+    ok: ! my_index.is_set( 'e' )
+    ok: ! my_index.is_set( 'f' )
+    ok: ! my_index.is_set( 'g' )
+    ok: ! my_index.is_set( 'h' )
+      Test chained operations
+    ok: my_index.is_set( 'a' )
+    ok: ! my_index.is_set( 'b' )
+    ok: my_index.is_set( 'e' )
+    ok: ! my_index.is_set( 'f' )
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
 
-     Alphabet_char_class tests [c:\home\pete\sw\dsl-pa\test\alphabet-test.cpp:270]
+     Alphabet_char_class tests [c:\home\pete\sw\dsl-pa\test\alphabet-test.cpp:289]
     ==========================
       : alphabet_char_class my_char_class( "a-z" )
-not ok: my_char_class.is_wanted( 'a' ) (273)
+not ok: my_char_class.is_wanted( 'a' ) (292)
     ok: ! my_char_class.is_wanted( '$' )
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
@@ -684,4 +697,4 @@ TODOs (1):
 ------------------------
 - Add line counting functionality to reader class [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:341]
 
-1 error(s), 1 todo(s), 525 test(s)
+1 error(s), 1 todo(s), 537 test(s)

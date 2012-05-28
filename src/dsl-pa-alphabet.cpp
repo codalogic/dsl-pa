@@ -53,37 +53,36 @@ void char_index::clear()
 		index[i] = 0;
 }
 
-void char_index::set( char c )
+char_index & char_index::set( char c )
 {
 	index[ char_to_size_t( c ) ] = 1;
+	return *this;
 }
 
-void char_index::set_range( char start, char end )
+char_index & char_index::set_range( char start, char end )
 {
 	size_t start_index = char_to_size_t( start );
 	size_t end_index = char_to_size_t( end );
 	for( size_t i = start_index; i <= end_index; ++i )
 		index[i] = 1;
+	return *this;
 }
 
-void char_index::set_inverted_range( char start, char end )
+char_index & char_index::set_inverted_range( char start, char end )
 {
 	char_index non_invert_char_index;
 
 	non_invert_char_index.set_range( start, end );
 	non_invert_char_index.invert();
 	merge( non_invert_char_index );
+	return *this;
 }
 
-void char_index::invert()
+char_index & char_index::invert()
 {
 	for( size_t i=0; i<sizeof( char_index_array ); ++i )
-	{
-		if( index[i] == 0 )
-			index[i] = 1;
-		else
-			index[i] = 0;
-	}
+		index[i] ^= 1;
+	return *this;
 }
 
 void char_index::merge( const char_index & r_rhs )
@@ -97,8 +96,97 @@ bool char_index::is_set( char c ) const
 	return index[ char_to_size_t( c ) ] != 0;
 }
 
-alphabet_char_class::alphabet_char_class( const char * p_class_spec )
+alphabet_char_class::alphabet_char_class( const char * p_char_class_spec )
 {
+/*
+	char l_last_char = (char)0xff;
+
+	while( *p_char_class_spec != '\0' )
+	{
+		if( *p_char_class_spec == '-' )			// Allow for ranges
+		{
+			p_char_class_spec++;
+
+			DBG_ASSERT( *p_char_class_spec != '\0' );	// See note Construct-Assumption
+
+			while( ++l_last_char <= *p_char_class_spec )
+				oc_alphabet[l_last_char] = 1;
+			p_char_class_spec++;
+		}
+
+		else if( *p_char_class_spec == '^' )		// Allow for specials
+		{
+			switch( *++p_char_class_spec )
+			{
+			case 'w':
+				index.set_range( 'a', 'z' );
+				index.set_range( 'A', 'Z' );
+				index.set_range( '0', '9' );
+				index.set( '_' );
+			break;
+
+			case 'l':
+				{
+				int l_c;
+				for( l_c = 'a'; l_c <= 'z'; l_c++ )
+					oc_alphabet[l_c] = 1;
+				for( l_c = 'A'; l_c <= 'Z'; l_c++ )
+					oc_alphabet[l_c] = 1;
+				}
+			break;
+
+			case 'd':
+				{
+				int l_c;
+				for( l_c = '0'; l_c <= '9'; l_c++ )
+					oc_alphabet[l_c] = 1;
+				}
+			break;
+
+			case 'u':
+				{
+				int l_c;
+				for( l_c = 0x21; l_c <= 0xff; l_c++ )
+					oc_alphabet[l_c] = 1;
+				}
+			break;
+
+			case 's':
+				oc_alphabet[' '] = 1;
+				oc_alphabet['\t'] = 1;
+				oc_alphabet['\r'] = 1;
+				oc_alphabet['\n'] = 1;
+			break;
+
+			case '^':
+				oc_alphabet['^'] = 1;
+			break;
+
+			case '-':
+				oc_alphabet['-'] = 1;
+			break;
+
+			case '\0':
+				DBG_ASSERT( 0 );			// An ill-formed alphabet
+			break;
+
+			default:
+				oc_alphabet[*p_char_class_spec] = 1;
+				}
+
+			p_char_class_spec++;
+		}
+
+		else
+		{
+			last_char = *p_char_class_spec;
+			index.set( *p_char_class_spec++ );
+		}
+	}
+
+	if( is_inverted )
+		index.invert();
+*/
 }
 
 } // End of namespace cl
