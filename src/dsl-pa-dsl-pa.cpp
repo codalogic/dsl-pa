@@ -113,6 +113,40 @@ size_t dsl_pa::get_until( std::string * p_output, const alphabet & r_alphabet, c
 	return n_chars;
 }
 
+bool dsl_pa::fixed( const char * p_seeking )
+{
+	location_logger location( r_reader );
+	
+	for( ; *p_seeking != '\0'; ++p_seeking )
+	{
+		if( get() != *p_seeking )
+		{
+			location_top();
+			return false;
+		}
+	}
+	
+	return true;
+}
+
+bool dsl_pa::ifixed( const char * p_seeking )
+{
+	location_logger location( r_reader );
+	
+	for( ; *p_seeking != '\0'; ++p_seeking )
+	{
+		get();
+		if( (is_7bit( current() ) && tolower( current() ) != tolower( *p_seeking ))
+				|| (! is_7bit( current() ) && current() != *p_seeking) )
+		{
+			location_top();
+			return false;
+		}
+	}
+	
+	return true;
+}
+
 bool dsl_pa::ws()
 {
 	char c = get();

@@ -1,4 +1,4 @@
-Tests run on Mon May 28 14:31:45 2012
+Tests run on Mon May 28 14:52:45 2012
 
 
     Alphabet tests [c:\home\pete\sw\dsl-pa\test\alphabet-test.cpp:42]
@@ -351,10 +351,16 @@ Tests run on Mon May 28 14:31:45 2012
 
     dsl pa fixed and ifixed tests [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:369]
     ==========================
+    ok: (my_pa.fixed( "Range" ) || my_pa.fixed( "Mode" )) && my_pa.ws() && my_pa.get( &channel, alphabet_alpha() ) && my_pa.opt_ws() && my_pa.is_char( '=' ) && my_pa.opt_ws() && my_pa.get( &level, alphabet_digit() )
+    ok: channel == "p"
+    ok: level == "12"
+    ok: (my_pa.ifixed( "rANGE" ) || my_pa.ifixed( "mODE" )) && my_pa.ws() && my_pa.get( &channel, alphabet_alpha() ) && my_pa.opt_ws() && my_pa.is_char( '=' ) && my_pa.opt_ws() && my_pa.get( &level, alphabet_digit() )
+    ok: channel == "p"
+    ok: level == "12"
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
 
-    dsl pa class tests [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:376]
+    dsl pa class tests [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:414]
     ==========================
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
@@ -785,9 +791,8 @@ Tests run on Mon May 28 14:31:45 2012
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
     ok: _CrtCheckMemory() != 0
 
-TODOs (2):
+TODOs (1):
 ------------------------
-- dsl pa fixed and ifixed tests [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:371]
 - Add line counting functionality to reader class [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:341]
 
-0 error(s), 2 todo(s), 607 test(s)
+0 error(s), 1 todo(s), 613 test(s)

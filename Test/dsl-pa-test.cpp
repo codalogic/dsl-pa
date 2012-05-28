@@ -368,7 +368,45 @@ TFUNCTION( dsl_pa_fixed_test )
 {
 	TBEGIN( "dsl pa fixed and ifixed tests" );
 	
-	TTODO( "dsl pa fixed and ifixed tests" );
+	{
+	reader_string my_reader( "Mode p=12" );
+	dsl_pa my_pa( my_reader );
+
+	std::string command;
+	std::string channel;
+	std::string level;
+	
+	TTEST( (my_pa.fixed( "Range" ) || my_pa.fixed( "Mode" )) &&
+				my_pa.ws() &&
+				my_pa.get( &channel, alphabet_alpha() ) &&
+				my_pa.opt_ws() &&
+				my_pa.is_char( '=' ) &&
+				my_pa.opt_ws() &&
+				my_pa.get( &level, alphabet_digit() ) );
+				
+	TTEST( channel == "p" );
+	TTEST( level == "12" );
+	}
+	
+	{
+	reader_string my_reader( "Mode p=12" );
+	dsl_pa my_pa( my_reader );
+
+	std::string command;
+	std::string channel;
+	std::string level;
+	
+	TTEST( (my_pa.ifixed( "rANGE" ) || my_pa.ifixed( "mODE" )) &&
+				my_pa.ws() &&
+				my_pa.get( &channel, alphabet_alpha() ) &&
+				my_pa.opt_ws() &&
+				my_pa.is_char( '=' ) &&
+				my_pa.opt_ws() &&
+				my_pa.get( &level, alphabet_digit() ) );
+				
+	TTEST( channel == "p" );
+	TTEST( level == "12" );
+	}
 }
 
 TFUNCTION( dsl_pa_test )
