@@ -74,14 +74,6 @@ namespace /*cl::*/alphabet_helpers {
 	}
 }	// End of namespace cl::*/alphabet_helpers
 
-class alphabet
-{
-public:
-	virtual bool is_wanted( char c ) const = 0;
-};
-
-// Common alphabets
-
 class char_map
 {
 private:
@@ -100,6 +92,57 @@ public:
 	bool is_set( char c ) const;
 };
 
+// Specialist char maps corresponding to the Perl \w, \d and \s expressions
+
+class char_map_w : public char_map
+{
+public:
+	char_map_w();
+};
+
+class char_map_d : public char_map
+{
+public:
+	char_map_d();
+};
+
+class char_map_s : public char_map
+{
+public:
+	char_map_s();
+};
+
+class char_map_l : public char_map
+{
+public:
+	char_map_l();
+};
+
+class alphabet
+{
+public:
+	virtual bool is_wanted( char c ) const = 0;
+};
+
+// This alphabet class takes a specification that mirrors a Perl character
+// class, such as in /[a-fA-F\d]/.  To specify that char class you would
+// do:
+//
+//		alphabet_char_class my_char_class( "a-fA-F\\d" );
+//
+// Note the C++ requirement for a double \ in the spec string.  To make this
+// easier a ~ character can be used instead of \, e,g.:
+//
+//		alphabet_char_class my_char_class( "a-fA-F~d" );
+//
+// As in Perl, inverted char classes are supported by including a leading ^,
+// e.g.:
+//
+//		alphabet_char_class my_char_class( "^a-f" );
+//
+// The Perl special char classes of \w, \W, \d, \D, \s and \S are supported.
+// To specify \ do "\\\\", to specify ~ do "~~".
+
 class alphabet_char_class : public alphabet
 {
 private:
@@ -111,7 +154,13 @@ public:
 	{
 		return wanted_chars.is_set( c );
 	}
+
+private:
+	bool add_range( char start, char end );
+	bool add_special_char_class( char key );
 };
+
+// Common alphabets
 
 class alphabet_space : public alphabet
 {

@@ -92,97 +92,153 @@ bool char_map::is_set( char c ) const
 	return index[ char_to_size_t( c ) ] != 0;
 }
 
-alphabet_char_class::alphabet_char_class( const char * p_char_class_spec )
+char_map_w::char_map_w()
 {
-/*
-	char l_last_char = (char)0xff;
+	set_range( 'a', 'z' );
+	set_range( 'A', 'Z' );
+	set_range( '0', '9' );
+	set( '_' );
+}
 
-	while( *p_char_class_spec != '\0' )
+char_map_d::char_map_d()
+{
+	set_range( '0', '9' );
+}
+
+char_map_s::char_map_s()
+{
+	set( ' ' ).set( '\t' ).set( '\r' ).set( '\n' );
+}
+
+char_map_l::char_map_l()
+{
+	set_range( 'a', 'z' ).set_range( 'A', 'Z' );
+}
+
+alphabet_char_class::alphabet_char_class( const char * p_spec )
+{
+	bool is_inverted = false;
+
+	if( *p_spec == '^' )
 	{
-		if( *p_char_class_spec == '-' )			// Allow for ranges
+		is_inverted = true;
+		++p_spec;
+	}
+
+	char last_char = (char)0xff;
+
+	for( ; *p_spec != '\0'; ++p_spec )
+	{
+		if( *p_spec == '-' )			// Allow for ranges
 		{
-			p_char_class_spec++;
-
-			DBG_ASSERT( *p_char_class_spec != '\0' );	// See note Construct-Assumption
-
-			while( ++l_last_char <= *p_char_class_spec )
-				oc_alphabet[l_last_char] = 1;
-			p_char_class_spec++;
+			if( ! add_range( last_char, *++p_spec ) )
+				return;
 		}
 
-		else if( *p_char_class_spec == '^' )		// Allow for specials
+		else if( *p_spec == '\\' || *p_spec == '~' )		// Allow for specials
 		{
-			switch( *++p_char_class_spec )
-			{
-			case 'w':
-				index.set_range( 'a', 'z' );
-				index.set_range( 'A', 'Z' );
-				index.set_range( '0', '9' );
-				index.set( '_' );
-			break;
-
-			case 'l':
-				{
-				int l_c;
-				for( l_c = 'a'; l_c <= 'z'; l_c++ )
-					oc_alphabet[l_c] = 1;
-				for( l_c = 'A'; l_c <= 'Z'; l_c++ )
-					oc_alphabet[l_c] = 1;
-				}
-			break;
-
-			case 'd':
-				{
-				int l_c;
-				for( l_c = '0'; l_c <= '9'; l_c++ )
-					oc_alphabet[l_c] = 1;
-				}
-			break;
-
-			case 'u':
-				{
-				int l_c;
-				for( l_c = 0x21; l_c <= 0xff; l_c++ )
-					oc_alphabet[l_c] = 1;
-				}
-			break;
-
-			case 's':
-				oc_alphabet[' '] = 1;
-				oc_alphabet['\t'] = 1;
-				oc_alphabet['\r'] = 1;
-				oc_alphabet['\n'] = 1;
-			break;
-
-			case '^':
-				oc_alphabet['^'] = 1;
-			break;
-
-			case '-':
-				oc_alphabet['-'] = 1;
-			break;
-
-			case '\0':
-				DBG_ASSERT( 0 );			// An ill-formed alphabet
-			break;
-
-			default:
-				oc_alphabet[*p_char_class_spec] = 1;
-				}
-
-			p_char_class_spec++;
+			if( ! add_special_char_class( *++p_spec ) )
+				return;
 		}
 
 		else
 		{
-			last_char = *p_char_class_spec;
-			index.set( *p_char_class_spec++ );
+			wanted_chars.set( last_char = *p_spec );
 		}
 	}
 
 	if( is_inverted )
-		index.invert();
-*/
+		wanted_chars.invert();
+}
+
+bool alphabet_char_class::add_range( char start, char end )
+{
+	if( end == '\0' )
+	{
+		wanted_chars.set( '-' );
+		return false;
+	}
+	else
+		wanted_chars.set_range( start, end );	// Don't ++ last_char here incase we have a spec of a-a!
+		
+	return true;
+}
+
+bool alphabet_char_class::add_special_char_class( char key )
+{
+	switch( key )
+	{
+	case 'w':
+		wanted_chars.merge( char_map_w() );
+	break;
+	
+	case 'W':
+		wanted_chars.merge( char_map_w().invert() );
+	break;
+
+	case 'd':
+		wanted_chars.merge( char_map_d() );;
+	break;
+	
+	case 'D':
+		wanted_chars.merge( char_map_d().invert() );
+	break;
+
+	case 's':
+		wanted_chars.merge( char_map_s() );
+	break;
+
+	case 'S':
+		wanted_chars.merge( char_map_s().invert() );
+	break;
+
+	case 'l':
+		wanted_chars.merge( char_map_l() );
+	break;
+	
+	case 'L':
+		wanted_chars.merge( char_map_l().invert() );
+	break;
+
+	case 'u':
+		wanted_chars.set_range( '\x21', '\xff' );
+	break;
+
+	case '\\':
+		wanted_chars.set( '\\' );
+	break;
+
+	case '~':
+		wanted_chars.set( '~' );
+	break;
+
+	case '-':
+		wanted_chars.set( '-' );
+	break;
+
+	// The following included for completeness.  Instead of ~t you could do \t etc.
+	case 't':
+		wanted_chars.set( '\t' );
+	break;
+
+	case 'r':
+		wanted_chars.set( '\r' );
+	break;
+
+	case 'n':
+		wanted_chars.set( '\n' );
+	break;
+
+	case '\0':
+		wanted_chars.set( '~' );
+		return false;
+	break;
+
+	default:
+		wanted_chars.set( key );
+	}
+	
+	return true;
 }
 
 } // End of namespace cl

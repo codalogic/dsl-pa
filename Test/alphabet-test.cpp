@@ -288,7 +288,96 @@ TFUNCTION( alphabet_char_class_test )
 {
 	TBEGIN( " Alphabet_char_class tests" );
 	
+	{
 	TSETUP( alphabet_char_class my_char_class( "a-z" ) );
 	TTEST( my_char_class.is_wanted( 'a' ) );
 	TTEST( ! my_char_class.is_wanted( '$' ) );
+	}
+	
+	{
+	TSETUP( alphabet_char_class my_char_class( "a-dm-oxyz" ) );
+	TTEST( my_char_class.is_wanted( 'a' ) );
+	TTEST( my_char_class.is_wanted( 'd' ) );
+	TTEST( ! my_char_class.is_wanted( 'e' ) );
+	TTEST( ! my_char_class.is_wanted( 'l' ) );
+	TTEST( my_char_class.is_wanted( 'm' ) );
+	TTEST( my_char_class.is_wanted( 'o' ) );
+	TTEST( ! my_char_class.is_wanted( 'p' ) );
+	TTEST( my_char_class.is_wanted( 'x' ) );
+	TTEST( my_char_class.is_wanted( 'y' ) );
+	TTEST( my_char_class.is_wanted( 'z' ) );
+	}
+	
+	{
+	TSETUP( alphabet_char_class my_char_class( "^a-dm-oxyz" ) );
+	TTEST( ! my_char_class.is_wanted( 'a' ) );
+	TTEST( ! my_char_class.is_wanted( 'd' ) );
+	TTEST( my_char_class.is_wanted( 'e' ) );
+	TTEST( my_char_class.is_wanted( 'l' ) );
+	TTEST( ! my_char_class.is_wanted( 'm' ) );
+	TTEST( ! my_char_class.is_wanted( 'o' ) );
+	TTEST( my_char_class.is_wanted( 'p' ) );
+	TTEST( ! my_char_class.is_wanted( 'x' ) );
+	TTEST( ! my_char_class.is_wanted( 'y' ) );
+	TTEST( ! my_char_class.is_wanted( 'z' ) );
+	}
+	
+	{
+	TSETUP( alphabet_char_class my_char_class( "\\da-f" ) );
+	TTEST( my_char_class.is_wanted( 'a' ) );
+	TTEST( my_char_class.is_wanted( 'd' ) );
+	TTEST( my_char_class.is_wanted( '2' ) );
+	TTEST( ! my_char_class.is_wanted( 'l' ) );
+	}
+	
+	{
+	TSETUP( alphabet_char_class my_char_class( "~d" ) );
+	TTEST( my_char_class.is_wanted( '2' ) );
+	TTEST( ! my_char_class.is_wanted( 'l' ) );
+	}
+	
+	{
+	TSETUP( alphabet_char_class my_char_class( "~D" ) );
+	TTEST( ! my_char_class.is_wanted( '2' ) );
+	TTEST( my_char_class.is_wanted( 'l' ) );
+	}
+	
+	{
+	TSETUP( alphabet_char_class my_char_class( "~w" ) );
+	TTEST( my_char_class.is_wanted( '2' ) );
+	TTEST( ! my_char_class.is_wanted( '$' ) );
+	}
+	
+	{
+	TSETUP( alphabet_char_class my_char_class( "~W" ) );
+	TTEST( ! my_char_class.is_wanted( '2' ) );
+	TTEST( my_char_class.is_wanted( '$' ) );
+	}
+	
+	{
+	TSETUP( alphabet_char_class my_char_class( "~s" ) );
+	TTEST( my_char_class.is_wanted( ' ' ) );
+	TTEST( ! my_char_class.is_wanted( '$' ) );
+	}
+	
+	{
+	TSETUP( alphabet_char_class my_char_class( "~S" ) );
+	TTEST( ! my_char_class.is_wanted( ' ' ) );
+	TTEST( my_char_class.is_wanted( '$' ) );
+	}
+	
+	{
+	TSETUP( alphabet_char_class my_char_class( "~d~w" ) );
+	TTEST( my_char_class.is_wanted( '2' ) );
+	TTEST( my_char_class.is_wanted( 'l' ) );
+	}
+	
+	{
+	// Combining two inverted alphabets is a bit non-sensical!
+	// (Here \S would effectively overwrite the chars selected by \D.
+	// Use "^\d\s" instead.)
+	//TSETUP( alphabet_char_class my_char_class( "~D~S" ) );
+	//TTEST( ! my_char_class.is_wanted( '2' ) );
+	//TTEST( ! my_char_class.is_wanted( 'l' ) );
+	}
 }
