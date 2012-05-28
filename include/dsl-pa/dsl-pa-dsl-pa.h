@@ -69,6 +69,8 @@ public:
 class dsl_pa
 {
 private:
+	const static size_t unbounded = ~0;
+
 	reader & r_reader;
 
 public:
@@ -117,6 +119,14 @@ public:
 		return true;	// Won't be called!
 	}
 	
+	// The primary workhorse functions
+	size_t get( std::string * p_output, const alphabet & r_alphabet );
+	size_t get( std::string * p_output, const alphabet & r_alphabet, size_t max_chars );
+	size_t get_until( std::string * p_output, const alphabet & r_alphabet );
+	size_t get_bounded_until( std::string * p_output, const alphabet & r_alphabet, size_t max_chars );
+	size_t get_escaped_until( std::string * p_output, const alphabet & r_alphabet, char escape_char );
+	size_t get_until( std::string * p_output, const alphabet & r_alphabet, char escape_char, size_t max_chars );
+
 	// Type specific parsing functions
 	bool ws();
 	bool opt_ws();

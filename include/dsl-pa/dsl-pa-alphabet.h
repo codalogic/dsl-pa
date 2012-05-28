@@ -83,6 +83,7 @@ private:
 public:
 	char_map();
 	void clear();
+	char_map & clear( char c );
 	char_map & set( char c );
 	char_map & set_range( char start, char end );
 	char_map & set_inverted_range( char start, char end );

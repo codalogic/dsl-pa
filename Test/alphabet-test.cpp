@@ -346,12 +346,14 @@ TFUNCTION( alphabet_char_class_test )
 	TSETUP( alphabet_char_class my_char_class( "~w" ) );
 	TTEST( my_char_class.is_wanted( '2' ) );
 	TTEST( ! my_char_class.is_wanted( '$' ) );
+	TTEST( ! my_char_class.is_wanted( '\0' ) );
 	}
 	
 	{
 	TSETUP( alphabet_char_class my_char_class( "~W" ) );
 	TTEST( ! my_char_class.is_wanted( '2' ) );
 	TTEST( my_char_class.is_wanted( '$' ) );
+	TTEST( ! my_char_class.is_wanted( '\0' ) );
 	}
 	
 	{
@@ -364,6 +366,7 @@ TFUNCTION( alphabet_char_class_test )
 	TSETUP( alphabet_char_class my_char_class( "~S" ) );
 	TTEST( ! my_char_class.is_wanted( ' ' ) );
 	TTEST( my_char_class.is_wanted( '$' ) );
+	TTEST( ! my_char_class.is_wanted( '\0' ) );
 	}
 	
 	{

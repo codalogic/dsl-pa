@@ -219,6 +219,151 @@ TFUNCTION( dsl_pa_ws_test )
 	}
 }
 
+TFUNCTION( dsl_pa_get_test )
+{
+	TBEGIN( "dsl pa get() tests" );
+
+	{
+	reader_string my_reader( "Mode p=12" );
+	dsl_pa my_pa( my_reader );
+
+	std::string command;
+	std::string channel;
+	std::string level;
+	
+	TTEST( my_pa.get( &command, alphabet_word_char() ) &&
+				my_pa.ws() &&
+				my_pa.get( &channel, alphabet_alpha() ) &&
+				my_pa.opt_ws() &&
+				my_pa.is_char( '=' ) &&
+				my_pa.opt_ws() &&
+				my_pa.get( &level, alphabet_digit() ) );
+				
+	TTEST( command == "Mode" );
+	TTEST( channel == "p" );
+	TTEST( level == "12" );
+	}
+
+	{
+	reader_string my_reader( "  Mode p=12" );
+	dsl_pa my_pa( my_reader );
+
+	std::string command;
+	
+	TTEST( my_pa.opt_ws() && my_pa.get( &command, alphabet_word_char() ) == 4 );
+				
+	TTEST( command == "Mode" );
+	}
+
+	{
+	reader_string my_reader( "Mode p=12" );
+	dsl_pa my_pa( my_reader );
+
+	std::string command_1;
+	std::string command_2;
+	std::string channel;
+	std::string level;
+	
+	TTEST( my_pa.get( &command_1, alphabet_word_char(), 2 ) &&
+				my_pa.get( &command_2, alphabet_word_char() ) &&
+				my_pa.ws() &&
+				my_pa.get( &channel, alphabet_alpha() ) &&
+				my_pa.opt_ws() &&
+				my_pa.is_char( '=' ) &&
+				my_pa.opt_ws() &&
+				my_pa.get( &level, alphabet_digit() ) );
+				
+	TTEST( command_1 == "Mo" );
+	TTEST( command_2 == "de" );
+	TTEST( channel == "p" );
+	TTEST( level == "12" );
+	}
+}
+
+TFUNCTION( dsl_pa_get_until_test )
+{
+	TBEGIN( "dsl pa get_until() tests" );
+	
+	{
+	reader_string my_reader( "Mode p=12" );
+	dsl_pa my_pa( my_reader );
+
+	std::string command;
+	std::string channel;
+	std::string level;
+	
+	TTEST( my_pa.get_until( &command, alphabet_space() ) &&
+				my_pa.ws() &&
+				my_pa.get_until( &channel, alphabet_char_class( "=" ) ) &&
+				my_pa.opt_ws() &&
+				my_pa.is_char( '=' ) &&
+				my_pa.opt_ws() &&
+				my_pa.get_until( &level, alphabet_space() ) );
+				
+	TTEST( command == "Mode" );
+	TTEST( channel == "p" );
+	TTEST( level == "12" );
+	}
+
+	{
+	reader_string my_reader( "  Mode p=12" );
+	dsl_pa my_pa( my_reader );
+
+	std::string command;
+	
+	TTEST( my_pa.opt_ws() && my_pa.get_until( &command, alphabet_space() ) == 4 );
+				
+	TTEST( command == "Mode" );
+	}
+	
+	{
+	reader_string my_reader( "p='He\\'s got it all' 12 " );
+	dsl_pa my_pa( my_reader );
+
+	std::string channel;
+	std::string sentence;
+	std::string level;
+	
+	TTEST( my_pa.get_until( &channel, alphabet_char_class( "=" ) ) &&
+				my_pa.opt_ws() &&
+				my_pa.is_char( '=' ) &&
+				my_pa.opt_ws() &&
+				my_pa.is_char( '\'' ) &&
+				my_pa.get_escaped_until( &sentence, alphabet_char_class( "'" ), '\\' ) &&
+				my_pa.is_char( '\'' ) &&
+				my_pa.ws() &&
+				my_pa.get_until( &level, alphabet_space() ) );
+				
+	TTEST( channel == "p" );
+	TTEST( sentence == "He's got it all" );
+	TTEST( level == "12" );
+	}
+	
+	{
+	reader_string my_reader( "Mode p=12" );
+	dsl_pa my_pa( my_reader );
+
+	std::string command_1;
+	std::string command_2;
+	std::string channel;
+	std::string level;
+	
+	TTEST( my_pa.get_bounded_until( &command_1, alphabet_space(), 2 ) &&
+				my_pa.get_until( &command_2, alphabet_space() ) &&
+				my_pa.ws() &&
+				my_pa.get_until( &channel, alphabet_char_class( "=" ) ) &&
+				my_pa.opt_ws() &&
+				my_pa.is_char( '=' ) &&
+				my_pa.opt_ws() &&
+				my_pa.get_until( &level, alphabet_space() ) );
+				
+	TTEST( command_1 == "Mo" );
+	TTEST( command_2 == "de" );
+	TTEST( channel == "p" );
+	TTEST( level == "12" );
+	}
+}
+
 TFUNCTION( dsl_pa_test )
 {
 	TBEGIN( "dsl pa class tests" );

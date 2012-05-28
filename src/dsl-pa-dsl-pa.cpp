@@ -42,6 +42,77 @@ namespace cl {
 
 using namespace alphabet_helpers;
 
+size_t dsl_pa::get( std::string * p_output, const alphabet & r_alphabet )
+{
+	return get( p_output, r_alphabet, unbounded );
+}
+
+size_t dsl_pa::get( std::string * p_output, const alphabet & r_alphabet, size_t max_chars )
+{
+	size_t n_chars;
+	
+	for( n_chars = 0; n_chars < max_chars; ++n_chars )
+	{
+		if( ! r_alphabet.is_wanted( get() ) )
+			break;
+			
+		p_output->push_back( current() );
+	}
+	
+	if( n_chars < max_chars )
+		unget();
+	
+	return n_chars;
+}
+
+size_t dsl_pa::get_until( std::string * p_output, const alphabet & r_alphabet )
+{
+	return get_until( p_output, r_alphabet, '\0', unbounded );
+}
+
+size_t dsl_pa::get_bounded_until( std::string * p_output, const alphabet & r_alphabet, size_t max_chars )
+{
+	return get_until( p_output, r_alphabet, '\0', max_chars );
+}
+
+size_t dsl_pa::get_escaped_until( std::string * p_output, const alphabet & r_alphabet, char escape_char )
+{
+	return get_until( p_output, r_alphabet, escape_char, unbounded );
+}
+
+size_t dsl_pa::get_until( std::string * p_output, const alphabet & r_alphabet, char escape_char, size_t max_chars )
+{
+	size_t n_chars;
+	bool is_escaped = false;
+	
+	for( n_chars = 0; n_chars < max_chars; ++n_chars )
+	{
+		if( get() == reader::R_EOI )
+			return n_chars;
+			
+		if( ! is_escaped )
+		{
+			if( r_alphabet.is_wanted( current() ) )	// For get_until(), 'wanted' chars are unwanted!
+				break;
+
+			if( current() == escape_char )
+				is_escaped = true;	// Escape chars are not collected in output
+			else
+				p_output->push_back( current() );
+		}
+		else
+		{
+			p_output->push_back( current() );
+			is_escaped = false;
+		}
+	}
+	
+	if( n_chars < max_chars )
+		unget();
+	
+	return n_chars;
+}
+
 bool dsl_pa::ws()
 {
 	char c = get();

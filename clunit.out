@@ -1,4 +1,4 @@
-Tests run on Mon May 28 12:40:42 2012
+Tests run on Mon May 28 14:03:33 2012
 
 
     Alphabet tests [c:\home\pete\sw\dsl-pa\test\alphabet-test.cpp:42]
@@ -219,15 +219,18 @@ Tests run on Mon May 28 12:40:42 2012
       : alphabet_char_class my_char_class( "~w" )
     ok: my_char_class.is_wanted( '2' )
     ok: ! my_char_class.is_wanted( '$' )
+    ok: ! my_char_class.is_wanted( '\0' )
       : alphabet_char_class my_char_class( "~W" )
     ok: ! my_char_class.is_wanted( '2' )
     ok: my_char_class.is_wanted( '$' )
+    ok: ! my_char_class.is_wanted( '\0' )
       : alphabet_char_class my_char_class( "~s" )
     ok: my_char_class.is_wanted( ' ' )
     ok: ! my_char_class.is_wanted( '$' )
       : alphabet_char_class my_char_class( "~S" )
     ok: ! my_char_class.is_wanted( ' ' )
     ok: my_char_class.is_wanted( '$' )
+    ok: ! my_char_class.is_wanted( '\0' )
       : alphabet_char_class my_char_class( "~d~w" )
     ok: my_char_class.is_wanted( '2' )
     ok: my_char_class.is_wanted( 'l' )
@@ -310,7 +313,43 @@ Tests run on Mon May 28 12:40:42 2012
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
 
-    dsl pa class tests [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:224]
+    dsl pa get() tests [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:224]
+    ==========================
+    ok: my_pa.get( &command, alphabet_word_char() ) && my_pa.ws() && my_pa.get( &channel, alphabet_alpha() ) && my_pa.opt_ws() && my_pa.is_char( '=' ) && my_pa.opt_ws() && my_pa.get( &level, alphabet_digit() )
+    ok: command == "Mode"
+    ok: channel == "p"
+    ok: level == "12"
+    ok: my_pa.opt_ws() && my_pa.get( &command, alphabet_word_char() ) == 4
+    ok: command == "Mode"
+    ok: my_pa.get( &command_1, alphabet_word_char(), 2 ) && my_pa.get( &command_2, alphabet_word_char() ) && my_pa.ws() && my_pa.get( &channel, alphabet_alpha() ) && my_pa.opt_ws() && my_pa.is_char( '=' ) && my_pa.opt_ws() && my_pa.get( &level, alphabet_digit() )
+    ok: command_1 == "Mo"
+    ok: command_2 == "de"
+    ok: channel == "p"
+    ok: level == "12"
+    ok: ! _CrtMemDifference( &s3, &s1, &s2 )
+
+
+    dsl pa get_until() tests [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:285]
+    ==========================
+    ok: my_pa.get_until( &command, alphabet_space() ) && my_pa.ws() && my_pa.get_until( &channel, alphabet_char_class( "=" ) ) && my_pa.opt_ws() && my_pa.is_char( '=' ) && my_pa.opt_ws() && my_pa.get_until( &level, alphabet_space() )
+    ok: command == "Mode"
+    ok: channel == "p"
+    ok: level == "12"
+    ok: my_pa.opt_ws() && my_pa.get_until( &command, alphabet_space() ) == 4
+    ok: command == "Mode"
+    ok: my_pa.get_until( &channel, alphabet_char_class( "=" ) ) && my_pa.opt_ws() && my_pa.is_char( '=' ) && my_pa.opt_ws() && my_pa.is_char( '\'' ) && my_pa.get_escaped_until( &sentence, alphabet_char_class( "'" ), '\\' ) && my_pa.is_char( '\'' ) && my_pa.ws() && my_pa.get_until( &level, alphabet_space() )
+    ok: channel == "p"
+    ok: sentence == "He's got it all"
+    ok: level == "12"
+    ok: my_pa.get_bounded_until( &command_1, alphabet_space(), 2 ) && my_pa.get_until( &command_2, alphabet_space() ) && my_pa.ws() && my_pa.get_until( &channel, alphabet_char_class( "=" ) ) && my_pa.opt_ws() && my_pa.is_char( '=' ) && my_pa.opt_ws() && my_pa.get_until( &level, alphabet_space() )
+    ok: command_1 == "Mo"
+    ok: command_2 == "de"
+    ok: channel == "p"
+    ok: level == "12"
+    ok: ! _CrtMemDifference( &s3, &s1, &s2 )
+
+
+    dsl pa class tests [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:369]
     ==========================
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
@@ -745,4 +784,4 @@ TODOs (1):
 ------------------------
 - Add line counting functionality to reader class [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:341]
 
-0 error(s), 1 todo(s), 575 test(s)
+0 error(s), 1 todo(s), 606 test(s)

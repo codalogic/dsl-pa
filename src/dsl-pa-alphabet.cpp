@@ -38,6 +38,8 @@
 
 #include "dsl-pa/dsl-pa-alphabet.h"
 
+#include "dsl-pa/dsl-pa-reader.h"
+
 namespace cl {
 
 using namespace cl::alphabet_helpers;
@@ -51,6 +53,12 @@ void char_map::clear()
 {
 	for( size_t i=0; i<sizeof( char_map_array ); ++i )
 		index[i] = 0;
+}
+
+char_map & char_map::clear( char c )
+{
+	index[ char_to_size_t( c ) ] = 0;
+	return *this;
 }
 
 char_map & char_map::set( char c )
@@ -149,6 +157,8 @@ alphabet_char_class::alphabet_char_class( const char * p_spec )
 
 	if( is_inverted )
 		wanted_chars.invert();
+		
+	wanted_chars.clear( reader::R_EOI );	// No alphabets want EOI ('\0')
 }
 
 bool alphabet_char_class::add_range( char start, char end )
