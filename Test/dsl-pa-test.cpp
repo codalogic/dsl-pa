@@ -409,6 +409,22 @@ TFUNCTION( dsl_pa_fixed_test )
 	}
 }
 
+TFUNCTION( dsl_pa_number_parse_test )
+{
+	TBEGIN( "dsl pa number parsing tests" );
+	
+	TTODO( "int_num( std::string * p_num ) Tests" );
+	TTODO( "int_num( int * p_int ) Tests" );
+	TTODO( "uint_num( std::string * p_num ) Tests" );
+	TTODO( "uint_num( unsigned int * p_int ) Tests" );
+	TTODO( "float_num( std::string * p_num ) Tests" );
+	TTODO( "float_num( float * p_float ) Tests" );
+	TTODO( "float_num( double * p_float ) Tests" );
+	TTODO( "sci_num( std::string * p_num ) Tests" );
+	TTODO( "sci_num( float * p_float ) Tests" );
+	TTODO( "sci_num( double * p_float ) Tests" );
+}
+
 TFUNCTION( dsl_pa_test )
 {
 	TBEGIN( "dsl pa class tests" );
