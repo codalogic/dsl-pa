@@ -253,6 +253,52 @@ void reader_unget_test( reader_factory & r_reader_factory )
 	TTEST( p_reader->get() == 'e' );
 }
 
+void reader_location_and_unget_test( reader_factory & r_reader_factory )
+{
+	TBEGIN( (std::string( r_reader_factory.form_name() ) + " reader location tests").c_str() );
+	
+	{
+	TSETUP( std::auto_ptr< reader > p_reader( r_reader_factory.create( "abcdef" ) ) );
+	TCRITICALTEST( p_reader.get() != 0 );
+	
+	TTEST( p_reader->get() == 'a' );
+	TTEST( p_reader->get() == 'b' );
+	TTEST( p_reader->get() == 'c' );
+
+	// This combination of unget() and location_push() interact with each other
+	// and requires necessitates care in the implementation. See 
+	// unget_buffer_size parameter for reader::source_location_push()
+	TSETUP( p_reader->unget() );
+	TTEST( p_reader->location_push() );
+
+	TTEST( p_reader->get() == 'c' );
+	TTEST( p_reader->get() == 'd' );
+	TTEST( p_reader->get() == 'e' );
+	TTEST( p_reader->location_top() );
+	TTEST( p_reader->get() == 'c' );
+	}
+	
+	{
+	TSETUP( std::auto_ptr< reader > p_reader( r_reader_factory.create( "abc" ) ) );
+	TCRITICALTEST( p_reader.get() != 0 );
+	
+	TTEST( p_reader->get() == 'a' );
+	TTEST( p_reader->get() == 'b' );
+	TTEST( p_reader->get() == 'c' );
+	TTEST( p_reader->get() == '\0' );
+
+	// This combination of unget() and location_push() interact with each other
+	// and requires necessitates care in the implementation. See 
+	// unget_buffer_size parameter for reader::source_location_push()
+	TSETUP( p_reader->unget() );
+	TTEST( p_reader->location_push() );
+
+	TTEST( p_reader->get() == '\0' );
+	TTEST( p_reader->location_top() );
+	TTEST( p_reader->get() == '\0' );
+	}
+}
+
 void reader_location_logger_test( reader_factory & r_reader_factory )
 {
 	TBEGIN( (std::string( r_reader_factory.form_name() ) + " reader location logger tests").c_str() );
@@ -298,6 +344,7 @@ void all_reader_tests( reader_factory & r_reader_factory )
 	reader_location_test( r_reader_factory );
 	reader_location_with_newline_test( r_reader_factory );
 	reader_unget_test( r_reader_factory );
+	reader_location_and_unget_test( r_reader_factory );
 	reader_location_logger_test( r_reader_factory );
 }
 

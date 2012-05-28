@@ -1,4 +1,4 @@
-Tests run on Mon May 28 15:11:56 2012
+Tests run on Mon May 28 20:46:54 2012
 
 
     Alphabet tests [c:\home\pete\sw\dsl-pa\test\alphabet-test.cpp:42]
@@ -360,17 +360,210 @@ Tests run on Mon May 28 15:11:56 2012
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
 
-    dsl pa number parsing tests [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:414]
+    dsl pa number parsing tests [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:465]
+    ==========================
+      get_int( std::string * p_num ) Tests
+      Input: 100
+    ok: my_pa.get_int( &result ) == n_chars
+    ok: result == expected_value
+      Input: -100
+    ok: my_pa.get_int( &result ) == n_chars
+    ok: result == expected_value
+      Input: 0
+    ok: my_pa.get_int( &result ) == n_chars
+    ok: result == expected_value
+      Input: -0
+    ok: my_pa.get_int( &result ) == n_chars
+    ok: result == expected_value
+      Input: 000
+    ok: my_pa.get_int( &result ) == n_chars
+    ok: result == expected_value
+      Input: -
+    ok: my_pa.get_int( &result ) == n_chars
+    ok: my_pa.get() == *p_input
+      Input: +
+    ok: my_pa.get_int( &result ) == n_chars
+    ok: my_pa.get() == *p_input
+      Input: --0
+    ok: my_pa.get_int( &result ) == n_chars
+    ok: my_pa.get() == *p_input
+      Input: 
+    ok: my_pa.get_int( &result ) == n_chars
+    ok: my_pa.get() == *p_input
+      Input: w
+    ok: my_pa.get_int( &result ) == n_chars
+    ok: my_pa.get() == *p_input
+      get_uint( std::string * p_num ) Tests
+      Input: 100
+    ok: my_pa.get_uint( &result ) == n_chars
+    ok: result == expected_value
+      Input: -100
+    ok: my_pa.get_uint( &result ) == n_chars
+    ok: result == expected_value
+      Input: 0
+    ok: my_pa.get_uint( &result ) == n_chars
+    ok: result == expected_value
+      Input: -0
+    ok: my_pa.get_uint( &result ) == n_chars
+    ok: result == expected_value
+      Input: 000
+    ok: my_pa.get_uint( &result ) == n_chars
+    ok: result == expected_value
+      Input: -
+    ok: my_pa.get_uint( &result ) == n_chars
+    ok: my_pa.get() == *p_input
+      Input: +
+    ok: my_pa.get_int( &result ) == n_chars
+    ok: my_pa.get() == *p_input
+      Input: --0
+    ok: my_pa.get_int( &result ) == n_chars
+    ok: my_pa.get() == *p_input
+      Input: 
+    ok: my_pa.get_uint( &result ) == n_chars
+    ok: my_pa.get() == *p_input
+      Input: w
+    ok: my_pa.get_uint( &result ) == n_chars
+    ok: my_pa.get() == *p_input
+      get_float( float * p_float ) Tests
+      Input: 1
+    ok: my_pa.get_float( &result ) == is_valid
+    ok: result == expected_value
+      Input: 1.0
+    ok: my_pa.get_float( &result ) == is_valid
+    ok: result == expected_value
+      Input: 0.1
+    ok: my_pa.get_float( &result ) == is_valid
+    ok: result == expected_value
+      Input: .1
+    ok: my_pa.get_float( &result ) == is_valid
+    ok: result == expected_value
+      Input: -1
+    ok: my_pa.get_float( &result ) == is_valid
+    ok: result == expected_value
+      Input: -1.0
+    ok: my_pa.get_float( &result ) == is_valid
+    ok: result == expected_value
+      Input: -0.1
+    ok: my_pa.get_float( &result ) == is_valid
+    ok: result == expected_value
+      Input: -.1
+    ok: my_pa.get_float( &result ) == is_valid
+    ok: result == expected_value
+      Input: -
+    ok: my_pa.get_float( &result ) == is_valid
+    ok: my_pa.get() == *p_input
+      Input: +
+    ok: my_pa.get_int( &result ) == n_chars
+    ok: my_pa.get() == *p_input
+      Input: --0
+    ok: my_pa.get_int( &result ) == n_chars
+    ok: my_pa.get() == *p_input
+      Input: .
+    ok: my_pa.get_float( &result ) == is_valid
+    ok: my_pa.get() == *p_input
+      Input: 
+    ok: my_pa.get_float( &result ) == is_valid
+    ok: my_pa.get() == *p_input
+      Input: w
+    ok: my_pa.get_float( &result ) == is_valid
+    ok: my_pa.get() == *p_input
+      get_sci_float( float * p_float ) Tests
+      Input: 1 
+    ok: my_pa.get_sci_float( &result ) == is_valid
+    ok: result == expected_value
+    ok: my_pa.get() == next_char
+      Input: 1.0 
+    ok: my_pa.get_sci_float( &result ) == is_valid
+    ok: result == expected_value
+    ok: my_pa.get() == next_char
+      Input: 0.1 
+    ok: my_pa.get_sci_float( &result ) == is_valid
+    ok: result == expected_value
+    ok: my_pa.get() == next_char
+      Input: 1
+    ok: my_pa.get_sci_float( &result ) == is_valid
+    ok: result == expected_value
+    ok: my_pa.get() == next_char
+      Input: 1.0
+    ok: my_pa.get_sci_float( &result ) == is_valid
+    ok: result == expected_value
+    ok: my_pa.get() == next_char
+      Input: 0.1
+    ok: my_pa.get_sci_float( &result ) == is_valid
+    ok: result == expected_value
+    ok: my_pa.get() == next_char
+      Input: .1
+    ok: my_pa.get_sci_float( &result ) == is_valid
+    ok: result == expected_value
+    ok: my_pa.get() == next_char
+      Input: -1
+    ok: my_pa.get_sci_float( &result ) == is_valid
+    ok: result == expected_value
+    ok: my_pa.get() == next_char
+      Input: -1.0
+    ok: my_pa.get_sci_float( &result ) == is_valid
+    ok: result == expected_value
+    ok: my_pa.get() == next_char
+      Input: -0.1
+    ok: my_pa.get_sci_float( &result ) == is_valid
+    ok: result == expected_value
+    ok: my_pa.get() == next_char
+      Input: -.1
+    ok: my_pa.get_sci_float( &result ) == is_valid
+    ok: result == expected_value
+    ok: my_pa.get() == next_char
+      Input: 1e1
+    ok: my_pa.get_sci_float( &result ) == is_valid
+    ok: result == expected_value
+    ok: my_pa.get() == next_char
+      Input: 1e-1
+    ok: my_pa.get_sci_float( &result ) == is_valid
+    ok: result == expected_value
+    ok: my_pa.get() == next_char
+      Input: 1E1
+    ok: my_pa.get_sci_float( &result ) == is_valid
+    ok: result == expected_value
+    ok: my_pa.get() == next_char
+      Input: 1E-1
+    ok: my_pa.get_sci_float( &result ) == is_valid
+    ok: result == expected_value
+    ok: my_pa.get() == next_char
+      Input: 1e
+    ok: my_pa.get_sci_float( &result ) == is_valid
+    ok: result == expected_value
+    ok: my_pa.get() == next_char
+      Input: 1e-
+    ok: my_pa.get_sci_float( &result ) == is_valid
+    ok: result == expected_value
+    ok: my_pa.get() == next_char
+      Input: 1e+
+    ok: my_pa.get_sci_float( &result ) == is_valid
+    ok: result == expected_value
+    ok: my_pa.get() == next_char
+      Input: -
+    ok: my_pa.get_sci_float( &result ) == is_valid
+    ok: my_pa.get() == next_char
+      Input: .
+    ok: my_pa.get_sci_float( &result ) == is_valid
+    ok: my_pa.get() == next_char
+      Input: -e
+    ok: my_pa.get_sci_float( &result ) == is_valid
+    ok: my_pa.get() == next_char
+      Input: 
+    ok: my_pa.get_sci_float( &result ) == is_valid
+    ok: my_pa.get() == next_char
+      Input: w
+    ok: my_pa.get_sci_float( &result ) == is_valid
+    ok: my_pa.get() == next_char
+    ok: ! _CrtMemDifference( &s3, &s1, &s2 )
+
+
+    dsl pa class tests [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:539]
     ==========================
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
 
-    dsl pa class tests [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:430]
-    ==========================
-    ok: ! _CrtMemDifference( &s3, &s1, &s2 )
-
-
-    String reader tests [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:306]
+    String reader tests [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:353]
     ==========================
     String reader basic tests [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:101]
     ==========================
@@ -476,7 +669,32 @@ Tests run on Mon May 28 15:11:56 2012
     ok: p_reader->get() == 'd'
     ok: p_reader->peek() == 'e'
     ok: p_reader->get() == 'e'
-    String reader location logger tests [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:258]
+    String reader location tests [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:258]
+    ==========================
+      : std::auto_ptr< reader > p_reader( r_reader_factory.create( "abcdef" ) )
+    ok: p_reader.get() != 0
+    ok: p_reader->get() == 'a'
+    ok: p_reader->get() == 'b'
+    ok: p_reader->get() == 'c'
+      : p_reader->unget()
+    ok: p_reader->location_push()
+    ok: p_reader->get() == 'c'
+    ok: p_reader->get() == 'd'
+    ok: p_reader->get() == 'e'
+    ok: p_reader->location_top()
+    ok: p_reader->get() == 'c'
+      : std::auto_ptr< reader > p_reader( r_reader_factory.create( "abc" ) )
+    ok: p_reader.get() != 0
+    ok: p_reader->get() == 'a'
+    ok: p_reader->get() == 'b'
+    ok: p_reader->get() == 'c'
+    ok: p_reader->get() == '\0'
+      : p_reader->unget()
+    ok: p_reader->location_push()
+    ok: p_reader->get() == '\0'
+    ok: p_reader->location_top()
+    ok: p_reader->get() == '\0'
+    String reader location logger tests [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:304]
     ==========================
       : std::auto_ptr< reader > p_reader( r_reader_factory.create( "abcdef" ) )
     ok: p_reader.get() != 0
@@ -505,7 +723,7 @@ Tests run on Mon May 28 15:11:56 2012
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
 
-    File reader tests [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:313]
+    File reader tests [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:360]
     ==========================
     File reader basic tests [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:101]
     ==========================
@@ -617,7 +835,34 @@ Tests run on Mon May 28 15:11:56 2012
     ok: p_reader->get() == 'd'
     ok: p_reader->peek() == 'e'
     ok: p_reader->get() == 'e'
-    File reader location logger tests [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:258]
+    File reader location tests [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:258]
+    ==========================
+      : std::auto_ptr< reader > p_reader( r_reader_factory.create( "abcdef" ) )
+    ok: fout.is_open()
+    ok: p_reader.get() != 0
+    ok: p_reader->get() == 'a'
+    ok: p_reader->get() == 'b'
+    ok: p_reader->get() == 'c'
+      : p_reader->unget()
+    ok: p_reader->location_push()
+    ok: p_reader->get() == 'c'
+    ok: p_reader->get() == 'd'
+    ok: p_reader->get() == 'e'
+    ok: p_reader->location_top()
+    ok: p_reader->get() == 'c'
+      : std::auto_ptr< reader > p_reader( r_reader_factory.create( "abc" ) )
+    ok: fout.is_open()
+    ok: p_reader.get() != 0
+    ok: p_reader->get() == 'a'
+    ok: p_reader->get() == 'b'
+    ok: p_reader->get() == 'c'
+    ok: p_reader->get() == '\0'
+      : p_reader->unget()
+    ok: p_reader->location_push()
+    ok: p_reader->get() == '\0'
+    ok: p_reader->location_top()
+    ok: p_reader->get() == '\0'
+    File reader location logger tests [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:304]
     ==========================
       : std::auto_ptr< reader > p_reader( r_reader_factory.create( "abcdef" ) )
     ok: fout.is_open()
@@ -647,7 +892,7 @@ Tests run on Mon May 28 15:11:56 2012
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
 
-    Mem buf reader tests [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:320]
+    Mem buf reader tests [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:367]
     ==========================
     Mem buf reader basic tests [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:101]
     ==========================
@@ -753,7 +998,32 @@ Tests run on Mon May 28 15:11:56 2012
     ok: p_reader->get() == 'd'
     ok: p_reader->peek() == 'e'
     ok: p_reader->get() == 'e'
-    Mem buf reader location logger tests [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:258]
+    Mem buf reader location tests [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:258]
+    ==========================
+      : std::auto_ptr< reader > p_reader( r_reader_factory.create( "abcdef" ) )
+    ok: p_reader.get() != 0
+    ok: p_reader->get() == 'a'
+    ok: p_reader->get() == 'b'
+    ok: p_reader->get() == 'c'
+      : p_reader->unget()
+    ok: p_reader->location_push()
+    ok: p_reader->get() == 'c'
+    ok: p_reader->get() == 'd'
+    ok: p_reader->get() == 'e'
+    ok: p_reader->location_top()
+    ok: p_reader->get() == 'c'
+      : std::auto_ptr< reader > p_reader( r_reader_factory.create( "abc" ) )
+    ok: p_reader.get() != 0
+    ok: p_reader->get() == 'a'
+    ok: p_reader->get() == 'b'
+    ok: p_reader->get() == 'c'
+    ok: p_reader->get() == '\0'
+      : p_reader->unget()
+    ok: p_reader->location_push()
+    ok: p_reader->get() == '\0'
+    ok: p_reader->location_top()
+    ok: p_reader->get() == '\0'
+    Mem buf reader location logger tests [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:304]
     ==========================
       : std::auto_ptr< reader > p_reader( r_reader_factory.create( "abcdef" ) )
     ok: p_reader.get() != 0
@@ -782,7 +1052,7 @@ Tests run on Mon May 28 15:11:56 2012
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
 
-    Is char reader tests [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:327]
+    Is char reader tests [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:374]
     ==========================
     ok: ! my_reader.is_char( 'x' )
     ok: my_reader.is_char( 'a' )
@@ -791,23 +1061,14 @@ Tests run on Mon May 28 15:11:56 2012
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
 
-    Reader line counting tests [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:339]
+    Reader line counting tests [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:386]
     ==========================
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
     ok: _CrtCheckMemory() != 0
 
-TODOs (11):
+TODOs (2):
 ------------------------
-- int_num( std::string * p_num ) Tests [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:416]
-- int_num( int * p_int ) Tests [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:417]
-- uint_num( std::string * p_num ) Tests [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:418]
-- uint_num( unsigned int * p_int ) Tests [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:419]
-- float_num( std::string * p_num ) Tests [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:420]
-- float_num( float * p_float ) Tests [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:421]
-- float_num( double * p_float ) Tests [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:422]
-- sci_num( std::string * p_num ) Tests [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:423]
-- sci_num( float * p_float ) Tests [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:424]
-- sci_num( double * p_float ) Tests [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:425]
-- Add line counting functionality to reader class [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:341]
+- dsl_pa::record() [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:541]
+- Add line counting functionality to reader class [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:388]
 
-0 error(s), 11 todo(s), 614 test(s)
+0 error(s), 2 todo(s), 805 test(s)

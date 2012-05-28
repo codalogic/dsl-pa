@@ -60,7 +60,7 @@ private:
 
 	virtual char get_next_input() = 0;
 
-	virtual void source_location_push() = 0;
+	virtual void source_location_push( size_t unget_buffer_size ) = 0;
 	virtual void source_location_top() = 0;
 	virtual void source_location_pop() = 0;
 
@@ -73,7 +73,7 @@ public:
 	char get();
 	char current() const { return current_char; }
 	void unget() { unget( current() ); }	// Unget with argument ungets current char
-	void unget( char c ) { unget_buffer.push( c ); }
+	void unget( char c ) { if( c != R_EOI ) unget_buffer.push( c ); }
 	char peek() { get(); unget(); return current(); }
 	bool is_char( char c )
 	{	
@@ -89,12 +89,15 @@ public:
 	// do location_pop().  See also class location_logger.
 	bool location_push()
 	{
-		source_location_push();
+		// When we push a location, should we also store how deep the unget_buffer is?
+		source_location_push( unget_buffer.size() );
 		return true;
 	}
 	
 	bool location_top()
 	{
+		while( ! unget_buffer.empty() )
+			unget_buffer.pop();
 		source_location_top();
 		return true;
 	}
@@ -130,9 +133,9 @@ public:
 		return reader::R_EOI;
 	}
 
-	virtual void source_location_push()
+	virtual void source_location_push( size_t unget_buffer_size )
 	{
-		location_buffer.push( p_input );
+		location_buffer.push( p_input - unget_buffer_size );
 	}
 	virtual void source_location_top()
 	{
@@ -173,9 +176,9 @@ public:
 		return reader::R_EOI;
 	}
 
-	virtual void source_location_push()
+	virtual void source_location_push( size_t unget_buffer_size )
 	{
-		location_buffer.push( p_current );
+		location_buffer.push( p_current - unget_buffer_size );
 	}
 	virtual void source_location_top()
 	{
@@ -208,9 +211,11 @@ public:
 		return static_cast<char>( c );
 	}
 
-	virtual void source_location_push()
+	virtual void source_location_push( size_t unget_buffer_size )
 	{
-		location_buffer.push( fin.tellg() );
+		std::ifstream::pos_type pos = fin.tellg();
+		pos -= unget_buffer_size;
+		location_buffer.push( pos );
 	}
 	virtual void source_location_top()
 	{

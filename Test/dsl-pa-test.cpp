@@ -409,23 +409,134 @@ TFUNCTION( dsl_pa_fixed_test )
 	}
 }
 
+void dsl_pa_int_test( const char * p_input, int expected_value, size_t n_chars )
+{
+	TDOC( (std::string( "Input: " ) + p_input).c_str() );
+	reader_string my_reader( p_input );
+	dsl_pa my_pa( my_reader );
+	int result=0;
+	TTEST( my_pa.get_int( &result ) == n_chars );
+	if( n_chars != 0 )
+		{ TTEST( result == expected_value ); }
+	else
+		{ TTEST( my_pa.get() == *p_input ); }	// Check input location rewound
+}
+
+void dsl_pa_uint_test( const char * p_input, unsigned int expected_value, size_t n_chars )
+{
+	TDOC( (std::string( "Input: " ) + p_input).c_str() );
+	reader_string my_reader( p_input );
+	dsl_pa my_pa( my_reader );
+	unsigned int result=0;
+	TTEST( my_pa.get_uint( &result ) == n_chars );
+	if( n_chars != 0 )
+		{ TTEST( result == expected_value ); }
+	else
+		{ TTEST( my_pa.get() == *p_input ); }	// Check input location rewound
+}
+
+void dsl_pa_float_test( const char * p_input, float expected_value, bool is_valid )
+{
+	TDOC( (std::string( "Input: " ) + p_input).c_str() );
+	reader_string my_reader( p_input );
+	dsl_pa my_pa( my_reader );
+	float result=0;
+	TTEST( my_pa.get_float( &result ) == is_valid );
+	if( is_valid )
+		{ TTEST( result == expected_value ); }
+	else
+		{ TTEST( my_pa.get() == *p_input ); }	// Check input location rewound
+}
+
+void dsl_pa_sci_float_test( const char * p_input, float expected_value, bool is_valid, char next_char )
+{
+	TDOC( (std::string( "Input: " ) + p_input).c_str() );
+	reader_string my_reader( p_input );
+	dsl_pa my_pa( my_reader );
+	float result=0;
+	TTEST( my_pa.get_sci_float( &result ) == is_valid );
+	if( is_valid )
+		{ TTEST( result == expected_value ); }
+	TTEST( my_pa.get() == next_char );
+}
+
 TFUNCTION( dsl_pa_number_parse_test )
 {
 	TBEGIN( "dsl pa number parsing tests" );
 	
-	TTODO( "int_num( std::string * p_num ) Tests" );
-	TTODO( "int_num( int * p_int ) Tests" );
-	TTODO( "uint_num( std::string * p_num ) Tests" );
-	TTODO( "uint_num( unsigned int * p_int ) Tests" );
-	TTODO( "float_num( std::string * p_num ) Tests" );
-	TTODO( "float_num( float * p_float ) Tests" );
-	TTODO( "float_num( double * p_float ) Tests" );
-	TTODO( "sci_num( std::string * p_num ) Tests" );
-	TTODO( "sci_num( float * p_float ) Tests" );
-	TTODO( "sci_num( double * p_float ) Tests" );
+	TDOC( "get_int( std::string * p_num ) Tests" );
+	dsl_pa_int_test( "100", 100, 3 );
+	dsl_pa_int_test( "-100", -100, 4 );
+	dsl_pa_int_test( "0", 0, 1 );
+	dsl_pa_int_test( "-0", 0, 2 );
+	dsl_pa_int_test( "000", 0, 3 );
+	// The following should fail
+	dsl_pa_int_test( "-", 0, 0 );
+	dsl_pa_int_test( "+", 0, 0 );
+	dsl_pa_int_test( "--0", 0, 0 );
+	dsl_pa_int_test( "", 0, 0 );
+	dsl_pa_int_test( "w", 0, 0 );
+
+	TDOC( "get_uint( std::string * p_num ) Tests" );
+	dsl_pa_uint_test( "100", 100, 3 );
+	dsl_pa_uint_test( "-100", -100, 4 );
+	dsl_pa_uint_test( "0", 0, 1 );
+	dsl_pa_uint_test( "-0", 0, 2 );
+	dsl_pa_uint_test( "000", 0, 3 );
+	// The following should fail
+	dsl_pa_uint_test( "-", 0, 0 );
+	dsl_pa_int_test( "+", 0, 0 );
+	dsl_pa_int_test( "--0", 0, 0 );
+	dsl_pa_uint_test( "", 0, 0 );
+	dsl_pa_uint_test( "w", 0, 0 );
+
+	TDOC( "get_float( float * p_float ) Tests" );
+	dsl_pa_float_test( "1", 1.0f, true );
+	dsl_pa_float_test( "1.0", 1.0f, true );
+	dsl_pa_float_test( "0.1", 0.1f, true );
+	dsl_pa_float_test( ".1", 0.1f, true );
+	dsl_pa_float_test( "-1", -1.0f, true );
+	dsl_pa_float_test( "-1.0", -1.0f, true );
+	dsl_pa_float_test( "-0.1", -0.1f, true );
+	dsl_pa_float_test( "-.1", -0.1f, true );
+	// The following should fail
+	dsl_pa_float_test( "-", 0.0f, false );
+	dsl_pa_int_test( "+", 0, 0 );
+	dsl_pa_int_test( "--0", 0, 0 );
+	dsl_pa_float_test( ".", 0.0f, false );
+	dsl_pa_float_test( "", 0.0f, false );
+	dsl_pa_float_test( "w", 0.0f, false );
+
+	TDOC( "get_sci_float( float * p_float ) Tests" );
+	dsl_pa_sci_float_test( "1 ", 1.0f, true, ' ' );
+	dsl_pa_sci_float_test( "1.0 ", 1.0f, true, ' ' );
+	dsl_pa_sci_float_test( "0.1 ", 0.1f, true, ' ' );
+	dsl_pa_sci_float_test( "1", 1.0f, true, '\0' );
+	dsl_pa_sci_float_test( "1.0", 1.0f, true, '\0' );
+	dsl_pa_sci_float_test( "0.1", 0.1f, true, '\0' );
+	dsl_pa_sci_float_test( ".1", 0.1f, true, '\0' );
+	dsl_pa_sci_float_test( "-1", -1.0f, true, '\0' );
+	dsl_pa_sci_float_test( "-1.0", -1.0f, true, '\0' );
+	dsl_pa_sci_float_test( "-0.1", -0.1f, true, '\0' );
+	dsl_pa_sci_float_test( "-.1", -0.1f, true, '\0' );
+	dsl_pa_sci_float_test( "1e1", 10.0f, true, '\0' );
+	dsl_pa_sci_float_test( "1e-1", 0.1f, true, '\0' );
+	dsl_pa_sci_float_test( "1E1", 10.0f, true, '\0' );
+	dsl_pa_sci_float_test( "1E-1", 0.1f, true, '\0' );
+	dsl_pa_sci_float_test( "1e", 1.0f, true, 'e' );
+	dsl_pa_sci_float_test( "1e-", 1.0f, true, 'e' );
+	dsl_pa_sci_float_test( "1e+", 1.0f, true, 'e' );
+	// The following should fail
+	dsl_pa_sci_float_test( "-", 0.0f, false, '-' );
+	dsl_pa_sci_float_test( ".", 0.0f, false, '.' );
+	dsl_pa_sci_float_test( "-e", 0.0f, false, '-' );
+	dsl_pa_sci_float_test( "", 0.0f, false, '\0' );
+	dsl_pa_sci_float_test( "w", 0.0f, false, 'w' );
 }
 
 TFUNCTION( dsl_pa_test )
 {
 	TBEGIN( "dsl pa class tests" );
+	
+	TTODO( "dsl_pa::record()" );
 }

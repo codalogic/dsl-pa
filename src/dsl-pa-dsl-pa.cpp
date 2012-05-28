@@ -169,4 +169,126 @@ bool dsl_pa::opt_ws()
 	return optional( ws() );
 }
 
+size_t /*num chars read*/ dsl_pa::get_int( std::string * p_num )
+{
+	location_logger location( r_reader );
+
+	size_t n_sign_chars = get( p_num, alphabet_sign(), 1 );
+	size_t n_digits = get( p_num, alphabet_digit() );
+
+	if( n_digits == 0 )
+	{
+		location_top();
+		return 0;
+	}
+
+	return n_digits + n_sign_chars;
+}
+
+size_t /*num chars read*/ dsl_pa::get_int( int * p_int )
+{
+	std::string input;
+	size_t n_read = get_int( &input );
+	if( n_read > 0 )
+		*p_int = atoi( input.c_str() );
+	return n_read;
+}
+
+size_t /*num chars read*/ dsl_pa::get_uint( std::string * p_num )
+{
+	return get( p_num, alphabet_digit() );
+}
+
+size_t /*num chars read*/ dsl_pa::get_uint( unsigned int * p_int )
+{
+	std::string input;
+	size_t n_read = get_int( &input );
+	if( n_read > 0 )
+		sscanf( input.c_str(), "%ud", p_int );
+	return n_read;
+}
+
+bool dsl_pa::get_float( std::string * p_num )
+{
+	location_logger location( r_reader );
+
+	size_t n_digits_before_point = 0, n_digits_after_point = 0;
+	
+	bool result =
+			optional( get( p_num, alphabet_sign(), 1 ) ) &&
+			set( n_digits_before_point, get( p_num, alphabet_digit() ) ) &&
+			optional( get( p_num, alphabet_point() ) &&
+				set( n_digits_after_point, get( p_num, alphabet_digit() ) ) );
+				
+	if( n_digits_before_point + n_digits_after_point == 0 )
+	{
+		location_top();
+		return false;
+	}
+	
+	return true;
+}
+
+bool dsl_pa::get_float( double * p_float )
+{
+	std::string input;
+	if( ! get_float( &input ) )
+		return false;
+	*p_float = atof( input.c_str() );
+	return true;
+}
+
+bool dsl_pa::get_float( float * p_float )
+{
+	double double_value;
+	if( get_float( &double_value ) )
+	{
+		*p_float = static_cast< float >( double_value );
+		return true;
+	}
+	return false;
+}
+
+bool dsl_pa::get_sci_float( std::string * p_num )
+{
+	location_logger location( r_reader );
+	
+	if( get_float( p_num ) )
+	{
+		location_logger exponent_location( r_reader );
+		
+		std::string exponent;
+		
+		if( get( &exponent, alphabet_E(), 1 ) && get_int( &exponent ) )
+			p_num->append( exponent );
+		else
+			location_top();
+
+		return true;
+	}
+	
+	location_top();
+	return false;
+}
+
+bool dsl_pa::get_sci_float( float * p_float )
+{
+	double double_value;
+	if( get_sci_float( &double_value ) )
+	{
+		*p_float = static_cast< float >( double_value );
+		return true;
+	}
+	return false;
+}
+
+bool dsl_pa::get_sci_float( double * p_float )
+{
+	std::string input;
+	if( ! get_sci_float( &input ) )
+		return false;
+	*p_float = atof( input.c_str() );
+	return true;
+}
+
 } // End of namespace cl
