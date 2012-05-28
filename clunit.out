@@ -1,4 +1,4 @@
-Tests run on Mon May 28 20:53:47 2012
+Tests run on Mon May 28 21:06:21 2012
 
 
     Alphabet tests [c:\home\pete\sw\dsl-pa\test\alphabet-test.cpp:42]
@@ -368,10 +368,14 @@ Tests run on Mon May 28 20:53:47 2012
     ok: (my_pa.ifixed( "rANGE" ) || my_pa.ifixed( "mODE" )) && my_pa.ws() && my_pa.get( &channel, alphabet_alpha() ) && my_pa.opt_ws() && my_pa.is_char( '=' ) && my_pa.opt_ws() && my_pa.get( &level, alphabet_digit() )
     ok: channel == "p"
     ok: level == "12"
+    ok: (my_pa.get_fixed( &command, "Range" ) || my_pa.get_fixed( &command, "Mode" ))
+    ok: command == "Mode"
+    ok: (my_pa.get_ifixed( &command, "rANGE" ) || my_pa.get_ifixed( &command, "mODE" ))
+    ok: command == "Mode"
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
 
-    dsl pa number parsing tests [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:478]
+    dsl pa number parsing tests [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:500]
     ==========================
       get_int( std::string * p_num ) Tests
       Input: 100
@@ -572,7 +576,7 @@ Tests run on Mon May 28 20:53:47 2012
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
 
-    dsl pa class tests [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:553]
+    dsl pa class tests [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:575]
     ==========================
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
@@ -1082,7 +1086,7 @@ Tests run on Mon May 28 20:53:47 2012
 
 TODOs (2):
 ------------------------
-- dsl_pa::record() [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:555]
+- dsl_pa::record() [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:577]
 - Add line counting functionality to reader class [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:388]
 
-0 error(s), 2 todo(s), 810 test(s)
+0 error(s), 2 todo(s), 814 test(s)

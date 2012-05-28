@@ -145,6 +145,8 @@ public:
 	// ifixed() ignores ASCII case.
 	bool fixed( const char * p_seeking );
 	bool ifixed( const char * p_seeking );
+	bool get_fixed( std::string * p_output, const char * p_seeking );
+	bool get_ifixed( std::string * p_output, const char * p_seeking );
 
 	// Type specific parsing functions
 	bool ws();

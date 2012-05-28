@@ -115,11 +115,26 @@ size_t dsl_pa::get_until( std::string * p_output, const alphabet & r_alphabet, c
 
 bool dsl_pa::fixed( const char * p_seeking )
 {
+	return get_fixed( 0, p_seeking );
+}
+
+bool dsl_pa::ifixed( const char * p_seeking )
+{
+	return get_ifixed( 0, p_seeking );
+}
+
+bool dsl_pa::get_fixed( std::string * p_output, const char * p_seeking )
+{
 	location_logger location( r_reader );
 	
 	for( ; *p_seeking != '\0'; ++p_seeking )
 	{
-		if( get() != *p_seeking )
+		if( get() == *p_seeking )
+		{
+			if( p_output )
+				p_output->push_back( current() );
+		}
+		else
 		{
 			location_top();
 			return false;
@@ -129,15 +144,20 @@ bool dsl_pa::fixed( const char * p_seeking )
 	return true;
 }
 
-bool dsl_pa::ifixed( const char * p_seeking )
+bool dsl_pa::get_ifixed( std::string * p_output, const char * p_seeking )
 {
 	location_logger location( r_reader );
 	
 	for( ; *p_seeking != '\0'; ++p_seeking )
 	{
 		get();
-		if( (is_7bit( current() ) && tolower( current() ) != tolower( *p_seeking ))
-				|| (! is_7bit( current() ) && current() != *p_seeking) )
+		if( (is_7bit( current() ) && tolower( current() ) == tolower( *p_seeking ))
+				|| (! is_7bit( current() ) && current() == *p_seeking) )
+		{
+			if( p_output )
+				p_output->push_back( current() );
+		}
+		else
 		{
 			location_top();
 			return false;

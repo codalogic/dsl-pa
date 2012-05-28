@@ -420,6 +420,28 @@ TFUNCTION( dsl_pa_fixed_test )
 	TTEST( channel == "p" );
 	TTEST( level == "12" );
 	}
+	
+	{
+	reader_string my_reader( "Mode p=12" );
+	dsl_pa my_pa( my_reader );
+
+	std::string command;
+	
+	TTEST( (my_pa.get_fixed( &command, "Range" ) || my_pa.get_fixed( &command, "Mode" )) );
+				
+	TTEST( command == "Mode" );
+	}
+	
+	{
+	reader_string my_reader( "Mode p=12" );
+	dsl_pa my_pa( my_reader );
+
+	std::string command;
+	
+	TTEST( (my_pa.get_ifixed( &command, "rANGE" ) || my_pa.get_ifixed( &command, "mODE" )) );
+				
+	TTEST( command == "Mode" );
+	}
 }
 
 void dsl_pa_int_test( const char * p_input, int expected_value, size_t n_chars )
