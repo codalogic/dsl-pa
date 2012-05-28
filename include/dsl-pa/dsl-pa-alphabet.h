@@ -82,20 +82,20 @@ public:
 
 // Common alphabets
 
-class char_index
+class char_map
 {
 private:
-	typedef char char_index_array[256];
-	char_index_array index;	
+	typedef char char_map_array[256];
+	char_map_array index;	
 
 public:
-	char_index();
+	char_map();
 	void clear();
-	char_index & set( char c );
-	char_index & set_range( char start, char end );
-	char_index & set_inverted_range( char start, char end );
-	char_index & invert();
-	void merge( const char_index & r_rhs );
+	char_map & set( char c );
+	char_map & set_range( char start, char end );
+	char_map & set_inverted_range( char start, char end );
+	char_map & invert();
+	void merge( const char_map & r_rhs );
 
 	bool is_set( char c ) const;
 };
@@ -103,7 +103,7 @@ public:
 class alphabet_char_class : public alphabet
 {
 private:
-	char_index wanted_chars;
+	char_map wanted_chars;
 
 public:
 	alphabet_char_class( const char * p_char_class_spec );

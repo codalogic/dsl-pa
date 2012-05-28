@@ -175,113 +175,113 @@ TFUNCTION( alphabet_char_to_size_t_test )
 	TTEST( char_to_size_t( 30 ) == 30 );
 }
 
-TFUNCTION( alphabet_char_index_test )
+TFUNCTION( alphabet_char_map_test )
 {
-	TBEGIN( " Alphabet char_index tests" );
+	TBEGIN( " Alphabet char_map tests" );
 	
-	char_index my_index;
+	char_map my_map;
 	
-	TTEST( ! my_index.is_set( 'a' ) );
-	TTEST( ! my_index.is_set( 'b' ) );
-	TTEST( ! my_index.is_set( 'c' ) );
-	TTEST( ! my_index.is_set( 'd' ) );
-	TTEST( ! my_index.is_set( 'e' ) );
-	TTEST( ! my_index.is_set( 'f' ) );
+	TTEST( ! my_map.is_set( 'a' ) );
+	TTEST( ! my_map.is_set( 'b' ) );
+	TTEST( ! my_map.is_set( 'c' ) );
+	TTEST( ! my_map.is_set( 'd' ) );
+	TTEST( ! my_map.is_set( 'e' ) );
+	TTEST( ! my_map.is_set( 'f' ) );
 	
-	my_index.set_range( 'b', 'e' );
+	my_map.set_range( 'b', 'e' );
 	
-	TTEST( ! my_index.is_set( 'a' ) );
-	TTEST( my_index.is_set( 'b' ) );
-	TTEST( my_index.is_set( 'c' ) );
-	TTEST( my_index.is_set( 'd' ) );
-	TTEST( my_index.is_set( 'e' ) );
-	TTEST( ! my_index.is_set( 'f' ) );
+	TTEST( ! my_map.is_set( 'a' ) );
+	TTEST( my_map.is_set( 'b' ) );
+	TTEST( my_map.is_set( 'c' ) );
+	TTEST( my_map.is_set( 'd' ) );
+	TTEST( my_map.is_set( 'e' ) );
+	TTEST( ! my_map.is_set( 'f' ) );
 	
-	my_index.set_range( 'g', 'j' );
+	my_map.set_range( 'g', 'j' );
 	
-	TTEST( ! my_index.is_set( 'a' ) );
-	TTEST( my_index.is_set( 'b' ) );
-	TTEST( my_index.is_set( 'c' ) );
-	TTEST( my_index.is_set( 'd' ) );
-	TTEST( my_index.is_set( 'e' ) );
-	TTEST( ! my_index.is_set( 'f' ) );
-	TTEST( my_index.is_set( 'g' ) );
-	TTEST( my_index.is_set( 'h' ) );
-	TTEST( my_index.is_set( 'i' ) );
-	TTEST( my_index.is_set( 'j' ) );
-	TTEST( ! my_index.is_set( 'k' ) );
+	TTEST( ! my_map.is_set( 'a' ) );
+	TTEST( my_map.is_set( 'b' ) );
+	TTEST( my_map.is_set( 'c' ) );
+	TTEST( my_map.is_set( 'd' ) );
+	TTEST( my_map.is_set( 'e' ) );
+	TTEST( ! my_map.is_set( 'f' ) );
+	TTEST( my_map.is_set( 'g' ) );
+	TTEST( my_map.is_set( 'h' ) );
+	TTEST( my_map.is_set( 'i' ) );
+	TTEST( my_map.is_set( 'j' ) );
+	TTEST( ! my_map.is_set( 'k' ) );
 	
-	my_index.set_inverted_range( 'w', 'z' );
+	my_map.set_inverted_range( 'w', 'z' );
 	
-	TTEST( my_index.is_set( 'a' ) );
-	TTEST( my_index.is_set( 'b' ) );
-	TTEST( my_index.is_set( 'c' ) );
-	TTEST( my_index.is_set( 'd' ) );
-	TTEST( my_index.is_set( 'e' ) );
-	TTEST( my_index.is_set( 'f' ) );
-	TTEST( my_index.is_set( 'g' ) );
-	TTEST( my_index.is_set( 'h' ) );
-	TTEST( my_index.is_set( 'i' ) );
-	TTEST( my_index.is_set( 'j' ) );
-	TTEST( my_index.is_set( 'k' ) );
-	TTEST( ! my_index.is_set( 'w' ) );
-	TTEST( ! my_index.is_set( 'x' ) );
-	TTEST( ! my_index.is_set( 'y' ) );
-	TTEST( ! my_index.is_set( 'z' ) );
+	TTEST( my_map.is_set( 'a' ) );
+	TTEST( my_map.is_set( 'b' ) );
+	TTEST( my_map.is_set( 'c' ) );
+	TTEST( my_map.is_set( 'd' ) );
+	TTEST( my_map.is_set( 'e' ) );
+	TTEST( my_map.is_set( 'f' ) );
+	TTEST( my_map.is_set( 'g' ) );
+	TTEST( my_map.is_set( 'h' ) );
+	TTEST( my_map.is_set( 'i' ) );
+	TTEST( my_map.is_set( 'j' ) );
+	TTEST( my_map.is_set( 'k' ) );
+	TTEST( ! my_map.is_set( 'w' ) );
+	TTEST( ! my_map.is_set( 'x' ) );
+	TTEST( ! my_map.is_set( 'y' ) );
+	TTEST( ! my_map.is_set( 'z' ) );
 	
-	TTEST( ! my_index.is_set( 'x' ) );
-	my_index.set( 'x' );
-	TTEST( my_index.is_set( 'x' ) );
+	TTEST( ! my_map.is_set( 'x' ) );
+	my_map.set( 'x' );
+	TTEST( my_map.is_set( 'x' ) );
 	
-	my_index.invert();
+	my_map.invert();
 	
-	TTEST( ! my_index.is_set( 'a' ) );
-	TTEST( ! my_index.is_set( 'b' ) );
-	TTEST( ! my_index.is_set( 'c' ) );
-	TTEST( ! my_index.is_set( 'd' ) );
-	TTEST( ! my_index.is_set( 'e' ) );
-	TTEST( ! my_index.is_set( 'f' ) );
-	TTEST( ! my_index.is_set( 'g' ) );
-	TTEST( ! my_index.is_set( 'h' ) );
-	TTEST( ! my_index.is_set( 'i' ) );
-	TTEST( ! my_index.is_set( 'j' ) );
-	TTEST( ! my_index.is_set( 'k' ) );
-	TTEST( my_index.is_set( 'w' ) );
-	TTEST( ! my_index.is_set( 'x' ) );
-	TTEST( my_index.is_set( 'y' ) );
-	TTEST( my_index.is_set( 'z' ) );
+	TTEST( ! my_map.is_set( 'a' ) );
+	TTEST( ! my_map.is_set( 'b' ) );
+	TTEST( ! my_map.is_set( 'c' ) );
+	TTEST( ! my_map.is_set( 'd' ) );
+	TTEST( ! my_map.is_set( 'e' ) );
+	TTEST( ! my_map.is_set( 'f' ) );
+	TTEST( ! my_map.is_set( 'g' ) );
+	TTEST( ! my_map.is_set( 'h' ) );
+	TTEST( ! my_map.is_set( 'i' ) );
+	TTEST( ! my_map.is_set( 'j' ) );
+	TTEST( ! my_map.is_set( 'k' ) );
+	TTEST( my_map.is_set( 'w' ) );
+	TTEST( ! my_map.is_set( 'x' ) );
+	TTEST( my_map.is_set( 'y' ) );
+	TTEST( my_map.is_set( 'z' ) );
 	
-	char_index other_index;
+	char_map other_index;
 	
 	other_index.set_range( 'b', 'e' );
 	
-	my_index.merge( other_index );
+	my_map.merge( other_index );
 
-	TTEST( ! my_index.is_set( 'a' ) );
-	TTEST( my_index.is_set( 'b' ) );
-	TTEST( my_index.is_set( 'c' ) );
-	TTEST( my_index.is_set( 'd' ) );
-	TTEST( my_index.is_set( 'e' ) );
-	TTEST( ! my_index.is_set( 'f' ) );
+	TTEST( ! my_map.is_set( 'a' ) );
+	TTEST( my_map.is_set( 'b' ) );
+	TTEST( my_map.is_set( 'c' ) );
+	TTEST( my_map.is_set( 'd' ) );
+	TTEST( my_map.is_set( 'e' ) );
+	TTEST( ! my_map.is_set( 'f' ) );
 	
-	my_index.clear();
-	TTEST( ! my_index.is_set( 'a' ) );
-	TTEST( ! my_index.is_set( 'b' ) );
-	TTEST( ! my_index.is_set( 'c' ) );
-	TTEST( ! my_index.is_set( 'd' ) );
-	TTEST( ! my_index.is_set( 'e' ) );
-	TTEST( ! my_index.is_set( 'f' ) );
-	TTEST( ! my_index.is_set( 'g' ) );
-	TTEST( ! my_index.is_set( 'h' ) );
+	my_map.clear();
+	TTEST( ! my_map.is_set( 'a' ) );
+	TTEST( ! my_map.is_set( 'b' ) );
+	TTEST( ! my_map.is_set( 'c' ) );
+	TTEST( ! my_map.is_set( 'd' ) );
+	TTEST( ! my_map.is_set( 'e' ) );
+	TTEST( ! my_map.is_set( 'f' ) );
+	TTEST( ! my_map.is_set( 'g' ) );
+	TTEST( ! my_map.is_set( 'h' ) );
 
 	TDOC( "Test chained operations" );
 	
-	my_index.merge( char_index().set_range( 'b', 'd' ).set_range( 'f', 'h' ).invert() );
+	my_map.merge( char_map().set_range( 'b', 'd' ).set_range( 'f', 'h' ).invert() );
 	
-	TTEST( my_index.is_set( 'a' ) );
-	TTEST( ! my_index.is_set( 'b' ) );
-	TTEST( my_index.is_set( 'e' ) );
-	TTEST( ! my_index.is_set( 'f' ) );
+	TTEST( my_map.is_set( 'a' ) );
+	TTEST( ! my_map.is_set( 'b' ) );
+	TTEST( my_map.is_set( 'e' ) );
+	TTEST( ! my_map.is_set( 'f' ) );
 }
 
 TFUNCTION( alphabet_char_class_test )

@@ -42,24 +42,24 @@ namespace cl {
 
 using namespace cl::alphabet_helpers;
 
-char_index::char_index()
+char_map::char_map()
 {
 	clear();
 }
 
-void char_index::clear()
+void char_map::clear()
 {
-	for( size_t i=0; i<sizeof( char_index_array ); ++i )
+	for( size_t i=0; i<sizeof( char_map_array ); ++i )
 		index[i] = 0;
 }
 
-char_index & char_index::set( char c )
+char_map & char_map::set( char c )
 {
 	index[ char_to_size_t( c ) ] = 1;
 	return *this;
 }
 
-char_index & char_index::set_range( char start, char end )
+char_map & char_map::set_range( char start, char end )
 {
 	size_t start_index = char_to_size_t( start );
 	size_t end_index = char_to_size_t( end );
@@ -68,30 +68,26 @@ char_index & char_index::set_range( char start, char end )
 	return *this;
 }
 
-char_index & char_index::set_inverted_range( char start, char end )
+char_map & char_map::set_inverted_range( char start, char end )
 {
-	char_index non_invert_char_index;
-
-	non_invert_char_index.set_range( start, end );
-	non_invert_char_index.invert();
-	merge( non_invert_char_index );
+	merge( char_map().set_range( start, end ).invert() );
 	return *this;
 }
 
-char_index & char_index::invert()
+char_map & char_map::invert()
 {
-	for( size_t i=0; i<sizeof( char_index_array ); ++i )
+	for( size_t i=0; i<sizeof( char_map_array ); ++i )
 		index[i] ^= 1;
 	return *this;
 }
 
-void char_index::merge( const char_index & r_rhs )
+void char_map::merge( const char_map & r_rhs )
 {
-	for( size_t i=0; i<sizeof( char_index_array ); ++i )
+	for( size_t i=0; i<sizeof( char_map_array ); ++i )
 		index[i] |= r_rhs.index[i];
 }
 
-bool char_index::is_set( char c ) const
+bool char_map::is_set( char c ) const
 {
 	return index[ char_to_size_t( c ) ] != 0;
 }
