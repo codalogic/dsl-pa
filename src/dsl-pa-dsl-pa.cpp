@@ -53,7 +53,7 @@ size_t dsl_pa::get( std::string * p_output, const alphabet & r_alphabet, size_t 
 	
 	for( n_chars = 0; n_chars < max_chars; ++n_chars )
 	{
-		if( ! r_alphabet.is_wanted( get() ) )
+		if( ! r_alphabet.is_sought( get() ) )
 			break;
 			
 		p_output->push_back( current() );
@@ -92,7 +92,7 @@ size_t dsl_pa::get_until( std::string * p_output, const alphabet & r_alphabet, c
 			
 		if( ! is_escaped )
 		{
-			if( r_alphabet.is_wanted( current() ) )	// For get_until(), 'wanted' chars are unwanted!
+			if( r_alphabet.is_sought( current() ) )	// For get_until(), 'sought' chars are unwanted!
 				break;
 
 			if( current() == escape_char )

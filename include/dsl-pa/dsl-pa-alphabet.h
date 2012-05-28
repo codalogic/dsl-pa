@@ -122,7 +122,7 @@ public:
 class alphabet
 {
 public:
-	virtual bool is_wanted( char c ) const = 0;
+	virtual bool is_sought( char c ) const = 0;
 };
 
 // This alphabet class takes a specification that mirrors a Perl character
@@ -151,7 +151,7 @@ private:
 
 public:
 	alphabet_char_class( const char * p_char_class_spec );
-	virtual bool is_wanted( char c ) const
+	virtual bool is_sought( char c ) const
 	{
 		return wanted_chars.is_set( c );
 	}
@@ -166,7 +166,7 @@ private:
 class alphabet_space : public alphabet
 {
 public:
-	virtual bool is_wanted( char c ) const
+	virtual bool is_sought( char c ) const
 	{
 		return alphabet_helpers::is_space( c );
 	}
@@ -175,7 +175,7 @@ public:
 class alphabet_linear_space : public alphabet	// Non-newline space chars
 {
 public:
-	virtual bool is_wanted( char c ) const
+	virtual bool is_sought( char c ) const
 	{
 		return c == ' ' || c == '\t';
 	}
@@ -184,7 +184,7 @@ public:
 class alphabet_digit : public alphabet
 {
 public:
-	virtual bool is_wanted( char c ) const
+	virtual bool is_sought( char c ) const
 	{
 		return alphabet_helpers::is_digit( c );
 	}
@@ -193,7 +193,7 @@ public:
 class alphabet_hex : public alphabet
 {
 public:
-	virtual bool is_wanted( char c ) const
+	virtual bool is_sought( char c ) const
 	{
 		return alphabet_helpers::is_hex( c );
 	}
@@ -202,7 +202,7 @@ public:
 class alphabet_alpha : public alphabet
 {
 public:
-	virtual bool is_wanted( char c ) const
+	virtual bool is_sought( char c ) const
 	{
 		return alphabet_helpers::is_alpha( c );
 	}
@@ -211,7 +211,7 @@ public:
 class alphabet_word_first_char : public alphabet	// Based on Perl's \w
 {
 public:
-	virtual bool is_wanted( char c ) const
+	virtual bool is_sought( char c ) const
 	{
 		return alphabet_helpers::is_alpha( c ) || '_' == c;
 	}
@@ -220,7 +220,7 @@ public:
 class alphabet_word_char : public alphabet
 {
 public:
-	virtual bool is_wanted( char c ) const
+	virtual bool is_sought( char c ) const
 	{
 		return alphabet_helpers::is_alpha( c ) ||
 				alphabet_helpers::is_digit( c ) ||
@@ -231,7 +231,7 @@ public:
 class alphabet_uni : public alphabet // char is part of a non-ASCII Unicode sequence
 {
 public:
-	virtual bool is_wanted( char c ) const
+	virtual bool is_sought( char c ) const
 	{
 		return alphabet_helpers::is_utf8_multibyte( c );
 	}
@@ -240,7 +240,7 @@ public:
 class alphabet_sign : public alphabet
 {
 public:
-	virtual bool is_wanted( char c ) const
+	virtual bool is_sought( char c ) const
 	{
 		return c == '-' || c == '+';
 	}
@@ -249,7 +249,7 @@ public:
 class alphabet_point : public alphabet
 {
 public:
-	virtual bool is_wanted( char c ) const
+	virtual bool is_sought( char c ) const
 	{
 		return c == '.';
 	}
@@ -260,7 +260,7 @@ typedef alphabet_point alphabet_dot;
 class alphabet_dash : public alphabet
 {
 public:
-	virtual bool is_wanted( char c ) const
+	virtual bool is_sought( char c ) const
 	{
 		return c == '-';
 	}
@@ -269,7 +269,7 @@ public:
 class alphabet_colon : public alphabet
 {
 public:
-	virtual bool is_wanted( char c ) const
+	virtual bool is_sought( char c ) const
 	{
 		return c == ':';
 	}
@@ -278,7 +278,7 @@ public:
 class alphabet_semicolon : public alphabet
 {
 public:
-	virtual bool is_wanted( char c ) const
+	virtual bool is_sought( char c ) const
 	{
 		return c == ';';
 	}
@@ -287,7 +287,7 @@ public:
 class alphabet_comma : public alphabet
 {
 public:
-	virtual bool is_wanted( char c ) const
+	virtual bool is_sought( char c ) const
 	{
 		return c == ',';
 	}
@@ -296,7 +296,7 @@ public:
 class alphabet_E : public alphabet	// For floating point numbers
 {
 public:
-	virtual bool is_wanted( char c ) const
+	virtual bool is_sought( char c ) const
 	{
 		return c == 'e' || c == 'E';
 	}
@@ -305,7 +305,7 @@ public:
 class alphabet_T : public alphabet	// For ISO datetime
 {
 public:
-	virtual bool is_wanted( char c ) const
+	virtual bool is_sought( char c ) const
 	{
 		return c == 'T';
 	}
@@ -324,9 +324,9 @@ public:
 	alphabet_not( const alphabet & r_alphabet_in )
 		: r_alphabet( r_alphabet_in )
 	{}
-	virtual bool is_wanted( char c ) const
+	virtual bool is_sought( char c ) const
 	{
-		return ! r_alphabet.is_wanted( c );
+		return ! r_alphabet.is_sought( c );
 	}
 };
 
@@ -344,10 +344,10 @@ public:
 		r_alphabet_1( r_alphabet_1_in ),
 		r_alphabet_2( r_alphabet_2_in )
 	{}
-	virtual bool is_wanted( char c ) const
+	virtual bool is_sought( char c ) const
 	{
-		return r_alphabet_1.is_wanted( c ) ||
-				r_alphabet_2.is_wanted( c );
+		return r_alphabet_1.is_sought( c ) ||
+				r_alphabet_2.is_sought( c );
 	}
 };
 

@@ -44,61 +44,61 @@ TFUNCTION( alphabet_test )
 	TDOC( "Word char alphabet" );
 	alphabet_word_char my_alphabet;
 	
-	TTEST( my_alphabet.is_wanted( 'b' ) );
-	TTEST( ! my_alphabet.is_wanted( '$' ) );
-	TTEST( ! my_alphabet.is_wanted( ' ' ) );
+	TTEST( my_alphabet.is_sought( 'b' ) );
+	TTEST( ! my_alphabet.is_sought( '$' ) );
+	TTEST( ! my_alphabet.is_sought( ' ' ) );
 	
 	TDOC( "Check word char alphabet polymorphism!" );
 	alphabet * p_my_alphabet = &my_alphabet;
 	
-	TTEST( p_my_alphabet->is_wanted( 'b' ) );
-	TTEST( ! p_my_alphabet->is_wanted( '$' ) );
-	TTEST( ! p_my_alphabet->is_wanted( ' ' ) );
+	TTEST( p_my_alphabet->is_sought( 'b' ) );
+	TTEST( ! p_my_alphabet->is_sought( '$' ) );
+	TTEST( ! p_my_alphabet->is_sought( ' ' ) );
 	
 	TDOC( "Whitespace alphabet" );
 	alphabet_space my_space_alphabet;
 	
-	TTEST( my_space_alphabet.is_wanted( ' ' ) );
-	TTEST( my_space_alphabet.is_wanted( '\t' ) );
-	TTEST( ! my_space_alphabet.is_wanted( 'A' ) );
+	TTEST( my_space_alphabet.is_sought( ' ' ) );
+	TTEST( my_space_alphabet.is_sought( '\t' ) );
+	TTEST( ! my_space_alphabet.is_sought( 'A' ) );
 	
 	TDOC( "Digit alphabet" );
 	alphabet_digit my_digit_alphabet;
-	TTEST( my_digit_alphabet.is_wanted( '0' ) );
-	TTEST( my_digit_alphabet.is_wanted( '5' ) );
-	TTEST( my_digit_alphabet.is_wanted( '9' ) );
-	TTEST( ! my_digit_alphabet.is_wanted( 'a' ) );
+	TTEST( my_digit_alphabet.is_sought( '0' ) );
+	TTEST( my_digit_alphabet.is_sought( '5' ) );
+	TTEST( my_digit_alphabet.is_sought( '9' ) );
+	TTEST( ! my_digit_alphabet.is_sought( 'a' ) );
 	
 	TDOC( "Hex alphabet" );
 	alphabet_hex my_hex_alphabet;
-	TTEST( my_hex_alphabet.is_wanted( '0' ) );
-	TTEST( my_hex_alphabet.is_wanted( '5' ) );
-	TTEST( my_hex_alphabet.is_wanted( '9' ) );
-	TTEST( my_hex_alphabet.is_wanted( 'A' ) );
-	TTEST( my_hex_alphabet.is_wanted( 'C' ) );
-	TTEST( my_hex_alphabet.is_wanted( 'F' ) );
-	TTEST( my_hex_alphabet.is_wanted( 'a' ) );
-	TTEST( my_hex_alphabet.is_wanted( 'c' ) );
-	TTEST( my_hex_alphabet.is_wanted( 'f' ) );
-	TTEST( ! my_hex_alphabet.is_wanted( 'G' ) );
+	TTEST( my_hex_alphabet.is_sought( '0' ) );
+	TTEST( my_hex_alphabet.is_sought( '5' ) );
+	TTEST( my_hex_alphabet.is_sought( '9' ) );
+	TTEST( my_hex_alphabet.is_sought( 'A' ) );
+	TTEST( my_hex_alphabet.is_sought( 'C' ) );
+	TTEST( my_hex_alphabet.is_sought( 'F' ) );
+	TTEST( my_hex_alphabet.is_sought( 'a' ) );
+	TTEST( my_hex_alphabet.is_sought( 'c' ) );
+	TTEST( my_hex_alphabet.is_sought( 'f' ) );
+	TTEST( ! my_hex_alphabet.is_sought( 'G' ) );
 }
 
 TFUNCTION( alphabet_combiners_test )
 {
 	TBEGIN( "Alphabet combiners tests" );
 	
-	TTEST( alphabet_digit().is_wanted( '1' ) );
-	TTEST( alphabet_not( alphabet_digit() ).is_wanted( 'x' ) );
-	TTEST( alphabet_or( alphabet_space(), alphabet_digit() ).is_wanted( '5' ) );
-	TTEST( alphabet_or( alphabet_space(), alphabet_digit() ).is_wanted( ' ' ) );
-	TTEST( ! alphabet_or( alphabet_space(), alphabet_digit() ).is_wanted( 'x' ) );
-	TTEST( alphabet_not( alphabet_or( alphabet_space(), alphabet_digit() ) ).is_wanted( 'x' ) );
+	TTEST( alphabet_digit().is_sought( '1' ) );
+	TTEST( alphabet_not( alphabet_digit() ).is_sought( 'x' ) );
+	TTEST( alphabet_or( alphabet_space(), alphabet_digit() ).is_sought( '5' ) );
+	TTEST( alphabet_or( alphabet_space(), alphabet_digit() ).is_sought( ' ' ) );
+	TTEST( ! alphabet_or( alphabet_space(), alphabet_digit() ).is_sought( 'x' ) );
+	TTEST( alphabet_not( alphabet_or( alphabet_space(), alphabet_digit() ) ).is_sought( 'x' ) );
 	
 	// OR together more than two alphabets as follows:
-	TTEST( alphabet_or( alphabet_space(), alphabet_or( alphabet_digit(), alphabet_uni() ) ).is_wanted( ' ' ) );
-	TTEST( alphabet_or( alphabet_space(), alphabet_or( alphabet_digit(), alphabet_uni() ) ).is_wanted( '5' ) );
-	TTEST( alphabet_or( alphabet_space(), alphabet_or( alphabet_digit(), alphabet_uni() ) ).is_wanted( '\x80' ) );
-	TTEST( ! alphabet_or( alphabet_space(), alphabet_or( alphabet_digit(), alphabet_uni() ) ).is_wanted( '$' ) );
+	TTEST( alphabet_or( alphabet_space(), alphabet_or( alphabet_digit(), alphabet_uni() ) ).is_sought( ' ' ) );
+	TTEST( alphabet_or( alphabet_space(), alphabet_or( alphabet_digit(), alphabet_uni() ) ).is_sought( '5' ) );
+	TTEST( alphabet_or( alphabet_space(), alphabet_or( alphabet_digit(), alphabet_uni() ) ).is_sought( '\x80' ) );
+	TTEST( ! alphabet_or( alphabet_space(), alphabet_or( alphabet_digit(), alphabet_uni() ) ).is_sought( '$' ) );
 }
 
 TFUNCTION( alphabet_typedefed_test )
@@ -115,12 +115,12 @@ TFUNCTION( alphabet_typedefed_test )
 	typedef alphabet_not	invert;
 	typedef alphabet_or		either;
 	
-	TTEST( number().is_wanted( '1' ) );
-	TTEST( name().is_wanted( 'g' ) );
-	TTEST( ! name().is_wanted( '1' ) );
-	TTEST( invert( number() ).is_wanted( 'x' ) );
-	TTEST( either( name(), number() ).is_wanted( '5' ) );
-	TTEST( either( name(), number() ).is_wanted( 'j' ) );
+	TTEST( number().is_sought( '1' ) );
+	TTEST( name().is_sought( 'g' ) );
+	TTEST( ! name().is_sought( '1' ) );
+	TTEST( invert( number() ).is_sought( 'x' ) );
+	TTEST( either( name(), number() ).is_sought( '5' ) );
+	TTEST( either( name(), number() ).is_sought( 'j' ) );
 }
 
 TFUNCTION( alphabet_short_alphabets_test )
@@ -134,32 +134,32 @@ TFUNCTION( alphabet_short_alphabets_test )
 	
 	using namespace cl::short_alphabets;
 
-	TTEST( digit().is_wanted( '1' ) );
-	TTEST( not( digit() ).is_wanted( 'x' ) );
-	TTEST( or( space(), digit() ).is_wanted( '5' ) );
-	TTEST( alpha().is_wanted( 'a' ) );
+	TTEST( digit().is_sought( '1' ) );
+	TTEST( not( digit() ).is_sought( 'x' ) );
+	TTEST( or( space(), digit() ).is_sought( '5' ) );
+	TTEST( alpha().is_sought( 'a' ) );
 	
-	TTEST( linear_space().is_wanted( ' ' ) );
-	TTEST( linear_space().is_wanted( '\t' ) );
-	TTEST( ! linear_space().is_wanted( 'x' ) );
-	TTEST( sign().is_wanted( '+' ) );
-	TTEST( sign().is_wanted( '-' ) );
-	TTEST( ! sign().is_wanted( 'x' ) );
-	TTEST( point().is_wanted( '.' ) );
-	TTEST( ! point().is_wanted( 'x' ) );
-	TTEST( dot().is_wanted( '.' ) );
-	TTEST( ! dot().is_wanted( 'x' ) );
-	TTEST( exponent().is_wanted( 'e' ) );
-	TTEST( exponent().is_wanted( 'E' ) );
-	TTEST( ! exponent().is_wanted( 'x' ) );
-	TTEST( dash().is_wanted( '-' ) );
-	TTEST( ! dash().is_wanted( 'x' ) );
-	TTEST( colon().is_wanted( ':' ) );
-	TTEST( ! colon().is_wanted( 'x' ) );
-	TTEST( semicolon().is_wanted( ';' ) );
-	TTEST( ! semicolon().is_wanted( 'x' ) );
-	TTEST( comma().is_wanted( ',' ) );
-	TTEST( ! comma().is_wanted( 'x' ) );
+	TTEST( linear_space().is_sought( ' ' ) );
+	TTEST( linear_space().is_sought( '\t' ) );
+	TTEST( ! linear_space().is_sought( 'x' ) );
+	TTEST( sign().is_sought( '+' ) );
+	TTEST( sign().is_sought( '-' ) );
+	TTEST( ! sign().is_sought( 'x' ) );
+	TTEST( point().is_sought( '.' ) );
+	TTEST( ! point().is_sought( 'x' ) );
+	TTEST( dot().is_sought( '.' ) );
+	TTEST( ! dot().is_sought( 'x' ) );
+	TTEST( exponent().is_sought( 'e' ) );
+	TTEST( exponent().is_sought( 'E' ) );
+	TTEST( ! exponent().is_sought( 'x' ) );
+	TTEST( dash().is_sought( '-' ) );
+	TTEST( ! dash().is_sought( 'x' ) );
+	TTEST( colon().is_sought( ':' ) );
+	TTEST( ! colon().is_sought( 'x' ) );
+	TTEST( semicolon().is_sought( ';' ) );
+	TTEST( ! semicolon().is_sought( 'x' ) );
+	TTEST( comma().is_sought( ',' ) );
+	TTEST( ! comma().is_sought( 'x' ) );
 }
 
 TFUNCTION( alphabet_char_to_size_t_test )
@@ -290,89 +290,89 @@ TFUNCTION( alphabet_char_class_test )
 	
 	{
 	TSETUP( alphabet_char_class my_char_class( "a-z" ) );
-	TTEST( my_char_class.is_wanted( 'a' ) );
-	TTEST( ! my_char_class.is_wanted( '$' ) );
+	TTEST( my_char_class.is_sought( 'a' ) );
+	TTEST( ! my_char_class.is_sought( '$' ) );
 	}
 	
 	{
 	TSETUP( alphabet_char_class my_char_class( "a-dm-oxyz" ) );
-	TTEST( my_char_class.is_wanted( 'a' ) );
-	TTEST( my_char_class.is_wanted( 'd' ) );
-	TTEST( ! my_char_class.is_wanted( 'e' ) );
-	TTEST( ! my_char_class.is_wanted( 'l' ) );
-	TTEST( my_char_class.is_wanted( 'm' ) );
-	TTEST( my_char_class.is_wanted( 'o' ) );
-	TTEST( ! my_char_class.is_wanted( 'p' ) );
-	TTEST( my_char_class.is_wanted( 'x' ) );
-	TTEST( my_char_class.is_wanted( 'y' ) );
-	TTEST( my_char_class.is_wanted( 'z' ) );
+	TTEST( my_char_class.is_sought( 'a' ) );
+	TTEST( my_char_class.is_sought( 'd' ) );
+	TTEST( ! my_char_class.is_sought( 'e' ) );
+	TTEST( ! my_char_class.is_sought( 'l' ) );
+	TTEST( my_char_class.is_sought( 'm' ) );
+	TTEST( my_char_class.is_sought( 'o' ) );
+	TTEST( ! my_char_class.is_sought( 'p' ) );
+	TTEST( my_char_class.is_sought( 'x' ) );
+	TTEST( my_char_class.is_sought( 'y' ) );
+	TTEST( my_char_class.is_sought( 'z' ) );
 	}
 	
 	{
 	TSETUP( alphabet_char_class my_char_class( "^a-dm-oxyz" ) );
-	TTEST( ! my_char_class.is_wanted( 'a' ) );
-	TTEST( ! my_char_class.is_wanted( 'd' ) );
-	TTEST( my_char_class.is_wanted( 'e' ) );
-	TTEST( my_char_class.is_wanted( 'l' ) );
-	TTEST( ! my_char_class.is_wanted( 'm' ) );
-	TTEST( ! my_char_class.is_wanted( 'o' ) );
-	TTEST( my_char_class.is_wanted( 'p' ) );
-	TTEST( ! my_char_class.is_wanted( 'x' ) );
-	TTEST( ! my_char_class.is_wanted( 'y' ) );
-	TTEST( ! my_char_class.is_wanted( 'z' ) );
+	TTEST( ! my_char_class.is_sought( 'a' ) );
+	TTEST( ! my_char_class.is_sought( 'd' ) );
+	TTEST( my_char_class.is_sought( 'e' ) );
+	TTEST( my_char_class.is_sought( 'l' ) );
+	TTEST( ! my_char_class.is_sought( 'm' ) );
+	TTEST( ! my_char_class.is_sought( 'o' ) );
+	TTEST( my_char_class.is_sought( 'p' ) );
+	TTEST( ! my_char_class.is_sought( 'x' ) );
+	TTEST( ! my_char_class.is_sought( 'y' ) );
+	TTEST( ! my_char_class.is_sought( 'z' ) );
 	}
 	
 	{
 	TSETUP( alphabet_char_class my_char_class( "\\da-f" ) );
-	TTEST( my_char_class.is_wanted( 'a' ) );
-	TTEST( my_char_class.is_wanted( 'd' ) );
-	TTEST( my_char_class.is_wanted( '2' ) );
-	TTEST( ! my_char_class.is_wanted( 'l' ) );
+	TTEST( my_char_class.is_sought( 'a' ) );
+	TTEST( my_char_class.is_sought( 'd' ) );
+	TTEST( my_char_class.is_sought( '2' ) );
+	TTEST( ! my_char_class.is_sought( 'l' ) );
 	}
 	
 	{
 	TSETUP( alphabet_char_class my_char_class( "~d" ) );
-	TTEST( my_char_class.is_wanted( '2' ) );
-	TTEST( ! my_char_class.is_wanted( 'l' ) );
+	TTEST( my_char_class.is_sought( '2' ) );
+	TTEST( ! my_char_class.is_sought( 'l' ) );
 	}
 	
 	{
 	TSETUP( alphabet_char_class my_char_class( "~D" ) );
-	TTEST( ! my_char_class.is_wanted( '2' ) );
-	TTEST( my_char_class.is_wanted( 'l' ) );
+	TTEST( ! my_char_class.is_sought( '2' ) );
+	TTEST( my_char_class.is_sought( 'l' ) );
 	}
 	
 	{
 	TSETUP( alphabet_char_class my_char_class( "~w" ) );
-	TTEST( my_char_class.is_wanted( '2' ) );
-	TTEST( ! my_char_class.is_wanted( '$' ) );
-	TTEST( ! my_char_class.is_wanted( '\0' ) );
+	TTEST( my_char_class.is_sought( '2' ) );
+	TTEST( ! my_char_class.is_sought( '$' ) );
+	TTEST( ! my_char_class.is_sought( '\0' ) );
 	}
 	
 	{
 	TSETUP( alphabet_char_class my_char_class( "~W" ) );
-	TTEST( ! my_char_class.is_wanted( '2' ) );
-	TTEST( my_char_class.is_wanted( '$' ) );
-	TTEST( ! my_char_class.is_wanted( '\0' ) );
+	TTEST( ! my_char_class.is_sought( '2' ) );
+	TTEST( my_char_class.is_sought( '$' ) );
+	TTEST( ! my_char_class.is_sought( '\0' ) );
 	}
 	
 	{
 	TSETUP( alphabet_char_class my_char_class( "~s" ) );
-	TTEST( my_char_class.is_wanted( ' ' ) );
-	TTEST( ! my_char_class.is_wanted( '$' ) );
+	TTEST( my_char_class.is_sought( ' ' ) );
+	TTEST( ! my_char_class.is_sought( '$' ) );
 	}
 	
 	{
 	TSETUP( alphabet_char_class my_char_class( "~S" ) );
-	TTEST( ! my_char_class.is_wanted( ' ' ) );
-	TTEST( my_char_class.is_wanted( '$' ) );
-	TTEST( ! my_char_class.is_wanted( '\0' ) );
+	TTEST( ! my_char_class.is_sought( ' ' ) );
+	TTEST( my_char_class.is_sought( '$' ) );
+	TTEST( ! my_char_class.is_sought( '\0' ) );
 	}
 	
 	{
 	TSETUP( alphabet_char_class my_char_class( "~d~w" ) );
-	TTEST( my_char_class.is_wanted( '2' ) );
-	TTEST( my_char_class.is_wanted( 'l' ) );
+	TTEST( my_char_class.is_sought( '2' ) );
+	TTEST( my_char_class.is_sought( 'l' ) );
 	}
 	
 	{
@@ -380,7 +380,7 @@ TFUNCTION( alphabet_char_class_test )
 	// (Here \S would effectively overwrite the chars selected by \D.
 	// Use "^\d\s" instead.)
 	//TSETUP( alphabet_char_class my_char_class( "~D~S" ) );
-	//TTEST( ! my_char_class.is_wanted( '2' ) );
-	//TTEST( ! my_char_class.is_wanted( 'l' ) );
+	//TTEST( ! my_char_class.is_sought( '2' ) );
+	//TTEST( ! my_char_class.is_sought( 'l' ) );
 	}
 }
