@@ -364,6 +364,13 @@ TFUNCTION( dsl_pa_get_until_test )
 	}
 }
 
+TFUNCTION( dsl_pa_fixed_test )
+{
+	TBEGIN( "dsl pa fixed and ifixed tests" );
+	
+	TTODO( "dsl pa fixed and ifixed tests" );
+}
+
 TFUNCTION( dsl_pa_test )
 {
 	TBEGIN( "dsl pa class tests" );

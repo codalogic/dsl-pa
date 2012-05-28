@@ -1,4 +1,4 @@
-Tests run on Mon May 28 14:03:33 2012
+Tests run on Mon May 28 14:07:11 2012
 
 
     Alphabet tests [c:\home\pete\sw\dsl-pa\test\alphabet-test.cpp:42]
@@ -349,7 +349,12 @@ Tests run on Mon May 28 14:03:33 2012
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
 
-    dsl pa class tests [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:369]
+    dsl pa fixed and ifixed tests [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:369]
+    ==========================
+    ok: ! _CrtMemDifference( &s3, &s1, &s2 )
+
+
+    dsl pa class tests [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:376]
     ==========================
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
@@ -780,8 +785,9 @@ Tests run on Mon May 28 14:03:33 2012
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
     ok: _CrtCheckMemory() != 0
 
-TODOs (1):
+TODOs (2):
 ------------------------
+- dsl pa fixed and ifixed tests [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:371]
 - Add line counting functionality to reader class [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:341]
 
-0 error(s), 1 todo(s), 606 test(s)
+0 error(s), 2 todo(s), 607 test(s)
