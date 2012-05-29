@@ -31,6 +31,13 @@
 // POSSIBILITY OF SUCH DAMAGE.
 //----------------------------------------------------------------------------
 
+//----------------------------------------------------------------------------
+// dsl-pa is a Domain Specific Language Parsing Assistant library designed to
+// take advantage of the C++ logic shortcut operators such as && and ||.
+// See the brief overview in dsl-pa.h or, for more information, README.html
+// at https://github.com/codalogic/dsl-pa
+//----------------------------------------------------------------------------
+
 #ifndef CL_DSL_PA_ALPHABET
 #define CL_DSL_PA_ALPHABET
 
