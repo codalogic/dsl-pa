@@ -4,8 +4,16 @@
 </head>
 <body>
 <h1>dsl-pa Documentation</h1>
+<p>dsl-pa is a Domain Specific Language Parsing Assistant library designed to
+take advantage of the C++ logic shortcut operators such as && and ||.
+dsl-pa function calls extract sections of language input based on a
+specified alphabet.  Calls to dsl-pa functions are combined using the C++
+shortcut operators in order to parse a language in a reasonably compact
+form.  Consequently all dsl-pa functions return either a boolean value or
+a value, such as an integer, that can be implicitly converted to a bool.
+</p>
 <p>
-Yes, yes, I know.  Give me a chance.
+Yes, yes, I know, there's not much here.  Give me a chance.
 </p>
 <p>
 P.S. This is a place holder!
@@ -32,9 +40,11 @@ A value of <code>0</code> is used to indicate the end of input has been reached.
 <h2>To inherit or not</h2>
 <h2>Using C++ shortcut operators</h2>
 <h2>dsl_pa helpers</h2>
-<h3>optional()</h3>
-<h3>set()</h3>
-<h3>clear()</h3>
-<h3>error() and error_fatal()</h3>
+<h3>dsl_pa::optional()</h3>
+<h3>dsl_pa::set()</h3>
+<h3>dsl_pa::record()</h3>
+<h3>dsl_pa::append()</h3>
+<h3>dsl_pa::clear()</h3>
+<h3>dsl_pa::error() and dsl_pa::error_fatal()</h3>
 </body>
 </html>
