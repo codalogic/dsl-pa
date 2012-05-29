@@ -1,6 +1,33 @@
 <html>
 <head>
 <title>dsl-pa Documentation</title>
+<style type="text/css">
+body { font-family: Arial, Helvetica, sans-serif; }
+h1 { color:#0005C8; }
+h2 { color:#0005C8; }
+h3 { color:#0005C8; }
+h4 { color:#0005C8; }
+code { color:#800000; }
+pre.cmd { color:#0000c0; }
+pre.code { color:#600000; }
+pre.proto { color:#800000; }
+pre.anot { color:#0000c0; }
+pre.conf { color:#0000c0; }
+pre.schema { color:#0000ff; }
+pre.xml { color:#0000ff; }
+span.xtag { color:#800000; }
+span.xattr { color:#ff0000; }
+span.ckw { color:#0000ff; }
+span.ccom { color:#008000; }
+p.content-link { margin-top: 2px; margin-bottom: 4px; border: 2px 0; padding: 2px 0; }
+.desc { background-color:#99DAFF; width:100%; padding: 5px; border-width: thin;    border-style: solid; border-color: #99DAFF; }
+.synop { color:#0000ff; background-color:#B7E5FF; padding: 5px; }
+.flist { background-color:#FFF; padding: 5px; }
+.ret { color: #FF9900; text-align: right; }
+.fname { color: #800000; }
+.args { color: #00f; }
+.comment { color: #008000; }
+</style>
 </head>
 <body>
 <h1>dsl-pa Documentation</h1>
@@ -23,7 +50,10 @@ P.S. This is a place holder!
 
 <h1>Character sets</h1>
 <p>
-The language input is assumed to be in UTF-8 encoding and operations are done on C++ <code>char</code>s.
+The language input is assumed to be in UTF-8 encoding and operations are done on C++ <code>char</code>s.  It is assumed that
+any parsing decisions of the input language will be based on the ASCII range of characters and any char valued 0x80 and
+above is just considered to be part of "the rest" of Unicode.  Hence dsl-pa operates on a <code>char</code> by <code>char</code> basis and isn't
+multi-byte character aware.
 </p>
 <p>
 A value of <code>0</code> is used to indicate the end of input has been reached.
