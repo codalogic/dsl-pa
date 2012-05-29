@@ -231,6 +231,14 @@
 				>
 			</File>
 		</Filter>
+		<Filter
+			Name="Examples"
+			>
+			<File
+				RelativePath=".\examples\dsl-pa-examples.cpp"
+				>
+			</File>
+		</Filter>
 	</Files>
 	<Globals>
 	</Globals>

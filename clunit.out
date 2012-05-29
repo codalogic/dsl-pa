@@ -1,4 +1,4 @@
-Tests run on Tue May 29 12:12:56 2012
+Tests run on Tue May 29 18:53:59 2012
 
 
     Alphabet tests [c:\home\pete\sw\dsl-pa\test\alphabet-test.cpp:42]
@@ -1130,10 +1130,13 @@ Tests run on Tue May 29 12:12:56 2012
     Reader line counting tests [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:388]
     ==========================
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
+
+
+    ok: ! _CrtMemDifference( &s3, &s1, &s2 )
     ok: _CrtCheckMemory() != 0
 
 TODOs (1):
 ------------------------
 - Add line counting functionality to reader class [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:390]
 
-0 error(s), 1 todo(s), 848 test(s)
+0 error(s), 1 todo(s), 849 test(s)

@@ -38,16 +38,108 @@ specified alphabet.  Calls to dsl-pa functions are combined using the C++
 shortcut operators in order to parse a language in a reasonably compact
 form.  Consequently all dsl-pa functions return either a boolean value or
 a value, such as an integer, that can be implicitly converted to a bool.
-</p>
-<p>
-Yes, yes, I know, there's not much here.  Give me a chance.
-</p>
-<p>
-P.S. This is a place holder!
+Various reader classes can be used to read from file, std::string and
+memory buffer sources.
 </p>
 <h2>Project Status</h2>
 <p>This project is still under development and NOT yet ready for thrid-party use.</p>
 
+<h1>Contents</h1>
+<ul>
+<li><a href='#dsl_pa'>The dsl_pa class</a></li>
+<li><a href='#char-set'>Character sets</a></li>
+<li><a href='#readers'>Readers</a></li>
+<li><a href='#alphabets'>Alphabets</a></li>
+</ul>
+
+<a name='dsl_pa' />
+<h1>The dsl_pa class</h1>
+<p>dsl_pa is the main class of the library</p>
+
+<h2>To inherit or not</h2>
+<p>Possibly the simplest way to use <code>dsl_pa</code> is to create your own class that inherits <code>dsl_pa</code>.
+This way all the methods in <code>dsl_pa</code> become first class citizens and the code is more compact.  
+Inheritance seems justified here on the basis that your class IS-A parser.  However, you don't need to use
+<code>dsl_pa</code> this way, and most of the test code uses <code>dsl_pa</code> by construction.
+</p>
+<p>If you do use inheritance to use <code>dsl_pa</code> and you use some form of factory for creating
+instances of parsers, you can implement the <code>parse()</code> virtual method in <code>dsl_pa</code>
+to invoke your parsing.
+</p>
+<h2>Using C++ shortcut operators</h2>
+<p><code>dsl_pa</code> functions are designed so that they can be combined using C++'s shortcut logical
+operators, such as &amp;&amp; and ||.
+</p>
+
+<h2>Skipping white space</h2>
+<p>A common operation when parsing a language is skiiping white space.  This can be done using the
+following dsl_pa methods:</p>
+<pre class=code>
+    bool ws();
+    bool opt_ws();
+</pre>
+<p>ws() requires there to be white space present in order to return true and opt_ws() allows white space to
+be optional.</p>
+
+<h2>dsl_pa primary getters</h2>
+<p><code>dsl_pa</code> has a number of functions for reading items of data into std::strings. These are:</p>
+<pre class=code>
+    size_t /*num chars read*/ get( std::string * p_output, const alphabet & r_alphabet );
+    size_t get( std::string * p_output, const alphabet & r_alphabet, size_t max_chars );
+    size_t get_until( std::string * p_output, const alphabet & r_alphabet );
+    size_t get_bounded_until( std::string * p_output, const alphabet & r_alphabet, size_t max_chars );
+    size_t get_escaped_until( std::string * p_output, const alphabet & r_alphabet, char escape_char );
+    size_t get_until( std::string * p_output, const alphabet & r_alphabet, char escape_char, size_t max_chars );
+</pre>
+<p>In the above functions the p_output argument points to the instance of std::string that is to receive the output.
+Any parsed data is appended to the string.  This allows multiple get...() functions to accumulate data into a
+string.  Ifyou wish to clear a std::string first you can use the dsl_pa::clear() method within your set of
+shortcut operators.</p>
+<p>The r_alphabet parameter takes a reference to an alphabet class.  An alphabet specifies the set of characters
+that you want to either parse into your string (using the get() methods) or not get in your string (using the
+get...until() methods.)</p>
+
+<h2>dsl_pa type specific getters</h2>
+<p><code>dsl_pa</code> has a number of functions for reading items of data such as integers, floats
+and booleans.</p>
+<pre class=code>
+    bool /*is_parsed*/ get_bool( std::string * p_input );
+    bool /*is_parsed*/ get_bool( bool * p_bool );
+    size_t /*num chars read*/ get_int( std::string * p_num );
+    size_t /*num chars read*/ get_int( int * p_int );
+    size_t /*num chars read*/ get_uint( std::string * p_num );
+    size_t /*num chars read*/ get_uint( unsigned int * p_int );
+    bool get_float( std::string * p_num );
+    bool get_float( double * p_float );
+    bool get_float( float * p_float );
+    bool get_sci_float( std::string * p_num );
+    bool get_sci_float( double * p_float );
+    bool get_sci_float( float * p_float );
+</pre>
+
+<h2>Reading fixed text</h2>
+<p>Occasionally when parsing a langauge you need to parse fixed text.  The following dsl-pa functions support this:</p>
+<pre class=code>
+    bool fixed( const char * p_seeking );
+    bool ifixed( const char * p_seeking );
+    bool get_fixed( std::string * p_output, const char * p_seeking );
+    bool get_ifixed( std::string * p_output, const char * p_seeking );
+</pre>
+<p>The methods <em>without</em> get_ in the name with simply skip over the specified text if it is present.  The methods 
+<em>with</em> get_ in the name will collect the parsed the specified text.  The methods with _ifixed in the name are
+case-insensitive for characters in the ASCII range.  The other methods are case sensitive.</p>
+
+<h2>dsl_pa helpers</h2>
+<h3>dsl_pa::optional()</h3>
+<h3>dsl_pa::set()</h3>
+<h3>dsl_pa::record()</h3>
+<h3>dsl_pa::append()</h3>
+<h3>dsl_pa::clear()</h3>
+<h3>dsl_pa::error() and dsl_pa::error_fatal()</h3>
+<h2>Back tracking and recording locations</h2>
+<h3>The location_logger class</h3>
+
+<a name='char-set' />
 <h1>Character sets</h1>
 <p>
 The language input is assumed to be in UTF-8 encoding and operations are done on C++ <code>char</code>s.  It is assumed that
@@ -59,22 +151,12 @@ multi-byte character aware.
 A value of <code>0</code> is used to indicate the end of input has been reached.
 </p>
 
+<a name='readers' />
 <h1>Readers</h1>
 <h2>Reader locations</h2>
-<h3>The location_logger class</h3>
 
+<a name='alphabets' />
 <h1>Alphabets</h1>
 <h2>Short alphabet names</h2>
-
-<h1>The dsl_pa class</h1>
-<h2>To inherit or not</h2>
-<h2>Using C++ shortcut operators</h2>
-<h2>dsl_pa helpers</h2>
-<h3>dsl_pa::optional()</h3>
-<h3>dsl_pa::set()</h3>
-<h3>dsl_pa::record()</h3>
-<h3>dsl_pa::append()</h3>
-<h3>dsl_pa::clear()</h3>
-<h3>dsl_pa::error() and dsl_pa::error_fatal()</h3>
 </body>
 </html>

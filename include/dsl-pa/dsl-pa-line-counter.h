@@ -66,7 +66,7 @@ public:
         column_number( UNKNOWN ),
         last_nl_char( '\0' )
     {}
-    
+
     void got_char( char c )
     {
         if( c == '\r' || c == '\n' )
@@ -88,7 +88,7 @@ public:
     {
         // For now, ignore retrieved ungot chars
     }
-    
+
     int get_line_number() const
     {
         return line_number;
