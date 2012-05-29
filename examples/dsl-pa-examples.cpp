@@ -84,6 +84,7 @@ void example_parser::example1( std::ostream & fout )
     }
 }
 
+// Just use TFUNCTION() to ensure this code is called.  No testing!
 TFUNCTION( call_all_examples )
 {
     std::ofstream fout( "examples-out.txt" );
