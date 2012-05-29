@@ -265,6 +265,7 @@ void reader_location_and_unget_test( reader_factory & r_reader_factory )
 	TTEST( p_reader->get() == 'b' );
 	TTEST( p_reader->get() == 'c' );
 
+	// See note Location_changes
 	// This combination of unget() and location_push() interact with each other
 	// and requires necessitates care in the implementation. See 
 	// unget_buffer_size parameter for reader::source_location_push()
@@ -287,6 +288,7 @@ void reader_location_and_unget_test( reader_factory & r_reader_factory )
 	TTEST( p_reader->get() == 'c' );
 	TTEST( p_reader->get() == '\0' );
 
+	// See note Location_changes
 	// This combination of unget() and location_push() interact with each other
 	// and requires necessitates care in the implementation. See 
 	// unget_buffer_size parameter for reader::source_location_push()

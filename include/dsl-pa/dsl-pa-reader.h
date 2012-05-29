@@ -42,6 +42,28 @@
 // For more information see README.html at https://github.com/codalogic/dsl-pa 
 //----------------------------------------------------------------------------
 
+//----------------------------------------------------------------------------
+// Notes:
+//		Location_changes - Both the location_xyz functions and unget functions
+//		effectively change the next character to be read and there is
+//		interaction between them.  If we seek to a new location then 
+//		potentially much of the unget buffer is no longer valid, but, in
+//		theory, maybe not all of it.  Thus in principle, when we do a 
+//		location_push() we should also store the state of the unget_buffer
+//		as well as the input position.  This gets messy, so instead, we tell
+//		the location_push() functions how many characters are in the
+//		unget_buffer so they can calculate an additional offset from the
+//		recorded input location to an input location that takes into account
+//		the number of characters we've since put back.  If we then do a 
+//		seek using location_top() we can then simply discard the unget_buffer
+//		because the number of unget chars has already been taken into account
+//		when the location_push() was done.  One consequence of this approach
+//		is that we must never unget() the End Of Input (R_EOI) character
+//		because if we do it will give us the wrong answer when we use the
+//		number of characters in the unget_buffer to modified the input
+//		location when we do a location_push().
+//----------------------------------------------------------------------------
+
 #ifndef CL_DSL_PA_READER
 #define CL_DSL_PA_READER
 
@@ -73,7 +95,12 @@ public:
 	char get();
 	char current() const { return current_char; }
 	void unget() { unget( current() ); }	// Unget with argument ungets current char
-	void unget( char c ) { if( c != R_EOI ) unget_buffer.push( c ); }	// The if() condition is important because we tweak the location of a location_push() using the number of stored unget chars!
+	void unget( char c )
+	{
+		// See note Location_changes
+		if( c != R_EOI )
+			unget_buffer.push( c );
+	}
 	char peek() { get(); unget(); return current(); }
 	bool is_char( char c )
 	{	
@@ -89,13 +116,14 @@ public:
 	// do location_pop().  See also class location_logger.
 	bool location_push()
 	{
-		// When we push a location, should we also store how deep the unget_buffer is?
+		// See note Location_changes
 		source_location_push( unget_buffer.size() );
 		return true;
 	}
 	
 	bool location_top()
 	{
+		// See note Location_changes
 		while( ! unget_buffer.empty() )
 			unget_buffer.pop();
 		source_location_top();
