@@ -102,6 +102,8 @@ size_t dsl_pa::get_until( std::string * p_output, const alphabet & r_alphabet, c
         }
         else
         {
+            if( ! r_alphabet.is_sought( current() ) )   // If we didn't get [escape][sought] then add [escape] to string
+                p_output->push_back( escape_char );
             p_output->push_back( current() );
             is_escaped = false;
         }

@@ -330,7 +330,7 @@ TFUNCTION( dsl_pa_get_until_test )
     }
 
     {
-    reader_string my_reader( "p='He\\'s got it all' 12 " );
+    reader_string my_reader( "p='He\\'s got it\\n all' 12 " );
     dsl_pa my_pa( my_reader );
 
     std::string channel;
@@ -348,7 +348,7 @@ TFUNCTION( dsl_pa_get_until_test )
                 my_pa.get_until( &level, alphabet_space() ) );
 
     TTEST( channel == "p" );
-    TTEST( sentence == "He's got it all" );
+    TTEST( sentence == "He's got it\\n all" );
     TTEST( level == "12" );
     }
 

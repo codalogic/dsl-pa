@@ -1,4 +1,4 @@
-Tests run on Tue May 29 18:53:59 2012
+Tests run on Tue May 29 21:39:32 2012
 
 
     Alphabet tests [c:\home\pete\sw\dsl-pa\test\alphabet-test.cpp:42]
@@ -353,7 +353,7 @@ Tests run on Tue May 29 18:53:59 2012
     ok: command == "Mode"
     ok: my_pa.get_until( &channel, alphabet_char_class( "=" ) ) && my_pa.opt_ws() && my_pa.is_char( '=' ) && my_pa.opt_ws() && my_pa.is_char( '\'' ) && my_pa.get_escaped_until( &sentence, alphabet_char_class( "'" ), '\\' ) && my_pa.is_char( '\'' ) && my_pa.ws() && my_pa.get_until( &level, alphabet_space() )
     ok: channel == "p"
-    ok: sentence == "He's got it all"
+    ok: sentence == "He's got it\\n all"
     ok: level == "12"
     ok: my_pa.get_bounded_until( &command_1, alphabet_space(), 2 ) && my_pa.get_until( &command_2, alphabet_space() ) && my_pa.ws() && my_pa.get_until( &channel, alphabet_char_class( "=" ) ) && my_pa.opt_ws() && my_pa.is_char( '=' ) && my_pa.opt_ws() && my_pa.get_until( &level, alphabet_space() )
     ok: command_1 == "Mo"
