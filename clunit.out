@@ -1,4 +1,4 @@
-Tests run on Tue May 29 10:27:55 2012
+Tests run on Tue May 29 10:53:26 2012
 
 
     Alphabet tests [c:\home\pete\sw\dsl-pa\test\alphabet-test.cpp:42]
@@ -69,6 +69,9 @@ Tests run on Tue May 29 10:27:55 2012
     ok: linear_space().is_sought( ' ' )
     ok: linear_space().is_sought( '\t' )
     ok: ! linear_space().is_sought( 'x' )
+    ok: end_of_line().is_sought( '\r' )
+    ok: end_of_line().is_sought( '\n' )
+    ok: ! end_of_line().is_sought( 'x' )
     ok: sign().is_sought( '+' )
     ok: sign().is_sought( '-' )
     ok: ! sign().is_sought( 'x' )
@@ -90,7 +93,7 @@ Tests run on Tue May 29 10:27:55 2012
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
 
-    Alphabet char_to_size_t tests [c:\home\pete\sw\dsl-pa\test\alphabet-test.cpp:167]
+    Alphabet char_to_size_t tests [c:\home\pete\sw\dsl-pa\test\alphabet-test.cpp:170]
     ==========================
     ok: alphabet_helpers::char_to_size_t( 0 ) == 0
     ok: alphabet_helpers::char_to_size_t( 10 ) == 10
@@ -99,7 +102,7 @@ Tests run on Tue May 29 10:27:55 2012
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
 
-     Alphabet char_map tests [c:\home\pete\sw\dsl-pa\test\alphabet-test.cpp:180]
+     Alphabet char_map tests [c:\home\pete\sw\dsl-pa\test\alphabet-test.cpp:183]
     ==========================
     ok: ! my_map.is_set( 'a' )
     ok: ! my_map.is_set( 'b' )
@@ -178,7 +181,7 @@ Tests run on Tue May 29 10:27:55 2012
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
 
-     Alphabet_char_class tests [c:\home\pete\sw\dsl-pa\test\alphabet-test.cpp:289]
+     Alphabet_char_class tests [c:\home\pete\sw\dsl-pa\test\alphabet-test.cpp:292]
     ==========================
       : alphabet_char_class my_char_class( "a-z" )
     ok: my_char_class.is_sought( 'a' )
@@ -1133,4 +1136,4 @@ TODOs (1):
 ------------------------
 - Add line counting functionality to reader class [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:390]
 
-0 error(s), 1 todo(s), 845 test(s)
+0 error(s), 1 todo(s), 848 test(s)

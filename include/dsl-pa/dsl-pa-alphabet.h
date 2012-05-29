@@ -55,6 +55,14 @@ namespace /*cl::*/alphabet_helpers {
     {
         return is_7bit( c ) && isspace( c );
     }
+    inline bool is_linear_space( char c )
+    {
+        return c == ' ' || c == '\t';
+    }
+    inline bool is_eol( char c )
+    {
+        return c == '\r' || c == '\n';
+    }
     inline bool is_digit( char c )
     {
         return '0' <= c && c <= '9';
@@ -184,7 +192,16 @@ class alphabet_linear_space : public alphabet   // Non-newline space chars
 public:
     virtual bool is_sought( char c ) const
     {
-        return c == ' ' || c == '\t';
+        return alphabet_helpers::is_linear_space( c );
+    }
+};
+
+class alphabet_eol : public alphabet    // End of Line
+{
+public:
+    virtual bool is_sought( char c ) const
+    {
+        return alphabet_helpers::is_eol( c );
     }
 };
 
@@ -361,6 +378,7 @@ public:
 namespace /*cl::*/ short_alphabets {
     typedef alphabet_space              space;
     typedef alphabet_linear_space       linear_space;
+    typedef alphabet_eol                end_of_line;
     typedef alphabet_digit              digit;
     typedef alphabet_hex                hex;
     typedef alphabet_alpha              alpha;

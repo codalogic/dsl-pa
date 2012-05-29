@@ -142,6 +142,9 @@ TFUNCTION( alphabet_short_alphabets_test )
     TTEST( linear_space().is_sought( ' ' ) );
     TTEST( linear_space().is_sought( '\t' ) );
     TTEST( ! linear_space().is_sought( 'x' ) );
+    TTEST( end_of_line().is_sought( '\r' ) );
+    TTEST( end_of_line().is_sought( '\n' ) );
+    TTEST( ! end_of_line().is_sought( 'x' ) );
     TTEST( sign().is_sought( '+' ) );
     TTEST( sign().is_sought( '-' ) );
     TTEST( ! sign().is_sought( 'x' ) );
