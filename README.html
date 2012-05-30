@@ -39,6 +39,11 @@ specified alphabet.  Calls to dsl-pa functions are combined using the C++
 shortcut operators in order to parse a language in a reasonably compact
 form.  Consequently all dsl-pa functions return either a boolean value or
 a value, such as an integer, that can be implicitly converted to a bool.
+The idea is that the set of shortcut operations should mirror the
+<a href='http://en.wikipedia.org/wiki/Backus%E2%80%93Naur_Form' title="BNF Notation">BNF</a> or
+similar notation (such as
+<a href='http://en.wikipedia.org/wiki/Augmented_Backus%E2%80%93Naur_Form' title="ABNF Notation">ABNF</a>)
+that is used to describe the langauge being parsed.
 Various reader classes can be used to read from file, std::string and
 memory buffer sources.
 </p>
