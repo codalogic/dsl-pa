@@ -63,17 +63,11 @@ void example_parser::example1( std::ostream & fout )
 
     if( opt_ws() &&
             fixed( "width" ) &&
-            opt_ws() &&
-            is_char( '=' ) &&
-            opt_ws() &&
+            opt_ws() && is_char( '=' ) && opt_ws() &&
             get_uint( &width ) &&
-            opt_ws() &&
-            is_char( ',' ) &&
-            opt_ws() &&
+            opt_ws() && is_char( ',' ) && opt_ws() &&
             fixed( "height" ) &&
-            opt_ws() &&
-            is_char( '=' ) &&
-            opt_ws() &&
+            opt_ws() && is_char( '=' ) && opt_ws() &&
             get_uint( &height ) )
     {
         fout << "Example 1 OK: w=" << width << " & h=" << height << "\n";
