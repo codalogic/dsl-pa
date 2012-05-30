@@ -154,12 +154,12 @@ public:
     size_t /*num chars read*/ get_int( int * p_int );
     size_t /*num chars read*/ get_uint( std::string * p_num );
     size_t /*num chars read*/ get_uint( unsigned int * p_int );
-    bool get_float( std::string * p_num );
-    bool get_float( double * p_float );
-    bool get_float( float * p_float );
-    bool get_sci_float( std::string * p_num );
-    bool get_sci_float( double * p_float );
-    bool get_sci_float( float * p_float );
+    bool /*is_parsed*/ get_float( std::string * p_num );
+    bool /*is_parsed*/ get_float( double * p_float );
+    bool /*is_parsed*/ get_float( float * p_float );
+    bool /*is_parsed*/ get_sci_float( std::string * p_num );
+    bool /*is_parsed*/ get_sci_float( double * p_float );
+    bool /*is_parsed*/ get_sci_float( float * p_float );
 
     // Low-level reader access
     reader & get_reader() { return r_reader; }  // Primarily for use with location_logger class
