@@ -4,4 +4,8 @@ Example 1 OK: w=10 & h=5
 
 Example 2
 ==============
-Example 2 OK: w=10 & h=5
+Example OK: w=10 & h=5
+
+Example 3
+==============
+Example OK: w=10 & h=5

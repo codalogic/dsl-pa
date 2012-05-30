@@ -79,19 +79,34 @@ public:
     example_parser( reader & r_reader_in ) : dsl_pa( r_reader_in ) {}
 
     void example2( std::ostream & fout );
+    void example3( std::ostream & fout );
+    
+    bool eq() { return opt_space() && is_char( '=' ) && opt_space(); }
+    bool comma() { return opt_space() && is_char( ',' ) && opt_space(); }
 };
 
-void example2( std::ostream & fout )
-{
-    fout << "\nExample 2\n==============\n";
+enum example_key { EXAMPLE_1, EXAMPLE_2, EXAMPLE_3 };
 
+void class_example( example_key my_example, std::ostream & fout )
+{
     reader_string my_reader( " width=10, height = 5" );
     example_parser my_parser( my_reader );
-    my_parser.example2( fout );
+    switch( my_example )
+    {
+    case EXAMPLE_2:
+        my_parser.example2( fout );
+    break;
+
+    case EXAMPLE_3:
+        my_parser.example3( fout );
+    break;
+    }
 }
 
 void example_parser::example2( std::ostream & fout )
 {
+    fout << "\nExample 2\n==============\n";
+
     size_t width, height;
 
     if( opt_space() &&
@@ -103,7 +118,32 @@ void example_parser::example2( std::ostream & fout )
             opt_space() && is_char( '=' ) && opt_space() &&
             get_uint( &height ) )
     {
-        fout << "Example 2 OK: w=" << width << " & h=" << height << "\n";
+        fout << "Example OK: w=" << width << " & h=" << height << "\n";
+    }
+    else
+    {
+        fout << "Unable to parse input\n";
+    }
+}
+
+void example_parser::example3( std::ostream & fout )
+{
+    fout << "\nExample 3\n==============\n";
+
+    // dsl-pa is explicit about where space caharcters can occur.
+    // However, by defining your own methods for key tokens that
+    // can have optional space around them you can simplify your
+    // parsing code.  For example, eq() and comma() as used below
+    // have been defined as inline class methods to allow optional
+    // space surrounding the tokens.
+    size_t width, height;
+
+    if( opt_space() &&
+            fixed( "width" ) && eq() && get_uint( &width ) &&
+            comma() &&
+            fixed( "height" ) && eq() && get_uint( &height ) )
+    {
+        fout << "Example OK: w=" << width << " & h=" << height << "\n";
     }
     else
     {
@@ -116,5 +156,6 @@ int main()
     std::ofstream fout( "examples-out.txt" );
 
     example1( fout );
-    example2( fout );
+    class_example( EXAMPLE_2, fout );
+    class_example( EXAMPLE_3, fout );
 }
