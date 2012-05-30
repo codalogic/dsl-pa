@@ -99,4 +99,18 @@ void example_parser::example2( std::ostream & fout )
     }
 }
 ```
+You can make the above syntax easier to parse if you make you own helper functions to
+make the space surrounding the key tokens seem as if it is implicit.  For example,
+by including the following in your parser class:
+```c++
+    bool eq() { return opt_space() && is_char( '=' ) && opt_space(); }
+    bool comma() { return opt_space() && is_char( ',' ) && opt_space(); }
+```
+you can change the above code to:
+```c++
+    if( opt_space() &&
+            fixed( "width" ) && eq() && get_uint( &width ) &&
+            comma() &&
+            fixed( "height" ) && eq() && get_uint( &height ) )
+```
 For more information see <https://github.com/codalogic/dsl-pa/blob/master/README.html>.
