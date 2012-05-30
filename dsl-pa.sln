@@ -1,7 +1,17 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dsl-pa", "dsl-pa.vcproj", "{25DEDF2E-5D57-4D1F-A3AA-1867591DDAB3}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dsl-pa Library", "dsl-pa.vcproj", "{25DEDF2E-5D57-4D1F-A3AA-1867591DDAB3}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Examples", "Examples\Examples.vcproj", "{C4D40550-7C2F-4219-BF99-E8AA748556A2}"
+	ProjectSection(ProjectDependencies) = postProject
+		{25DEDF2E-5D57-4D1F-A3AA-1867591DDAB3} = {25DEDF2E-5D57-4D1F-A3AA-1867591DDAB3}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Test", "Test\Test.vcproj", "{8E4518EE-245D-491D-A17A-39D859ABA0C3}"
+	ProjectSection(ProjectDependencies) = postProject
+		{25DEDF2E-5D57-4D1F-A3AA-1867591DDAB3} = {25DEDF2E-5D57-4D1F-A3AA-1867591DDAB3}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,6 +23,14 @@ Global
 		{25DEDF2E-5D57-4D1F-A3AA-1867591DDAB3}.Debug|Win32.Build.0 = Debug|Win32
 		{25DEDF2E-5D57-4D1F-A3AA-1867591DDAB3}.Release|Win32.ActiveCfg = Release|Win32
 		{25DEDF2E-5D57-4D1F-A3AA-1867591DDAB3}.Release|Win32.Build.0 = Release|Win32
+		{C4D40550-7C2F-4219-BF99-E8AA748556A2}.Debug|Win32.ActiveCfg = Debug|Win32
+		{C4D40550-7C2F-4219-BF99-E8AA748556A2}.Debug|Win32.Build.0 = Debug|Win32
+		{C4D40550-7C2F-4219-BF99-E8AA748556A2}.Release|Win32.ActiveCfg = Release|Win32
+		{C4D40550-7C2F-4219-BF99-E8AA748556A2}.Release|Win32.Build.0 = Release|Win32
+		{8E4518EE-245D-491D-A17A-39D859ABA0C3}.Debug|Win32.ActiveCfg = Debug|Win32
+		{8E4518EE-245D-491D-A17A-39D859ABA0C3}.Debug|Win32.Build.0 = Debug|Win32
+		{8E4518EE-245D-491D-A17A-39D859ABA0C3}.Release|Win32.ActiveCfg = Release|Win32
+		{8E4518EE-245D-491D-A17A-39D859ABA0C3}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
