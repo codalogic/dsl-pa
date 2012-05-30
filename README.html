@@ -10,6 +10,7 @@ h4 { color:#0005C8; }
 code { color:#800000; }
 pre.cmd { color:#0000c0; }
 pre.code { color:#600000; }
+pre.indented { margin-left:1.3cm; }
 pre.proto { color:#800000; }
 pre.anot { color:#0000c0; }
 pre.conf { color:#0000c0; }
@@ -74,7 +75,7 @@ operators, such as &amp;&amp; and ||.
 <h2>Skipping white space</h2>
 <p>A common operation when parsing a language is skiiping white space.  This can be done using the
 following dsl_pa methods:</p>
-<pre class=code>
+<pre class='code'>
     bool ws();
     bool opt_ws();
 </pre>
@@ -83,7 +84,7 @@ be optional.</p>
 
 <h2>dsl_pa primary getters</h2>
 <p><code>dsl_pa</code> has a number of functions for reading items of data into std::strings. These are:</p>
-<pre class=code>
+<pre class='code'>
     size_t /*num chars read*/ get( std::string * p_output, const alphabet & r_alphabet );
     size_t get( std::string * p_output, const alphabet & r_alphabet, size_t max_chars );
     size_t get_until( std::string * p_output, const alphabet & r_alphabet );
@@ -93,7 +94,7 @@ be optional.</p>
 </pre>
 <p>In the above functions the p_output argument points to the instance of std::string that is to receive the output.
 Any parsed data is appended to the string.  This allows multiple get...() functions to accumulate data into a
-string.  Ifyou wish to clear a std::string first you can use the dsl_pa::clear() method within your set of
+single string.  If you wish to clear a std::string first you can use the dsl_pa::clear() method within your set of
 shortcut operators.</p>
 <p>The r_alphabet parameter takes a reference to an alphabet class.  An alphabet specifies the set of characters
 that you want to either parse into your string (using the get() methods) or not get in your string (using the
@@ -102,7 +103,7 @@ get...until() methods.)</p>
 <h2>dsl_pa type specific getters</h2>
 <p><code>dsl_pa</code> has a number of functions for reading items of data such as integers, floats
 and booleans.</p>
-<pre class=code>
+<pre class='code'>
     bool /*is_parsed*/ get_bool( std::string * p_input );
     bool /*is_parsed*/ get_bool( bool * p_bool );
     size_t /*num chars read*/ get_int( std::string * p_num );
@@ -119,7 +120,7 @@ and booleans.</p>
 
 <h2>Reading fixed text</h2>
 <p>Occasionally when parsing a langauge you need to parse fixed text.  The following dsl-pa functions support this:</p>
-<pre class=code>
+<pre class='code'>
     bool fixed( const char * p_seeking );
     bool ifixed( const char * p_seeking );
     bool get_fixed( std::string * p_output, const char * p_seeking );
