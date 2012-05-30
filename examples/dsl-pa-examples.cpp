@@ -33,31 +33,64 @@
 
 #include "dsl-pa/dsl-pa.h"
 
-#include "../Test/clunit.h"
-
 #include <iostream>
 #include <fstream>
 
 using namespace cl;
+
+void example1( std::ostream & fout )
+{
+    fout << "Example 1\n==============\n";
+
+    // What we wat to parse
+    const char * const to_parse = " width=10, height = 5";
+
+	// Create a reader with the desired input
+    reader_string my_reader( to_parse );
+    
+    // Create a parser instance specifying the created reader
+    dsl_pa pa( my_reader );
+
+    // Create variables to capture parsed data
+    size_t width, height;
+
+    // Parse the 'to_parse' string
+    if( pa.opt_ws() &&
+            pa.fixed( "width" ) &&
+            pa.opt_ws() && pa.is_char( '=' ) && pa.opt_ws() &&
+            pa.get_uint( &width ) &&
+            pa.opt_ws() && pa.is_char( ',' ) && pa.opt_ws() &&
+            pa.fixed( "height" ) &&
+            pa.opt_ws() && pa.is_char( '=' ) && pa.opt_ws() &&
+            pa.get_uint( &height ) )
+    {
+        // Report the results
+        fout << "Example 1 OK: w=" << width << " & h=" << height << "\n";
+    }
+    else
+    {
+        fout << "Unable to parse input\n";
+    }
+}
 
 class example_parser : public dsl_pa
 {
 public:
     example_parser( reader & r_reader_in ) : dsl_pa( r_reader_in ) {}
 
-    void example1( std::ostream & fout );
+    void example2( std::ostream & fout );
 };
 
-void example1( std::ostream & fout )
+void example2( std::ostream & fout )
 {
-    fout << "Example 1\n==============\n";
+    fout << "\nExample 2\n==============\n";
 
     reader_string my_reader( " width=10, height = 5" );
     example_parser my_parser( my_reader );
-    my_parser.example1( fout );
+    my_parser.example2( fout );
 }
 
-void example_parser::example1( std::ostream & fout )
+void example_parser::example2( std::ostream & fout )
 {
     size_t width, height;
 
@@ -70,7 +103,7 @@ void example_parser::example1( std::ostream & fout )
             opt_ws() && is_char( '=' ) && opt_ws() &&
             get_uint( &height ) )
     {
-        fout << "Example 1 OK: w=" << width << " & h=" << height << "\n";
+        fout << "Example 2 OK: w=" << width << " & h=" << height << "\n";
     }
     else
     {
@@ -83,4 +116,5 @@ int main()
     std::ofstream fout( "examples-out.txt" );
 
     example1( fout );
+    example2( fout );
 }
