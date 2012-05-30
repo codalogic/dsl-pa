@@ -23,7 +23,7 @@ void example1( std::ostream & fout )
 {
     fout << "Example 1\n==============\n";
 
-    // What we wat to parse
+    // What we want to parse
     const char * const to_parse = " width=10, height = 5";
 
 	// Create a reader with the desired input
