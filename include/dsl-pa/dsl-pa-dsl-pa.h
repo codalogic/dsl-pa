@@ -185,7 +185,7 @@ public:
     bool location_pop() { return r_reader.location_pop(); }
 };
 
-// The following strategy for handling an optional sequence does not work 
+// The following strategy for handling an optional sequence does not work
 // because C++ doesn't ensure that if you do optional_sequence().exec( xyz )
 // the temporary object is created before the arguments to exec() are
 // executed.
