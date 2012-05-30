@@ -94,3 +94,4 @@ void example_parser::example2( std::ostream & fout )
     }
 }
 ```
+For more information see <https://github.com/codalogic/dsl-pa/blob/master/README.html>.
