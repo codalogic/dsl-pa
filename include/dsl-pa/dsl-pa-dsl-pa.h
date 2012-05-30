@@ -157,7 +157,9 @@ public:
 
     // Type specific parsing functions
     bool ws();
-    bool opt_ws();
+    bool opt_ws() { return optional( ws() ); }
+    bool lws();     // Linear whitespace (i.e. not newlines chars)
+    bool opt_lws() { return optional( lws() ); }
 
     bool /*is_parsed*/ get_bool( std::string * p_input );
     bool /*is_parsed*/ get_bool( bool * p_bool );

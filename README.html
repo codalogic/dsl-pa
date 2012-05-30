@@ -102,9 +102,13 @@ following dsl_pa methods:</p>
 <pre class='code'>
     bool ws();
     bool opt_ws();
+    bool lws();     // Linear whitespace (i.e. not newlines chars)
+    bool opt_lws();
 </pre>
-<p>ws() requires there to be white space present in order to return true and opt_ws() allows white space to
-be optional.</p>
+<p>ws() requires there to be white space (space, tab, plus newline characters) present in order to 
+return true and opt_ws() allows white space to be optional.</p>
+<p>lws() and opt_lws() are similar to ws() and opt_ws(), but only accepts 'linear whitespace', 
+i.e. non-newline whitespace characters.  They are handy for parsing line based syntaxes.</p>
 
 <h2>dsl_pa primary getters</h2>
 <p><code>dsl_pa</code> has a number of functions for reading items of data into std::strings. These are:</p>

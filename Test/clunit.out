@@ -1,7 +1,7 @@
-Tests run on Wed May 30 19:39:41 2012
+Tests run on Wed May 30 20:08:04 2012
 
 
-    Alphabet tests [c:\home\pete\sw\dsl-pa\test\alphabet-test.cpp:42]
+    Alphabet tests [.\alphabet-test.cpp:42]
     ==========================
       Word char alphabet
     ok: my_alphabet.is_sought( 'b' )
@@ -31,10 +31,9 @@ Tests run on Wed May 30 19:39:41 2012
     ok: my_hex_alphabet.is_sought( 'c' )
     ok: my_hex_alphabet.is_sought( 'f' )
     ok: ! my_hex_alphabet.is_sought( 'G' )
-    ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
 
-    Alphabet combiners tests [c:\home\pete\sw\dsl-pa\test\alphabet-test.cpp:88]
+    Alphabet combiners tests [.\alphabet-test.cpp:88]
     ==========================
     ok: alphabet_digit().is_sought( '1' )
     ok: alphabet_not( alphabet_digit() ).is_sought( 'x' )
@@ -46,10 +45,9 @@ Tests run on Wed May 30 19:39:41 2012
     ok: alphabet_or( alphabet_space(), alphabet_or( alphabet_digit(), alphabet_uni() ) ).is_sought( '5' )
     ok: alphabet_or( alphabet_space(), alphabet_or( alphabet_digit(), alphabet_uni() ) ).is_sought( '\x80' )
     ok: ! alphabet_or( alphabet_space(), alphabet_or( alphabet_digit(), alphabet_uni() ) ).is_sought( '$' )
-    ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
 
-    Alphabet typedefed tests [c:\home\pete\sw\dsl-pa\test\alphabet-test.cpp:106]
+    Alphabet typedefed tests [.\alphabet-test.cpp:106]
     ==========================
     ok: number().is_sought( '1' )
     ok: name().is_sought( 'g' )
@@ -57,10 +55,9 @@ Tests run on Wed May 30 19:39:41 2012
     ok: invert( number() ).is_sought( 'x' )
     ok: either( name(), number() ).is_sought( '5' )
     ok: either( name(), number() ).is_sought( 'j' )
-    ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
 
-    Alphabet short_alphabets tests [c:\home\pete\sw\dsl-pa\test\alphabet-test.cpp:128]
+    Alphabet short_alphabets tests [.\alphabet-test.cpp:128]
     ==========================
     ok: digit().is_sought( '1' )
     ok: not( digit() ).is_sought( 'x' )
@@ -90,19 +87,17 @@ Tests run on Wed May 30 19:39:41 2012
     ok: ! semicolon().is_sought( 'x' )
     ok: comma().is_sought( ',' )
     ok: ! comma().is_sought( 'x' )
-    ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
 
-    Alphabet char_to_size_t tests [c:\home\pete\sw\dsl-pa\test\alphabet-test.cpp:170]
+    Alphabet char_to_size_t tests [.\alphabet-test.cpp:170]
     ==========================
     ok: alphabet_helpers::char_to_size_t( 0 ) == 0
     ok: alphabet_helpers::char_to_size_t( 10 ) == 10
     ok: alphabet_helpers::char_to_size_t( -2 ) == 254
     ok: char_to_size_t( 30 ) == 30
-    ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
 
-     Alphabet char_map tests [c:\home\pete\sw\dsl-pa\test\alphabet-test.cpp:183]
+     Alphabet char_map tests [.\alphabet-test.cpp:183]
     ==========================
     ok: ! my_map.is_set( 'a' )
     ok: ! my_map.is_set( 'b' )
@@ -178,10 +173,9 @@ Tests run on Wed May 30 19:39:41 2012
     ok: ! my_map.is_set( 'b' )
     ok: my_map.is_set( 'e' )
     ok: ! my_map.is_set( 'f' )
-    ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
 
-     Alphabet_char_class tests [c:\home\pete\sw\dsl-pa\test\alphabet-test.cpp:292]
+     Alphabet_char_class tests [.\alphabet-test.cpp:292]
     ==========================
       : alphabet_char_class my_char_class( "a-z" )
     ok: my_char_class.is_sought( 'a' )
@@ -237,30 +231,27 @@ Tests run on Wed May 30 19:39:41 2012
       : alphabet_char_class my_char_class( "~d~w" )
     ok: my_char_class.is_sought( '2' )
     ok: my_char_class.is_sought( 'l' )
-    ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
 
-    dsl_pa::optional() operation [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:69]
+    dsl_pa::optional() operation [.\dsl-pa-test.cpp:69]
     ==========================
     ok: dsl_pa::optional( is_false_optional_test_helper() )
     ok: dsl_pa::optional( is_true_optional_test_helper() )
     ok: dsl_pa::optional( size_0_optional_test_helper() )
     ok: dsl_pa::optional( size_12_optional_test_helper() )
     ok: dsl_pa::optional( int_minus_2_optional_test_helper() )
-    ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
 
-    dsl_pa::set() operation [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:80]
+    dsl_pa::set() operation [.\dsl-pa-test.cpp:80]
     ==========================
       : int i = 0
       : dsl_pa::set( i, 1 )
     ok: i == 1
       : dsl_pa::set( e, COLD )
     ok: e == COLD
-    ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
 
-    dsl_pa::record() operation [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:93]
+    dsl_pa::record() operation [.\dsl-pa-test.cpp:93]
     ==========================
       : bool t1 = false
       : dsl_pa::record( t1, true )
@@ -268,27 +259,24 @@ Tests run on Wed May 30 19:39:41 2012
       : bool t2 = true
       : dsl_pa::record( t2, false )
     ok: t2 == false
-    ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
 
-    dsl_pa::clear() operation [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:106]
+    dsl_pa::clear() operation [.\dsl-pa-test.cpp:106]
     ==========================
     ok: ! v.empty()
     ok: dsl_pa::clear( v )
     ok: v.empty()
-    ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
 
-    dsl_pa::error() operation [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:116]
+    dsl_pa::error() operation [.\dsl-pa-test.cpp:116]
     ==========================
     ok: is_thrown
     ok: is_thrown
     ok: r_exception.get_code() == 12
     ok: is_thrown
-    ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
 
-    dsl pa low level read tests [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:170]
+    dsl pa low level read tests [.\dsl-pa-test.cpp:170]
     ==========================
     ok: my_dsl_pa.get() == 'a'
     ok: my_dsl_pa.get() == 'b'
@@ -312,10 +300,9 @@ Tests run on Wed May 30 19:39:41 2012
     ok: my_dsl_pa.get() == 'e'
     ok: my_dsl_pa.location_top()
     ok: my_dsl_pa.get() == 'd'
-    ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
 
-    dsl pa ws tests [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:204]
+    dsl pa ws tests [.\dsl-pa-test.cpp:204]
     ==========================
     ok: pa.get() == 'a' && pa.get() == 'b' && pa.ws()
     ok: pa.get() == 'c'
@@ -324,10 +311,26 @@ Tests run on Wed May 30 19:39:41 2012
     ok: pa.get() == 'c'
     ok: pa.get() == 'a' && pa.get() == 'b' && pa.opt_ws()
     ok: pa.get() == 'c'
-    ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
 
-    dsl pa get() tests [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:237]
+    dsl pa lws tests [.\dsl-pa-test.cpp:237]
+    ==========================
+    ok: pa.get() == 'a' && pa.get() == 'b' && pa.lws()
+    ok: pa.get() == 'c'
+    ok: pa.get() == 'a' && pa.get() == 'b'
+    ok: ! pa.lws()
+    ok: pa.get() == 'c'
+    ok: pa.get() == 'a' && pa.get() == 'b' && pa.opt_lws()
+    ok: pa.get() == 'c'
+    ok: pa.get() == 'a' && pa.get() == 'b' && pa.lws()
+    ok: pa.get() == '\n' && pa.get() == 'c'
+    ok: pa.get() == 'a' && pa.get() == 'b' && pa.opt_lws()
+    ok: pa.get() == '\n' && pa.get() == 'c'
+    ok: pa.get() == 'a' && pa.get() == 'b' && pa.opt_lws()
+    ok: pa.get() == '\n' && pa.get() == 'c'
+
+
+    dsl pa get() tests [.\dsl-pa-test.cpp:297]
     ==========================
     ok: my_pa.get( &command, alphabet_word_char() ) && my_pa.ws() && my_pa.get( &channel, alphabet_alpha() ) && my_pa.opt_ws() && my_pa.is_char( '=' ) && my_pa.opt_ws() && my_pa.get( &level, alphabet_digit() )
     ok: command == "Mode"
@@ -340,10 +343,9 @@ Tests run on Wed May 30 19:39:41 2012
     ok: command_2 == "de"
     ok: channel == "p"
     ok: level == "12"
-    ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
 
-    dsl pa get_until() tests [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:298]
+    dsl pa get_until() tests [.\dsl-pa-test.cpp:358]
     ==========================
     ok: my_pa.get_until( &command, alphabet_space() ) && my_pa.ws() && my_pa.get_until( &channel, alphabet_char_class( "=" ) ) && my_pa.opt_ws() && my_pa.is_char( '=' ) && my_pa.opt_ws() && my_pa.get_until( &level, alphabet_space() )
     ok: command == "Mode"
@@ -360,10 +362,9 @@ Tests run on Wed May 30 19:39:41 2012
     ok: command_2 == "de"
     ok: channel == "p"
     ok: level == "12"
-    ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
 
-    dsl pa fixed and ifixed tests [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:382]
+    dsl pa fixed and ifixed tests [.\dsl-pa-test.cpp:442]
     ==========================
     ok: (my_pa.fixed( "Range" ) || my_pa.fixed( "Mode" )) && my_pa.ws() && my_pa.get( &channel, alphabet_alpha() ) && my_pa.opt_ws() && my_pa.is_char( '=' ) && my_pa.opt_ws() && my_pa.get( &level, alphabet_digit() )
     ok: channel == "p"
@@ -375,10 +376,9 @@ Tests run on Wed May 30 19:39:41 2012
     ok: command == "Mode"
     ok: (my_pa.get_ifixed( &command, "rANGE" ) || my_pa.get_ifixed( &command, "mODE" ))
     ok: command == "Mode"
-    ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
 
-    dsl_pa::get_bool() Tests [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:474]
+    dsl_pa::get_bool() Tests [.\dsl-pa-test.cpp:534]
     ==========================
       Input: true
     ok: my_pa.get_bool( &result ) == (valid == TEST_VALID)
@@ -414,10 +414,9 @@ Tests run on Wed May 30 19:39:41 2012
     ok: my_pa.get() == next_char
     ok: my_pa.get_bool( &result ) == (valid == TEST_VALID)
     ok: my_pa.get() == next_char
-    ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
 
-    dsl_pa::get_int() Tests [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:499]
+    dsl_pa::get_int() Tests [.\dsl-pa-test.cpp:559]
     ==========================
       Input: 100
     ok: my_pa.get_int( &result ) == n_chars
@@ -449,10 +448,9 @@ Tests run on Wed May 30 19:39:41 2012
       Input: w
     ok: my_pa.get_int( &result ) == n_chars
     ok: my_pa.get() == *p_input
-    ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
 
-    dsl_pa::get_uint() Tests [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:529]
+    dsl_pa::get_uint() Tests [.\dsl-pa-test.cpp:589]
     ==========================
       Input: 100
     ok: my_pa.get_uint( &result ) == n_chars
@@ -484,10 +482,9 @@ Tests run on Wed May 30 19:39:41 2012
       Input: w
     ok: my_pa.get_uint( &result ) == n_chars
     ok: my_pa.get() == *p_input
-    ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
 
-    dsl_pa::get_float() Tests [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:559]
+    dsl_pa::get_float() Tests [.\dsl-pa-test.cpp:619]
     ==========================
       Input: 1
     ok: my_pa.get_float( &result ) == is_valid
@@ -531,10 +528,9 @@ Tests run on Wed May 30 19:39:41 2012
       Input: w
     ok: my_pa.get_float( &result ) == is_valid
     ok: my_pa.get() == *p_input
-    ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
 
-    dsl_pa::get_sci_float() Tests [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:592]
+    dsl_pa::get_sci_float() Tests [.\dsl-pa-test.cpp:652]
     ==========================
       Input: 1 
     ok: my_pa.get_sci_float( &result ) == is_valid
@@ -626,21 +622,19 @@ Tests run on Wed May 30 19:39:41 2012
       Input: w
     ok: my_pa.get_sci_float( &result ) == is_valid
     ok: my_pa.get() == next_char
-    ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
 
-    optional_sequence class Tests [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:623]
+    optional_sequence class Tests [.\dsl-pa-test.cpp:683]
     ==========================
     ok: my_pa.location_push() && my_pa.optional_rewind( my_pa.get_fixed( &command, "Mode" ) && my_pa.ws() && my_pa.get_fixed( &type, "empty" ) && my_pa.set( is_empty_mode, true ) || my_pa.on_fail( my_pa.clear( command ) && my_pa.clear( type ) ) ) && my_pa.location_pop() && my_pa.get_fixed( &command, "Mode" ) && my_pa.ws() && my_pa.get_fixed( &type, "full" )
     ok: command == "Mode"
     ok: is_empty_mode == false
     ok: type == "full"
-    ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
 
-    String reader tests [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:355]
+    String reader tests [.\reader-test.cpp:355]
     ==========================
-    String reader basic tests [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:101]
+    String reader basic tests [.\reader-test.cpp:101]
     ==========================
       : std::auto_ptr< reader > p_reader( r_reader_factory.create( "abc d" ) )
     ok: p_reader.get() != 0
@@ -658,7 +652,7 @@ Tests run on Wed May 30 19:39:41 2012
     ok: p_reader_empty.get() != 0
     ok: p_reader_empty->get() == reader::R_EOI
     ok: p_reader_empty->current() == reader::R_EOI
-    String reader location tests [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:128]
+    String reader location tests [.\reader-test.cpp:128]
     ==========================
       : std::auto_ptr< reader > p_reader( r_reader_factory.create( "abcdef" ) )
     ok: p_reader.get() != 0
@@ -685,7 +679,7 @@ Tests run on Wed May 30 19:39:41 2012
     ok: p_reader->location_top()
     ok: p_reader->get() == 'c'
     ok: p_reader->get() == 'd'
-    String reader location with newline tests [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:168]
+    String reader location with newline tests [.\reader-test.cpp:168]
     ==========================
       : std::auto_ptr< reader > p_reader( r_reader_factory.create( "abc\ndef" ) )
     ok: p_reader.get() != 0
@@ -720,7 +714,7 @@ Tests run on Wed May 30 19:39:41 2012
     ok: p_reader->location_pop()
     ok: p_reader->location_top()
     ok: p_reader->get() == 'c'
-    String reader unget/peek tests [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:228]
+    String reader unget/peek tests [.\reader-test.cpp:228]
     ==========================
       : std::auto_ptr< reader > p_reader( r_reader_factory.create( "abcdef" ) )
     ok: p_reader.get() != 0
@@ -744,7 +738,7 @@ Tests run on Wed May 30 19:39:41 2012
     ok: p_reader->get() == 'd'
     ok: p_reader->peek() == 'e'
     ok: p_reader->get() == 'e'
-    String reader location tests [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:258]
+    String reader location tests [.\reader-test.cpp:258]
     ==========================
       : std::auto_ptr< reader > p_reader( r_reader_factory.create( "abcdef" ) )
     ok: p_reader.get() != 0
@@ -769,7 +763,7 @@ Tests run on Wed May 30 19:39:41 2012
     ok: p_reader->get() == '\0'
     ok: p_reader->location_top()
     ok: p_reader->get() == '\0'
-    String reader location logger tests [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:306]
+    String reader location logger tests [.\reader-test.cpp:306]
     ==========================
       : std::auto_ptr< reader > p_reader( r_reader_factory.create( "abcdef" ) )
     ok: p_reader.get() != 0
@@ -795,12 +789,11 @@ Tests run on Wed May 30 19:39:41 2012
     ok: p_reader->location_top()
     ok: p_reader->get() == 'c'
     ok: p_reader->get() == 'd'
-    ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
 
-    File reader tests [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:362]
+    File reader tests [.\reader-test.cpp:362]
     ==========================
-    File reader basic tests [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:101]
+    File reader basic tests [.\reader-test.cpp:101]
     ==========================
       : std::auto_ptr< reader > p_reader( r_reader_factory.create( "abc d" ) )
     ok: fout.is_open()
@@ -820,7 +813,7 @@ Tests run on Wed May 30 19:39:41 2012
     ok: p_reader_empty.get() != 0
     ok: p_reader_empty->get() == reader::R_EOI
     ok: p_reader_empty->current() == reader::R_EOI
-    File reader location tests [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:128]
+    File reader location tests [.\reader-test.cpp:128]
     ==========================
       : std::auto_ptr< reader > p_reader( r_reader_factory.create( "abcdef" ) )
     ok: fout.is_open()
@@ -848,7 +841,7 @@ Tests run on Wed May 30 19:39:41 2012
     ok: p_reader->location_top()
     ok: p_reader->get() == 'c'
     ok: p_reader->get() == 'd'
-    File reader location with newline tests [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:168]
+    File reader location with newline tests [.\reader-test.cpp:168]
     ==========================
       : std::auto_ptr< reader > p_reader( r_reader_factory.create( "abc\ndef" ) )
     ok: fout.is_open()
@@ -885,7 +878,7 @@ Tests run on Wed May 30 19:39:41 2012
     ok: p_reader->location_pop()
     ok: p_reader->location_top()
     ok: p_reader->get() == 'c'
-    File reader unget/peek tests [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:228]
+    File reader unget/peek tests [.\reader-test.cpp:228]
     ==========================
       : std::auto_ptr< reader > p_reader( r_reader_factory.create( "abcdef" ) )
     ok: fout.is_open()
@@ -910,7 +903,7 @@ Tests run on Wed May 30 19:39:41 2012
     ok: p_reader->get() == 'd'
     ok: p_reader->peek() == 'e'
     ok: p_reader->get() == 'e'
-    File reader location tests [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:258]
+    File reader location tests [.\reader-test.cpp:258]
     ==========================
       : std::auto_ptr< reader > p_reader( r_reader_factory.create( "abcdef" ) )
     ok: fout.is_open()
@@ -937,7 +930,7 @@ Tests run on Wed May 30 19:39:41 2012
     ok: p_reader->get() == '\0'
     ok: p_reader->location_top()
     ok: p_reader->get() == '\0'
-    File reader location logger tests [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:306]
+    File reader location logger tests [.\reader-test.cpp:306]
     ==========================
       : std::auto_ptr< reader > p_reader( r_reader_factory.create( "abcdef" ) )
     ok: fout.is_open()
@@ -964,12 +957,11 @@ Tests run on Wed May 30 19:39:41 2012
     ok: p_reader->location_top()
     ok: p_reader->get() == 'c'
     ok: p_reader->get() == 'd'
-    ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
 
-    Mem buf reader tests [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:369]
+    Mem buf reader tests [.\reader-test.cpp:369]
     ==========================
-    Mem buf reader basic tests [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:101]
+    Mem buf reader basic tests [.\reader-test.cpp:101]
     ==========================
       : std::auto_ptr< reader > p_reader( r_reader_factory.create( "abc d" ) )
     ok: p_reader.get() != 0
@@ -987,7 +979,7 @@ Tests run on Wed May 30 19:39:41 2012
     ok: p_reader_empty.get() != 0
     ok: p_reader_empty->get() == reader::R_EOI
     ok: p_reader_empty->current() == reader::R_EOI
-    Mem buf reader location tests [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:128]
+    Mem buf reader location tests [.\reader-test.cpp:128]
     ==========================
       : std::auto_ptr< reader > p_reader( r_reader_factory.create( "abcdef" ) )
     ok: p_reader.get() != 0
@@ -1014,7 +1006,7 @@ Tests run on Wed May 30 19:39:41 2012
     ok: p_reader->location_top()
     ok: p_reader->get() == 'c'
     ok: p_reader->get() == 'd'
-    Mem buf reader location with newline tests [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:168]
+    Mem buf reader location with newline tests [.\reader-test.cpp:168]
     ==========================
       : std::auto_ptr< reader > p_reader( r_reader_factory.create( "abc\ndef" ) )
     ok: p_reader.get() != 0
@@ -1049,7 +1041,7 @@ Tests run on Wed May 30 19:39:41 2012
     ok: p_reader->location_pop()
     ok: p_reader->location_top()
     ok: p_reader->get() == 'c'
-    Mem buf reader unget/peek tests [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:228]
+    Mem buf reader unget/peek tests [.\reader-test.cpp:228]
     ==========================
       : std::auto_ptr< reader > p_reader( r_reader_factory.create( "abcdef" ) )
     ok: p_reader.get() != 0
@@ -1073,7 +1065,7 @@ Tests run on Wed May 30 19:39:41 2012
     ok: p_reader->get() == 'd'
     ok: p_reader->peek() == 'e'
     ok: p_reader->get() == 'e'
-    Mem buf reader location tests [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:258]
+    Mem buf reader location tests [.\reader-test.cpp:258]
     ==========================
       : std::auto_ptr< reader > p_reader( r_reader_factory.create( "abcdef" ) )
     ok: p_reader.get() != 0
@@ -1098,7 +1090,7 @@ Tests run on Wed May 30 19:39:41 2012
     ok: p_reader->get() == '\0'
     ok: p_reader->location_top()
     ok: p_reader->get() == '\0'
-    Mem buf reader location logger tests [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:306]
+    Mem buf reader location logger tests [.\reader-test.cpp:306]
     ==========================
       : std::auto_ptr< reader > p_reader( r_reader_factory.create( "abcdef" ) )
     ok: p_reader.get() != 0
@@ -1124,25 +1116,21 @@ Tests run on Wed May 30 19:39:41 2012
     ok: p_reader->location_top()
     ok: p_reader->get() == 'c'
     ok: p_reader->get() == 'd'
-    ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
 
-    Is char reader tests [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:376]
+    Is char reader tests [.\reader-test.cpp:376]
     ==========================
     ok: ! my_reader.is_char( 'x' )
     ok: my_reader.is_char( 'a' )
     ok: ! my_reader.is_char( 'x' )
     ok: my_reader.is_char( 'b' )
-    ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
 
-    Reader line counting tests [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:388]
+    Reader line counting tests [.\reader-test.cpp:388]
     ==========================
-    ok: ! _CrtMemDifference( &s3, &s1, &s2 )
-    ok: _CrtCheckMemory() != 0
 
 TODOs (1):
 ------------------------
-- Add line counting functionality to reader class [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:390]
+- Add line counting functionality to reader class [.\reader-test.cpp:390]
 
-0 error(s), 1 todo(s), 853 test(s)
+0 error(s), 1 todo(s), 837 test(s)
