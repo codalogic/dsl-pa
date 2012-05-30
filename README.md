@@ -41,13 +41,13 @@ void example1( std::ostream & fout )
     size_t width, height;
 
     // Parse the 'to_parse' string
-    if( pa.opt_ws() &&
+    if( pa.opt_space() &&
             pa.fixed( "width" ) &&
-            pa.opt_ws() && pa.is_char( '=' ) && pa.opt_ws() &&
+            pa.opt_space() && pa.is_char( '=' ) && pa.opt_space() &&
             pa.get_uint( &width ) &&
-            pa.opt_ws() && pa.is_char( ',' ) && pa.opt_ws() &&
+            pa.opt_space() && pa.is_char( ',' ) && pa.opt_space() &&
             pa.fixed( "height" ) &&
-            pa.opt_ws() && pa.is_char( '=' ) && pa.opt_ws() &&
+            pa.opt_space() && pa.is_char( '=' ) && pa.opt_space() &&
             pa.get_uint( &height ) )
     {
         // Report the results
