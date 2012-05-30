@@ -84,13 +84,13 @@ operators, such as &amp;&amp; and ||.  For example, if the strucure of your inpu
 <pre class='code'>
     size_t width, height;
 
-    if( opt_ws() &&
+    if( opt_space() &&
             fixed( "width" ) &&
-            opt_ws() && is_char( '=' ) && opt_ws() &&
+            opt_space() && is_char( '=' ) && opt_space() &&
             get_uint( &width ) &&
-            opt_ws() && is_char( ',' ) && opt_ws() &&
+            opt_space() && is_char( ',' ) && opt_space() &&
             fixed( "height" ) &&
-            opt_ws() && is_char( '=' ) && opt_ws() &&
+            opt_space() && is_char( '=' ) && opt_space() &&
             get_uint( &height ) )
     {
         fout << "Example 1 OK: w=" << width << " & h=" << height << "\n";
@@ -105,15 +105,15 @@ operators, such as &amp;&amp; and ||.  For example, if the strucure of your inpu
 <p>A common operation when parsing a language is skiiping white space.  This can be done using the
 following dsl_pa methods:</p>
 <pre class='code'>
-    bool ws();
-    bool opt_ws();
-    bool lws();     // Linear whitespace (i.e. not newlines chars)
-    bool opt_lws();
+    bool space();
+    bool opt_space();
+    bool wsp();     // From ABNF (RFC5234) whitespace: non-newline space chars
+    bool opt_wsp();
 </pre>
-<p>ws() requires there to be white space (space, tab, plus newline characters) present in order to 
-return true and opt_ws() allows white space to be optional.</p>
-<p>lws() and opt_lws() are similar to ws() and opt_ws(), but only accepts 'linear whitespace', 
-i.e. non-newline whitespace characters.  They are handy for parsing line based syntaxes.</p>
+<p>space() requires there to be white space (space, tab, plus newline characters) present in order to 
+return true and opt_space() allows white space to be optional.</p>
+<p>wsp() and opt_wsp() are similar to space() and opt_space(), but only accepts non-newline whitespace 
+characters.  They are handy for parsing line based syntaxes.</p>
 
 <h2>dsl_pa primary getters</h2>
 <p><code>dsl_pa</code> has a number of functions for reading items of data into std::strings. These are:</p>

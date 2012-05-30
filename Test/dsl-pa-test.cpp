@@ -207,7 +207,7 @@ TFUNCTION( dsl_pa_ws_test )
     reader_string my_reader( "ab  cdef" );
     dsl_pa pa( my_reader );
 
-    TTEST( pa.get() == 'a' && pa.get() == 'b' && pa.ws() );
+    TTEST( pa.get() == 'a' && pa.get() == 'b' && pa.space() );
 
     TTEST( pa.get() == 'c' );
     }
@@ -217,7 +217,7 @@ TFUNCTION( dsl_pa_ws_test )
     dsl_pa pa( my_reader );
 
     TTEST( pa.get() == 'a' && pa.get() == 'b' );
-    TTEST( ! pa.ws() );
+    TTEST( ! pa.space() );
 
     TTEST( pa.get() == 'c' );
     }
@@ -226,21 +226,21 @@ TFUNCTION( dsl_pa_ws_test )
     reader_string my_reader( "abcdef" );
     dsl_pa pa( my_reader );
 
-    TTEST( pa.get() == 'a' && pa.get() == 'b' && pa.opt_ws() );
+    TTEST( pa.get() == 'a' && pa.get() == 'b' && pa.opt_space() );
 
     TTEST( pa.get() == 'c' );
     }
 }
 
-TFUNCTION( dsl_pa_lws_test )
+TFUNCTION( dsl_pa_wsp_test )
 {
-    TBEGIN( "dsl pa lws tests" );
+    TBEGIN( "dsl pa wsp tests" );
 
     {
     reader_string my_reader( "ab  cdef" );
     dsl_pa pa( my_reader );
 
-    TTEST( pa.get() == 'a' && pa.get() == 'b' && pa.lws() );
+    TTEST( pa.get() == 'a' && pa.get() == 'b' && pa.wsp() );
 
     TTEST( pa.get() == 'c' );
     }
@@ -250,7 +250,7 @@ TFUNCTION( dsl_pa_lws_test )
     dsl_pa pa( my_reader );
 
     TTEST( pa.get() == 'a' && pa.get() == 'b' );
-    TTEST( ! pa.lws() );
+    TTEST( ! pa.wsp() );
 
     TTEST( pa.get() == 'c' );
     }
@@ -259,7 +259,7 @@ TFUNCTION( dsl_pa_lws_test )
     reader_string my_reader( "abcdef" );
     dsl_pa pa( my_reader );
 
-    TTEST( pa.get() == 'a' && pa.get() == 'b' && pa.opt_lws() );
+    TTEST( pa.get() == 'a' && pa.get() == 'b' && pa.opt_wsp() );
 
     TTEST( pa.get() == 'c' );
     }
@@ -268,7 +268,7 @@ TFUNCTION( dsl_pa_lws_test )
     reader_string my_reader( "ab  \ncdef" );
     dsl_pa pa( my_reader );
 
-    TTEST( pa.get() == 'a' && pa.get() == 'b' && pa.lws() );
+    TTEST( pa.get() == 'a' && pa.get() == 'b' && pa.wsp() );
 
     TTEST( pa.get() == '\n' && pa.get() == 'c' );
     }
@@ -277,7 +277,7 @@ TFUNCTION( dsl_pa_lws_test )
     reader_string my_reader( "ab  \ncdef" );
     dsl_pa pa( my_reader );
 
-    TTEST( pa.get() == 'a' && pa.get() == 'b' && pa.opt_lws() );
+    TTEST( pa.get() == 'a' && pa.get() == 'b' && pa.opt_wsp() );
 
     TTEST( pa.get() == '\n' && pa.get() == 'c' );
     }
@@ -286,7 +286,7 @@ TFUNCTION( dsl_pa_lws_test )
     reader_string my_reader( "ab\ncdef" );
     dsl_pa pa( my_reader );
 
-    TTEST( pa.get() == 'a' && pa.get() == 'b' && pa.opt_lws() );
+    TTEST( pa.get() == 'a' && pa.get() == 'b' && pa.opt_wsp() );
 
     TTEST( pa.get() == '\n' && pa.get() == 'c' );
     }
@@ -305,11 +305,11 @@ TFUNCTION( dsl_pa_get_test )
     std::string level;
 
     TTEST( my_pa.get( &command, alphabet_word_char() ) &&
-                my_pa.ws() &&
+                my_pa.space() &&
                 my_pa.get( &channel, alphabet_alpha() ) &&
-                my_pa.opt_ws() &&
+                my_pa.opt_space() &&
                 my_pa.is_char( '=' ) &&
-                my_pa.opt_ws() &&
+                my_pa.opt_space() &&
                 my_pa.get( &level, alphabet_digit() ) );
 
     TTEST( command == "Mode" );
@@ -323,7 +323,7 @@ TFUNCTION( dsl_pa_get_test )
 
     std::string command;
 
-    TTEST( my_pa.opt_ws() && my_pa.get( &command, alphabet_word_char() ) == 4 );
+    TTEST( my_pa.opt_space() && my_pa.get( &command, alphabet_word_char() ) == 4 );
 
     TTEST( command == "Mode" );
     }
@@ -339,11 +339,11 @@ TFUNCTION( dsl_pa_get_test )
 
     TTEST( my_pa.get( &command_1, alphabet_word_char(), 2 ) &&
                 my_pa.get( &command_2, alphabet_word_char() ) &&
-                my_pa.ws() &&
+                my_pa.space() &&
                 my_pa.get( &channel, alphabet_alpha() ) &&
-                my_pa.opt_ws() &&
+                my_pa.opt_space() &&
                 my_pa.is_char( '=' ) &&
-                my_pa.opt_ws() &&
+                my_pa.opt_space() &&
                 my_pa.get( &level, alphabet_digit() ) );
 
     TTEST( command_1 == "Mo" );
@@ -366,11 +366,11 @@ TFUNCTION( dsl_pa_get_until_test )
     std::string level;
 
     TTEST( my_pa.get_until( &command, alphabet_space() ) &&
-                my_pa.ws() &&
+                my_pa.space() &&
                 my_pa.get_until( &channel, alphabet_char_class( "=" ) ) &&
-                my_pa.opt_ws() &&
+                my_pa.opt_space() &&
                 my_pa.is_char( '=' ) &&
-                my_pa.opt_ws() &&
+                my_pa.opt_space() &&
                 my_pa.get_until( &level, alphabet_space() ) );
 
     TTEST( command == "Mode" );
@@ -384,7 +384,7 @@ TFUNCTION( dsl_pa_get_until_test )
 
     std::string command;
 
-    TTEST( my_pa.opt_ws() && my_pa.get_until( &command, alphabet_space() ) == 4 );
+    TTEST( my_pa.opt_space() && my_pa.get_until( &command, alphabet_space() ) == 4 );
 
     TTEST( command == "Mode" );
     }
@@ -398,13 +398,13 @@ TFUNCTION( dsl_pa_get_until_test )
     std::string level;
 
     TTEST( my_pa.get_until( &channel, alphabet_char_class( "=" ) ) &&
-                my_pa.opt_ws() &&
+                my_pa.opt_space() &&
                 my_pa.is_char( '=' ) &&
-                my_pa.opt_ws() &&
+                my_pa.opt_space() &&
                 my_pa.is_char( '\'' ) &&
                 my_pa.get_escaped_until( &sentence, alphabet_char_class( "'" ), '\\' ) &&
                 my_pa.is_char( '\'' ) &&
-                my_pa.ws() &&
+                my_pa.space() &&
                 my_pa.get_until( &level, alphabet_space() ) );
 
     TTEST( channel == "p" );
@@ -423,11 +423,11 @@ TFUNCTION( dsl_pa_get_until_test )
 
     TTEST( my_pa.get_bounded_until( &command_1, alphabet_space(), 2 ) &&
                 my_pa.get_until( &command_2, alphabet_space() ) &&
-                my_pa.ws() &&
+                my_pa.space() &&
                 my_pa.get_until( &channel, alphabet_char_class( "=" ) ) &&
-                my_pa.opt_ws() &&
+                my_pa.opt_space() &&
                 my_pa.is_char( '=' ) &&
-                my_pa.opt_ws() &&
+                my_pa.opt_space() &&
                 my_pa.get_until( &level, alphabet_space() ) );
 
     TTEST( command_1 == "Mo" );
@@ -450,11 +450,11 @@ TFUNCTION( dsl_pa_fixed_test )
     std::string level;
 
     TTEST( (my_pa.fixed( "Range" ) || my_pa.fixed( "Mode" )) &&
-                my_pa.ws() &&
+                my_pa.space() &&
                 my_pa.get( &channel, alphabet_alpha() ) &&
-                my_pa.opt_ws() &&
+                my_pa.opt_space() &&
                 my_pa.is_char( '=' ) &&
-                my_pa.opt_ws() &&
+                my_pa.opt_space() &&
                 my_pa.get( &level, alphabet_digit() ) );
 
     TTEST( channel == "p" );
@@ -470,11 +470,11 @@ TFUNCTION( dsl_pa_fixed_test )
     std::string level;
 
     TTEST( (my_pa.ifixed( "rANGE" ) || my_pa.ifixed( "mODE" )) &&
-                my_pa.ws() &&
+                my_pa.space() &&
                 my_pa.get( &channel, alphabet_alpha() ) &&
-                my_pa.opt_ws() &&
+                my_pa.opt_space() &&
                 my_pa.is_char( '=' ) &&
-                my_pa.opt_ws() &&
+                my_pa.opt_space() &&
                 my_pa.get( &level, alphabet_digit() ) );
 
     TTEST( channel == "p" );
@@ -693,7 +693,7 @@ TFUNCTION( dsl_pa_optional_sequence_test )
     TTEST( my_pa.location_push() &&
                 my_pa.optional_rewind(
                     my_pa.get_fixed( &command, "Mode" ) &&
-                    my_pa.ws() &&
+                    my_pa.space() &&
                     my_pa.get_fixed( &type, "empty" ) &&
                     my_pa.set( is_empty_mode, true )
                     || my_pa.on_fail(
@@ -701,7 +701,7 @@ TFUNCTION( dsl_pa_optional_sequence_test )
                 ) &&
                 my_pa.location_pop() &&
                 my_pa.get_fixed( &command, "Mode" ) &&
-                my_pa.ws() &&
+                my_pa.space() &&
                 my_pa.get_fixed( &type, "full" ) );
 
     TTEST( command == "Mode" );

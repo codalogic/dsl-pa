@@ -55,13 +55,13 @@ void example1( std::ostream & fout )
     size_t width, height;
 
     // Parse the 'to_parse' string
-    if( pa.opt_ws() &&
+    if( pa.opt_space() &&
             pa.fixed( "width" ) &&
-            pa.opt_ws() && pa.is_char( '=' ) && pa.opt_ws() &&
+            pa.opt_space() && pa.is_char( '=' ) && pa.opt_space() &&
             pa.get_uint( &width ) &&
-            pa.opt_ws() && pa.is_char( ',' ) && pa.opt_ws() &&
+            pa.opt_space() && pa.is_char( ',' ) && pa.opt_space() &&
             pa.fixed( "height" ) &&
-            pa.opt_ws() && pa.is_char( '=' ) && pa.opt_ws() &&
+            pa.opt_space() && pa.is_char( '=' ) && pa.opt_space() &&
             pa.get_uint( &height ) )
     {
         // Report the results
@@ -94,13 +94,13 @@ void example_parser::example2( std::ostream & fout )
 {
     size_t width, height;
 
-    if( opt_ws() &&
+    if( opt_space() &&
             fixed( "width" ) &&
-            opt_ws() && is_char( '=' ) && opt_ws() &&
+            opt_space() && is_char( '=' ) && opt_space() &&
             get_uint( &width ) &&
-            opt_ws() && is_char( ',' ) && opt_ws() &&
+            opt_space() && is_char( ',' ) && opt_space() &&
             fixed( "height" ) &&
-            opt_ws() && is_char( '=' ) && opt_ws() &&
+            opt_space() && is_char( '=' ) && opt_space() &&
             get_uint( &height ) )
     {
         fout << "Example 2 OK: w=" << width << " & h=" << height << "\n";

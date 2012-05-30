@@ -169,7 +169,7 @@ bool dsl_pa::get_ifixed( std::string * p_output, const char * p_seeking )
     return true;
 }
 
-bool dsl_pa::ws()
+bool dsl_pa::space()
 {
     bool is_space_found = false;
 
@@ -181,11 +181,11 @@ bool dsl_pa::ws()
     return is_space_found;
 }
 
-bool dsl_pa::lws()
+bool dsl_pa::wsp()
 {
     bool is_space_found = false;
 
-    while( is_linear_space( get() ) )
+    while( is_line_space( get() ) )
         is_space_found = true;
 
     unget();
