@@ -69,8 +69,32 @@ to invoke your parsing.
 </p>
 <h2>Using C++ shortcut operators</h2>
 <p><code>dsl_pa</code> functions are designed so that they can be combined using C++'s shortcut logical
-operators, such as &amp;&amp; and ||.
+operators, such as &amp;&amp; and ||.  For example, if the strucure of your input is:
+<pre class='code'>
+     width=10, height = 5
+</pre>
 </p>
+<p>then you might parse it similar to the following:
+</p>
+<pre class='code'>
+    size_t width, height;
+
+    if( opt_ws() &&
+            fixed( "width" ) &&
+            opt_ws() && is_char( '=' ) && opt_ws() &&
+            get_uint( &width ) &&
+            opt_ws() && is_char( ',' ) && opt_ws() &&
+            fixed( "height" ) &&
+            opt_ws() && is_char( '=' ) && opt_ws() &&
+            get_uint( &height ) )
+    {
+        fout << "Example 1 OK: w=" << width << " & h=" << height << "\n";
+    }
+    else
+    {
+        fout << "Unable to parse input\n";
+    }
+</pre>
 
 <h2>Skipping white space</h2>
 <p>A common operation when parsing a language is skiiping white space.  This can be done using the
