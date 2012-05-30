@@ -84,6 +84,17 @@ public:
     static bool optional( size_t ) { return true; } // Overloads to avoid performance warnings due to convertin size_t to bool
     static bool optional( int ) { return true; }
 
+    // optional_rewind() will call location_top() if the shortcut arguments
+    // it is called with yield false.
+    bool optional_rewind( bool is_ok ) { if( ! is_ok ) location_top(); return true; }
+
+    // on_fail() allows inclusion of clean-up code in a short cut sequence
+    // that is embedded in the parameters of an optional_rewind() call.
+    // Do ...optioinal_rewind( XYZ || on_fail( ABC ) )...
+    static bool on_fail( bool ) { return false; }
+    static bool on_fail( size_t ) { return false; }
+    static bool on_fail( int ) { return false; }
+
     // set() allows setting of state information within a set of
     // shortcut operators
     template< typename T >
@@ -173,6 +184,44 @@ public:
     bool location_top() { return r_reader.location_top(); }
     bool location_pop() { return r_reader.location_pop(); }
 };
+
+// The following strategy for handling an optional sequence does not work 
+// because C++ doesn't ensure that if you do optional_sequence().exec( xyz )
+// the temporary object is created before the arguments to exec() are
+// executed.
+//
+//class optional_sequence
+//{
+//private:
+//    dsl_pa & r_dsl_pa;
+//    bool is_location_popped;
+//
+//public:
+//    optional_sequence( dsl_pa & r_dsl_pa_in )
+//        :
+//        r_dsl_pa( r_dsl_pa_in ),
+//        is_location_popped( false )
+//    {
+//        r_dsl_pa.location_push();
+//    }
+//    ~optional_sequence()
+//    {
+//        // Just in case someone created the object (and pushed a location)
+//        // but then forgot to call exec!
+//        assert( is_location_popped );
+//    }
+//    bool exec( bool is_sequence_passed )
+//    {
+//        // N.B. The actual parsing sequence is run when creating the boolean
+//        // value with which exec() is called!  i.e. after the object is created,
+//        // but before exec() is called.
+//        if( ! is_sequence_passed )
+//            r_dsl_pa.location_top();
+//        r_dsl_pa.location_pop();
+//        is_location_popped = true;
+//        return true;
+//    }
+//};
 
 } // End of namespace cl
 

@@ -150,19 +150,25 @@ and booleans.</p>
     bool get_fixed( std::string * p_output, const char * p_seeking );
     bool get_ifixed( std::string * p_output, const char * p_seeking );
 </pre>
-<p>The methods <em>without</em> get_ in the name with simply skip over the specified text if it is present.  The methods 
-<em>with</em> get_ in the name will collect the parsed the specified text.  The methods with _ifixed in the name are
+<p>If the specified text is not found in its entirity then the parser's input location will be restored to
+where it was before the function was called.</p>
+<p>
+The methods <em>without</em> get_ in the name with simply skip over the specified text if it is present.  The methods 
+<em>with</em> get_ in the name will collect the parsed text.  The methods with _ifixed in the name are
 case-insensitive for characters in the ASCII range.  The other methods are case sensitive.</p>
+
+<h2>Back tracking and recording locations</h2>
+<h3>The location_logger class</h3>
 
 <h2>dsl_pa helpers</h2>
 <h3>dsl_pa::optional()</h3>
+<h3>dsl_pa::optional_rewind()</h3>
+<h3>dsl_pa::on_fail()</h3>
 <h3>dsl_pa::set()</h3>
 <h3>dsl_pa::record()</h3>
-<h3>dsl_pa::append()</h3>
 <h3>dsl_pa::clear()</h3>
+<h3>dsl_pa::append()</h3>
 <h3>dsl_pa::error() and dsl_pa::error_fatal()</h3>
-<h2>Back tracking and recording locations</h2>
-<h3>The location_logger class</h3>
 
 <a name='char-set' />
 <h1>Character sets</h1>

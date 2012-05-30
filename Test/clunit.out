@@ -1,4 +1,4 @@
-Tests run on Wed May 30 10:47:33 2012
+Tests run on Wed May 30 13:08:11 2012
 
 
     Alphabet tests [c:\home\pete\sw\dsl-pa\test\alphabet-test.cpp:42]
@@ -629,6 +629,15 @@ Tests run on Wed May 30 10:47:33 2012
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
 
+    optional_sequence class Tests [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:623]
+    ==========================
+    ok: my_pa.location_push() && my_pa.optional_rewind( my_pa.get_fixed( &command, "Mode" ) && my_pa.ws() && my_pa.get_fixed( &type, "empty" ) && my_pa.set( is_empty_mode, true ) || my_pa.on_fail( my_pa.clear( command ) && my_pa.clear( type ) ) ) && my_pa.location_pop() && my_pa.get_fixed( &command, "Mode" ) && my_pa.ws() && my_pa.get_fixed( &type, "full" )
+    ok: command == "Mode"
+    ok: is_empty_mode == false
+    ok: type == "full"
+    ok: ! _CrtMemDifference( &s3, &s1, &s2 )
+
+
     String reader tests [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:355]
     ==========================
     String reader basic tests [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:101]
@@ -1136,4 +1145,4 @@ TODOs (1):
 ------------------------
 - Add line counting functionality to reader class [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:390]
 
-0 error(s), 1 todo(s), 848 test(s)
+0 error(s), 1 todo(s), 853 test(s)

@@ -617,3 +617,35 @@ TFUNCTION( dsl_pa_get_sci_float_test )
     dsl_pa_sci_float_test( "", 0.0f, false, '\0' );
     dsl_pa_sci_float_test( "w", 0.0f, false, 'w' );
 }
+
+TFUNCTION( dsl_pa_optional_sequence_test )
+{
+    TBEGIN( "optional_sequence class Tests" );
+
+    {
+    reader_string my_reader( "Mode full" );
+    dsl_pa my_pa( my_reader );
+
+    std::string command;
+    std::string type;
+    bool is_empty_mode = false;
+
+    TTEST( my_pa.location_push() &&
+                my_pa.optional_rewind(
+                    my_pa.get_fixed( &command, "Mode" ) &&
+                    my_pa.ws() &&
+                    my_pa.get_fixed( &type, "empty" ) &&
+                    my_pa.set( is_empty_mode, true )
+                    || my_pa.on_fail(
+                            my_pa.clear( command ) && my_pa.clear( type ) )
+                ) &&
+                my_pa.location_pop() &&
+                my_pa.get_fixed( &command, "Mode" ) &&
+                my_pa.ws() &&
+                my_pa.get_fixed( &type, "full" ) );
+
+    TTEST( command == "Mode" );
+    TTEST( is_empty_mode == false );
+    TTEST( type == "full" );
+    }
+}
