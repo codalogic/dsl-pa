@@ -125,18 +125,19 @@ public:
     bool location_pop() { return r_reader.location_pop(); }
 
     // optional() essentially ignore the result of the (single) function that
-    // generated the input argument. e.g. allows optional( ws() ); etc.
+    // generated the input argument. e.g. allows optional( space() ); etc.
     static bool optional( bool ) { return true; }
     static bool optional( size_t ) { return true; } // Overloads to avoid performance warnings due to convertin size_t to bool
     static bool optional( int ) { return true; }
 
     // optional_rewind() will call location_top() if the shortcut arguments
     // it is called with yield false.
+    // Do location_push() && optional_rewind( XYZ() && ABC() ) && location_pop()
     bool optional_rewind( bool is_ok ) { if( ! is_ok ) location_top(); return true; }
 
     // on_fail() allows inclusion of clean-up code in a short cut sequence
     // that is embedded in the parameters of an optional_rewind() call.
-    // Do ...optioinal_rewind( XYZ || on_fail( ABC ) )...
+    // Do ...optioinal_rewind( XYZ() && ABC() || on_fail( DEF() && GHI() ) )...
     static bool on_fail( bool ) { return false; }
     static bool on_fail( size_t ) { return false; }
     static bool on_fail( int ) { return false; }
