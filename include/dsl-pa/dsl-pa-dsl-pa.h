@@ -78,8 +78,54 @@ public:
     // initiate parsing.
     virtual bool parse() { return false; }
 
-    // optional() essentially ignore the result of the function that generated
-    // the input argument. e.g. allows optional( ws() ); etc.
+    // The primary workhorse functions
+    size_t /*num chars read*/ get( std::string * p_output, const alphabet & r_alphabet );
+    size_t get( std::string * p_output, const alphabet & r_alphabet, size_t max_chars );
+    size_t get_until( std::string * p_output, const alphabet & r_alphabet );
+    size_t get_bounded_until( std::string * p_output, const alphabet & r_alphabet, size_t max_chars );
+    size_t get_escaped_until( std::string * p_output, const alphabet & r_alphabet, char escape_char );
+    size_t get_until( std::string * p_output, const alphabet & r_alphabet, char escape_char, size_t max_chars );
+
+    // fixed() returns ensure that the specified text is read from the input, or leave input location unchanged.
+    // ifixed() ignores ASCII case.
+    bool fixed( const char * p_seeking );
+    bool ifixed( const char * p_seeking );
+    bool get_fixed( std::string * p_output, const char * p_seeking );
+    bool get_ifixed( std::string * p_output, const char * p_seeking );
+
+    // Type specific parsing functions
+    bool space();
+    bool opt_space() { return optional( space() ); }
+    bool wsp();     // From ABNF (RFC5234) whitespace: non-newline space chars
+    bool opt_wsp() { return optional( wsp() ); }
+
+    bool /*is_parsed*/ get_bool( std::string * p_input );
+    bool /*is_parsed*/ get_bool( bool * p_bool );
+    size_t /*num chars read*/ get_int( std::string * p_num );
+    size_t /*num chars read*/ get_int( int * p_int );
+    size_t /*num chars read*/ get_uint( std::string * p_num );
+    size_t /*num chars read*/ get_uint( unsigned int * p_int );
+    bool /*is_parsed*/ get_float( std::string * p_num );
+    bool /*is_parsed*/ get_float( double * p_float );
+    bool /*is_parsed*/ get_float( float * p_float );
+    bool /*is_parsed*/ get_sci_float( std::string * p_num );
+    bool /*is_parsed*/ get_sci_float( double * p_float );
+    bool /*is_parsed*/ get_sci_float( float * p_float );
+
+    // Low-level reader access
+    reader & get_reader() { return r_reader; }  // Primarily for use with location_logger class
+    char get() { return r_reader.get(); }
+    char current() const { return r_reader.current(); }
+    bool unget() { r_reader.unget(); return true; }
+    bool unget( char c ) { r_reader.unget( c ); return true; }
+    char peek() { return r_reader.peek(); }
+    bool is_char( char c ) { return r_reader.is_char( c ); }
+    bool location_push() { return r_reader.location_push(); }   // See reader class for documentation
+    bool location_top() { return r_reader.location_top(); }
+    bool location_pop() { return r_reader.location_pop(); }
+
+    // optional() essentially ignore the result of the (single) function that
+    // generated the input argument. e.g. allows optional( ws() ); etc.
     static bool optional( bool ) { return true; }
     static bool optional( size_t ) { return true; } // Overloads to avoid performance warnings due to convertin size_t to bool
     static bool optional( int ) { return true; }
@@ -127,64 +173,18 @@ public:
     static bool error( const T & r_exception )  // To throw custom exceptions
     {
         throw T( r_exception );
-        return true;    // Won't be called!
+        return false;    // Won't be called!
     }
     static bool error( const char * p_what )
     {
         throw dsl_pa_recoverable_exception( p_what );
-        return true;    // Won't be called!
+        return false;    // Won't be called!
     }
     static bool error_fatal( const char * p_what )
     {
         throw dsl_pa_fatal_exception( p_what );
-        return true;    // Won't be called!
+        return false;    // Won't be called!
     }
-
-    // The primary workhorse functions
-    size_t /*num chars read*/ get( std::string * p_output, const alphabet & r_alphabet );
-    size_t get( std::string * p_output, const alphabet & r_alphabet, size_t max_chars );
-    size_t get_until( std::string * p_output, const alphabet & r_alphabet );
-    size_t get_bounded_until( std::string * p_output, const alphabet & r_alphabet, size_t max_chars );
-    size_t get_escaped_until( std::string * p_output, const alphabet & r_alphabet, char escape_char );
-    size_t get_until( std::string * p_output, const alphabet & r_alphabet, char escape_char, size_t max_chars );
-
-    // fixed() returns ensure that the specified text is read from the input, or leave input location unchanged.
-    // ifixed() ignores ASCII case.
-    bool fixed( const char * p_seeking );
-    bool ifixed( const char * p_seeking );
-    bool get_fixed( std::string * p_output, const char * p_seeking );
-    bool get_ifixed( std::string * p_output, const char * p_seeking );
-
-    // Type specific parsing functions
-    bool space();
-    bool opt_space() { return optional( space() ); }
-    bool wsp();     // From ABNF (RFC5234) whitespace: non-newline space chars
-    bool opt_wsp() { return optional( wsp() ); }
-
-    bool /*is_parsed*/ get_bool( std::string * p_input );
-    bool /*is_parsed*/ get_bool( bool * p_bool );
-    size_t /*num chars read*/ get_int( std::string * p_num );
-    size_t /*num chars read*/ get_int( int * p_int );
-    size_t /*num chars read*/ get_uint( std::string * p_num );
-    size_t /*num chars read*/ get_uint( unsigned int * p_int );
-    bool /*is_parsed*/ get_float( std::string * p_num );
-    bool /*is_parsed*/ get_float( double * p_float );
-    bool /*is_parsed*/ get_float( float * p_float );
-    bool /*is_parsed*/ get_sci_float( std::string * p_num );
-    bool /*is_parsed*/ get_sci_float( double * p_float );
-    bool /*is_parsed*/ get_sci_float( float * p_float );
-
-    // Low-level reader access
-    reader & get_reader() { return r_reader; }  // Primarily for use with location_logger class
-    char get() { return r_reader.get(); }
-    char current() const { return r_reader.current(); }
-    bool unget() { r_reader.unget(); return true; }
-    bool unget( char c ) { r_reader.unget( c ); return true; }
-    char peek() { return r_reader.peek(); }
-    bool is_char( char c ) { return r_reader.is_char( c ); }
-    bool location_push() { return r_reader.location_push(); }   // See reader class for documentation
-    bool location_top() { return r_reader.location_top(); }
-    bool location_pop() { return r_reader.location_pop(); }
 };
 
 // The following strategy for handling an optional sequence does not work
