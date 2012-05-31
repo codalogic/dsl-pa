@@ -48,17 +48,24 @@
 
 namespace cl {
 
-class dsl_pa_recoverable_exception : public std::exception
+class dsl_pa_exception : public std::exception
 {
 public:
-    dsl_pa_recoverable_exception( const char * const what ) : std::exception( what )
+    dsl_pa_exception( const char * const what ) : std::exception( what )
     {}
 };
 
-class dsl_pa_fatal_exception : public std::exception
+class dsl_pa_recoverable_exception : public dsl_pa_exception
 {
 public:
-    dsl_pa_fatal_exception( const char * const what ) : std::exception( what )
+    dsl_pa_recoverable_exception( const char * const what ) : dsl_pa_exception( what )
+    {}
+};
+
+class dsl_pa_fatal_exception : public dsl_pa_exception
+{
+public:
+    dsl_pa_fatal_exception( const char * const what ) : dsl_pa_exception( what )
     {}
 };
 
