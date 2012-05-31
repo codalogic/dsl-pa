@@ -16,6 +16,9 @@ that is used to describe the langauge being parsed.
 Various reader classes can be used to read from file, std::string and
 memory buffer sources.
 
+dsl-pa's license is based on the BSD-3-Clause license.  See
+<https://github.com/codalogic/dsl-pa/blob/master/LICENSE> for details.
+
 ```c++
 #include "dsl-pa/dsl-pa.h"
 
@@ -31,9 +34,9 @@ void example1( std::ostream & fout )
     // What we want to parse
     const char * const to_parse = " width=10, height = 5";
 
-	// Create a reader with the desired input
+    // Create a reader with the desired input
     reader_string my_reader( to_parse );
-    
+
     // Create a parser instance specifying the created reader
     dsl_pa pa( my_reader );
 
@@ -100,7 +103,7 @@ void example_parser::example2( std::ostream & fout )
 }
 ```
 You can make the above syntax easier to parse if you make you own helper functions to
-make the space surrounding the key tokens seem as if it is implicit.  For example,
+make the space surrounding the key tokens seem as if they are implicit.  For example,
 by including the following in your parser class:
 ```c++
     bool eq() { return opt_space() && is_char( '=' ) && opt_space(); }
@@ -112,5 +115,86 @@ you can change the above code to:
             fixed( "width" ) && eq() && get_uint( &width ) &&
             comma() &&
             fixed( "height" ) && eq() && get_uint( &height ) )
+```
+For machine-to-machine languages you can usually survive with fairly
+coarse error reporting.  For finer-grain error reporting you can use
+the dsl_pa::error() methods:
+(P.S. The excessive number of brackets in the shortcuts are to avoid
+gcc warnings.)
+```c++
+    try
+    {
+        if( opt_space() &&
+                ((fixed( "width" ) && eq() && get_uint( &width ))
+                    || error( "Expected width parameter" )) &&
+                ((comma())
+                    || error( "Expected comma separator" )) &&
+                ((fixed( "height" ) && eq() && get_uint( &height ))
+                    || error( "Expected height parameter" )) )
+        {
+            fout << "Example OK: w=" << width << " & h=" << height << "\n";
+        }
+        else
+        {
+            fout << "Unable to parse input\n";
+        }
+    }
+    catch( const dsl_pa_recoverable_exception & e )
+    {
+        fout << e.what() << "\n";
+    }
+```
+dsl-pa has additional helper functions to record and update state
+information in the middle of shortcut sequences.  These are
+dsl_pa::set(), record(), clear() and append():
+```c++
+    if( opt_space() &&
+            fixed( "width" ) && eq() && get_uint( &width ) &&
+            set( is_width_found, true ) &&
+            comma() &&
+            fixed( "height" ) && eq() && get_uint( &height ) &&
+            set( is_height_found, true ) )
+```
+If your language syntax is defined in some form of BNF (such as ABNF)
+and it indicates that a non-terminal is present, then it is recommended
+that you create your own function to parse that non-terminal rather
+than expand the non-terminal inline (e.g. get_date() below):
+```c++
+bool example_parser::get_date( date * p_date )
+{
+    // location_logger is a class that uses RAII to ensure that a
+    // location_push() has a corresponding location_pop() when the
+    // function exits.
+    location_logger my_location( get_reader() );
+
+    if( get_int( &p_date->year ) == 4 &&
+            is_char( '-' ) &&
+            get_int( &p_date->month ) == 2 &&
+            is_char( '-' ) &&
+            get_int( &p_date->dom ) == 2 )
+        return true;
+
+    location_top();
+
+    return false;
+}
+
+void example_parser::example6( std::ostream & fout )
+{
+    size_t width;
+    date my_date;
+
+    if( opt_space() &&
+            fixed( "when" ) && eq() && get_date( &my_date ) &&
+            comma() &&
+            fixed( "width" ) && eq() && get_uint( &width ) )
+    {
+        fout << "Example OK: w=" << width << " & year=" << my_date.year << "\n";
+    }
+    else
+    {
+        fout << "Unable to parse input (Possibly the year is the wrong format)\n";
+    }
+}
 ```
 For more information see <https://github.com/codalogic/dsl-pa/blob/master/README.html>.

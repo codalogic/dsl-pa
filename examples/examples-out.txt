@@ -9,3 +9,27 @@ Example OK: w=10 & h=5
 Example 3
 ==============
 Example OK: w=10 & h=5
+
+Example 4
+==============
+Example OK: w=10 & h=5
+
+Example 4
+==============
+(Input =  width=10 : height = 5)
+Expected comma separator
+
+Example 5
+==============
+Example OK: w=10 & h=5
+is_width_found=1 & is_height_found=1
+
+Example 6
+==============
+(Input =  when = 2012-05-31, width=10)
+Example OK: w=10 & year=2012
+
+Example 6
+==============
+(Input =  when = 12-05-31, width=10)
+Unable to parse input (Possibly the year is the wrong format)
