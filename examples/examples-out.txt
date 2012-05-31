@@ -33,3 +33,8 @@ Example 6
 ==============
 (Input =  when = 12-05-31, width=10)
 Unable to parse input (Possibly the year is the wrong format)
+
+Example 7
+==============
+(Input =  year = MMXII, width::10 more)
+Example OK: w=MMXII & non_space=width::10

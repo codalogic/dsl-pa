@@ -91,6 +91,7 @@ public:
     void example4( std::ostream & fout );
     void example5( std::ostream & fout );
     void example6( std::ostream & fout );
+    void example7( std::ostream & fout );
 
     bool eq() { return opt_space() && is_char( '=' ) && opt_space(); }
     bool comma() { return opt_space() && is_char( ',' ) && opt_space(); }
@@ -99,7 +100,8 @@ public:
 };
 
 enum example_key {
-        EXAMPLE_1 = 1, EXAMPLE_2, EXAMPLE_3, EXAMPLE_4, EXAMPLE_5, EXAMPLE_6 };
+        EXAMPLE_1 = 1, EXAMPLE_2, EXAMPLE_3, EXAMPLE_4, EXAMPLE_5, EXAMPLE_6,
+        EXAMPLE_7 };
 
 void class_example(
             example_key key,
@@ -132,6 +134,10 @@ void class_example(
 
     case EXAMPLE_6:
         my_parser.example6( fout );
+    break;
+
+    case EXAMPLE_7:
+        my_parser.example7( fout );
     break;
     }
 }
@@ -278,6 +284,35 @@ void example_parser::example6( std::ostream & fout )
     }
 }
 
+const alphabet_char_class roman_numerals( "IVXLCM" );
+
+void example_parser::example7( std::ostream & fout )
+{
+    // To parse an input corresponding to a specific set of characters you can
+    // use the dsl_pa::get() method (or dsl_pa::get_until() to get characters
+    // by specifying a set of characters you don't want) and specify the
+    // alphabet you want, such as the roman_numerals alphabet described
+    // above.  A number of alphabets are built-in, such as alphabet_space as
+    // used below.  The built-in alphabets are efficient to construct and
+    // hence can be constructed in place, but alphabet_char_class alphabets
+    // require some computation to setup and are therefore better setup as
+    // const global objects:
+    std::string roman_number;
+    std::string non_space;
+
+    if( opt_space() &&
+            fixed( "year" ) && eq() && get( &roman_number, roman_numerals ) &&
+            comma() &&
+            get_until( &non_space, alphabet_space() ) )
+    {
+        fout << "Example OK: w=" << roman_number << " & non_space=" << non_space << "\n";
+    }
+    else
+    {
+        fout << "Unable to parse input\n";
+    }
+}
+
 int main()
 {
     std::ofstream fout( "examples-out.txt" );
@@ -290,4 +325,5 @@ int main()
     class_example( EXAMPLE_5, fout );
     class_example( EXAMPLE_6, fout, " when = 2012-05-31, width=10" );
     class_example( EXAMPLE_6, fout, " when = 12-05-31, width=10" );
+    class_example( EXAMPLE_7, fout, " year = MMXII, width::10 more" );
 }
