@@ -40,16 +40,32 @@
 
 namespace cl {
 
+void line_counter::got_char( char c )
+{
+    if( c == '\r' || c == '\n' )
+    {
+        if( last_nl_char == '\0' || last_nl_char == c )
+        {
+            ++line_number;
+            last_nl_char = c;
+            return;
+        }
+    }
+    last_nl_char = '\0';
+}
+
 char reader::get()
 {
     if( ! unget_buffer.empty() )
     {
         current_char = unget_buffer.top();
+        line_info.retrieved_ungot_char( current_char );
         unget_buffer.pop();
     }
     else
     {
         current_char = get_next_input();
+        line_info.got_char( current_char );
     }
     return current_char;
 }

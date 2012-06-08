@@ -50,25 +50,75 @@ namespace cl {
 
 typedef std::stack< char > unget_buffer_t;
 
+class line_counter
+{
+    // This is a simple class for keeping track of the line number (and in
+    // future, column number) from which parsed input is read.  The intention
+    // is that a better implementation can be installed in future without
+    // changing the way the reader class uses it.
+    // The policy of this implementation is to ignore column numbers and also
+    // ignore complexities associated with ungetting and then re-getting
+    // ungotten chars.  Hence, there may be some situations where the
+    // returned line number is slightly wrong!
+public:
+    static const int UNKNOWN = -1;
+
+private:
+    int line_number;
+    char last_nl_char;
+
+public:
+    line_counter()
+        :
+        line_number( 1 ),
+        last_nl_char( '\0' )
+    {}
+    
+    // line_counter & operator = ( const line_counter & rhs ) = default;
+
+    void got_char( char c );
+    void ungot_char( char c )
+    {
+        // For now, ignore ungot chars
+    }
+    void retrieved_ungot_char( char c )
+    {
+        // For now, ignore retrieved ungot chars
+    }
+
+    int get_line_number() const
+    {
+        return line_number;
+    }
+    int get_column_number() const
+    {
+        // Tracking column numbers not implemented by this class
+        return UNKNOWN;
+    }
+};
+
 class reader_location_stack
 {
 private:
     struct location_stack_item
     {
         unget_buffer_t unget_buffer;
+        line_counter line_info;
     };
     std::stack< location_stack_item > location_stack;
 
 public:
-    void push( const unget_buffer_t & r_unget_buffer )
+    void push( const unget_buffer_t & r_unget_buffer, const line_counter & r_line_info )
     {
-        // Push empty object to prevent to avoid multiple copies of unget_buffer
+        // Push empty object to avoid multiple copies of unget_buffer
         location_stack.push( location_stack_item() );
         location_stack.top().unget_buffer = r_unget_buffer;
+        location_stack.top().line_info = r_line_info;
     }
-    const unget_buffer_t & top_unget_buffer() const
+    void top( unget_buffer_t * p_unget_buffer, line_counter * p_line_info ) const
     {
-        return location_stack.top().unget_buffer;
+        *p_unget_buffer = location_stack.top().unget_buffer;
+        *p_line_info = location_stack.top().line_info;
     }
     void pop()
     {
@@ -79,6 +129,7 @@ public:
 class reader
 {
 private:
+    line_counter line_info;
     unget_buffer_t unget_buffer;
     char current_char;
     reader_location_stack location_stack;
@@ -101,7 +152,10 @@ public:
     void unget( char c )
     {
         if( c != R_EOI )
+        {
+            line_info.ungot_char( c );
             unget_buffer.push( c );
+        }
     }
     char peek() { get(); unget(); return current(); }
     bool is_char( char c )
@@ -118,7 +172,7 @@ public:
     // do location_pop().  See also class location_logger.
     bool location_push()
     {
-        location_stack.push( unget_buffer );
+        location_stack.push( unget_buffer, line_info );
         source_location_push();
         return true;
     }
@@ -126,7 +180,7 @@ public:
     bool location_top()
     {
         source_location_top();
-        unget_buffer = location_stack.top_unget_buffer();
+        location_stack.top( &unget_buffer, &line_info );
         return true;
     }
 
@@ -136,6 +190,9 @@ public:
         location_stack.pop();
         return true;
     }
+
+    int get_line_number() const { return line_info.get_line_number(); }
+    int get_column_number() const { return line_info.get_column_number(); }
 };
 
 class reader_string : public reader
