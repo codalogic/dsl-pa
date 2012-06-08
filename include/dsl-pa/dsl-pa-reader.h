@@ -48,17 +48,40 @@
 
 namespace cl {
 
-class reader
+typedef std::stack< char > unget_buffer_t;
+
+class reader_location_stack
 {
 private:
-    typedef std::stack< char > unget_buffer_t;
-    unget_buffer_t unget_buffer;
-    char current_char;
     struct location_stack_item
     {
         unget_buffer_t unget_buffer;
     };
     std::stack< location_stack_item > location_stack;
+
+public:
+    void push( const unget_buffer_t & r_unget_buffer )
+    {
+        // Push empty object to prevent to avoid multiple copies of unget_buffer
+        location_stack.push( location_stack_item() );
+        location_stack.top().unget_buffer = r_unget_buffer;
+    }
+    const unget_buffer_t & top_unget_buffer() const
+    {
+        return location_stack.top().unget_buffer;
+    }
+    void pop()
+    {
+        location_stack.pop();
+    }
+};
+
+class reader
+{
+private:
+    unget_buffer_t unget_buffer;
+    char current_char;
+    reader_location_stack location_stack;
 
     virtual char get_next_input() = 0;
 
@@ -95,8 +118,7 @@ public:
     // do location_pop().  See also class location_logger.
     bool location_push()
     {
-        location_stack.push( location_stack_item() );   // Push empty object to prevent to avoid multiple copies of unget_buffer
-        location_stack.top().unget_buffer = unget_buffer;
+        location_stack.push( unget_buffer );
         source_location_push();
         return true;
     }
@@ -104,7 +126,7 @@ public:
     bool location_top()
     {
         source_location_top();
-        unget_buffer = location_stack.top().unget_buffer;
+        unget_buffer = location_stack.top_unget_buffer();
         return true;
     }
 
