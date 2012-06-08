@@ -48,9 +48,30 @@
 
 namespace cl {
 
-typedef std::stack< char > unget_buffer_t;
+class unget_buffer_with_stack
+{
+private:
+    typedef std::stack< char > unget_buffer_t;
 
-class line_counter
+    unget_buffer_t unget_buffer;
+    std::stack< unget_buffer_t > stack;
+
+public:
+    void unget( char c ) { unget_buffer.push( c ); }
+    char reget() { char c = unget_buffer.top(); unget_buffer.pop(); return c; }
+    bool empty() const { return unget_buffer.empty(); }
+
+    void push()
+    {
+        // Push empty object to avoid multiple copies of unget_buffer
+        stack.push( unget_buffer_t() );
+        stack.top() = unget_buffer;
+    }
+    void top() { if( ! stack.empty() ) unget_buffer = stack.top(); }
+    void pop() { if( ! stack.empty() ) stack.pop(); }
+};
+
+class line_counter_with_stack
 {
     // This is a simple class for keeping track of the line number (and in
     // future, column number) from which parsed input is read.  The intention
@@ -64,18 +85,19 @@ public:
     static const int UNKNOWN = -1;
 
 private:
-    int line_number;
-    char last_nl_char;
+    struct stack_item
+    {
+        int line_number;
+        char last_nl_char;
+        stack_item() : line_number( 1 ), last_nl_char( '\0' ) {}
+        // stack_item & operator = ( const stack_item & rhs ) = default;
+    };
+    stack_item current;
+    std::stack< stack_item > stack;
 
 public:
-    line_counter()
-        :
-        line_number( 1 ),
-        last_nl_char( '\0' )
-    {}
+    line_counter_with_stack() {}
     
-    // line_counter & operator = ( const line_counter & rhs ) = default;
-
     void got_char( char c );
     void ungot_char( char c )
     {
@@ -88,51 +110,25 @@ public:
 
     int get_line_number() const
     {
-        return line_number;
+        return current.line_number;
     }
     int get_column_number() const
     {
         // Tracking column numbers not implemented by this class
         return UNKNOWN;
     }
-};
-
-class reader_location_stack
-{
-private:
-    struct location_stack_item
-    {
-        unget_buffer_t unget_buffer;
-        line_counter line_info;
-    };
-    std::stack< location_stack_item > location_stack;
-
-public:
-    void push( const unget_buffer_t & r_unget_buffer, const line_counter & r_line_info )
-    {
-        // Push empty object to avoid multiple copies of unget_buffer
-        location_stack.push( location_stack_item() );
-        location_stack.top().unget_buffer = r_unget_buffer;
-        location_stack.top().line_info = r_line_info;
-    }
-    void top( unget_buffer_t * p_unget_buffer, line_counter * p_line_info ) const
-    {
-        *p_unget_buffer = location_stack.top().unget_buffer;
-        *p_line_info = location_stack.top().line_info;
-    }
-    void pop()
-    {
-        location_stack.pop();
-    }
+    
+    void push() { stack.push( current ); }
+    void top() { if( ! stack.empty() ) current = stack.top(); }
+    void pop() { if( ! stack.empty() ) stack.pop(); }
 };
 
 class reader
 {
 private:
-    line_counter line_info;
-    unget_buffer_t unget_buffer;
+    line_counter_with_stack line_counter;
+    unget_buffer_with_stack unget_buffer;
     char current_char;
-    reader_location_stack location_stack;
 
     virtual char get_next_input() = 0;
 
@@ -153,8 +149,8 @@ public:
     {
         if( c != R_EOI )
         {
-            line_info.ungot_char( c );
-            unget_buffer.push( c );
+            line_counter.ungot_char( c );
+            unget_buffer.unget( c );
         }
     }
     char peek() { get(); unget(); return current(); }
@@ -172,7 +168,8 @@ public:
     // do location_pop().  See also class location_logger.
     bool location_push()
     {
-        location_stack.push( unget_buffer, line_info );
+        unget_buffer.push();
+        line_counter.push();
         source_location_push();
         return true;
     }
@@ -180,19 +177,21 @@ public:
     bool location_top()
     {
         source_location_top();
-        location_stack.top( &unget_buffer, &line_info );
+        unget_buffer.top();
+        line_counter.top();
         return true;
     }
 
     bool location_pop()
     {
         source_location_pop();
-        location_stack.pop();
+        unget_buffer.pop();
+        line_counter.pop();
         return true;
     }
 
-    int get_line_number() const { return line_info.get_line_number(); }
-    int get_column_number() const { return line_info.get_column_number(); }
+    int get_line_number() const { return line_counter.get_line_number(); }
+    int get_column_number() const { return line_counter.get_column_number(); }
 };
 
 class reader_string : public reader

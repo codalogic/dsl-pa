@@ -1,4 +1,4 @@
-Tests run on Fri Jun 08 17:35:07 2012
+Tests run on Fri Jun 08 21:06:13 2012
 
 
     Alphabet tests [c:\home\pete\sw\dsl-pa\test\alphabet-test.cpp:42]
@@ -1156,11 +1156,51 @@ Tests run on Fri Jun 08 17:35:07 2012
 
     Reader line counting tests [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:388]
     ==========================
+    ok: my_reader.get_line_number() == 1
+    ok: my_reader.get() == 'a'
+    ok: my_reader.get() == 'b'
+    ok: my_reader.get_line_number() == 1
+    ok: my_reader.get() == '\r'
+    ok: my_reader.get() == '\n'
+    ok: my_reader.get_line_number() == 2
+    ok: my_reader.get() == 'c'
+    ok: my_reader.get_line_number() == 2
+      : my_reader.location_push()
+    ok: my_reader.get() == 'd'
+    ok: my_reader.get_line_number() == 2
+    ok: my_reader.get() == '\n'
+    ok: my_reader.get_line_number() == 3
+    ok: my_reader.get() == 'e'
+    ok: my_reader.get_line_number() == 3
+    ok: my_reader.get() == 'f'
+    ok: my_reader.get_line_number() == 3
+    ok: my_reader.get() == '\r'
+    ok: my_reader.get_line_number() == 4
+      : my_reader.unget()
+    ok: my_reader.get() == '\r'
+    ok: my_reader.get_line_number() == 4
+    ok: my_reader.get() == 'g'
+    ok: my_reader.get_line_number() == 4
+    ok: my_reader.get() == 'h'
+    ok: my_reader.get_line_number() == 4
+    ok: my_reader.get() == '\r'
+    ok: my_reader.get_line_number() == 5
+    ok: my_reader.get() == '\n'
+    ok: my_reader.get_line_number() == 5
+    ok: my_reader.get() == 'i'
+    ok: my_reader.get_line_number() == 5
+    ok: my_reader.get() == 'j'
+      : my_reader.location_top()
+    ok: my_reader.get() == 'd'
+    ok: my_reader.get_line_number() == 2
+    ok: my_reader.get() == '\n'
+    ok: my_reader.get_line_number() == 3
+      : my_reader.location_top()
+    ok: my_reader.get() == 'd'
+    ok: my_reader.get_line_number() == 2
+    ok: my_reader.get() == '\n'
+    ok: my_reader.get_line_number() == 3
+      : my_reader.location_pop()
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
     ok: _CrtCheckMemory() != 0
-
-TODOs (1):
-------------------------
-- Add line counting functionality to reader class [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:390]
-
-0 error(s), 1 todo(s), 867 test(s)
+0 error(s), 0 todo(s), 907 test(s)

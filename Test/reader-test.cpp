@@ -387,5 +387,54 @@ TFUNCTION( reader_line_counting_test )
 {
     TBEGIN( "Reader line counting tests" );
 
-    TTODO( "Add line counting functionality to reader class" );
+    reader_string my_reader( "ab\r\ncd\nef\rgh\r\nij" );
+    
+    TTEST( my_reader.get_line_number() == 1 );
+    TTEST( my_reader.get() == 'a' );
+    TTEST( my_reader.get() == 'b' );
+    TTEST( my_reader.get_line_number() == 1 );
+    TTEST( my_reader.get() == '\r' );
+    TTEST( my_reader.get() == '\n' );
+    TTEST( my_reader.get_line_number() == 2 );
+    TTEST( my_reader.get() == 'c' );
+    TTEST( my_reader.get_line_number() == 2 );
+    TSETUP( my_reader.location_push() );
+    TTEST( my_reader.get() == 'd' );
+    TTEST( my_reader.get_line_number() == 2 );
+    TTEST( my_reader.get() == '\n' );
+    TTEST( my_reader.get_line_number() == 3 );
+    TTEST( my_reader.get() == 'e' );
+    TTEST( my_reader.get_line_number() == 3 );
+    TTEST( my_reader.get() == 'f' );
+    TTEST( my_reader.get_line_number() == 3 );
+    TTEST( my_reader.get() == '\r' );
+    TTEST( my_reader.get_line_number() == 4 );
+    TSETUP( my_reader.unget() );
+    TTEST( my_reader.get() == '\r' );
+    TTEST( my_reader.get_line_number() == 4 );
+    TTEST( my_reader.get() == 'g' );
+    TTEST( my_reader.get_line_number() == 4 );
+    TTEST( my_reader.get() == 'h' );
+    TTEST( my_reader.get_line_number() == 4 );
+    TTEST( my_reader.get() == '\r' );
+    TTEST( my_reader.get_line_number() == 5 );
+    TTEST( my_reader.get() == '\n' );
+    TTEST( my_reader.get_line_number() == 5 );
+    TTEST( my_reader.get() == 'i' );
+    TTEST( my_reader.get_line_number() == 5 );
+    TTEST( my_reader.get() == 'j' );
+
+    TSETUP( my_reader.location_top() );
+    TTEST( my_reader.get() == 'd' );
+    TTEST( my_reader.get_line_number() == 2 );
+    TTEST( my_reader.get() == '\n' );
+    TTEST( my_reader.get_line_number() == 3 );
+
+    TSETUP( my_reader.location_top() );
+    TTEST( my_reader.get() == 'd' );
+    TTEST( my_reader.get_line_number() == 2 );
+    TTEST( my_reader.get() == '\n' );
+    TTEST( my_reader.get_line_number() == 3 );
+
+    TSETUP( my_reader.location_pop() );
 }
