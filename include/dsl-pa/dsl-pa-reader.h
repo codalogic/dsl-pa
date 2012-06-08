@@ -38,28 +38,6 @@
 // at https://github.com/codalogic/dsl-pa
 //----------------------------------------------------------------------------
 
-//----------------------------------------------------------------------------
-// Notes:
-//      Location_changes - Both the location_xyz functions and unget functions
-//      effectively change the next character to be read and there is
-//      interaction between them.  If we seek to a new location then
-//      potentially much of the unget buffer is no longer valid, but, in
-//      theory, maybe not all of it.  Thus in principle, when we do a
-//      location_push() we should also store the state of the unget_buffer
-//      as well as the input position.  This gets messy, so instead, we tell
-//      the location_push() functions how many characters are in the
-//      unget_buffer so they can calculate an additional offset from the
-//      recorded input location to an input location that takes into account
-//      the number of characters we've since put back.  If we then do a
-//      seek using location_top() we can then simply discard the unget_buffer
-//      because the number of unget chars has already been taken into account
-//      when the location_push() was done.  One consequence of this approach
-//      is that we must never unget() the End Of Input (R_EOI) character
-//      because if we do it will give us the wrong answer when we use the
-//      number of characters in the unget_buffer to modified the input
-//      location when we do a location_push().
-//----------------------------------------------------------------------------
-
 #ifndef CL_DSL_PA_READER
 #define CL_DSL_PA_READER
 
@@ -73,12 +51,18 @@ namespace cl {
 class reader
 {
 private:
-    std::stack< char > unget_buffer;
+    typedef std::stack< char > unget_buffer_t;
+    unget_buffer_t unget_buffer;
     char current_char;
+    struct location_stack_item
+    {
+        unget_buffer_t unget_buffer;
+    };
+    std::stack< location_stack_item > location_stack;
 
     virtual char get_next_input() = 0;
 
-    virtual void source_location_push( size_t unget_buffer_size ) = 0;
+    virtual void source_location_push() = 0;
     virtual void source_location_top() = 0;
     virtual void source_location_pop() = 0;
 
@@ -93,7 +77,6 @@ public:
     void unget() { unget( current() ); }    // Unget with argument ungets current char
     void unget( char c )
     {
-        // See note Location_changes
         if( c != R_EOI )
             unget_buffer.push( c );
     }
@@ -112,23 +95,23 @@ public:
     // do location_pop().  See also class location_logger.
     bool location_push()
     {
-        // See note Location_changes
-        source_location_push( unget_buffer.size() );
+        location_stack.push( location_stack_item() );   // Push empty object to prevent to avoid multiple copies of unget_buffer
+        location_stack.top().unget_buffer = unget_buffer;
+        source_location_push();
         return true;
     }
 
     bool location_top()
     {
-        // See note Location_changes
-        while( ! unget_buffer.empty() )
-            unget_buffer.pop();
         source_location_top();
+        unget_buffer = location_stack.top().unget_buffer;
         return true;
     }
 
     bool location_pop()
     {
         source_location_pop();
+        location_stack.pop();
         return true;
     }
 };
@@ -157,9 +140,9 @@ public:
         return reader::R_EOI;
     }
 
-    virtual void source_location_push( size_t unget_buffer_size )
+    virtual void source_location_push()
     {
-        location_buffer.push( p_input - unget_buffer_size );
+        location_buffer.push( p_input );
     }
     virtual void source_location_top()
     {
@@ -200,9 +183,9 @@ public:
         return reader::R_EOI;
     }
 
-    virtual void source_location_push( size_t unget_buffer_size )
+    virtual void source_location_push()
     {
-        location_buffer.push( p_current - unget_buffer_size );
+        location_buffer.push( p_current );
     }
     virtual void source_location_top()
     {
@@ -235,11 +218,9 @@ public:
         return static_cast<char>( c );
     }
 
-    virtual void source_location_push( size_t unget_buffer_size )
+    virtual void source_location_push()
     {
-        std::ifstream::pos_type pos = fin.tellg();
-        pos -= unget_buffer_size;
-        location_buffer.push( pos );
+        location_buffer.push( fin.tellg() );
     }
     virtual void source_location_top()
     {
