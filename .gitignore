@@ -23,6 +23,7 @@
 *.ncb
 *.idb
 *.htm
+*.dll
 
 # Project specific ignores
 FoxdfEr43De.txt
