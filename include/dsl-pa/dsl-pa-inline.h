@@ -103,15 +103,15 @@ public:
     }
 
 private:
-    struct action_is_eoi {};
-    bool action( const action_is_eoi &, const no_params & )
+    struct action_is_end {};
+    bool action( const action_is_end &, const no_params & )
     {
-        return pa.is_eoi();
+        return pa.is_end();
     }
 public:
-    dsl_pa_inline & is_eoi()
+    dsl_pa_inline & is_end()
     {
-        return invoke( action_is_eoi(), no_params() );
+        return invoke( action_is_end(), no_params() );
     }
 
 private:

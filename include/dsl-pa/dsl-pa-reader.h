@@ -161,7 +161,7 @@ public:
             unget();
         return is_c;
     }
-    bool is_eoi()
+    bool is_end()
     {
         return peek() == R_EOI;
     }

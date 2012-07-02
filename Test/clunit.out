@@ -1,4 +1,4 @@
-Tests run on Mon Jul 02 11:49:41 2012
+Tests run on Mon Jul 02 12:03:30 2012
 
 
     Alphabet tests [c:\home\pete\sw\dsl-pa\test\alphabet-test.cpp:42]
@@ -237,6 +237,21 @@ Tests run on Mon Jul 02 11:49:41 2012
       : alphabet_char_class my_char_class( "~d~w" )
     ok: my_char_class.is_sought( '2' )
     ok: my_char_class.is_sought( 'l' )
+    ok: ! _CrtMemDifference( &s3, &s1, &s2 )
+
+
+    ok: pal.result() == true
+    ok: dsl_pa_inline( "" ).result() == true
+    ok: pal.result() == true
+    ok: pal.is_char( 's' ).result() == true
+    ok: dsl_pa_inline( "s" ).is_char( 's' ).is_end().result() == true
+    ok: dsl_pa_inline( "s" ).is_char( 's' ).is_end() == true
+    ok: dsl_pa_inline( "s" ).is_char( 's' ).not().is_end().result() == false
+    ok: dsl_pa_inline( "s" ).is_char( 's' ).not().is_end() == false
+    ok: dsl_pa_inline( "se" ).is_char( 's' ).not().is_end().result() == true
+    ok: dsl_pa_inline( "se" ).is_char( 's' ).not().is_end() == true
+    ok: dsl_pa_inline( "se" ).is_char( 's' ).is_end().result() == false
+    ok: dsl_pa_inline( "se" ).is_char( 's' ).is_end() == false
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
 
@@ -656,12 +671,12 @@ Tests run on Mon Jul 02 11:49:41 2012
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
 
-    DSL PA inline Tests [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:715]
+    DSL PA is_end Tests [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:715]
     ==========================
-    ok: my_pa.is_eoi()
-    ok: ! my_pa.is_eoi()
+    ok: my_pa.is_end()
+    ok: ! my_pa.is_end()
     ok: my_pa.is_char( 'M' )
-    ok: my_pa.is_eoi()
+    ok: my_pa.is_end()
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
 
@@ -1210,21 +1225,6 @@ Tests run on Mon Jul 02 11:49:41 2012
     ok: my_reader.get() == '\n'
     ok: my_reader.get_line_number() == 3
       : my_reader.location_pop()
-    ok: ! _CrtMemDifference( &s3, &s1, &s2 )
-
-
-    ok: pal.result() == true
-    ok: dsl_pa_inline( "" ).result() == true
-    ok: pal.result() == true
-    ok: pal.is_char( 's' ).result() == true
-    ok: dsl_pa_inline( "s" ).is_char( 's' ).is_eoi().result() == true
-    ok: dsl_pa_inline( "s" ).is_char( 's' ).is_eoi() == true
-    ok: dsl_pa_inline( "s" ).is_char( 's' ).not().is_eoi().result() == false
-    ok: dsl_pa_inline( "s" ).is_char( 's' ).not().is_eoi() == false
-    ok: dsl_pa_inline( "se" ).is_char( 's' ).not().is_eoi().result() == true
-    ok: dsl_pa_inline( "se" ).is_char( 's' ).not().is_eoi() == true
-    ok: dsl_pa_inline( "se" ).is_char( 's' ).is_eoi().result() == false
-    ok: dsl_pa_inline( "se" ).is_char( 's' ).is_eoi() == false
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
     ok: _CrtCheckMemory() != 0
 0 error(s), 0 todo(s), 925 test(s)

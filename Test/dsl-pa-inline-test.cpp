@@ -64,16 +64,16 @@ TFUNCTION( dsl_inline_test )
     }
 
     {
-    TTEST( dsl_pa_inline( "s" ).is_char( 's' ).is_eoi().result() == true );
-    TTEST( dsl_pa_inline( "s" ).is_char( 's' ).is_eoi() == true );
-    TTEST( dsl_pa_inline( "s" ).is_char( 's' ).not().is_eoi().result() == false );
-    TTEST( dsl_pa_inline( "s" ).is_char( 's' ).not().is_eoi() == false );
+    TTEST( dsl_pa_inline( "s" ).is_char( 's' ).is_end().result() == true );
+    TTEST( dsl_pa_inline( "s" ).is_char( 's' ).is_end() == true );
+    TTEST( dsl_pa_inline( "s" ).is_char( 's' ).not().is_end().result() == false );
+    TTEST( dsl_pa_inline( "s" ).is_char( 's' ).not().is_end() == false );
     }
 
     {
-    TTEST( dsl_pa_inline( "se" ).is_char( 's' ).not().is_eoi().result() == true );
-    TTEST( dsl_pa_inline( "se" ).is_char( 's' ).not().is_eoi() == true );
-    TTEST( dsl_pa_inline( "se" ).is_char( 's' ).is_eoi().result() == false );
-    TTEST( dsl_pa_inline( "se" ).is_char( 's' ).is_eoi() == false );
+    TTEST( dsl_pa_inline( "se" ).is_char( 's' ).not().is_end().result() == true );
+    TTEST( dsl_pa_inline( "se" ).is_char( 's' ).not().is_end() == true );
+    TTEST( dsl_pa_inline( "se" ).is_char( 's' ).is_end().result() == false );
+    TTEST( dsl_pa_inline( "se" ).is_char( 's' ).is_end() == false );
     }
 }

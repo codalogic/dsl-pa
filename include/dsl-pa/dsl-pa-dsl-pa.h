@@ -85,7 +85,7 @@ public:
     // initiate parsing.
     virtual bool parse() { return false; }
     
-    bool is_eoi() { return r_reader.is_eoi(); }
+    bool is_end() { return r_reader.is_end(); }
 
     // The primary workhorse functions
     size_t /*num chars read*/ get( std::string * p_output, const alphabet & r_alphabet );
