@@ -171,6 +171,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\include\dsl-pa\dsl-pa-inline.h"
+				>
+			</File>
+			<File
 				RelativePath=".\src\dsl-pa-reader.cpp"
 				>
 			</File>

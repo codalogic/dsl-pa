@@ -161,6 +161,10 @@ public:
             unget();
         return is_c;
     }
+    bool is_eoi()
+    {
+        return peek() == R_EOI;
+    }
 
     // Recording input locations and rewinding is based on stack operations.
     // i.e. you can call location_top() many times and the return location

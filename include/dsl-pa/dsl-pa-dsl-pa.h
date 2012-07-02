@@ -84,6 +84,8 @@ public:
     // 'abstract' parsers.  If desired, implement parse() in a derived class to
     // initiate parsing.
     virtual bool parse() { return false; }
+    
+    bool is_eoi() { return r_reader.is_eoi(); }
 
     // The primary workhorse functions
     size_t /*num chars read*/ get( std::string * p_output, const alphabet & r_alphabet );

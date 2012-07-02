@@ -185,6 +185,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\dsl-pa-inline-test.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\dsl-pa-test.cpp"
 				>
 			</File>

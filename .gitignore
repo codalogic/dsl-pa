@@ -27,3 +27,4 @@
 # Project specific ignores
 FoxdfEr43De.txt
 fix-eol.pl
+util/*

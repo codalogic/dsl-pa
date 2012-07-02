@@ -709,3 +709,22 @@ TFUNCTION( dsl_pa_optional_sequence_test )
     TTEST( type == "full" );
     }
 }
+
+TFUNCTION( dsl_pa_eoi_test )
+{
+    TBEGIN( "DSL PA inline Tests" );
+
+    {
+    reader_string my_reader( "" );
+    dsl_pa my_pa( my_reader );
+    TTEST( my_pa.is_eoi() );
+    }
+
+    {
+    reader_string my_reader( "M" );
+    dsl_pa my_pa( my_reader );
+    TTEST( ! my_pa.is_eoi() );
+    TTEST( my_pa.is_char( 'M' ) );
+    TTEST( my_pa.is_eoi() );
+    }
+}
