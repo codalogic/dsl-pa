@@ -95,7 +95,7 @@ public:
     size_t get_escaped_until( std::string * p_output, const alphabet & r_alphabet, char escape_char );
     size_t get_until( std::string * p_output, const alphabet & r_alphabet, char escape_char, size_t max_chars );
 
-    // fixed() returns ensure that the specified text is read from the input, or leave input location unchanged.
+    // fixed() ensures that the specified text is read from the input, or leave input location unchanged.
     // ifixed() ignores ASCII case.
     bool fixed( const char * p_seeking );
     bool ifixed( const char * p_seeking );
