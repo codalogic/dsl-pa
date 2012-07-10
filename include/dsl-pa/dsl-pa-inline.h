@@ -53,6 +53,7 @@ private:
     dsl_pa pa;
     bool is_matched;
     bool wanted_result;
+    size_t last_size;
     
     struct params
     {
@@ -78,6 +79,17 @@ private:
         }
         return *this;
     }
+
+    template< class Taction, class Tparams >
+    dsl_pa_inline & invoke_sized( const Taction &, const Tparams & params_in )
+    {
+        if( is_matched )
+        {
+            last_size = action( Taction(), params_in );
+            wanted_result = true;
+        }
+        return *this;
+    }
     
 public:
     dsl_pa_inline( const std::string & r_in )
@@ -85,14 +97,16 @@ public:
         my_reader( r_in ),
         pa( my_reader ),
         is_matched( true ),
-        wanted_result( true )
+        wanted_result( true ),
+        last_size( 0 )
     {}
     dsl_pa_inline( const char * const p_in )
         :
         my_reader( p_in ),
         pa( my_reader ),
         is_matched( true ),
-        wanted_result( true )
+        wanted_result( true ),
+        last_size( 0 )
     {}
     bool result() const { return is_matched; }
     operator bool () const { return result(); }
@@ -101,9 +115,151 @@ public:
         wanted_result = ! wanted_result;
         return *this;
     }
+    dsl_pa_inline & size( size_t min_size )
+    {
+        if( is_matched )
+        {
+            is_matched &= ((min_size <= last_size) == wanted_result);
+            wanted_result = true;
+        }
+        return *this;
+    }
+    dsl_pa_inline & size( size_t min_size, size_t max_size )
+    {
+        if( is_matched )
+        {
+            is_matched &= ((min_size <= last_size && last_size <= max_size) == wanted_result);
+            wanted_result = true;
+        }
+        return *this;
+    }
 
 private:
     struct action_is_end {};
+    struct action_is_char {};
+    struct action_get {};
+    struct action_get_until {};
+    struct action_get_bounded_until {};
+    struct action_get_escaped_until {};
+    struct action_fixed {};
+    struct action_ifixed {};
+    struct action_get_fixed {};
+    struct action_get_ifixed {};
+    struct action_space {};
+    struct action_opt_space {};
+    struct action_wsp {};
+    struct action_opt_wsp {};
+    struct action_get_bool {};
+    struct action_get_int {};
+    struct action_get_uint {};
+    struct action_get_float {};
+    struct action_get_sci_float {};
+
+	struct params_string_alphabet
+	{
+		std::string * p_output;
+		const alphabet & r_alphabet;
+		params_string_alphabet( std::string * p_output_in, const alphabet & r_alphabet_in ) 
+		    :
+		    p_output( p_output_in ), r_alphabet( r_alphabet_in ) {}
+	};
+
+	struct params_string_alphabet_size_t
+	{
+		std::string * p_output;
+		const alphabet & r_alphabet;
+		size_t max_chars;
+		params_string_alphabet_size_t( std::string * p_output_in, const alphabet & r_alphabet_in, size_t max_chars_in )
+		    :
+		    p_output( p_output_in ), r_alphabet( r_alphabet_in ), max_chars( max_chars_in ) {}
+	};
+
+	struct params_string_alphabet_char
+	{
+		std::string * p_output;
+		const alphabet & r_alphabet;
+		char escape_char;
+		params_string_alphabet_char( std::string * p_output_in, const alphabet & r_alphabet_in, char escape_char_in )
+		    :
+		    p_output( p_output_in ), r_alphabet( r_alphabet_in ), escape_char( escape_char_in ) {}
+	};
+
+	struct params_string_alphabet_char_size_t
+	{
+		std::string * p_output;
+		const alphabet & r_alphabet;
+		char escape_char;
+		size_t max_chars;
+		params_string_alphabet_char_size_t(
+		        std::string * p_output_in,
+		        const alphabet & r_alphabet_in,
+		        char escape_char_in,
+		        size_t max_chars_in )
+		    :
+		    p_output( p_output_in ),
+		    r_alphabet( r_alphabet_in ),
+		    escape_char( escape_char_in ),
+		    max_chars( max_chars_in )
+		{}
+	};
+
+	struct params_char_p
+	{
+		const char * p_seeking;
+		params_char_p( const char * p_seeking_in ) : p_seeking( p_seeking_in ) {}
+	};
+
+	struct params_string_char_p
+	{
+		std::string * p_output;
+		const char * p_seeking;
+		params_string_char_p( std::string * p_output_in, const char * p_seeking_in )
+		    :
+		    p_output( p_output_in ), p_seeking( p_seeking_in ) {}
+	};
+
+	struct params_none
+	{
+		params_none() {}
+	};
+
+	struct params_string
+	{
+		std::string * p_string;
+		params_string( std::string * p_string_in ) : p_string( p_string_in ) {}
+	};
+
+	struct params_bool
+	{
+		bool * p_bool;
+		params_bool( bool * p_bool_in ) : p_bool( p_bool_in ) {}
+	};
+
+	struct params_int
+	{
+		int * p_int;
+		params_int( int * p_int_in ) : p_int( p_int_in ) {}
+	};
+
+	struct params_unsigned_int
+	{
+		unsigned int * p_int;
+		params_unsigned_int( unsigned int * p_int_in ) : p_int( p_int_in ) {}
+	};
+
+	struct params_double
+	{
+		double * p_float;
+		params_double( double * p_float_in ) : p_float( p_float_in ) {}
+	};
+
+	struct params_float
+	{
+		float * p_float;
+		params_float( float * p_float_in ) : p_float( p_float_in ) {}
+	};
+
+private:
     bool action( const action_is_end &, const no_params & )
     {
         return pa.is_end();
@@ -115,7 +271,6 @@ public:
     }
 
 private:
-    struct action_is_char {};
     bool action( const action_is_char &, const char_params & params_in )
     {
         return pa.is_char( params_in.c );
@@ -124,6 +279,292 @@ public:
     dsl_pa_inline & is_char( char c )
     {
         return invoke( action_is_char(), char_params( c ) );
+    }
+
+private:
+    size_t action( const action_get &, const params_string_alphabet & params )
+    {
+        return pa.get( params.p_output, params.r_alphabet );
+    }
+public:
+    dsl_pa_inline & get( std::string * p_output, const alphabet & r_alphabet )
+    {
+        return invoke_sized( action_get(), params_string_alphabet( p_output, r_alphabet ) );
+    }
+
+private:
+    size_t action( const action_get &, const params_string_alphabet_size_t & params )
+    {
+        return pa.get( params.p_output, params.r_alphabet, params.max_chars );
+    }
+public:
+    dsl_pa_inline & get( std::string * p_output, const alphabet & r_alphabet, size_t max_chars )
+    {
+        return invoke_sized( action_get(), params_string_alphabet_size_t( p_output, r_alphabet, max_chars ) );
+    }
+
+private:
+    size_t action( const action_get_until &, const params_string_alphabet & params )
+    {
+        return pa.get_until( params.p_output, params.r_alphabet );
+    }
+public:
+    dsl_pa_inline & get_until( std::string * p_output, const alphabet & r_alphabet )
+    {
+        return invoke_sized( action_get_until(), params_string_alphabet( p_output, r_alphabet ) );
+    }
+
+private:
+    size_t action( const action_get_bounded_until &, const params_string_alphabet_size_t & params )
+    {
+        return pa.get_bounded_until( params.p_output, params.r_alphabet, params.max_chars );
+    }
+public:
+    dsl_pa_inline & get_bounded_until( std::string * p_output, const alphabet & r_alphabet, size_t max_chars )
+    {
+        return invoke_sized( action_get_bounded_until(), params_string_alphabet_size_t( p_output, r_alphabet, max_chars ) );
+    }
+
+private:
+    size_t action( const action_get_escaped_until &, const params_string_alphabet_char & params )
+    {
+        return pa.get_escaped_until( params.p_output, params.r_alphabet, params.escape_char );
+    }
+public:
+    dsl_pa_inline & get_escaped_until( std::string * p_output, const alphabet & r_alphabet, char escape_char )
+    {
+        return invoke_sized( action_get_escaped_until(), params_string_alphabet_char( p_output, r_alphabet, escape_char ) );
+    }
+
+private:
+    size_t action( const action_get_until &, const params_string_alphabet_char_size_t & params )
+    {
+        return pa.get_until( params.p_output, params.r_alphabet, params.escape_char, params.max_chars );
+    }
+public:
+    dsl_pa_inline & get_until( std::string * p_output, const alphabet & r_alphabet, char escape_char, size_t max_chars )
+    {
+        return invoke_sized( action_get_until(), params_string_alphabet_char_size_t( p_output, r_alphabet, escape_char, max_chars ) );
+    }
+
+private:
+    bool action( const action_fixed &, const params_char_p & params )
+    {
+        return pa.fixed( params.p_seeking );
+    }
+public:
+    dsl_pa_inline & fixed( const char * p_seeking )
+    {
+        return invoke( action_fixed(), params_char_p( p_seeking ) );
+    }
+
+private:
+    bool action( const action_ifixed &, const params_char_p & params )
+    {
+        return pa.ifixed( params.p_seeking );
+    }
+public:
+    dsl_pa_inline & ifixed( const char * p_seeking )
+    {
+        return invoke( action_ifixed(), params_char_p( p_seeking ) );
+    }
+
+private:
+    bool action( const action_get_fixed &, const params_string_char_p & params )
+    {
+        return pa.get_fixed( params.p_output, params.p_seeking );
+    }
+public:
+    dsl_pa_inline & get_fixed( std::string * p_output, const char * p_seeking )
+    {
+        return invoke( action_get_fixed(), params_string_char_p( p_output, p_seeking ) );
+    }
+
+private:
+    bool action( const action_get_ifixed &, const params_string_char_p & params )
+    {
+        return pa.get_ifixed( params.p_output, params.p_seeking );
+    }
+public:
+    dsl_pa_inline & get_ifixed( std::string * p_output, const char * p_seeking )
+    {
+        return invoke( action_get_ifixed(), params_string_char_p( p_output, p_seeking ) );
+    }
+
+private:
+    bool action( const action_space &, const params_none & params )
+    {
+        return pa.space();
+    }
+public:
+    dsl_pa_inline & space()
+    {
+        return invoke( action_space(), params_none() );
+    }
+
+private:
+    bool action( const action_opt_space &, const params_none & params )
+    {
+        return pa.opt_space();
+    }
+public:
+    dsl_pa_inline & opt_space()
+    {
+        return invoke( action_opt_space(), params_none() );
+    }
+
+private:
+    bool action( const action_wsp &, const params_none & params )
+    {
+        return pa.wsp();
+    }
+public:
+    dsl_pa_inline & wsp()
+    {
+        return invoke( action_wsp(), params_none() );
+    }
+
+private:
+    bool action( const action_opt_wsp &, const params_none & params )
+    {
+        return pa.opt_wsp();
+    }
+public:
+    dsl_pa_inline & opt_wsp()
+    {
+        return invoke( action_opt_wsp(), params_none() );
+    }
+
+private:
+    bool action( const action_get_bool &, const params_string & params )
+    {
+        return pa.get_bool( params.p_string );
+    }
+public:
+    dsl_pa_inline & get_bool( std::string * p_string )
+    {
+        return invoke( action_get_bool(), params_string( p_string ) );
+    }
+
+private:
+    bool action( const action_get_bool &, const params_bool & params )
+    {
+        return pa.get_bool( params.p_bool );
+    }
+public:
+    dsl_pa_inline & get_bool( bool * p_bool )
+    {
+        return invoke( action_get_bool(), params_bool( p_bool ) );
+    }
+
+private:
+    size_t action( const action_get_int &, const params_string & params )
+    {
+        return pa.get_int(params.p_string);
+    }
+public:
+    dsl_pa_inline & get_int( std::string * p_string )
+    {
+        return invoke_sized( action_get_int(), params_string( p_string ) );
+    }
+
+private:
+    size_t action( const action_get_int &, const params_int & params )
+    {
+        return pa.get_int( params.p_int );
+    }
+public:
+    dsl_pa_inline & get_int( int * p_int )
+    {
+        return invoke_sized( action_get_int(), params_int( p_int ) );
+    }
+
+private:
+    size_t action( const action_get_uint &, const params_string & params )
+    {
+        return pa.get_uint( params.p_string );
+    }
+public:
+    dsl_pa_inline & get_uint( std::string * p_string )
+    {
+        return invoke_sized( action_get_uint(), params_string( p_string ) );
+    }
+
+private:
+    size_t action( const action_get_uint &, const params_unsigned_int & params )
+    {
+        return pa.get_uint( params.p_int );
+    }
+public:
+    dsl_pa_inline & get_uint( unsigned int * p_int )
+    {
+        return invoke_sized( action_get_uint(), params_unsigned_int( p_int ) );
+    }
+
+private:
+    bool action( const action_get_float &, const params_string & params )
+    {
+        return pa.get_float( params.p_string );
+    }
+public:
+    dsl_pa_inline & get_float( std::string * p_string )
+    {
+        return invoke( action_get_float(), params_string( p_string ) );
+    }
+
+private:
+    bool action( const action_get_float &, const params_double & params )
+    {
+        return pa.get_float( params.p_float );
+    }
+public:
+    dsl_pa_inline & get_float( double * p_float )
+    {
+        return invoke( action_get_float(), params_double( p_float ) );
+    }
+
+private:
+    bool action( const action_get_float &, const params_float & params )
+    {
+        return pa.get_float( params.p_float );
+    }
+public:
+    dsl_pa_inline & get_float( float * p_float )
+    {
+        return invoke( action_get_float(), params_float( p_float ) );
+    }
+
+private:
+    bool action( const action_get_sci_float &, const params_string & params )
+    {
+        return pa.get_sci_float( params.p_string );
+    }
+public:
+    dsl_pa_inline & get_sci_float( std::string * p_string )
+    {
+        return invoke( action_get_sci_float(), params_string( p_string ) );
+    }
+
+private:
+    bool action( const action_get_sci_float &, const params_double & params )
+    {
+        return pa.get_sci_float( params.p_float );
+    }
+public:
+    dsl_pa_inline & get_sci_float( double * p_float )
+    {
+        return invoke( action_get_sci_float(), params_double( p_float ) );
+    }
+
+private:
+    bool action( const action_get_sci_float &, const params_float & params )
+    {
+        return pa.get_sci_float( params.p_float );
+    }
+public:
+    dsl_pa_inline & get_sci_float( float * p_float )
+    {
+        return invoke( action_get_sci_float(), params_float( p_float ) );
     }
 };
 
