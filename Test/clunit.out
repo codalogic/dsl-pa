@@ -1,4 +1,4 @@
-Tests run on Tue Jul 10 17:51:53 2012
+Tests run on Wed Jul 11 13:45:56 2012
 
 
     Alphabet tests [c:\home\pete\sw\dsl-pa\test\alphabet-test.cpp:42]
@@ -252,6 +252,39 @@ Tests run on Tue Jul 10 17:51:53 2012
     ok: dsl_pa_inline( "se" ).is_char( 's' ).not().is_end() == true
     ok: dsl_pa_inline( "se" ).is_char( 's' ).is_end().result() == false
     ok: dsl_pa_inline( "se" ).is_char( 's' ).is_end() == false
+    ok: dsl_pa_inline( "se" ).optional().is_char( 'v' ).is_char( 's' ).is_end() == false
+    ok: dsl_pa_inline( "se" ).get_int( &i ) == false
+    ok: dsl_pa_inline( "se" ).optional().get_int( &i ) == true
+    ok: dsl_pa_inline( "se" ).optional().get_int( &i ).is_char( 's' ) == true
+    ok: dsl_pa_inline( "s123" ).is_char( 's' ).get_int( &i ).min_size( 2 ) == true
+    ok: i == 123
+    ok: dsl_pa_inline( "s123" ).is_char( 's' ).get_int( &i ).min_size( 3 ) == true
+    ok: dsl_pa_inline( "s123" ).is_char( 's' ).get_int( &i ).min_size( 4 ) == false
+    ok: dsl_pa_inline( "s123" ).is_char( 's' ).get_int( &i ).max_size( 4 ) == true
+    ok: dsl_pa_inline( "s123" ).is_char( 's' ).get_int( &i ).max_size( 3 ) == true
+    ok: dsl_pa_inline( "s123" ).is_char( 's' ).get_int( &i ).max_size( 2 ) == false
+    ok: i == 123
+    ok: dsl_pa_inline( "s123" ).is_char( 's' ).get_int( &i ).size( 2, 4 ) == true
+    ok: dsl_pa_inline( "s123" ).is_char( 's' ).get_int( &i ).size( 3, 4 ) == true
+    ok: dsl_pa_inline( "s123" ).is_char( 's' ).get_int( &i ).size( 4, 4 ) == false
+    ok: dsl_pa_inline( "s123" ).is_char( 's' ).get_int( &i ).size( 2, 3 ) == true
+    ok: dsl_pa_inline( "s123" ).is_char( 's' ).get_int( &i ).size( 2, 2 ) == false
+    ok: dsl_pa_inline( "s1.5v" ).is_char( 's' ).get_float( &f ).is_char( 'v' ) == true
+    ok: f == 1.5
+    ok: dsl_pa_inline( "s123" ).fixed( "s12" ).is_char( '3' ) == true
+    ok: dsl_pa_inline( "s123" ).ifixed( "S12" ).is_char( '3' ) == true
+    ok: dsl_pa_inline( "foo : 123;" ).get( &name, alphabet_alpha() ). opt_space().is_char( ':' ).opt_space().get_int( &i ).is_char( ';' ) == true
+    ok: name == "foo"
+    ok: i == 123
+    ok: dsl_pa_inline( "foo: 123;" ).get( &name, alphabet_alpha() ). opt_space().is_char( ':' ).opt_space().get_int( &i ).is_char( ';' ) == true
+    ok: name == "foo"
+    ok: i == 123
+    ok: dsl_pa_inline( "foo :123;" ).get( &name, alphabet_alpha() ). opt_space().is_char( ':' ).opt_space().get_int( &i ).is_char( ';' ) == true
+    ok: name == "foo"
+    ok: i == 123
+    ok: dsl_pa_inline( "foo:123;" ).get( &name, alphabet_alpha() ). opt_space().is_char( ':' ).opt_space().get_int( &i ).is_char( ';' ) == true
+    ok: name == "foo"
+    ok: i == 123
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
 
@@ -1227,4 +1260,4 @@ Tests run on Tue Jul 10 17:51:53 2012
       : my_reader.location_pop()
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
     ok: _CrtCheckMemory() != 0
-0 error(s), 0 todo(s), 925 test(s)
+0 error(s), 0 todo(s), 958 test(s)

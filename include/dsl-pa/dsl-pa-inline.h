@@ -53,88 +53,9 @@ private:
     dsl_pa pa;
     bool is_matched;
     bool wanted_result;
+    size_t is_optional;
     size_t last_size;
-    
-    struct params
-    {
-        char c;
-        const alphabet * p_alphabet;
-    };
-    struct no_params
-    {
-    };
-    struct char_params
-    {
-        char c;
-        char_params( char c_in ) : c( c_in ) {}
-    };
 
-    template< class Taction, class Tparams >
-    dsl_pa_inline & invoke( const Taction &, const Tparams & params_in )
-    {
-        if( is_matched )
-        {
-            is_matched &= (action( Taction(), params_in ) == wanted_result);
-            wanted_result = true;
-        }
-        return *this;
-    }
-
-    template< class Taction, class Tparams >
-    dsl_pa_inline & invoke_sized( const Taction &, const Tparams & params_in )
-    {
-        if( is_matched )
-        {
-            last_size = action( Taction(), params_in );
-            wanted_result = true;
-        }
-        return *this;
-    }
-    
-public:
-    dsl_pa_inline( const std::string & r_in )
-        :
-        my_reader( r_in ),
-        pa( my_reader ),
-        is_matched( true ),
-        wanted_result( true ),
-        last_size( 0 )
-    {}
-    dsl_pa_inline( const char * const p_in )
-        :
-        my_reader( p_in ),
-        pa( my_reader ),
-        is_matched( true ),
-        wanted_result( true ),
-        last_size( 0 )
-    {}
-    bool result() const { return is_matched; }
-    operator bool () const { return result(); }
-    dsl_pa_inline & not()
-    {
-        wanted_result = ! wanted_result;
-        return *this;
-    }
-    dsl_pa_inline & size( size_t min_size )
-    {
-        if( is_matched )
-        {
-            is_matched &= ((min_size <= last_size) == wanted_result);
-            wanted_result = true;
-        }
-        return *this;
-    }
-    dsl_pa_inline & size( size_t min_size, size_t max_size )
-    {
-        if( is_matched )
-        {
-            is_matched &= ((min_size <= last_size && last_size <= max_size) == wanted_result);
-            wanted_result = true;
-        }
-        return *this;
-    }
-
-private:
     struct action_is_end {};
     struct action_is_char {};
     struct action_get {};
@@ -155,130 +76,225 @@ private:
     struct action_get_float {};
     struct action_get_sci_float {};
 
-	struct params_string_alphabet
-	{
-		std::string * p_output;
-		const alphabet & r_alphabet;
-		params_string_alphabet( std::string * p_output_in, const alphabet & r_alphabet_in ) 
-		    :
-		    p_output( p_output_in ), r_alphabet( r_alphabet_in ) {}
-	};
+    struct params_none
+    {
+        params_none() {}
+    };
 
-	struct params_string_alphabet_size_t
-	{
-		std::string * p_output;
-		const alphabet & r_alphabet;
-		size_t max_chars;
-		params_string_alphabet_size_t( std::string * p_output_in, const alphabet & r_alphabet_in, size_t max_chars_in )
-		    :
-		    p_output( p_output_in ), r_alphabet( r_alphabet_in ), max_chars( max_chars_in ) {}
-	};
+    struct params_char
+    {
+        char c;
+        params_char( char c_in ) : c( c_in ) {}
+    };
 
-	struct params_string_alphabet_char
-	{
-		std::string * p_output;
-		const alphabet & r_alphabet;
-		char escape_char;
-		params_string_alphabet_char( std::string * p_output_in, const alphabet & r_alphabet_in, char escape_char_in )
-		    :
-		    p_output( p_output_in ), r_alphabet( r_alphabet_in ), escape_char( escape_char_in ) {}
-	};
+    struct params_string_alphabet
+    {
+        std::string * p_output;
+        const alphabet & r_alphabet;
+        params_string_alphabet( std::string * p_output_in, const alphabet & r_alphabet_in )
+            :
+            p_output( p_output_in ), r_alphabet( r_alphabet_in ) {}
+    };
 
-	struct params_string_alphabet_char_size_t
-	{
-		std::string * p_output;
-		const alphabet & r_alphabet;
-		char escape_char;
-		size_t max_chars;
-		params_string_alphabet_char_size_t(
-		        std::string * p_output_in,
-		        const alphabet & r_alphabet_in,
-		        char escape_char_in,
-		        size_t max_chars_in )
-		    :
-		    p_output( p_output_in ),
-		    r_alphabet( r_alphabet_in ),
-		    escape_char( escape_char_in ),
-		    max_chars( max_chars_in )
-		{}
-	};
+    struct params_string_alphabet_size_t
+    {
+        std::string * p_output;
+        const alphabet & r_alphabet;
+        size_t max_chars;
+        params_string_alphabet_size_t( std::string * p_output_in, const alphabet & r_alphabet_in, size_t max_chars_in )
+            :
+            p_output( p_output_in ), r_alphabet( r_alphabet_in ), max_chars( max_chars_in ) {}
+    };
 
-	struct params_char_p
-	{
-		const char * p_seeking;
-		params_char_p( const char * p_seeking_in ) : p_seeking( p_seeking_in ) {}
-	};
+    struct params_string_alphabet_char
+    {
+        std::string * p_output;
+        const alphabet & r_alphabet;
+        char escape_char;
+        params_string_alphabet_char( std::string * p_output_in, const alphabet & r_alphabet_in, char escape_char_in )
+            :
+            p_output( p_output_in ), r_alphabet( r_alphabet_in ), escape_char( escape_char_in ) {}
+    };
 
-	struct params_string_char_p
-	{
-		std::string * p_output;
-		const char * p_seeking;
-		params_string_char_p( std::string * p_output_in, const char * p_seeking_in )
-		    :
-		    p_output( p_output_in ), p_seeking( p_seeking_in ) {}
-	};
+    struct params_string_alphabet_char_size_t
+    {
+        std::string * p_output;
+        const alphabet & r_alphabet;
+        char escape_char;
+        size_t max_chars;
+        params_string_alphabet_char_size_t(
+                std::string * p_output_in,
+                const alphabet & r_alphabet_in,
+                char escape_char_in,
+                size_t max_chars_in )
+            :
+            p_output( p_output_in ),
+            r_alphabet( r_alphabet_in ),
+            escape_char( escape_char_in ),
+            max_chars( max_chars_in )
+        {}
+    };
 
-	struct params_none
-	{
-		params_none() {}
-	};
+    struct params_char_p
+    {
+        const char * p_seeking;
+        params_char_p( const char * p_seeking_in ) : p_seeking( p_seeking_in ) {}
+    };
 
-	struct params_string
-	{
-		std::string * p_string;
-		params_string( std::string * p_string_in ) : p_string( p_string_in ) {}
-	};
+    struct params_string_char_p
+    {
+        std::string * p_output;
+        const char * p_seeking;
+        params_string_char_p( std::string * p_output_in, const char * p_seeking_in )
+            :
+            p_output( p_output_in ), p_seeking( p_seeking_in ) {}
+    };
 
-	struct params_bool
-	{
-		bool * p_bool;
-		params_bool( bool * p_bool_in ) : p_bool( p_bool_in ) {}
-	};
+    struct params_string
+    {
+        std::string * p_string;
+        params_string( std::string * p_string_in ) : p_string( p_string_in ) {}
+    };
 
-	struct params_int
-	{
-		int * p_int;
-		params_int( int * p_int_in ) : p_int( p_int_in ) {}
-	};
+    struct params_bool
+    {
+        bool * p_bool;
+        params_bool( bool * p_bool_in ) : p_bool( p_bool_in ) {}
+    };
 
-	struct params_unsigned_int
-	{
-		unsigned int * p_int;
-		params_unsigned_int( unsigned int * p_int_in ) : p_int( p_int_in ) {}
-	};
+    struct params_int
+    {
+        int * p_int;
+        params_int( int * p_int_in ) : p_int( p_int_in ) {}
+    };
 
-	struct params_double
-	{
-		double * p_float;
-		params_double( double * p_float_in ) : p_float( p_float_in ) {}
-	};
+    struct params_unsigned_int
+    {
+        unsigned int * p_int;
+        params_unsigned_int( unsigned int * p_int_in ) : p_int( p_int_in ) {}
+    };
 
-	struct params_float
-	{
-		float * p_float;
-		params_float( float * p_float_in ) : p_float( p_float_in ) {}
-	};
+    struct params_double
+    {
+        double * p_float;
+        params_double( double * p_float_in ) : p_float( p_float_in ) {}
+    };
+
+    struct params_float
+    {
+        float * p_float;
+        params_float( float * p_float_in ) : p_float( p_float_in ) {}
+    };
+
+protected:  // Give the user the chance to derive from this class and write their own handlers
+    template< class Taction, class Tparams >
+    dsl_pa_inline & invoke( const Taction &, const Tparams & params_in )
+    {
+        if( is_matched )
+        {
+            bool is_parsed = action( Taction(), params_in );
+            if( ! is_optional )
+                is_matched &= (is_parsed == wanted_result);
+            wanted_result = true;
+            is_optional = false;
+        }
+        return *this;
+    }
+
+    template< class Taction, class Tparams >
+    dsl_pa_inline & invoke_sized( const Taction &, const Tparams & params_in )
+    {
+        if( is_matched )
+        {
+            last_size = action( Taction(), params_in );
+            if( ! is_optional )
+                is_matched &= ((last_size > 0) == wanted_result);
+            wanted_result = true;
+            is_optional = false;
+        }
+        return *this;
+    }
+
+public:
+    dsl_pa_inline( const std::string & r_in )
+        :
+        my_reader( r_in ),
+        pa( my_reader ),
+        is_matched( true ),
+        wanted_result( true ),
+        is_optional( false ),
+        last_size( 0 )
+    {}
+    dsl_pa_inline( const char * const p_in )
+        :
+        my_reader( p_in ),
+        pa( my_reader ),
+        is_matched( true ),
+        wanted_result( true ),
+        is_optional( false ),
+        last_size( 0 )
+    {}
+    bool result() const { return is_matched; }
+    operator bool () const { return result(); }
+    dsl_pa_inline & not()
+    {
+        wanted_result = ! wanted_result;
+        return *this;
+    }
+    dsl_pa_inline & optional()  // Call optional() BEFORE an operation
+    {
+        is_optional = true;
+        return *this;
+    }
+    dsl_pa_inline & min_size( size_t min_size_in )  // Call min_size() AFTER a size-based operation
+    {
+        if( is_matched )
+        {
+            is_matched &= ((min_size_in <= last_size) == wanted_result);
+            wanted_result = true;
+        }
+        return *this;
+    }
+    dsl_pa_inline & max_size( size_t max_size_in )  // Call min_size() AFTER a size-based operation
+    {
+        if( is_matched )
+        {
+            is_matched &= ((last_size <= max_size_in) == wanted_result);
+            wanted_result = true;
+        }
+        return *this;
+    }
+    dsl_pa_inline & size( size_t min_size_in, size_t max_size_in )  // Call size() AFTER a size-based operation
+    {
+        // Can't do "min_size(...); return max_size(...);" here because wanted_result would be incorrectly modified in the middle
+        if( is_matched )
+        {
+            is_matched &= ((min_size_in <= last_size && last_size <= max_size_in) == wanted_result);
+            wanted_result = true;
+        }
+        return *this;
+    }
 
 private:
-    bool action( const action_is_end &, const no_params & )
+    bool action( const action_is_end &, const params_none & )
     {
         return pa.is_end();
     }
 public:
     dsl_pa_inline & is_end()
     {
-        return invoke( action_is_end(), no_params() );
+        return invoke( action_is_end(), params_none() );
     }
 
 private:
-    bool action( const action_is_char &, const char_params & params_in )
+    bool action( const action_is_char &, const params_char & params_in )
     {
         return pa.is_char( params_in.c );
     }
 public:
     dsl_pa_inline & is_char( char c )
     {
-        return invoke( action_is_char(), char_params( c ) );
+        return invoke( action_is_char(), params_char( c ) );
     }
 
 private:
