@@ -198,13 +198,13 @@ void example_parser::example6( std::ostream & fout )
 }
 ```
 To parse an input corresponding to a specific set of characters you can
-use the dsl_pa::get() method and specify the alphabet you want, such as 
-the roman_numerals alphabet described below. Alternatively you can use 
-dsl_pa::get_until() to get characters by specifying an alphabet that 
-specifies the set of characters you don't want.  A number of alphabets 
-are built-in, such as alphabet_space as used below.  The built-in 
-alphabets are efficient to construct and hence can be constructed in 
-place, but alphabet_char_class alphabets require some computation to 
+use the dsl_pa::get() method and specify the alphabet you want, such as
+the roman_numerals alphabet described below. Alternatively you can use
+dsl_pa::get_until() to get characters by specifying an alphabet that
+specifies the set of characters you don't want.  A number of alphabets
+are built-in, such as alphabet_space as used below.  The built-in
+alphabets are efficient to construct and hence can be constructed in
+place, but alphabet_char_class alphabets require some computation to
 setup and are therefore better setup as const global objects:
 ```c++
 const alphabet_char_class roman_numerals( "IVXLCM" );

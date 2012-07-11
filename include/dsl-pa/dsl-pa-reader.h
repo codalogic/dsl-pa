@@ -97,7 +97,7 @@ private:
 
 public:
     line_counter_with_stack() {}
-    
+
     void got_char( char c );
     void ungot_char( char c )
     {
@@ -117,7 +117,7 @@ public:
         // Tracking column numbers not implemented by this class
         return UNKNOWN;
     }
-    
+
     void push() { stack.push( current ); }
     void top() { if( ! stack.empty() ) current = stack.top(); }
     void pop() { if( ! stack.empty() ) stack.pop(); }

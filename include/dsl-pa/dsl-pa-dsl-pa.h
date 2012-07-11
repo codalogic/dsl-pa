@@ -84,7 +84,7 @@ public:
     // 'abstract' parsers.  If desired, implement parse() in a derived class to
     // initiate parsing.
     virtual bool parse() { return false; }
-    
+
     bool is_end() { return r_reader.is_end(); }
 
     // The primary workhorse functions

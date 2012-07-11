@@ -388,7 +388,7 @@ TFUNCTION( reader_line_counting_test )
     TBEGIN( "Reader line counting tests" );
 
     reader_string my_reader( "ab\r\ncd\nef\rgh\r\nij" );
-    
+
     TTEST( my_reader.get_line_number() == 1 );
     TTEST( my_reader.get() == 'a' );
     TTEST( my_reader.get() == 'b' );
