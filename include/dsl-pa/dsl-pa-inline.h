@@ -408,14 +408,14 @@ public:
     }
 
 private:
-    bool action( const action_space &, const params_none & params )
+    size_t action( const action_space &, const params_none & params )
     {
         return pa.space();
     }
 public:
     dsl_pa_inline & space()
     {
-        return invoke( action_space(), params_none() );
+        return invoke_sized( action_space(), params_none() );
     }
 
 private:
@@ -430,14 +430,14 @@ public:
     }
 
 private:
-    bool action( const action_wsp &, const params_none & params )
+    size_t action( const action_wsp &, const params_none & params )
     {
         return pa.wsp();
     }
 public:
     dsl_pa_inline & wsp()
     {
-        return invoke( action_wsp(), params_none() );
+        return invoke_sized( action_wsp(), params_none() );
     }
 
 private:
