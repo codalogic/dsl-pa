@@ -95,6 +95,13 @@ public:
     size_t get_escaped_until( std::string * p_output, const alphabet & r_alphabet, char escape_char );
     size_t get_until( std::string * p_output, const alphabet & r_alphabet, char escape_char, size_t max_chars );
 
+    size_t /*num chars skipped*/ skip( const alphabet & r_alphabet );
+    size_t skip( const alphabet & r_alphabet, size_t max_chars );
+    size_t skip_until( const alphabet & r_alphabet );
+    size_t skip_bounded_until( const alphabet & r_alphabet, size_t max_chars );
+    size_t skip_escaped_until( const alphabet & r_alphabet, char escape_char );
+    size_t skip_until( const alphabet & r_alphabet, char escape_char, size_t max_chars );
+
     // fixed() ensures that the specified text is read from the input, or leave input location unchanged.
     // ifixed() ignores ASCII case.
     bool fixed( const char * p_seeking );

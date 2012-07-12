@@ -115,6 +115,72 @@ size_t dsl_pa::get_until( std::string * p_output, const alphabet & r_alphabet, c
     return n_chars;
 }
 
+size_t dsl_pa::skip( const alphabet & r_alphabet )
+{
+    return skip( r_alphabet, unbounded );
+}
+
+size_t dsl_pa::skip( const alphabet & r_alphabet, size_t max_chars )
+{
+    size_t n_chars;
+
+    for( n_chars = 0; n_chars < max_chars; ++n_chars )
+    {
+        if( ! r_alphabet.is_sought( get() ) )
+            break;
+    }
+
+    if( n_chars < max_chars )
+        unget();
+
+    return n_chars;
+}
+
+size_t dsl_pa::skip_until( const alphabet & r_alphabet )
+{
+    return skip_until( r_alphabet, '\0', unbounded );
+}
+
+size_t dsl_pa::skip_bounded_until( const alphabet & r_alphabet, size_t max_chars )
+{
+    return skip_until( r_alphabet, '\0', max_chars );
+}
+
+size_t dsl_pa::skip_escaped_until( const alphabet & r_alphabet, char escape_char )
+{
+    return skip_until( r_alphabet, escape_char, unbounded );
+}
+
+size_t dsl_pa::skip_until( const alphabet & r_alphabet, char escape_char, size_t max_chars )
+{
+    size_t n_chars;
+    bool is_escaped = false;
+
+    for( n_chars = 0; n_chars < max_chars; ++n_chars )
+    {
+        if( get() == reader::R_EOI )
+            return n_chars;
+
+        if( ! is_escaped )
+        {
+            if( r_alphabet.is_sought( current() ) ) // For skip_until(), 'sought' chars are unwanted!
+                break;
+
+            if( current() == escape_char )
+                is_escaped = true;  // Escape chars are not collected in output
+        }
+        else
+        {
+            is_escaped = false;
+        }
+    }
+
+    if( n_chars < max_chars )
+        unget();
+
+    return n_chars;
+}
+
 bool dsl_pa::fixed( const char * p_seeking )
 {
     return get_fixed( 0, p_seeking );
