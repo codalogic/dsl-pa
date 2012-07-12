@@ -1,4 +1,4 @@
-Tests run on Thu Jul 12 09:58:28 2012
+Tests run on Thu Jul 12 10:46:59 2012
 
 
     Alphabet tests [c:\home\pete\sw\dsl-pa\test\alphabet-test.cpp:42]
@@ -432,7 +432,18 @@ Tests run on Thu Jul 12 09:58:28 2012
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
 
-    dsl pa fixed and ifixed tests [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:442]
+    dsl pa skip() tests [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:442]
+    ==========================
+    ok: my_pa.skip( alphabet_word_char() ) && my_pa.space() && my_pa.get( &channel, alphabet_alpha() ) && my_pa.opt_space() && my_pa.is_char( '=' ) && my_pa.opt_space() && my_pa.get( &level, alphabet_digit() )
+    ok: channel == "p"
+    ok: level == "12"
+    ok: my_pa.skip_until( alphabet_space() ) && my_pa.space() && my_pa.get_until( &channel, alphabet_char_class( "=" ) ) && my_pa.opt_space() && my_pa.is_char( '=' ) && my_pa.opt_space() && my_pa.get_until( &level, alphabet_space() )
+    ok: channel == "p"
+    ok: level == "12"
+    ok: ! _CrtMemDifference( &s3, &s1, &s2 )
+
+
+    dsl pa fixed and ifixed tests [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:485]
     ==========================
     ok: (my_pa.fixed( "Range" ) || my_pa.fixed( "Mode" )) && my_pa.space() && my_pa.get( &channel, alphabet_alpha() ) && my_pa.opt_space() && my_pa.is_char( '=' ) && my_pa.opt_space() && my_pa.get( &level, alphabet_digit() )
     ok: channel == "p"
@@ -447,7 +458,7 @@ Tests run on Thu Jul 12 09:58:28 2012
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
 
-    dsl_pa::get_bool() Tests [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:534]
+    dsl_pa::get_bool() Tests [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:577]
     ==========================
       Input: true
     ok: my_pa.get_bool( &result ) == (valid == TEST_VALID)
@@ -486,7 +497,7 @@ Tests run on Thu Jul 12 09:58:28 2012
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
 
-    dsl_pa::get_int() Tests [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:559]
+    dsl_pa::get_int() Tests [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:602]
     ==========================
       Input: 100
     ok: my_pa.get_int( &result ) == n_chars
@@ -521,7 +532,7 @@ Tests run on Thu Jul 12 09:58:28 2012
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
 
-    dsl_pa::get_uint() Tests [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:589]
+    dsl_pa::get_uint() Tests [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:632]
     ==========================
       Input: 100
     ok: my_pa.get_uint( &result ) == n_chars
@@ -556,7 +567,7 @@ Tests run on Thu Jul 12 09:58:28 2012
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
 
-    dsl_pa::get_float() Tests [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:619]
+    dsl_pa::get_float() Tests [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:662]
     ==========================
       Input: 1
     ok: my_pa.get_float( &result ) == is_valid
@@ -603,7 +614,7 @@ Tests run on Thu Jul 12 09:58:28 2012
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
 
-    dsl_pa::get_sci_float() Tests [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:652]
+    dsl_pa::get_sci_float() Tests [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:695]
     ==========================
       Input: 1 
     ok: my_pa.get_sci_float( &result ) == is_valid
@@ -698,7 +709,7 @@ Tests run on Thu Jul 12 09:58:28 2012
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
 
-    optional_sequence class Tests [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:683]
+    optional_sequence class Tests [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:726]
     ==========================
     ok: my_pa.location_push() && my_pa.optional_rewind( my_pa.get_fixed( &command, "Mode" ) && my_pa.space() && my_pa.get_fixed( &type, "empty" ) && my_pa.set( is_empty_mode, true ) || my_pa.on_fail( my_pa.clear( command ) && my_pa.clear( type ) ) ) && my_pa.location_pop() && my_pa.get_fixed( &command, "Mode" ) && my_pa.space() && my_pa.get_fixed( &type, "full" )
     ok: command == "Mode"
@@ -707,7 +718,7 @@ Tests run on Thu Jul 12 09:58:28 2012
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
 
-    DSL PA is_end Tests [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:715]
+    DSL PA is_end Tests [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:758]
     ==========================
     ok: my_pa.is_end()
     ok: ! my_pa.is_end()
@@ -1263,4 +1274,4 @@ Tests run on Thu Jul 12 09:58:28 2012
       : my_reader.location_pop()
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
     ok: _CrtCheckMemory() != 0
-0 error(s), 0 todo(s), 961 test(s)
+0 error(s), 0 todo(s), 968 test(s)

@@ -76,6 +76,11 @@ private:
 
     reader & r_reader;
 
+    template< typename Twriter >
+    size_t get_skip_handler( std::string * p_output, const alphabet & r_alphabet, size_t max_chars );
+    template< typename Twriter >
+    size_t get_skip_until_handler( std::string * p_output, const alphabet & r_alphabet, char escape_char, size_t max_chars );
+
 public:
     dsl_pa( reader & r_reader_in ) : r_reader( r_reader_in ) {}
     virtual ~dsl_pa() {}

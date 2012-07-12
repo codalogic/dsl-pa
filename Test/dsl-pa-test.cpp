@@ -437,6 +437,49 @@ TFUNCTION( dsl_pa_get_until_test )
     }
 }
 
+TFUNCTION( dsl_pa_skip_test )
+{
+    TBEGIN( "dsl pa skip() tests" );
+
+    {
+    reader_string my_reader( "Mode p=12" );
+    dsl_pa my_pa( my_reader );
+
+    std::string channel;
+    std::string level;
+
+    TTEST( my_pa.skip( alphabet_word_char() ) &&
+                my_pa.space() &&
+                my_pa.get( &channel, alphabet_alpha() ) &&
+                my_pa.opt_space() &&
+                my_pa.is_char( '=' ) &&
+                my_pa.opt_space() &&
+                my_pa.get( &level, alphabet_digit() ) );
+
+    TTEST( channel == "p" );
+    TTEST( level == "12" );
+    }
+
+    {
+    reader_string my_reader( "Mode p=12" );
+    dsl_pa my_pa( my_reader );
+
+    std::string channel;
+    std::string level;
+
+    TTEST( my_pa.skip_until( alphabet_space() ) &&
+                my_pa.space() &&
+                my_pa.get_until( &channel, alphabet_char_class( "=" ) ) &&
+                my_pa.opt_space() &&
+                my_pa.is_char( '=' ) &&
+                my_pa.opt_space() &&
+                my_pa.get_until( &level, alphabet_space() ) );
+
+    TTEST( channel == "p" );
+    TTEST( level == "12" );
+    }
+}
+
 TFUNCTION( dsl_pa_fixed_test )
 {
     TBEGIN( "dsl pa fixed and ifixed tests" );
