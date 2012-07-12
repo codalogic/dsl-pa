@@ -145,6 +145,15 @@ TFUNCTION( dsl_inline_test )
     {
     std::string name;
     int i;
+    TTEST( dsl_pa_inline( "foo 123;" ).get( &name, alphabet_not( alphabet_space() ) ).
+            space().get_int( &i ).is_char( ';' ) == true );
+    TTEST( name == "foo" );
+    TTEST( i == 123 );
+    }
+    
+    {
+    std::string name;
+    int i;
     TTEST( dsl_pa_inline( "foo:123;" ).get( &name, alphabet_alpha() ).
             opt_space().is_char( ':' ).opt_space().get_int( &i ).is_char( ';' ) == true );
     TTEST( name == "foo" );
