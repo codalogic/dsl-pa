@@ -56,12 +56,17 @@ private:
     size_t is_optional;
     size_t last_size;
 
+    // Much of the code in this file is generated using the script gen-dsl-pa-inline.pl
     struct action_is_end {};
     struct action_is_char {};
     struct action_get {};
     struct action_get_until {};
     struct action_get_bounded_until {};
     struct action_get_escaped_until {};
+    struct action_skip {};
+    struct action_skip_until {};
+    struct action_skip_bounded_until {};
+    struct action_skip_escaped_until {};
     struct action_fixed {};
     struct action_ifixed {};
     struct action_get_fixed {};
@@ -134,6 +139,34 @@ private:
             max_chars( max_chars_in )
         {}
     };
+
+	struct params_alphabet
+	{
+		const alphabet & r_alphabet;
+		params_alphabet( const alphabet & r_alphabet_in ) : r_alphabet( r_alphabet_in ) {}
+	};
+
+	struct params_alphabet_size_t
+	{
+		const alphabet & r_alphabet;
+		size_t max_chars;
+		params_alphabet_size_t( const alphabet & r_alphabet_in, size_t max_chars_in ) : r_alphabet( r_alphabet_in ), max_chars( max_chars_in ) {}
+	};
+
+	struct params_alphabet_char
+	{
+		const alphabet & r_alphabet;
+		char escape_char;
+		params_alphabet_char( const alphabet & r_alphabet_in, char escape_char_in ) : r_alphabet( r_alphabet_in ), escape_char( escape_char_in ) {}
+	};
+
+	struct params_alphabet_char_size_t
+	{
+		const alphabet & r_alphabet;
+		char escape_char;
+		size_t max_chars;
+		params_alphabet_char_size_t( const alphabet & r_alphabet_in, char escape_char_in, size_t max_chars_in ) : r_alphabet( r_alphabet_in ), escape_char( escape_char_in ), max_chars( max_chars_in ) {}
+	};
 
     struct params_char_p
     {
@@ -361,6 +394,72 @@ public:
     dsl_pa_inline & get_until( std::string * p_output, const alphabet & r_alphabet, char escape_char, size_t max_chars )
     {
         return invoke_sized( action_get_until(), params_string_alphabet_char_size_t( p_output, r_alphabet, escape_char, max_chars ) );
+    }
+
+private:
+    size_t action( const action_skip &, const params_alphabet & params )
+    {
+        return pa.skip( params.r_alphabet );
+    }
+public:
+    dsl_pa_inline & skip( const alphabet & r_alphabet )
+    {
+        return invoke_sized( action_skip(), params_alphabet( r_alphabet ) );
+    }
+
+private:
+    size_t action( const action_skip &, const params_alphabet_size_t & params )
+    {
+        return pa.skip( params.r_alphabet, params.max_chars );
+    }
+public:
+    dsl_pa_inline & skip( const alphabet & r_alphabet, size_t max_chars )
+    {
+        return invoke_sized( action_skip(), params_alphabet_size_t( r_alphabet, max_chars ) );
+    }
+
+private:
+    size_t action( const action_skip_until &, const params_alphabet & params )
+    {
+        return pa.skip_until( params.r_alphabet );
+    }
+public:
+    dsl_pa_inline & skip_until( const alphabet & r_alphabet )
+    {
+        return invoke_sized( action_skip_until(), params_alphabet( r_alphabet ) );
+    }
+
+private:
+    size_t action( const action_skip_bounded_until &, const params_alphabet_size_t & params )
+    {
+        return pa.skip_bounded_until( params.r_alphabet, params.max_chars );
+    }
+public:
+    dsl_pa_inline & skip_bounded_until( const alphabet & r_alphabet, size_t max_chars )
+    {
+        return invoke_sized( action_skip_bounded_until(), params_alphabet_size_t( r_alphabet, max_chars ) );
+    }
+
+private:
+    size_t action( const action_skip_escaped_until &, const params_alphabet_char & params )
+    {
+        return pa.skip_escaped_until( params.r_alphabet, params.escape_char );
+    }
+public:
+    dsl_pa_inline & skip_escaped_until( const alphabet & r_alphabet, char escape_char )
+    {
+        return invoke_sized( action_skip_escaped_until(), params_alphabet_char( r_alphabet, escape_char ) );
+    }
+
+private:
+    size_t action( const action_skip_until &, const params_alphabet_char_size_t & params )
+    {
+        return pa.skip_until( params.r_alphabet, params.escape_char, params.max_chars );
+    }
+public:
+    dsl_pa_inline & skip_until( const alphabet & r_alphabet, char escape_char, size_t max_chars )
+    {
+        return invoke_sized( action_skip_until(), params_alphabet_char_size_t( r_alphabet, escape_char, max_chars ) );
     }
 
 private:

@@ -159,4 +159,11 @@ TFUNCTION( dsl_inline_test )
     TTEST( name == "foo" );
     TTEST( i == 123 );
     }
+    
+    {
+    int i;
+    TTEST( dsl_pa_inline( "foo:123;" ).skip( alphabet_alpha() ).
+            opt_space().is_char( ':' ).opt_space().get_int( &i ).is_char( ';' ) == true );
+    TTEST( i == 123 );
+    }
 }

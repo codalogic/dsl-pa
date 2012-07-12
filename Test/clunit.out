@@ -1,4 +1,4 @@
-Tests run on Thu Jul 12 10:46:59 2012
+Tests run on Thu Jul 12 10:58:01 2012
 
 
     Alphabet tests [c:\home\pete\sw\dsl-pa\test\alphabet-test.cpp:42]
@@ -287,6 +287,8 @@ Tests run on Thu Jul 12 10:46:59 2012
     ok: i == 123
     ok: dsl_pa_inline( "foo:123;" ).get( &name, alphabet_alpha() ). opt_space().is_char( ':' ).opt_space().get_int( &i ).is_char( ';' ) == true
     ok: name == "foo"
+    ok: i == 123
+    ok: dsl_pa_inline( "foo:123;" ).skip( alphabet_alpha() ). opt_space().is_char( ':' ).opt_space().get_int( &i ).is_char( ';' ) == true
     ok: i == 123
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
@@ -1274,4 +1276,4 @@ Tests run on Thu Jul 12 10:46:59 2012
       : my_reader.location_pop()
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
     ok: _CrtCheckMemory() != 0
-0 error(s), 0 todo(s), 968 test(s)
+0 error(s), 0 todo(s), 970 test(s)
