@@ -168,6 +168,62 @@ TFUNCTION( dsl_lite_test )
     }
 }
 
+TFUNCTION( dsl_pa_lite_extension_test )
+{
+    class colon
+    {
+    public:
+        void action( dsl_pa_lite & r_dsl_pa_lite ) const
+        {
+            r_dsl_pa_lite.opt_space().is_char( ':' ).opt_space(); 
+        }
+    };
+
+    {
+    std::string name;
+    int i;
+    TTEST( dsl_pa_lite( "foo : 123;" ).get( &name, alphabet_alpha() ).
+            x( colon() ).get_int( &i ).is_char( ';' ) == true );
+    TTEST( name == "foo" );
+    TTEST( i == 123 );
+    }
+
+    {
+    std::string name;
+    int i;
+    TTEST( dsl_pa_lite( "foo - 123;" ).get( &name, alphabet_alpha() ).
+            x( colon() ).get_int( &i ).is_char( ';' ) == false );
+    }
+
+    class date
+    {
+    private:
+        int year;
+        int month;
+        int dom;
+    public:
+        date() {}
+        void action( dsl_pa_lite & r_dsl_pa_lite )
+        {
+            r_dsl_pa_lite.get_int( &year ).size( 4, 4 ).is_char( '-' ).
+                    get_int( &month ).size( 2, 2 ).is_char( '-' ).
+                    get_int( &dom ).size( 2, 2 ); 
+        }
+        int get_year() const { return year; }
+        int get_month() const { return month; }
+        int get_dom() const { return dom; }
+    };
+
+    {
+    date my_date;
+    TTEST( dsl_pa_lite( "date: 2012-02-09" ).fixed( "date" ).x( colon() ).
+            x( my_date ) == true );
+    TTEST( my_date.get_year() == 2012 );
+    TTEST( my_date.get_month() == 2 );
+    TTEST( my_date.get_dom() == 9 );
+    }
+}
+
 // Sadly, trying to get the virtual function x() to return a reference to the
 // deriving class doesn't work!
 //

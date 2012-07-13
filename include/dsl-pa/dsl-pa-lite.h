@@ -308,6 +308,13 @@ public:
         return *this;
     }
 
+    template< class Texec >
+    dsl_pa_lite & x( Texec & exec )
+    {
+        exec.action( *this );
+        return *this;
+    }
+
 private:
     bool action( const action_is_end &, const params_none & )
     {
