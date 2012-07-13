@@ -313,6 +313,27 @@ void example_parser::example7( std::ostream & fout )
     }
 }
 
+void example_lite( std::ostream & fout )
+{
+    // dsl_pa_lite is intended for light-weight parsing of short strings.
+    // A typical scenario might be parsing a line-oriented protocol.
+    
+    fout << "\nExample Lite\n==============\n";
+
+    std::string input( "year : 2012" );
+    int year = 0;
+
+    if( dsl_pa_lite( input ).fixed( "year" ).opt_space().is_char( ':' ).
+            opt_space().get_int( &year ) )
+    {
+        fout << "Example OK: year=" << year << "\n";
+    }
+    else
+    {
+        fout << "Unable to parse input\n";
+    }
+}
+
 int main()
 {
     std::ofstream fout( "examples-out.txt" );
@@ -326,4 +347,6 @@ int main()
     class_example( EXAMPLE_6, fout, " when = 2012-05-31, width=10" );
     class_example( EXAMPLE_6, fout, " when = 12-05-31, width=10" );
     class_example( EXAMPLE_7, fout, " year = MMXII, width::10 more" );
+    
+    example_lite( fout );
 }

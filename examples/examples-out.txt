@@ -38,3 +38,7 @@ Example 7
 ==============
 (Input =  year = MMXII, width::10 more)
 Example OK: w=MMXII & non_space=width::10
+
+Example Lite
+==============
+Example OK: year=2012

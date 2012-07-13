@@ -48,6 +48,6 @@
 #include "dsl-pa-reader.h"
 #include "dsl-pa-alphabet.h"
 #include "dsl-pa-dsl-pa.h"
-#include "dsl-pa-inline.h"
+#include "dsl-pa-lite.h"
 
 #endif // CL_DSL_PA
