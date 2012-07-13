@@ -171,7 +171,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\include\dsl-pa\dsl-pa-inline.h"
+				RelativePath=".\include\dsl-pa\dsl-pa-lite.h"
 				>
 			</File>
 			<File
