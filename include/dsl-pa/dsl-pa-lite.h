@@ -46,7 +46,7 @@
 
 namespace cl {
 
-class dsl_pa_inline
+class dsl_pa_lite
 {
 private:
     reader_string my_reader;
@@ -55,6 +55,35 @@ private:
     bool wanted_result;
     size_t is_optional;
     size_t last_size;
+
+protected:  // Give the user the chance to derive from this class and write their own handlers
+    template< class Taction, class Tparams >
+    dsl_pa_lite & invoke( const Taction &, const Tparams & params_in )
+    {
+        if( is_matched )
+        {
+            bool is_parsed = action( Taction(), params_in );
+            if( ! is_optional )
+                is_matched &= (is_parsed == wanted_result);
+            wanted_result = true;
+            is_optional = false;
+        }
+        return *this;
+    }
+
+    template< class Taction, class Tparams >
+    dsl_pa_lite & invoke_sized( const Taction &, const Tparams & params_in )
+    {
+        if( is_matched )
+        {
+            last_size = action( Taction(), params_in );
+            if( ! is_optional )
+                is_matched &= ((last_size > 0) == wanted_result);
+            wanted_result = true;
+            is_optional = false;
+        }
+        return *this;
+    }
 
     // Much of the code in this file is generated using the script gen-dsl-pa-inline.pl
     struct action_is_end {};
@@ -219,37 +248,8 @@ private:
         params_float( float * p_float_in ) : p_float( p_float_in ) {}
     };
 
-protected:  // Give the user the chance to derive from this class and write their own handlers
-    template< class Taction, class Tparams >
-    dsl_pa_inline & invoke( const Taction &, const Tparams & params_in )
-    {
-        if( is_matched )
-        {
-            bool is_parsed = action( Taction(), params_in );
-            if( ! is_optional )
-                is_matched &= (is_parsed == wanted_result);
-            wanted_result = true;
-            is_optional = false;
-        }
-        return *this;
-    }
-
-    template< class Taction, class Tparams >
-    dsl_pa_inline & invoke_sized( const Taction &, const Tparams & params_in )
-    {
-        if( is_matched )
-        {
-            last_size = action( Taction(), params_in );
-            if( ! is_optional )
-                is_matched &= ((last_size > 0) == wanted_result);
-            wanted_result = true;
-            is_optional = false;
-        }
-        return *this;
-    }
-
 public:
-    dsl_pa_inline( const std::string & r_in )
+    dsl_pa_lite( const std::string & r_in )
         :
         my_reader( r_in ),
         pa( my_reader ),
@@ -258,7 +258,7 @@ public:
         is_optional( false ),
         last_size( 0 )
     {}
-    dsl_pa_inline( const char * const p_in )
+    dsl_pa_lite( const char * const p_in )
         :
         my_reader( p_in ),
         pa( my_reader ),
@@ -269,17 +269,17 @@ public:
     {}
     bool result() const { return is_matched; }
     operator bool () const { return result(); }
-    dsl_pa_inline & not()
+    dsl_pa_lite & not()
     {
         wanted_result = ! wanted_result;
         return *this;
     }
-    dsl_pa_inline & optional()  // Call optional() BEFORE an operation
+    dsl_pa_lite & optional()  // Call optional() BEFORE an operation
     {
         is_optional = true;
         return *this;
     }
-    dsl_pa_inline & min_size( size_t min_size_in )  // Call min_size() AFTER a size-based operation
+    dsl_pa_lite & min_size( size_t min_size_in )  // Call min_size() AFTER a size-based operation
     {
         if( is_matched )
         {
@@ -288,7 +288,7 @@ public:
         }
         return *this;
     }
-    dsl_pa_inline & max_size( size_t max_size_in )  // Call min_size() AFTER a size-based operation
+    dsl_pa_lite & max_size( size_t max_size_in )  // Call min_size() AFTER a size-based operation
     {
         if( is_matched )
         {
@@ -297,7 +297,7 @@ public:
         }
         return *this;
     }
-    dsl_pa_inline & size( size_t min_size_in, size_t max_size_in )  // Call size() AFTER a size-based operation
+    dsl_pa_lite & size( size_t min_size_in, size_t max_size_in )  // Call size() AFTER a size-based operation
     {
         // Can't do "min_size(...); return max_size(...);" here because wanted_result would be incorrectly modified in the middle
         if( is_matched )
@@ -314,7 +314,7 @@ private:
         return pa.is_end();
     }
 public:
-    dsl_pa_inline & is_end()
+    dsl_pa_lite & is_end()
     {
         return invoke( action_is_end(), params_none() );
     }
@@ -325,7 +325,7 @@ private:
         return pa.is_char( params_in.c );
     }
 public:
-    dsl_pa_inline & is_char( char c )
+    dsl_pa_lite & is_char( char c )
     {
         return invoke( action_is_char(), params_char( c ) );
     }
@@ -336,7 +336,7 @@ private:
         return pa.get( params.p_output, params.r_alphabet );
     }
 public:
-    dsl_pa_inline & get( std::string * p_output, const alphabet & r_alphabet )
+    dsl_pa_lite & get( std::string * p_output, const alphabet & r_alphabet )
     {
         return invoke_sized( action_get(), params_string_alphabet( p_output, r_alphabet ) );
     }
@@ -347,7 +347,7 @@ private:
         return pa.get( params.p_output, params.r_alphabet, params.max_chars );
     }
 public:
-    dsl_pa_inline & get( std::string * p_output, const alphabet & r_alphabet, size_t max_chars )
+    dsl_pa_lite & get( std::string * p_output, const alphabet & r_alphabet, size_t max_chars )
     {
         return invoke_sized( action_get(), params_string_alphabet_size_t( p_output, r_alphabet, max_chars ) );
     }
@@ -358,7 +358,7 @@ private:
         return pa.get_until( params.p_output, params.r_alphabet );
     }
 public:
-    dsl_pa_inline & get_until( std::string * p_output, const alphabet & r_alphabet )
+    dsl_pa_lite & get_until( std::string * p_output, const alphabet & r_alphabet )
     {
         return invoke_sized( action_get_until(), params_string_alphabet( p_output, r_alphabet ) );
     }
@@ -369,7 +369,7 @@ private:
         return pa.get_bounded_until( params.p_output, params.r_alphabet, params.max_chars );
     }
 public:
-    dsl_pa_inline & get_bounded_until( std::string * p_output, const alphabet & r_alphabet, size_t max_chars )
+    dsl_pa_lite & get_bounded_until( std::string * p_output, const alphabet & r_alphabet, size_t max_chars )
     {
         return invoke_sized( action_get_bounded_until(), params_string_alphabet_size_t( p_output, r_alphabet, max_chars ) );
     }
@@ -380,7 +380,7 @@ private:
         return pa.get_escaped_until( params.p_output, params.r_alphabet, params.escape_char );
     }
 public:
-    dsl_pa_inline & get_escaped_until( std::string * p_output, const alphabet & r_alphabet, char escape_char )
+    dsl_pa_lite & get_escaped_until( std::string * p_output, const alphabet & r_alphabet, char escape_char )
     {
         return invoke_sized( action_get_escaped_until(), params_string_alphabet_char( p_output, r_alphabet, escape_char ) );
     }
@@ -391,7 +391,7 @@ private:
         return pa.get_until( params.p_output, params.r_alphabet, params.escape_char, params.max_chars );
     }
 public:
-    dsl_pa_inline & get_until( std::string * p_output, const alphabet & r_alphabet, char escape_char, size_t max_chars )
+    dsl_pa_lite & get_until( std::string * p_output, const alphabet & r_alphabet, char escape_char, size_t max_chars )
     {
         return invoke_sized( action_get_until(), params_string_alphabet_char_size_t( p_output, r_alphabet, escape_char, max_chars ) );
     }
@@ -402,7 +402,7 @@ private:
         return pa.skip( params.r_alphabet );
     }
 public:
-    dsl_pa_inline & skip( const alphabet & r_alphabet )
+    dsl_pa_lite & skip( const alphabet & r_alphabet )
     {
         return invoke_sized( action_skip(), params_alphabet( r_alphabet ) );
     }
@@ -413,7 +413,7 @@ private:
         return pa.skip( params.r_alphabet, params.max_chars );
     }
 public:
-    dsl_pa_inline & skip( const alphabet & r_alphabet, size_t max_chars )
+    dsl_pa_lite & skip( const alphabet & r_alphabet, size_t max_chars )
     {
         return invoke_sized( action_skip(), params_alphabet_size_t( r_alphabet, max_chars ) );
     }
@@ -424,7 +424,7 @@ private:
         return pa.skip_until( params.r_alphabet );
     }
 public:
-    dsl_pa_inline & skip_until( const alphabet & r_alphabet )
+    dsl_pa_lite & skip_until( const alphabet & r_alphabet )
     {
         return invoke_sized( action_skip_until(), params_alphabet( r_alphabet ) );
     }
@@ -435,7 +435,7 @@ private:
         return pa.skip_bounded_until( params.r_alphabet, params.max_chars );
     }
 public:
-    dsl_pa_inline & skip_bounded_until( const alphabet & r_alphabet, size_t max_chars )
+    dsl_pa_lite & skip_bounded_until( const alphabet & r_alphabet, size_t max_chars )
     {
         return invoke_sized( action_skip_bounded_until(), params_alphabet_size_t( r_alphabet, max_chars ) );
     }
@@ -446,7 +446,7 @@ private:
         return pa.skip_escaped_until( params.r_alphabet, params.escape_char );
     }
 public:
-    dsl_pa_inline & skip_escaped_until( const alphabet & r_alphabet, char escape_char )
+    dsl_pa_lite & skip_escaped_until( const alphabet & r_alphabet, char escape_char )
     {
         return invoke_sized( action_skip_escaped_until(), params_alphabet_char( r_alphabet, escape_char ) );
     }
@@ -457,7 +457,7 @@ private:
         return pa.skip_until( params.r_alphabet, params.escape_char, params.max_chars );
     }
 public:
-    dsl_pa_inline & skip_until( const alphabet & r_alphabet, char escape_char, size_t max_chars )
+    dsl_pa_lite & skip_until( const alphabet & r_alphabet, char escape_char, size_t max_chars )
     {
         return invoke_sized( action_skip_until(), params_alphabet_char_size_t( r_alphabet, escape_char, max_chars ) );
     }
@@ -468,7 +468,7 @@ private:
         return pa.fixed( params.p_seeking );
     }
 public:
-    dsl_pa_inline & fixed( const char * p_seeking )
+    dsl_pa_lite & fixed( const char * p_seeking )
     {
         return invoke( action_fixed(), params_char_p( p_seeking ) );
     }
@@ -479,7 +479,7 @@ private:
         return pa.ifixed( params.p_seeking );
     }
 public:
-    dsl_pa_inline & ifixed( const char * p_seeking )
+    dsl_pa_lite & ifixed( const char * p_seeking )
     {
         return invoke( action_ifixed(), params_char_p( p_seeking ) );
     }
@@ -490,7 +490,7 @@ private:
         return pa.get_fixed( params.p_output, params.p_seeking );
     }
 public:
-    dsl_pa_inline & get_fixed( std::string * p_output, const char * p_seeking )
+    dsl_pa_lite & get_fixed( std::string * p_output, const char * p_seeking )
     {
         return invoke( action_get_fixed(), params_string_char_p( p_output, p_seeking ) );
     }
@@ -501,7 +501,7 @@ private:
         return pa.get_ifixed( params.p_output, params.p_seeking );
     }
 public:
-    dsl_pa_inline & get_ifixed( std::string * p_output, const char * p_seeking )
+    dsl_pa_lite & get_ifixed( std::string * p_output, const char * p_seeking )
     {
         return invoke( action_get_ifixed(), params_string_char_p( p_output, p_seeking ) );
     }
@@ -512,7 +512,7 @@ private:
         return pa.space();
     }
 public:
-    dsl_pa_inline & space()
+    dsl_pa_lite & space()
     {
         return invoke_sized( action_space(), params_none() );
     }
@@ -523,7 +523,7 @@ private:
         return pa.opt_space();
     }
 public:
-    dsl_pa_inline & opt_space()
+    dsl_pa_lite & opt_space()
     {
         return invoke( action_opt_space(), params_none() );
     }
@@ -534,7 +534,7 @@ private:
         return pa.wsp();
     }
 public:
-    dsl_pa_inline & wsp()
+    dsl_pa_lite & wsp()
     {
         return invoke_sized( action_wsp(), params_none() );
     }
@@ -545,7 +545,7 @@ private:
         return pa.opt_wsp();
     }
 public:
-    dsl_pa_inline & opt_wsp()
+    dsl_pa_lite & opt_wsp()
     {
         return invoke( action_opt_wsp(), params_none() );
     }
@@ -556,7 +556,7 @@ private:
         return pa.get_bool( params.p_string );
     }
 public:
-    dsl_pa_inline & get_bool( std::string * p_string )
+    dsl_pa_lite & get_bool( std::string * p_string )
     {
         return invoke( action_get_bool(), params_string( p_string ) );
     }
@@ -567,7 +567,7 @@ private:
         return pa.get_bool( params.p_bool );
     }
 public:
-    dsl_pa_inline & get_bool( bool * p_bool )
+    dsl_pa_lite & get_bool( bool * p_bool )
     {
         return invoke( action_get_bool(), params_bool( p_bool ) );
     }
@@ -578,7 +578,7 @@ private:
         return pa.get_int(params.p_string);
     }
 public:
-    dsl_pa_inline & get_int( std::string * p_string )
+    dsl_pa_lite & get_int( std::string * p_string )
     {
         return invoke_sized( action_get_int(), params_string( p_string ) );
     }
@@ -589,7 +589,7 @@ private:
         return pa.get_int( params.p_int );
     }
 public:
-    dsl_pa_inline & get_int( int * p_int )
+    dsl_pa_lite & get_int( int * p_int )
     {
         return invoke_sized( action_get_int(), params_int( p_int ) );
     }
@@ -600,7 +600,7 @@ private:
         return pa.get_uint( params.p_string );
     }
 public:
-    dsl_pa_inline & get_uint( std::string * p_string )
+    dsl_pa_lite & get_uint( std::string * p_string )
     {
         return invoke_sized( action_get_uint(), params_string( p_string ) );
     }
@@ -611,7 +611,7 @@ private:
         return pa.get_uint( params.p_int );
     }
 public:
-    dsl_pa_inline & get_uint( unsigned int * p_int )
+    dsl_pa_lite & get_uint( unsigned int * p_int )
     {
         return invoke_sized( action_get_uint(), params_unsigned_int( p_int ) );
     }
@@ -622,7 +622,7 @@ private:
         return pa.get_float( params.p_string );
     }
 public:
-    dsl_pa_inline & get_float( std::string * p_string )
+    dsl_pa_lite & get_float( std::string * p_string )
     {
         return invoke( action_get_float(), params_string( p_string ) );
     }
@@ -633,7 +633,7 @@ private:
         return pa.get_float( params.p_float );
     }
 public:
-    dsl_pa_inline & get_float( double * p_float )
+    dsl_pa_lite & get_float( double * p_float )
     {
         return invoke( action_get_float(), params_double( p_float ) );
     }
@@ -644,7 +644,7 @@ private:
         return pa.get_float( params.p_float );
     }
 public:
-    dsl_pa_inline & get_float( float * p_float )
+    dsl_pa_lite & get_float( float * p_float )
     {
         return invoke( action_get_float(), params_float( p_float ) );
     }
@@ -655,7 +655,7 @@ private:
         return pa.get_sci_float( params.p_string );
     }
 public:
-    dsl_pa_inline & get_sci_float( std::string * p_string )
+    dsl_pa_lite & get_sci_float( std::string * p_string )
     {
         return invoke( action_get_sci_float(), params_string( p_string ) );
     }
@@ -666,7 +666,7 @@ private:
         return pa.get_sci_float( params.p_float );
     }
 public:
-    dsl_pa_inline & get_sci_float( double * p_float )
+    dsl_pa_lite & get_sci_float( double * p_float )
     {
         return invoke( action_get_sci_float(), params_double( p_float ) );
     }
@@ -677,7 +677,7 @@ private:
         return pa.get_sci_float( params.p_float );
     }
 public:
-    dsl_pa_inline & get_sci_float( float * p_float )
+    dsl_pa_lite & get_sci_float( float * p_float )
     {
         return invoke( action_get_sci_float(), params_float( p_float ) );
     }
