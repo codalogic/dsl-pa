@@ -167,3 +167,28 @@ TFUNCTION( dsl_lite_test )
     TTEST( i == 123 );
     }
 }
+
+// Sadly, trying to get the virtual function x() to return a reference to the
+// deriving class doesn't work!
+//
+//TFUNCTION( dsl_pa_lite_extension_test )
+//{
+//    class my_dsl_pa_lite : public dsl_pa_lite
+//    {
+//    public:
+//        my_dsl_pa_lite( const char * p_input ) : dsl_pa_lite( p_input ) {}
+//        my_dsl_pa_lite( const std::string & r_input ) : dsl_pa_lite( r_input ) {}
+//        my_dsl_pa_lite & x() { return *this; }
+//        my_dsl_pa_lite & colon()
+//        {
+//            opt_space(); is_char( ':' );opt_space();
+//            return *this;
+//        }
+//    };
+//
+//    int year = 0;
+//    TTEST( my_dsl_pa_lite( "year : 2012" ).fixed( "year" ).x().colon().get_int( &year ) );
+//    TTEST( year == 2012 );
+//    
+//    TTEST( my_dsl_pa_lite( std::striing("year : 2012") ).fixed( "year" ).x().colon().get_int( &year ) );
+//}

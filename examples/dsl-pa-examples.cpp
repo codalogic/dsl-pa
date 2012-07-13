@@ -317,7 +317,7 @@ void example_lite( std::ostream & fout )
 {
     // dsl_pa_lite is intended for light-weight parsing of short strings.
     // A typical scenario might be parsing a line-oriented protocol.
-    
+
     fout << "\nExample Lite\n==============\n";
 
     std::string input( "year : 2012" );
@@ -347,6 +347,6 @@ int main()
     class_example( EXAMPLE_6, fout, " when = 2012-05-31, width=10" );
     class_example( EXAMPLE_6, fout, " when = 12-05-31, width=10" );
     class_example( EXAMPLE_7, fout, " year = MMXII, width::10 more" );
-    
+
     example_lite( fout );
 }

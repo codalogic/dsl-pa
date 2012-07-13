@@ -169,33 +169,33 @@ protected:  // Give the user the chance to derive from this class and write thei
         {}
     };
 
-	struct params_alphabet
-	{
-		const alphabet & r_alphabet;
-		params_alphabet( const alphabet & r_alphabet_in ) : r_alphabet( r_alphabet_in ) {}
-	};
+    struct params_alphabet
+    {
+        const alphabet & r_alphabet;
+        params_alphabet( const alphabet & r_alphabet_in ) : r_alphabet( r_alphabet_in ) {}
+    };
 
-	struct params_alphabet_size_t
-	{
-		const alphabet & r_alphabet;
-		size_t max_chars;
-		params_alphabet_size_t( const alphabet & r_alphabet_in, size_t max_chars_in ) : r_alphabet( r_alphabet_in ), max_chars( max_chars_in ) {}
-	};
+    struct params_alphabet_size_t
+    {
+        const alphabet & r_alphabet;
+        size_t max_chars;
+        params_alphabet_size_t( const alphabet & r_alphabet_in, size_t max_chars_in ) : r_alphabet( r_alphabet_in ), max_chars( max_chars_in ) {}
+    };
 
-	struct params_alphabet_char
-	{
-		const alphabet & r_alphabet;
-		char escape_char;
-		params_alphabet_char( const alphabet & r_alphabet_in, char escape_char_in ) : r_alphabet( r_alphabet_in ), escape_char( escape_char_in ) {}
-	};
+    struct params_alphabet_char
+    {
+        const alphabet & r_alphabet;
+        char escape_char;
+        params_alphabet_char( const alphabet & r_alphabet_in, char escape_char_in ) : r_alphabet( r_alphabet_in ), escape_char( escape_char_in ) {}
+    };
 
-	struct params_alphabet_char_size_t
-	{
-		const alphabet & r_alphabet;
-		char escape_char;
-		size_t max_chars;
-		params_alphabet_char_size_t( const alphabet & r_alphabet_in, char escape_char_in, size_t max_chars_in ) : r_alphabet( r_alphabet_in ), escape_char( escape_char_in ), max_chars( max_chars_in ) {}
-	};
+    struct params_alphabet_char_size_t
+    {
+        const alphabet & r_alphabet;
+        char escape_char;
+        size_t max_chars;
+        params_alphabet_char_size_t( const alphabet & r_alphabet_in, char escape_char_in, size_t max_chars_in ) : r_alphabet( r_alphabet_in ), escape_char( escape_char_in ), max_chars( max_chars_in ) {}
+    };
 
     struct params_char_p
     {
