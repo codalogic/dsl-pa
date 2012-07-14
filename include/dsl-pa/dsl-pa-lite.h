@@ -321,6 +321,32 @@ public:
         return x( exec );
     }
 
+    dsl_pa_lite & operator [] ( char c )
+    {
+        return is_char( c );
+    }
+    dsl_pa_lite & operator [] ( const char * p_fixed )
+    {
+        if( *p_fixed == '\0' )
+            return opt_space();
+        else if( alphabet_helpers::is_space( *p_fixed ) && *(p_fixed+1) == '\0' )
+            return space();
+        else
+            return fixed( p_fixed );
+    }
+    dsl_pa_lite & operator [] ( std::string & r_string_out )
+    {
+        return get( &r_string_out, alphabet_not( alphabet_space() ) );
+    }
+    dsl_pa_lite & operator [] ( int & r_int_out )
+    {
+        return get_int( &r_int_out );
+    }
+    dsl_pa_lite & operator [] ( unsigned int & r_uint_out )
+    {
+        return get_uint( &r_uint_out );
+    }
+
 private:
     bool action( const action_is_end &, const params_none & )
     {

@@ -256,6 +256,15 @@ TFUNCTION( dsl_pa_lite_extension_test )
             x( my_date ) == false );
     }
     
+    {
+    date my_date;
+    TTEST( dsl_pa_lite( "date: 2012-02-09" )["date"][colon()]
+            [my_date] == true );
+    TTEST( my_date.get_year() == 2012 );
+    TTEST( my_date.get_month() == 2 );
+    TTEST( my_date.get_dom() == 9 );
+    }
+
     // You can define extension handler in a class and then do all your calls to
     // dsl_pa_lite in that class.  This avoids poluting the global namespace
     // with lots of parser helper classes.
@@ -287,6 +296,21 @@ TFUNCTION( dsl_pa_lite_extension_test )
     
     my_dsl_pa_lite my_pa_lite;
     my_pa_lite.my_dsl_pa_lite_test();
+    
+    {
+    int year;
+    unsigned int month;
+    std::string dom;
+    TTEST( dsl_pa_lite( "date:   2012-02-09" )
+            ["date"][""][':'][" "][year]['-'][month]['-'][dom] == true );
+    TTEST( year == 2012 );
+    TTEST( month == 2 );
+    TTEST( dom == "09" );
+    TTEST( dsl_pa_lite( "date :   2012-02-09" )
+            ["date"][""][':'][" "][year]['-'][month]['-'][dom] == true );
+    TTEST( dsl_pa_lite( "date :   2012-02-09" )
+            ["date"][colon()][year]['-'][month]['-'][dom] == true );
+    }
 }
 
 // Sadly, trying to get the virtual function x() to return a reference to the
