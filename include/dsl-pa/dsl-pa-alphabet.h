@@ -43,6 +43,8 @@
 
 #include <cctype>
 
+#include "dsl-pa-reader.h"
+
 namespace cl {
 
 namespace /*cl::*/alphabet_helpers {
@@ -350,7 +352,7 @@ public:
     {}
     virtual bool is_sought( char c ) const
     {
-        return ! r_alphabet.is_sought( c );
+        return c != reader::R_EOI && ! r_alphabet.is_sought( c );
     }
 };
 
