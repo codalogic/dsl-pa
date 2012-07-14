@@ -1,4 +1,4 @@
-Tests run on Sat Jul 14 18:18:58 2012
+Tests run on Sat Jul 14 19:58:46 2012
 
 
     Alphabet tests [c:\home\pete\sw\dsl-pa\test\alphabet-test.cpp:42]
@@ -309,19 +309,26 @@ Tests run on Sat Jul 14 18:18:58 2012
     ok: my_date.get_month() == 2
     ok: my_date.get_dom() == 9
     ok: dsl_pa_lite( "date: 2012+02+09" ).fixed( "date" ).x( colon() ). x( my_date ) == false
+    ok: dsl_pa_lite( input ).get( &name, alphabet_alpha() ). x( colon() ). x( dash() ). get_int( &i ).is_char( ';' )
+    ok: name == "foo"
+    ok: i == 123
     ok: dsl_pa_lite( "date: 2012-02-09" )["date"][colon()] [my_date] == true
     ok: my_date.get_year() == 2012
     ok: my_date.get_month() == 2
     ok: my_date.get_dom() == 9
-    ok: dsl_pa_lite( input ).get( &name, alphabet_alpha() ). x( colon() ). x( dash() ). get_int( &i ).is_char( ';' )
-    ok: name == "foo"
-    ok: i == 123
-    ok: dsl_pa_lite( "date:   2012-02-09" ) ["date"][""][':'][" "][year]['-'][month]['-'][dom] == true
+    ok: dsl_pa_lite( "date:   2012-02-09" ) ["date"][""][':'][" "][&year]['-'][&month]['-'][&dom] == true
     ok: year == 2012
     ok: month == 2
     ok: dom == "09"
-    ok: dsl_pa_lite( "date :   2012-02-09" ) ["date"][""][':'][" "][year]['-'][month]['-'][dom] == true
-    ok: dsl_pa_lite( "date :   2012-02-09" ) ["date"][colon()][year]['-'][month]['-'][dom] == true
+    ok: dsl_pa_lite( "date :   2012-02-09" ) ["date"][""][':'][" "][&year]['-'][&month]['-'][&dom] == true
+    ok: dsl_pa_lite( "date :   2012-02-09" ) ["date"][colon()][&year]['-'][&month]['-'][&dom] == true
+    ok: dsl_pa_lite( "date :   2012+02+09" ) ["date"][colon()][&year]['-'][&month]['-'][&dom] == false
+    ok: dsl_pa_lite( "date :   2012-02-09" ) ["date"][colon()][&year][4][-4]['-'][&month][2][-2]['-'][&dom][2][-2] == true
+    ok: dsl_pa_lite( "date :   12-02-09" ) ["date"][colon()][&year][4][-4]['-'][&month][2][-2]['-'][&dom][2][-2] == false
+    ok: dsl_pa_lite( "abc123def" ) [alphabet_alpha()][&alpha1][alphabet_digit()][&digit][alphabet_alpha()][&alpha2] == true
+    ok: alpha1 == "abc"
+    ok: digit == "123"
+    ok: alpha2 == "def"
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
 
@@ -1308,4 +1315,4 @@ Tests run on Sat Jul 14 18:18:58 2012
       : my_reader.location_pop()
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
     ok: _CrtCheckMemory() != 0
-0 error(s), 0 todo(s), 1000 test(s)
+0 error(s), 0 todo(s), 1007 test(s)

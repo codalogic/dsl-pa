@@ -254,6 +254,15 @@ public:
     }
 };
 
+class alphabet_name_char : public alphabet_word_char
+{
+public:
+    virtual bool is_sought( char c ) const
+    {
+        return '-' == c || alphabet_word_char::is_sought( c );
+    }
+};
+
 class alphabet_uni : public alphabet // char is part of a non-ASCII Unicode sequence
 {
 public:

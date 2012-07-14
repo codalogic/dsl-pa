@@ -255,15 +255,6 @@ TFUNCTION( dsl_pa_lite_extension_test )
     TTEST( dsl_pa_lite( "date: 2012+02+09" ).fixed( "date" ).x( colon() ).
             x( my_date ) == false );
     }
-    
-    {
-    date my_date;
-    TTEST( dsl_pa_lite( "date: 2012-02-09" )["date"][colon()]
-            [my_date] == true );
-    TTEST( my_date.get_year() == 2012 );
-    TTEST( my_date.get_month() == 2 );
-    TTEST( my_date.get_dom() == 9 );
-    }
 
     // You can define extension handler in a class and then do all your calls to
     // dsl_pa_lite in that class.  This avoids poluting the global namespace
@@ -298,18 +289,47 @@ TFUNCTION( dsl_pa_lite_extension_test )
     my_pa_lite.my_dsl_pa_lite_test();
     
     {
+    date my_date;
+    TTEST( dsl_pa_lite( "date: 2012-02-09" )["date"][colon()]
+            [my_date] == true );
+    TTEST( my_date.get_year() == 2012 );
+    TTEST( my_date.get_month() == 2 );
+    TTEST( my_date.get_dom() == 9 );
+    }
+    
+    {
     int year;
     unsigned int month;
     std::string dom;
     TTEST( dsl_pa_lite( "date:   2012-02-09" )
-            ["date"][""][':'][" "][year]['-'][month]['-'][dom] == true );
+            ["date"][""][':'][" "][&year]['-'][&month]['-'][&dom] == true );
     TTEST( year == 2012 );
     TTEST( month == 2 );
     TTEST( dom == "09" );
     TTEST( dsl_pa_lite( "date :   2012-02-09" )
-            ["date"][""][':'][" "][year]['-'][month]['-'][dom] == true );
+            ["date"][""][':'][" "][&year]['-'][&month]['-'][&dom] == true );
     TTEST( dsl_pa_lite( "date :   2012-02-09" )
-            ["date"][colon()][year]['-'][month]['-'][dom] == true );
+            ["date"][colon()][&year]['-'][&month]['-'][&dom] == true );
+    TTEST( dsl_pa_lite( "date :   2012+02+09" )
+            ["date"][colon()][&year]['-'][&month]['-'][&dom] == false );
+    TTEST( dsl_pa_lite( "date :   2012-02-09" )
+            ["date"][colon()][&year][4][-4]['-'][&month][2][-2]['-'][&dom][2][-2] == true );
+    TTEST( dsl_pa_lite( "date :   12-02-09" )
+            ["date"][colon()][&year][4][-4]['-'][&month][2][-2]['-'][&dom][2][-2] == false );
+    }
+    
+    {
+    std::string alpha1;
+    std::string digit;
+    std::string alpha2;
+
+    // N.B. there may be an issue with the lifetimes of the temporary 
+    // alphabet_alpha and alphabet_digit object lifetimes.
+    TTEST( dsl_pa_lite( "abc123def" )
+            [alphabet_alpha()][&alpha1][alphabet_digit()][&digit][alphabet_alpha()][&alpha2] == true );
+    TTEST( alpha1 == "abc" );
+    TTEST( digit == "123" );
+    TTEST( alpha2 == "def" );
     }
 }
 

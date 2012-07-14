@@ -55,6 +55,8 @@ private:
     bool wanted_result;
     size_t is_optional;
     size_t last_size;
+    alphabet_name_char default_alphabet;
+    const alphabet * p_alphabet;
 
 protected:  // Give the user the chance to derive from this class and write their own handlers
     template< class Taction, class Tparams >
@@ -256,7 +258,8 @@ public:
         is_matched( true ),
         wanted_result( true ),
         is_optional( false ),
-        last_size( 0 )
+        last_size( 0 ),
+        p_alphabet( &default_alphabet )
     {}
     dsl_pa_lite( const char * const p_in )
         :
@@ -265,8 +268,14 @@ public:
         is_matched( true ),
         wanted_result( true ),
         is_optional( false ),
-        last_size( 0 )
+        last_size( 0 ),
+        p_alphabet( &default_alphabet )
     {}
+    dsl_pa_lite & set_alphabet( const alphabet & r_alphabet )
+    {
+        p_alphabet = &r_alphabet;
+        return *this;
+    }
     bool result() const { return is_matched; }
     operator bool () const { return result(); }
     dsl_pa_lite & not()
@@ -334,17 +343,34 @@ public:
         else
             return fixed( p_fixed );
     }
-    dsl_pa_lite & operator [] ( std::string & r_string_out )
+    dsl_pa_lite & operator [] ( std::string * p_string_out )
     {
-        return get( &r_string_out, alphabet_not( alphabet_space() ) );
+        return get( p_string_out, *p_alphabet );
     }
-    dsl_pa_lite & operator [] ( int & r_int_out )
+    dsl_pa_lite & operator [] ( int * p_int_out )
     {
-        return get_int( &r_int_out );
+        return get_int( p_int_out );
     }
-    dsl_pa_lite & operator [] ( unsigned int & r_uint_out )
+    dsl_pa_lite & operator [] ( unsigned int * p_uint_out )
     {
-        return get_uint( &r_uint_out );
+        return get_uint( p_uint_out );
+    }
+    dsl_pa_lite & operator [] ( const int size_in )
+    {
+        if( size_in == 0 )
+            return optional();
+        else if( size_in > 0 )
+            return min_size( size_in );
+        else
+            return max_size( -size_in );
+    }
+    dsl_pa_lite & operator [] ( const alphabet & r_alphabet )
+    {
+        return set_alphabet( r_alphabet );
+    }
+    dsl_pa_lite & operator [] ( alphabet & r_alphabet )
+    {
+        return set_alphabet( r_alphabet );
     }
 
 private:
