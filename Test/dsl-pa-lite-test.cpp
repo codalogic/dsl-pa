@@ -170,6 +170,13 @@ TFUNCTION( dsl_lite_test )
 
 TFUNCTION( dsl_pa_lite_extension_test )
 {
+    // dsl_pa_lite extension handlers are done by defining a separate class
+    // whose action() method is called during the relevant phase of the
+    // parsing by making an instance of the class an argument of the 
+    // template method dsl_pa_lite::x().  If the extension doesn't record any
+    // parsed data then it can be created as a temporary object in the parse
+    // sequence.  If it does record data then it needs to be created outsde
+    // the parse chain and then referred to.
     class colon
     {
     public:
@@ -222,6 +229,44 @@ TFUNCTION( dsl_pa_lite_extension_test )
     TTEST( my_date.get_month() == 2 );
     TTEST( my_date.get_dom() == 9 );
     }
+
+    {
+    date my_date;
+    TTEST( dsl_pa_lite( "date: 2012+02+09" ).fixed( "date" ).x( colon() ).
+            x( my_date ) == false );
+    }
+    
+    // You can define extension handler in a class and then do all your calls to
+    // dsl_pa_lite in that class.  This avoids poluting the global namespace
+    // with lots of parser helper classes.
+    class my_dsl_pa_lite
+    {
+    private:
+        class dash
+        {
+        public:
+            void action( dsl_pa_lite & r_dsl_pa_lite ) const
+            {
+                r_dsl_pa_lite.opt_space().is_char( '-' ).opt_space(); 
+            }
+        };
+    public:
+        void my_dsl_pa_lite_test()
+        {
+            std::string input( "foo : - 123;" );
+            std::string name;
+            int i;
+            TTEST( dsl_pa_lite( input ).get( &name, alphabet_alpha() ).
+                    x( colon() ).   // Refer to a 'global' extension
+                    x( dash() ).    // Refer to a local in class extension
+                    get_int( &i ).is_char( ';' ) );
+            TTEST( name == "foo" );
+            TTEST( i == 123 );
+        }
+    };
+    
+    my_dsl_pa_lite my_pa_lite;
+    my_pa_lite.my_dsl_pa_lite_test();
 }
 
 // Sadly, trying to get the virtual function x() to return a reference to the
