@@ -171,7 +171,7 @@ TFUNCTION( dsl_lite_test )
 TFUNCTION( dsl_pa_lite_extension_test )
 {
     // dsl_pa_lite extension handlers are done by defining a separate class
-    // whose action() method is called during the relevant phase of the
+    // whose parse() method is called during the relevant phase of the
     // parsing by making an instance of the class an argument of the 
     // template method dsl_pa_lite::x().  If the extension doesn't record any
     // parsed data then it can be created as a temporary object in the parse
@@ -180,7 +180,7 @@ TFUNCTION( dsl_pa_lite_extension_test )
     class colon
     {
     public:
-        void action( dsl_pa_lite & r_dsl_pa_lite ) const
+        void parse( dsl_pa_lite & r_dsl_pa_lite ) const
         {
             r_dsl_pa_lite.opt_space().is_char( ':' ).opt_space(); 
         }
@@ -220,7 +220,7 @@ TFUNCTION( dsl_pa_lite_extension_test )
         int dom;
     public:
         date() {}
-        void action( dsl_pa_lite & r_dsl_pa_lite )
+        void parse( dsl_pa_lite & r_dsl_pa_lite )
         {
             r_dsl_pa_lite.get_int( &year ).size( 4, 4 ).is_char( '-' ).
                     get_int( &month ).size( 2, 2 ).is_char( '-' ).
@@ -274,7 +274,7 @@ TFUNCTION( dsl_pa_lite_extension_test )
         class dash
         {
         public:
-            void action( dsl_pa_lite & r_dsl_pa_lite ) const
+            void parse( dsl_pa_lite & r_dsl_pa_lite ) const
             {
                 r_dsl_pa_lite.opt_space().is_char( '-' ).opt_space(); 
             }

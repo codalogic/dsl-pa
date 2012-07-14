@@ -311,7 +311,7 @@ public:
     template< class Texec >
     dsl_pa_lite & x( Texec & exec )
     {
-        exec.action( *this );
+        exec.parse( *this );
         return *this;
     }
     // Experimental variation of x()
