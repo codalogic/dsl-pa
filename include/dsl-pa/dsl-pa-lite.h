@@ -314,6 +314,12 @@ public:
         exec.action( *this );
         return *this;
     }
+    // Experimental variation of x()
+    template< class Texec >
+    dsl_pa_lite & operator [] ( Texec & exec )
+    {
+        return x( exec );
+    }
 
 private:
     bool action( const action_is_end &, const params_none & )

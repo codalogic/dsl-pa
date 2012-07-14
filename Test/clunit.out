@@ -1,4 +1,4 @@
-Tests run on Sat Jul 14 12:29:13 2012
+Tests run on Sat Jul 14 17:25:22 2012
 
 
     Alphabet tests [c:\home\pete\sw\dsl-pa\test\alphabet-test.cpp:42]
@@ -296,8 +296,15 @@ Tests run on Sat Jul 14 12:29:13 2012
     ok: dsl_pa_lite( "foo : 123;" ).get( &name, alphabet_alpha() ). x( colon() ).get_int( &i ).is_char( ';' ) == true
     ok: name == "foo"
     ok: i == 123
+    ok: dsl_pa_lite( "foo : 123;" ).get( &name, alphabet_alpha() ) [colon()].get_int( &i ).is_char( ';' ) == true
+    ok: name == "foo"
+    ok: i == 123
     ok: dsl_pa_lite( "foo - 123;" ).get( &name, alphabet_alpha() ). x( colon() ).get_int( &i ).is_char( ';' ) == false
     ok: dsl_pa_lite( "date: 2012-02-09" ).fixed( "date" ).x( colon() ). x( my_date ) == true
+    ok: my_date.get_year() == 2012
+    ok: my_date.get_month() == 2
+    ok: my_date.get_dom() == 9
+    ok: dsl_pa_lite( "date: 2012-02-09" ).fixed( "date" )[colon()] [my_date] == true
     ok: my_date.get_year() == 2012
     ok: my_date.get_month() == 2
     ok: my_date.get_dom() == 9
@@ -1291,4 +1298,4 @@ Tests run on Sat Jul 14 12:29:13 2012
       : my_reader.location_pop()
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
     ok: _CrtCheckMemory() != 0
-0 error(s), 0 todo(s), 983 test(s)
+0 error(s), 0 todo(s), 990 test(s)

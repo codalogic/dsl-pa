@@ -195,6 +195,16 @@ TFUNCTION( dsl_pa_lite_extension_test )
     TTEST( i == 123 );
     }
 
+    // Experimental external escape mechanism
+    {
+    std::string name;
+    int i;
+    TTEST( dsl_pa_lite( "foo : 123;" ).get( &name, alphabet_alpha() )
+            [colon()].get_int( &i ).is_char( ';' ) == true );
+    TTEST( name == "foo" );
+    TTEST( i == 123 );
+    }
+
     {
     std::string name;
     int i;
@@ -225,6 +235,16 @@ TFUNCTION( dsl_pa_lite_extension_test )
     date my_date;
     TTEST( dsl_pa_lite( "date: 2012-02-09" ).fixed( "date" ).x( colon() ).
             x( my_date ) == true );
+    TTEST( my_date.get_year() == 2012 );
+    TTEST( my_date.get_month() == 2 );
+    TTEST( my_date.get_dom() == 9 );
+    }
+
+    // Experimental external escape mechanism
+    {
+    date my_date;
+    TTEST( dsl_pa_lite( "date: 2012-02-09" ).fixed( "date" )[colon()]
+            [my_date] == true );
     TTEST( my_date.get_year() == 2012 );
     TTEST( my_date.get_month() == 2 );
     TTEST( my_date.get_dom() == 9 );
