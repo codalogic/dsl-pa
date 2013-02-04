@@ -77,9 +77,9 @@ private:
     reader & r_reader;
 
     template< typename Twriter >
-    size_t append_skip_handler( std::string * p_output, const alphabet & r_alphabet, size_t max_chars );
+    size_t read_skip_handler( std::string * p_output, const alphabet & r_alphabet, size_t max_chars );
     template< typename Twriter >
-    size_t append_skip_until_handler( std::string * p_output, const alphabet & r_alphabet, char escape_char, size_t max_chars );
+    size_t read_skip_until_handler( std::string * p_output, const alphabet & r_alphabet, char escape_char, size_t max_chars );
 
 public:
     dsl_pa( reader & r_reader_in ) : r_reader( r_reader_in ) {}
@@ -100,12 +100,12 @@ public:
     size_t get_escaped_until( std::string * p_output, const alphabet & r_alphabet, char escape_char );
     size_t get_until( std::string * p_output, const alphabet & r_alphabet, char escape_char, size_t max_chars );
 
-    size_t /*num chars read*/ append( std::string * p_output, const alphabet & r_alphabet );
-    size_t append( std::string * p_output, const alphabet & r_alphabet, size_t max_chars );
-    size_t append_until( std::string * p_output, const alphabet & r_alphabet );
-    size_t append_bounded_until( std::string * p_output, const alphabet & r_alphabet, size_t max_chars );
-    size_t append_escaped_until( std::string * p_output, const alphabet & r_alphabet, char escape_char );
-    size_t append_until( std::string * p_output, const alphabet & r_alphabet, char escape_char, size_t max_chars );
+    size_t /*num chars read*/ read( std::string * p_output, const alphabet & r_alphabet );
+    size_t read( std::string * p_output, const alphabet & r_alphabet, size_t max_chars );
+    size_t read_until( std::string * p_output, const alphabet & r_alphabet );
+    size_t read_bounded_until( std::string * p_output, const alphabet & r_alphabet, size_t max_chars );
+    size_t read_escaped_until( std::string * p_output, const alphabet & r_alphabet, char escape_char );
+    size_t read_until( std::string * p_output, const alphabet & r_alphabet, char escape_char, size_t max_chars );
 
     size_t /*num chars skipped*/ skip( const alphabet & r_alphabet );
     size_t skip( const alphabet & r_alphabet, size_t max_chars );

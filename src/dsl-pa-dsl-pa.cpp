@@ -45,40 +45,40 @@ using namespace alphabet_helpers;
 size_t dsl_pa::get( std::string * p_output, const alphabet & r_alphabet )
 {
 	p_output->clear();
-    return append( p_output, r_alphabet );
+    return read( p_output, r_alphabet );
 }
 
 size_t dsl_pa::get( std::string * p_output, const alphabet & r_alphabet, size_t max_chars )
 {
 	p_output->clear();
-    return append( p_output, r_alphabet, max_chars );
+    return read( p_output, r_alphabet, max_chars );
 }
 
 size_t dsl_pa::get_until( std::string * p_output, const alphabet & r_alphabet )
 {
 	p_output->clear();
-    return append_until( p_output, r_alphabet );
+    return read_until( p_output, r_alphabet );
 }
 
 size_t dsl_pa::get_bounded_until( std::string * p_output, const alphabet & r_alphabet, size_t max_chars )
 {
 	p_output->clear();
-    return append_bounded_until( p_output, r_alphabet, max_chars );
+    return read_bounded_until( p_output, r_alphabet, max_chars );
 }
 
 size_t dsl_pa::get_escaped_until( std::string * p_output, const alphabet & r_alphabet, char escape_char )
 {
 	p_output->clear();
-    return append_escaped_until( p_output, r_alphabet, escape_char );
+    return read_escaped_until( p_output, r_alphabet, escape_char );
 }
 
 size_t dsl_pa::get_until( std::string * p_output, const alphabet & r_alphabet, char escape_char, size_t max_chars )
 {
 	p_output->clear();
-    return append_until( p_output, r_alphabet, escape_char, max_chars );
+    return read_until( p_output, r_alphabet, escape_char, max_chars );
 }
 
-struct writer_append
+struct writer_read
 {
     static void handle_char( std::string * p_output, char c ) { p_output->push_back( c ); }
 };
@@ -89,7 +89,7 @@ struct writer_skip
 };
 
 template< typename Twriter >
-size_t dsl_pa::append_skip_handler( std::string * p_output, const alphabet & r_alphabet, size_t max_chars )
+size_t dsl_pa::read_skip_handler( std::string * p_output, const alphabet & r_alphabet, size_t max_chars )
 {
     size_t n_chars;
 
@@ -109,7 +109,7 @@ size_t dsl_pa::append_skip_handler( std::string * p_output, const alphabet & r_a
 };
 
 template< typename Twriter >
-size_t dsl_pa::append_skip_until_handler( std::string * p_output, const alphabet & r_alphabet, char escape_char, size_t max_chars )
+size_t dsl_pa::read_skip_until_handler( std::string * p_output, const alphabet & r_alphabet, char escape_char, size_t max_chars )
 {
     size_t n_chars;
     bool is_escaped = false;
@@ -144,34 +144,34 @@ size_t dsl_pa::append_skip_until_handler( std::string * p_output, const alphabet
     return n_chars;
 }
 
-size_t dsl_pa::append( std::string * p_output, const alphabet & r_alphabet )
+size_t dsl_pa::read( std::string * p_output, const alphabet & r_alphabet )
 {
-    return append( p_output, r_alphabet, unbounded );
+    return read( p_output, r_alphabet, unbounded );
 }
 
-size_t dsl_pa::append( std::string * p_output, const alphabet & r_alphabet, size_t max_chars )
+size_t dsl_pa::read( std::string * p_output, const alphabet & r_alphabet, size_t max_chars )
 {
-    return append_skip_handler< writer_append >( p_output, r_alphabet, max_chars );
+    return read_skip_handler< writer_read >( p_output, r_alphabet, max_chars );
 }
 
-size_t dsl_pa::append_until( std::string * p_output, const alphabet & r_alphabet )
+size_t dsl_pa::read_until( std::string * p_output, const alphabet & r_alphabet )
 {
-    return append_until( p_output, r_alphabet, '\0', unbounded );
+    return read_until( p_output, r_alphabet, '\0', unbounded );
 }
 
-size_t dsl_pa::append_bounded_until( std::string * p_output, const alphabet & r_alphabet, size_t max_chars )
+size_t dsl_pa::read_bounded_until( std::string * p_output, const alphabet & r_alphabet, size_t max_chars )
 {
-    return append_until( p_output, r_alphabet, '\0', max_chars );
+    return read_until( p_output, r_alphabet, '\0', max_chars );
 }
 
-size_t dsl_pa::append_escaped_until( std::string * p_output, const alphabet & r_alphabet, char escape_char )
+size_t dsl_pa::read_escaped_until( std::string * p_output, const alphabet & r_alphabet, char escape_char )
 {
-    return append_until( p_output, r_alphabet, escape_char, unbounded );
+    return read_until( p_output, r_alphabet, escape_char, unbounded );
 }
 
-size_t dsl_pa::append_until( std::string * p_output, const alphabet & r_alphabet, char escape_char, size_t max_chars )
+size_t dsl_pa::read_until( std::string * p_output, const alphabet & r_alphabet, char escape_char, size_t max_chars )
 {
-    return append_skip_until_handler< writer_append >( p_output, r_alphabet, escape_char, max_chars );
+    return read_skip_until_handler< writer_read >( p_output, r_alphabet, escape_char, max_chars );
 }
 
 size_t dsl_pa::skip( const alphabet & r_alphabet )
@@ -181,7 +181,7 @@ size_t dsl_pa::skip( const alphabet & r_alphabet )
 
 size_t dsl_pa::skip( const alphabet & r_alphabet, size_t max_chars )
 {
-    return append_skip_handler< writer_skip >( 0, r_alphabet, max_chars );
+    return read_skip_handler< writer_skip >( 0, r_alphabet, max_chars );
 }
 
 size_t dsl_pa::skip_until( const alphabet & r_alphabet )
@@ -201,7 +201,7 @@ size_t dsl_pa::skip_escaped_until( const alphabet & r_alphabet, char escape_char
 
 size_t dsl_pa::skip_until( const alphabet & r_alphabet, char escape_char, size_t max_chars )
 {
-    return append_skip_until_handler< writer_skip >( 0, r_alphabet, escape_char, max_chars );
+    return read_skip_until_handler< writer_skip >( 0, r_alphabet, escape_char, max_chars );
 }
 
 bool dsl_pa::fixed( const char * p_seeking )
@@ -298,7 +298,7 @@ size_t /*num chars read*/ dsl_pa::get_int( std::string * p_num )
     location_logger location( r_reader );
 
     size_t n_sign_chars = get( p_num, alphabet_sign(), 1 );
-    size_t n_digits = append( p_num, alphabet_digit() );
+    size_t n_digits = read( p_num, alphabet_digit() );
 
     if( n_digits == 0 )
     {
@@ -340,9 +340,9 @@ bool dsl_pa::get_float( std::string * p_num )
 
     bool result =
             optional( get( p_num, alphabet_sign(), 1 ) ) &&
-            set( n_digits_before_point, append( p_num, alphabet_digit() ) ) &&
-            optional( append( p_num, alphabet_point() ) &&
-            set( n_digits_after_point, append( p_num, alphabet_digit() ) ) );
+            set( n_digits_before_point, read( p_num, alphabet_digit() ) ) &&
+            optional( read( p_num, alphabet_point() ) &&
+            set( n_digits_after_point, read( p_num, alphabet_digit() ) ) );
 
     if( n_digits_before_point + n_digits_after_point == 0 )
     {
