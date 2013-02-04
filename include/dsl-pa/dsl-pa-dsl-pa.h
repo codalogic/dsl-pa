@@ -80,8 +80,8 @@ private:
     size_t read_skip_handler( std::string * p_output, const alphabet & r_alphabet, size_t max_chars );
     template< typename Twriter >
     size_t read_skip_until_handler( std::string * p_output, const alphabet & r_alphabet, char escape_char, size_t max_chars );
-	template< class Tcomparer >
-	bool read_fixed_or_ifixed( std::string * p_output, const char * p_seeking );
+    template< class Tcomparer >
+    bool read_fixed_or_ifixed( std::string * p_output, const char * p_seeking );
 
 public:
     dsl_pa( reader & r_reader_in ) : r_reader( r_reader_in ) {}

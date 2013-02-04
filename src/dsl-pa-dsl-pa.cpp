@@ -44,37 +44,37 @@ using namespace alphabet_helpers;
 
 size_t dsl_pa::get( std::string * p_output, const alphabet & r_alphabet )
 {
-	p_output->clear();
+    p_output->clear();
     return read( p_output, r_alphabet );
 }
 
 size_t dsl_pa::get( std::string * p_output, const alphabet & r_alphabet, size_t max_chars )
 {
-	p_output->clear();
+    p_output->clear();
     return read( p_output, r_alphabet, max_chars );
 }
 
 size_t dsl_pa::get_until( std::string * p_output, const alphabet & r_alphabet )
 {
-	p_output->clear();
+    p_output->clear();
     return read_until( p_output, r_alphabet );
 }
 
 size_t dsl_pa::get_bounded_until( std::string * p_output, const alphabet & r_alphabet, size_t max_chars )
 {
-	p_output->clear();
+    p_output->clear();
     return read_bounded_until( p_output, r_alphabet, max_chars );
 }
 
 size_t dsl_pa::get_escaped_until( std::string * p_output, const alphabet & r_alphabet, char escape_char )
 {
-	p_output->clear();
+    p_output->clear();
     return read_escaped_until( p_output, r_alphabet, escape_char );
 }
 
 size_t dsl_pa::get_until( std::string * p_output, const alphabet & r_alphabet, char escape_char, size_t max_chars )
 {
-	p_output->clear();
+    p_output->clear();
     return read_until( p_output, r_alphabet, escape_char, max_chars );
 }
 
@@ -216,39 +216,39 @@ bool dsl_pa::ifixed( const char * p_seeking )
 
 bool dsl_pa::get_fixed( std::string * p_output, const char * p_seeking )
 {
-	if( p_output )
-		p_output->clear();
-	return read_fixed( p_output, p_seeking );
+    if( p_output )
+        p_output->clear();
+    return read_fixed( p_output, p_seeking );
 }
 
 bool dsl_pa::get_ifixed( std::string * p_output, const char * p_seeking )
 {
-	if( p_output )
-		p_output->clear();
-	return read_ifixed( p_output, p_seeking );
+    if( p_output )
+        p_output->clear();
+    return read_ifixed( p_output, p_seeking );
 }
 
 struct compare_fixed
 {
-	static bool compare( char in_char, char sought_char )
-	{
-		return in_char == sought_char;
-	}
+    static bool compare( char in_char, char sought_char )
+    {
+        return in_char == sought_char;
+    }
 };
 
 struct compare_ifixed
 {
-	static bool compare( char in_char, char sought_char )
-	{
-		return (is_7bit( in_char ) && tolower( in_char ) == tolower( sought_char ))
+    static bool compare( char in_char, char sought_char )
+    {
+        return (is_7bit( in_char ) && tolower( in_char ) == tolower( sought_char ))
                 || (! is_7bit( in_char ) && in_char == sought_char);
-	}
+    }
 };
 
 template< class Tcomparer >
 bool dsl_pa::read_fixed_or_ifixed( std::string * p_output, const char * p_seeking )
 {
-	std::string read;
+    std::string read;
 
     location_logger location( r_reader );
 
@@ -256,7 +256,7 @@ bool dsl_pa::read_fixed_or_ifixed( std::string * p_output, const char * p_seekin
     {
         if( Tcomparer::compare( get(), *p_seeking ) )
         {
-            if( p_output )	// No point updating local store if output not wanted
+            if( p_output )  // No point updating local store if output not wanted
                 read.push_back( current() );
         }
         else
@@ -267,19 +267,19 @@ bool dsl_pa::read_fixed_or_ifixed( std::string * p_output, const char * p_seekin
     }
 
     if( p_output )
-		p_output->append( read );
+        p_output->append( read );
 
     return true;
 }
 
 bool dsl_pa::read_fixed( std::string * p_output, const char * p_seeking )
 {
-	return read_fixed_or_ifixed< compare_fixed >( p_output, p_seeking );
+    return read_fixed_or_ifixed< compare_fixed >( p_output, p_seeking );
 }
 
 bool dsl_pa::read_ifixed( std::string * p_output, const char * p_seeking )
 {
-	return read_fixed_or_ifixed< compare_ifixed >( p_output, p_seeking );
+    return read_fixed_or_ifixed< compare_ifixed >( p_output, p_seeking );
 }
 
 size_t dsl_pa::space()
@@ -324,8 +324,8 @@ bool /*is_parsed*/ dsl_pa::get_bool( bool * p_bool )
 
 size_t /*num chars read*/ dsl_pa::get_int( std::string * p_num )
 {
-	p_num->clear();
-	return read_int( p_num );
+    p_num->clear();
+    return read_int( p_num );
 }
 
 size_t /*num chars read*/ dsl_pa::read_int( std::string * p_num )
@@ -355,8 +355,8 @@ size_t /*num chars read*/ dsl_pa::get_int( int * p_int )
 
 size_t /*num chars read*/ dsl_pa::get_uint( std::string * p_num )
 {
-	p_num->clear();
-	return read_uint( p_num );
+    p_num->clear();
+    return read_uint( p_num );
 }
 
 size_t /*num chars read*/ dsl_pa::read_uint( std::string * p_num )
@@ -375,8 +375,8 @@ size_t /*num chars read*/ dsl_pa::get_uint( unsigned int * p_int )
 
 bool dsl_pa::get_float( std::string * p_num )
 {
-	p_num->clear();
-	return read_float( p_num );
+    p_num->clear();
+    return read_float( p_num );
 }
 
 bool dsl_pa::read_float( std::string * p_num )
@@ -422,8 +422,8 @@ bool dsl_pa::get_float( float * p_float )
 
 bool dsl_pa::get_sci_float( std::string * p_num )
 {
-	p_num->clear();
-	return read_sci_float( p_num );
+    p_num->clear();
+    return read_sci_float( p_num );
 }
 
 bool dsl_pa::read_sci_float( std::string * p_num )
