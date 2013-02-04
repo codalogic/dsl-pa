@@ -1,4 +1,4 @@
-Tests run on Mon Feb 04 19:38:22 2013
+Tests run on Mon Feb 04 21:21:31 2013
 
 
     Alphabet tests [c:\home\pete\sw\dsl-pa\test\alphabet-test.cpp:42]
@@ -772,6 +772,63 @@ Tests run on Mon Feb 04 19:38:22 2013
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
 
+    DSL PA get vs. read check [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:799]
+    ==========================
+    ok: my_pa.read( &parsed, alphabet_char_class( "A" ) ) > 0
+    ok: parsed == "originAAAAAA"
+    ok: my_pa2.get( &parsed, alphabet_char_class( "A" ) ) > 0
+    ok: parsed == "AAAAAA"
+    ok: my_pa.read( &parsed, alphabet_char_class( "A" ), 20 ) > 0
+    ok: parsed == "originAAAAAA"
+    ok: my_pa2.get( &parsed, alphabet_char_class( "A" ), 20 ) > 0
+    ok: parsed == "AAAAAA"
+    ok: my_pa.read_until( &parsed, alphabet_char_class( "B" ) ) > 0
+    ok: parsed == "originAAAAAA"
+    ok: my_pa2.get_until( &parsed, alphabet_char_class( "B" ) ) > 0
+    ok: parsed == "AAAAAA"
+    ok: my_pa.read_bounded_until( &parsed, alphabet_char_class( "B" ), 20 ) > 0
+    ok: parsed == "originAAAAAA"
+    ok: my_pa2.get_bounded_until( &parsed, alphabet_char_class( "B" ), 20 ) > 0
+    ok: parsed == "AAAAAA"
+    ok: my_pa.read_escaped_until( &parsed, alphabet_char_class( "B" ), 'C' ) > 0
+    ok: parsed == "originAAAAAA"
+    ok: my_pa2.get_escaped_until( &parsed, alphabet_char_class( "B" ), 'C' ) > 0
+    ok: parsed == "AAAAAA"
+    ok: my_pa.read_until( &parsed, alphabet_char_class( "B" ), 'C', 20 ) > 0
+    ok: parsed == "originAAAAAA"
+    ok: my_pa2.get_until( &parsed, alphabet_char_class( "B" ), 'C', 20 ) > 0
+    ok: parsed == "AAAAAA"
+    ok: my_pa.read_fixed( &parsed, "left" ) && my_pa.space() && my_pa.read_fixed( &parsed, "right" )
+    ok: parsed == "leftright"
+    ok: my_pa2.get_fixed( &parsed, "left" ) && my_pa2.space() && my_pa2.get_fixed( &parsed, "right" )
+    ok: parsed == "right"
+    ok: my_pa.read_ifixed( &parsed, "LEFT" ) && my_pa.space() && my_pa.read_ifixed( &parsed, "RIGHT" )
+    ok: parsed == "leftright"
+    ok: my_pa2.get_ifixed( &parsed, "LEFT" ) && my_pa2.space() && my_pa2.get_ifixed( &parsed, "RIGHT" )
+    ok: parsed == "right"
+    ok: my_pa.read_bool( &parsed ) && my_pa.space() && my_pa.read_bool( &parsed )
+    ok: parsed == "truefalse"
+    ok: my_pa2.get_bool( &parsed ) && my_pa2.space() && my_pa2.get_bool( &parsed )
+    ok: parsed == "false"
+    ok: my_pa.read_int( &parsed ) && my_pa.space() && my_pa.read_int( &parsed )
+    ok: parsed == "123456"
+    ok: my_pa2.get_int( &parsed ) && my_pa2.space() && my_pa2.get_int( &parsed )
+    ok: parsed == "456"
+    ok: my_pa.read_uint( &parsed ) && my_pa.space() && my_pa.read_uint( &parsed )
+    ok: parsed == "123456"
+    ok: my_pa2.get_uint( &parsed ) && my_pa2.space() && my_pa2.get_uint( &parsed )
+    ok: parsed == "456"
+    ok: my_pa.read_float( &parsed ) && my_pa.space() && my_pa.read_float( &parsed )
+    ok: parsed == "123456"
+    ok: my_pa2.get_float( &parsed ) && my_pa2.space() && my_pa2.get_float( &parsed )
+    ok: parsed == "456"
+    ok: my_pa.read_sci_float( &parsed ) && my_pa.space() && my_pa.read_sci_float( &parsed )
+    ok: parsed == "123456"
+    ok: my_pa2.get_sci_float( &parsed ) && my_pa2.space() && my_pa2.get_sci_float( &parsed )
+    ok: parsed == "456"
+    ok: ! _CrtMemDifference( &s3, &s1, &s2 )
+
+
     String reader tests [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:355]
     ==========================
     String reader basic tests [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:101]
@@ -1319,4 +1376,4 @@ Tests run on Mon Feb 04 19:38:22 2013
       : my_reader.location_pop()
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
     ok: _CrtCheckMemory() != 0
-0 error(s), 0 todo(s), 1011 test(s)
+0 error(s), 0 todo(s), 1064 test(s)

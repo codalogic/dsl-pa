@@ -793,3 +793,203 @@ TFUNCTION( dsl_pa_is_end_test )
     TTEST( my_pa.is_end() );
     }
 }
+
+TFUNCTION( get_read_check )
+{
+    TBEGIN( "DSL PA get vs. read check" );
+
+    {
+    std::string in( "AAAAAABBBBB" );
+    std::string parsed( "origin" );
+
+    reader_string my_reader( in );
+    dsl_pa my_pa( my_reader );
+    TTEST( my_pa.read( &parsed, alphabet_char_class( "A" ) ) > 0 );
+    TTEST( parsed == "originAAAAAA" );
+
+    reader_string my_reader2( in );
+    dsl_pa my_pa2( my_reader2 );
+    TTEST( my_pa2.get( &parsed, alphabet_char_class( "A" ) ) > 0 );
+    TTEST( parsed == "AAAAAA" );
+    }
+
+    {
+    std::string in( "AAAAAABBBBB" );
+    std::string parsed( "origin" );
+
+    reader_string my_reader( in );
+    dsl_pa my_pa( my_reader );
+    TTEST( my_pa.read( &parsed, alphabet_char_class( "A" ), 20 ) > 0 );
+    TTEST( parsed == "originAAAAAA" );
+
+    reader_string my_reader2( in );
+    dsl_pa my_pa2( my_reader2 );
+    TTEST( my_pa2.get( &parsed, alphabet_char_class( "A" ), 20 ) > 0 );
+    TTEST( parsed == "AAAAAA" );
+    }
+
+    {
+    std::string in( "AAAAAABBBBB" );
+    std::string parsed( "origin" );
+
+    reader_string my_reader( in );
+    dsl_pa my_pa( my_reader );
+    TTEST( my_pa.read_until( &parsed, alphabet_char_class( "B" ) ) > 0 );
+    TTEST( parsed == "originAAAAAA" );
+
+    reader_string my_reader2( in );
+    dsl_pa my_pa2( my_reader2 );
+    TTEST( my_pa2.get_until( &parsed, alphabet_char_class( "B" ) ) > 0 );
+    TTEST( parsed == "AAAAAA" );
+    }
+
+    {
+    std::string in( "AAAAAABBBBB" );
+    std::string parsed( "origin" );
+
+    reader_string my_reader( in );
+    dsl_pa my_pa( my_reader );
+    TTEST( my_pa.read_bounded_until( &parsed, alphabet_char_class( "B" ), 20 ) > 0 );
+    TTEST( parsed == "originAAAAAA" );
+
+    reader_string my_reader2( in );
+    dsl_pa my_pa2( my_reader2 );
+    TTEST( my_pa2.get_bounded_until( &parsed, alphabet_char_class( "B" ), 20 ) > 0 );
+    TTEST( parsed == "AAAAAA" );
+    }
+
+    {
+    std::string in( "AAAAAABBBBB" );
+    std::string parsed( "origin" );
+
+    reader_string my_reader( in );
+    dsl_pa my_pa( my_reader );
+    TTEST( my_pa.read_escaped_until( &parsed, alphabet_char_class( "B" ), 'C' ) > 0 );
+    TTEST( parsed == "originAAAAAA" );
+
+    reader_string my_reader2( in );
+    dsl_pa my_pa2( my_reader2 );
+    TTEST( my_pa2.get_escaped_until( &parsed, alphabet_char_class( "B" ), 'C' ) > 0 );
+    TTEST( parsed == "AAAAAA" );
+    }
+
+    {
+    std::string in( "AAAAAABBBBB" );
+    std::string parsed( "origin" );
+
+    reader_string my_reader( in );
+    dsl_pa my_pa( my_reader );
+    TTEST( my_pa.read_until( &parsed, alphabet_char_class( "B" ), 'C', 20 ) > 0 );
+    TTEST( parsed == "originAAAAAA" );
+
+    reader_string my_reader2( in );
+    dsl_pa my_pa2( my_reader2 );
+    TTEST( my_pa2.get_until( &parsed, alphabet_char_class( "B" ), 'C', 20 ) > 0 );
+    TTEST( parsed == "AAAAAA" );
+    }
+
+    {
+    std::string in( "left right" );
+    std::string parsed;
+
+    reader_string my_reader( in );
+    dsl_pa my_pa( my_reader );
+    TTEST( my_pa.read_fixed( &parsed, "left" ) && my_pa.space() && my_pa.read_fixed( &parsed, "right" ) );
+    TTEST( parsed == "leftright" );
+
+    reader_string my_reader2( in );
+    dsl_pa my_pa2( my_reader2 );
+    TTEST( my_pa2.get_fixed( &parsed, "left" ) && my_pa2.space() && my_pa2.get_fixed( &parsed, "right" ) );
+    TTEST( parsed == "right" );
+    }
+
+    {
+    std::string in( "left right" );
+    std::string parsed;
+
+    reader_string my_reader( in );
+    dsl_pa my_pa( my_reader );
+    TTEST( my_pa.read_ifixed( &parsed, "LEFT" ) && my_pa.space() && my_pa.read_ifixed( &parsed, "RIGHT" ) );
+    TTEST( parsed == "leftright" );
+
+    reader_string my_reader2( in );
+    dsl_pa my_pa2( my_reader2 );
+    TTEST( my_pa2.get_ifixed( &parsed, "LEFT" ) && my_pa2.space() && my_pa2.get_ifixed( &parsed, "RIGHT" ) );
+    TTEST( parsed == "right" );
+    }
+
+    {
+    std::string in( "true false" );
+    std::string parsed;
+
+    reader_string my_reader( in );
+    dsl_pa my_pa( my_reader );
+    TTEST( my_pa.read_bool( &parsed ) && my_pa.space() && my_pa.read_bool( &parsed ) );
+    TTEST( parsed == "truefalse" );
+
+    reader_string my_reader2( in );
+    dsl_pa my_pa2( my_reader2 );
+    TTEST( my_pa2.get_bool( &parsed ) && my_pa2.space() && my_pa2.get_bool( &parsed ) );
+    TTEST( parsed == "false" );
+    }
+
+    {
+    std::string in( "123 456" );
+    std::string parsed;
+
+    reader_string my_reader( in );
+    dsl_pa my_pa( my_reader );
+    TTEST( my_pa.read_int( &parsed ) && my_pa.space() && my_pa.read_int( &parsed ) );
+    TTEST( parsed == "123456" );
+
+    reader_string my_reader2( in );
+    dsl_pa my_pa2( my_reader2 );
+    TTEST( my_pa2.get_int( &parsed ) && my_pa2.space() && my_pa2.get_int( &parsed ) );
+    TTEST( parsed == "456" );
+    }
+
+    {
+    std::string in( "123 456" );
+    std::string parsed;
+
+    reader_string my_reader( in );
+    dsl_pa my_pa( my_reader );
+    TTEST( my_pa.read_uint( &parsed ) && my_pa.space() && my_pa.read_uint( &parsed ) );
+    TTEST( parsed == "123456" );
+
+    reader_string my_reader2( in );
+    dsl_pa my_pa2( my_reader2 );
+    TTEST( my_pa2.get_uint( &parsed ) && my_pa2.space() && my_pa2.get_uint( &parsed ) );
+    TTEST( parsed == "456" );
+    }
+
+    {
+    std::string in( "123 456" );
+    std::string parsed;
+
+    reader_string my_reader( in );
+    dsl_pa my_pa( my_reader );
+    TTEST( my_pa.read_float( &parsed ) && my_pa.space() && my_pa.read_float( &parsed ) );
+    TTEST( parsed == "123456" );
+
+    reader_string my_reader2( in );
+    dsl_pa my_pa2( my_reader2 );
+    TTEST( my_pa2.get_float( &parsed ) && my_pa2.space() && my_pa2.get_float( &parsed ) );
+    TTEST( parsed == "456" );
+    }
+
+    {
+    std::string in( "123 456" );
+    std::string parsed;
+
+    reader_string my_reader( in );
+    dsl_pa my_pa( my_reader );
+    TTEST( my_pa.read_sci_float( &parsed ) && my_pa.space() && my_pa.read_sci_float( &parsed ) );
+    TTEST( parsed == "123456" );
+
+    reader_string my_reader2( in );
+    dsl_pa my_pa2( my_reader2 );
+    TTEST( my_pa2.get_sci_float( &parsed ) && my_pa2.space() && my_pa2.get_sci_float( &parsed ) );
+    TTEST( parsed == "456" );
+    }
+}
