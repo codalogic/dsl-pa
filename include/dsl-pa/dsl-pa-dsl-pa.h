@@ -93,6 +93,7 @@ public:
     bool is_end() { return r_reader.is_end(); }
 
     // The primary workhorse functions
+    // These get...() functions clear the output string before reading the input
     size_t /*num chars read*/ get( std::string * p_output, const alphabet & r_alphabet );
     size_t get( std::string * p_output, const alphabet & r_alphabet, size_t max_chars );
     size_t get_until( std::string * p_output, const alphabet & r_alphabet );
@@ -100,6 +101,7 @@ public:
     size_t get_escaped_until( std::string * p_output, const alphabet & r_alphabet, char escape_char );
     size_t get_until( std::string * p_output, const alphabet & r_alphabet, char escape_char, size_t max_chars );
 
+    // These read...() functions DO NOT clear the output string before reading the input
     size_t /*num chars read*/ read( std::string * p_output, const alphabet & r_alphabet );
     size_t read( std::string * p_output, const alphabet & r_alphabet, size_t max_chars );
     size_t read_until( std::string * p_output, const alphabet & r_alphabet );
