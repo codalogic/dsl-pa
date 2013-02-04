@@ -216,37 +216,48 @@ bool dsl_pa::ifixed( const char * p_seeking )
 
 bool dsl_pa::get_fixed( std::string * p_output, const char * p_seeking )
 {
-    location_logger location( r_reader );
-
-    for( ; *p_seeking != '\0'; ++p_seeking )
-    {
-        if( get() == *p_seeking )
-        {
-            if( p_output )
-                p_output->push_back( current() );
-        }
-        else
-        {
-            location_top();
-            return false;
-        }
-    }
-
-    return true;
+	if( p_output )
+		p_output->clear();
+	return read_fixed( p_output, p_seeking );
 }
 
 bool dsl_pa::get_ifixed( std::string * p_output, const char * p_seeking )
 {
+	if( p_output )
+		p_output->clear();
+	return read_ifixed( p_output, p_seeking );
+}
+
+struct compare_fixed
+{
+	static bool compare( char in_char, char sought_char )
+	{
+		return in_char == sought_char;
+	}
+};
+
+struct compare_ifixed
+{
+	static bool compare( char in_char, char sought_char )
+	{
+		return (is_7bit( in_char ) && tolower( in_char ) == tolower( sought_char ))
+                || (! is_7bit( in_char ) && in_char == sought_char);
+	}
+};
+
+template< class Tcomparer >
+bool dsl_pa::read_fixed_or_ifixed( std::string * p_output, const char * p_seeking )
+{
+	std::string read;
+
     location_logger location( r_reader );
 
     for( ; *p_seeking != '\0'; ++p_seeking )
     {
-        get();
-        if( (is_7bit( current() ) && tolower( current() ) == tolower( *p_seeking ))
-                || (! is_7bit( current() ) && current() == *p_seeking) )
+        if( Tcomparer::compare( get(), *p_seeking ) )
         {
-            if( p_output )
-                p_output->push_back( current() );
+            if( p_output )	// No point updating local store if output not wanted
+                read.push_back( current() );
         }
         else
         {
@@ -255,7 +266,20 @@ bool dsl_pa::get_ifixed( std::string * p_output, const char * p_seeking )
         }
     }
 
+    if( p_output )
+		p_output->append( read );
+
     return true;
+}
+
+bool dsl_pa::read_fixed( std::string * p_output, const char * p_seeking )
+{
+	return read_fixed_or_ifixed< compare_fixed >( p_output, p_seeking );
+}
+
+bool dsl_pa::read_ifixed( std::string * p_output, const char * p_seeking )
+{
+	return read_fixed_or_ifixed< compare_ifixed >( p_output, p_seeking );
 }
 
 size_t dsl_pa::space()
@@ -287,6 +311,11 @@ bool /*is_parsed*/ dsl_pa::get_bool( std::string * p_input )
     return get_ifixed( p_input, "true" ) || get_ifixed( p_input, "false" );
 }
 
+bool /*is_parsed*/ dsl_pa::read_bool( std::string * p_input )
+{
+    return read_ifixed( p_input, "true" ) || read_ifixed( p_input, "false" );
+}
+
 bool /*is_parsed*/ dsl_pa::get_bool( bool * p_bool )
 {
     return (ifixed( "true" ) && set( *p_bool, true )) ||
@@ -295,9 +324,15 @@ bool /*is_parsed*/ dsl_pa::get_bool( bool * p_bool )
 
 size_t /*num chars read*/ dsl_pa::get_int( std::string * p_num )
 {
+	p_num->clear();
+	return read_int( p_num );
+}
+
+size_t /*num chars read*/ dsl_pa::read_int( std::string * p_num )
+{
     location_logger location( r_reader );
 
-    size_t n_sign_chars = get( p_num, alphabet_sign(), 1 );
+    size_t n_sign_chars = read( p_num, alphabet_sign(), 1 );
     size_t n_digits = read( p_num, alphabet_digit() );
 
     if( n_digits == 0 )
@@ -312,7 +347,7 @@ size_t /*num chars read*/ dsl_pa::get_int( std::string * p_num )
 size_t /*num chars read*/ dsl_pa::get_int( int * p_int )
 {
     std::string input;
-    size_t n_read = get_int( &input );
+    size_t n_read = read_int( &input );
     if( n_read > 0 )
         *p_int = atoi( input.c_str() );
     return n_read;
@@ -320,7 +355,13 @@ size_t /*num chars read*/ dsl_pa::get_int( int * p_int )
 
 size_t /*num chars read*/ dsl_pa::get_uint( std::string * p_num )
 {
-    return get( p_num, alphabet_digit() );
+	p_num->clear();
+	return read_uint( p_num );
+}
+
+size_t /*num chars read*/ dsl_pa::read_uint( std::string * p_num )
+{
+    return read( p_num, alphabet_digit() );
 }
 
 size_t /*num chars read*/ dsl_pa::get_uint( unsigned int * p_int )
@@ -334,12 +375,18 @@ size_t /*num chars read*/ dsl_pa::get_uint( unsigned int * p_int )
 
 bool dsl_pa::get_float( std::string * p_num )
 {
+	p_num->clear();
+	return read_float( p_num );
+}
+
+bool dsl_pa::read_float( std::string * p_num )
+{
     location_logger location( r_reader );
 
     size_t n_digits_before_point = 0, n_digits_after_point = 0;
 
     bool result =
-            optional( get( p_num, alphabet_sign(), 1 ) ) &&
+            optional( read( p_num, alphabet_sign(), 1 ) ) &&
             set( n_digits_before_point, read( p_num, alphabet_digit() ) ) &&
             optional( read( p_num, alphabet_point() ) &&
             set( n_digits_after_point, read( p_num, alphabet_digit() ) ) );
@@ -375,20 +422,22 @@ bool dsl_pa::get_float( float * p_float )
 
 bool dsl_pa::get_sci_float( std::string * p_num )
 {
+	p_num->clear();
+	return read_sci_float( p_num );
+}
+
+bool dsl_pa::read_sci_float( std::string * p_num )
+{
     location_logger location( r_reader );
 
-    if( get_float( p_num ) )
+    if( read_float( p_num ) )
     {
         location_logger exponent_location( r_reader );
 
-        std::string e;
         std::string exponent;
 
-        if( get( &e, alphabet_E(), 1 ) && get_int( &exponent ) )
-        {
-            p_num->append( e );
+        if( read( &exponent, alphabet_E(), 1 ) && read_int( &exponent ) )
             p_num->append( exponent );
-        }
         else
             location_top();
 

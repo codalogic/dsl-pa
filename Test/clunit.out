@@ -1,4 +1,4 @@
-Tests run on Mon Feb 04 18:51:32 2013
+Tests run on Mon Feb 04 19:38:22 2013
 
 
     Alphabet tests [c:\home\pete\sw\dsl-pa\test\alphabet-test.cpp:42]
@@ -494,12 +494,16 @@ Tests run on Mon Feb 04 18:51:32 2013
     ok: level == "12"
     ok: (my_pa.get_fixed( &command, "Range" ) || my_pa.get_fixed( &command, "Mode" ))
     ok: command == "Mode"
+    ok: (my_pa.get_fixed( &command, "MyRange" ) || my_pa.get_fixed( &command, "MyMode" ))
+    ok: command == "MyMode"
     ok: (my_pa.get_ifixed( &command, "rANGE" ) || my_pa.get_ifixed( &command, "mODE" ))
     ok: command == "Mode"
+    ok: (my_pa.get_ifixed( &command, "MYrANGE" ) || my_pa.get_ifixed( &command, "MYmODE" ))
+    ok: command == "MyMode"
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
 
-    dsl_pa::get_bool() Tests [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:577]
+    dsl_pa::get_bool() Tests [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:599]
     ==========================
       Input: true
     ok: my_pa.get_bool( &result ) == (valid == TEST_VALID)
@@ -538,7 +542,7 @@ Tests run on Mon Feb 04 18:51:32 2013
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
 
-    dsl_pa::get_int() Tests [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:602]
+    dsl_pa::get_int() Tests [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:624]
     ==========================
       Input: 100
     ok: my_pa.get_int( &result ) == n_chars
@@ -573,7 +577,7 @@ Tests run on Mon Feb 04 18:51:32 2013
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
 
-    dsl_pa::get_uint() Tests [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:632]
+    dsl_pa::get_uint() Tests [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:654]
     ==========================
       Input: 100
     ok: my_pa.get_uint( &result ) == n_chars
@@ -608,7 +612,7 @@ Tests run on Mon Feb 04 18:51:32 2013
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
 
-    dsl_pa::get_float() Tests [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:662]
+    dsl_pa::get_float() Tests [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:684]
     ==========================
       Input: 1
     ok: my_pa.get_float( &result ) == is_valid
@@ -655,7 +659,7 @@ Tests run on Mon Feb 04 18:51:32 2013
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
 
-    dsl_pa::get_sci_float() Tests [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:695]
+    dsl_pa::get_sci_float() Tests [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:717]
     ==========================
       Input: 1 
     ok: my_pa.get_sci_float( &result ) == is_valid
@@ -750,7 +754,7 @@ Tests run on Mon Feb 04 18:51:32 2013
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
 
-    optional_sequence class Tests [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:726]
+    optional_sequence class Tests [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:748]
     ==========================
     ok: my_pa.location_push() && my_pa.optional_rewind( my_pa.get_fixed( &command, "Mode" ) && my_pa.space() && my_pa.get_fixed( &type, "empty" ) && my_pa.set( is_empty_mode, true ) || my_pa.on_fail( my_pa.clear( command ) && my_pa.clear( type ) ) ) && my_pa.location_pop() && my_pa.get_fixed( &command, "Mode" ) && my_pa.space() && my_pa.get_fixed( &type, "full" )
     ok: command == "Mode"
@@ -759,7 +763,7 @@ Tests run on Mon Feb 04 18:51:32 2013
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
 
-    DSL PA is_end Tests [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:758]
+    DSL PA is_end Tests [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:780]
     ==========================
     ok: my_pa.is_end()
     ok: ! my_pa.is_end()
@@ -1315,4 +1319,4 @@ Tests run on Mon Feb 04 18:51:32 2013
       : my_reader.location_pop()
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
     ok: _CrtCheckMemory() != 0
-0 error(s), 0 todo(s), 1007 test(s)
+0 error(s), 0 todo(s), 1011 test(s)

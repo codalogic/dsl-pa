@@ -536,6 +536,17 @@ TFUNCTION( dsl_pa_fixed_test )
     }
 
     {
+    reader_string my_reader( "MyMode p=12" );
+    dsl_pa my_pa( my_reader );
+
+    std::string command;
+
+    TTEST( (my_pa.get_fixed( &command, "MyRange" ) || my_pa.get_fixed( &command, "MyMode" )) );
+
+    TTEST( command == "MyMode" );
+    }
+
+    {
     reader_string my_reader( "Mode p=12" );
     dsl_pa my_pa( my_reader );
 
@@ -544,6 +555,17 @@ TFUNCTION( dsl_pa_fixed_test )
     TTEST( (my_pa.get_ifixed( &command, "rANGE" ) || my_pa.get_ifixed( &command, "mODE" )) );
 
     TTEST( command == "Mode" );
+    }
+
+    {
+    reader_string my_reader( "MyMode p=12" );
+    dsl_pa my_pa( my_reader );
+
+    std::string command;
+
+    TTEST( (my_pa.get_ifixed( &command, "MYrANGE" ) || my_pa.get_ifixed( &command, "MYmODE" )) );
+
+    TTEST( command == "MyMode" );
     }
 }
 

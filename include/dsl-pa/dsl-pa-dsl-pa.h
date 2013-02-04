@@ -80,6 +80,8 @@ private:
     size_t read_skip_handler( std::string * p_output, const alphabet & r_alphabet, size_t max_chars );
     template< typename Twriter >
     size_t read_skip_until_handler( std::string * p_output, const alphabet & r_alphabet, char escape_char, size_t max_chars );
+	template< class Tcomparer >
+	bool read_fixed_or_ifixed( std::string * p_output, const char * p_seeking );
 
 public:
     dsl_pa( reader & r_reader_in ) : r_reader( r_reader_in ) {}
@@ -122,6 +124,8 @@ public:
     bool ifixed( const char * p_seeking );
     bool get_fixed( std::string * p_output, const char * p_seeking );
     bool get_ifixed( std::string * p_output, const char * p_seeking );
+    bool read_fixed( std::string * p_output, const char * p_seeking );
+    bool read_ifixed( std::string * p_output, const char * p_seeking );
 
     // Type specific parsing functions
     size_t space();
@@ -130,15 +134,20 @@ public:
     bool opt_wsp() { return optional( wsp() ); }
 
     bool /*is_parsed*/ get_bool( std::string * p_input );
+    bool /*is_parsed*/ read_bool( std::string * p_input );
     bool /*is_parsed*/ get_bool( bool * p_bool );
     size_t /*num chars read*/ get_int( std::string * p_num );
+    size_t /*num chars read*/ read_int( std::string * p_num );
     size_t /*num chars read*/ get_int( int * p_int );
     size_t /*num chars read*/ get_uint( std::string * p_num );
+    size_t /*num chars read*/ read_uint( std::string * p_num );
     size_t /*num chars read*/ get_uint( unsigned int * p_int );
     bool /*is_parsed*/ get_float( std::string * p_num );
+    bool /*is_parsed*/ read_float( std::string * p_num );
     bool /*is_parsed*/ get_float( double * p_float );
     bool /*is_parsed*/ get_float( float * p_float );
     bool /*is_parsed*/ get_sci_float( std::string * p_num );
+    bool /*is_parsed*/ read_sci_float( std::string * p_num );
     bool /*is_parsed*/ get_sci_float( double * p_float );
     bool /*is_parsed*/ get_sci_float( float * p_float );
 
