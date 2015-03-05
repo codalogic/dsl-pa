@@ -412,8 +412,7 @@ bool dsl_pa::read_float( std::string * p_num )
 
     size_t n_digits_before_point = 0, n_digits_after_point = 0;
 
-    bool result =
-            optional( read( p_num, alphabet_sign(), 1 ) ) &&
+    optional( read( p_num, alphabet_sign(), 1 ) ) &&
             set( n_digits_before_point, read( p_num, alphabet_digit() ) ) &&
             optional( read( p_num, alphabet_point() ) &&
             set( n_digits_after_point, read( p_num, alphabet_digit() ) ) );
