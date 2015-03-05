@@ -336,6 +336,11 @@ public:
     {
         r_reader.location_pop();
     }
+
+    void top()
+    {
+        r_reader.location_top();
+    }
 };
 
 } // End of namespace cl

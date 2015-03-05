@@ -261,7 +261,7 @@ bool dsl_pa::read_fixed_or_ifixed( std::string * p_output, const char * p_seekin
         }
         else
         {
-            location_top();
+            location.top();
             return false;
         }
     }
@@ -337,7 +337,7 @@ size_t /*num chars read*/ dsl_pa::read_int( std::string * p_num )
 
     if( n_digits == 0 )
     {
-        location_top();
+        location.top();
         return 0;
     }
 
@@ -393,7 +393,7 @@ bool dsl_pa::read_float( std::string * p_num )
 
     if( n_digits_before_point + n_digits_after_point == 0 )
     {
-        location_top();
+        location.top();
         return false;
     }
 
@@ -439,12 +439,12 @@ bool dsl_pa::read_sci_float( std::string * p_num )
         if( read( &exponent, alphabet_E(), 1 ) && read_int( &exponent ) )
             p_num->append( exponent );
         else
-            location_top();
+            location.top();
 
         return true;
     }
 
-    location_top();
+    location.top();
     return false;
 }
 

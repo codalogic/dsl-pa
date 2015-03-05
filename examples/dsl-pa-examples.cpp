@@ -257,7 +257,7 @@ bool example_parser::get_date( date * p_date )
             get_int( &p_date->dom ) == 2 )
         return true;
 
-    location_top();
+    my_location.top();
 
     return false;
 }
