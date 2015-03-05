@@ -306,6 +306,33 @@ size_t dsl_pa::wsp()
     return n_spaces;
 }
 
+bool /*is_not_eof*/ dsl_pa::get_char( std::string * p_input )
+{
+    p_input->clear();
+    return read_char( p_input );
+}
+
+bool /*is_not_eof*/ dsl_pa::read_char( std::string * p_input )
+{
+	int c = get();
+	if( c == r_reader.R_EOI )
+		return false;
+	*p_input += c;
+	return true;
+}
+
+bool /*is_not_eof*/ dsl_pa::get_char( int * p_char )
+{
+	*p_char = get();
+	return *p_char != r_reader.R_EOI;
+}
+
+bool /*is_not_eof*/ dsl_pa::get_char()		// Use dsl_pa::current() method is access value
+{
+	int c = get();
+	return c != r_reader.R_EOI;
+}
+
 bool /*is_parsed*/ dsl_pa::get_bool( std::string * p_input )
 {
     return get_ifixed( p_input, "true" ) || get_ifixed( p_input, "false" );

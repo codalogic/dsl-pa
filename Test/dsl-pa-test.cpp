@@ -115,16 +115,18 @@ TFUNCTION( dsl_pa_append_test )
 {
     TBEGIN( "dsl_pa::append() operation" );
 
-	{
     std::string v( "abc" );
     TTEST( ! v.empty() );
     TTEST( dsl_pa::append( v, "def" ) );    // Test to ensure it returns true
     TTEST( v == "abcdef" );
     TTEST( dsl_pa::append( v, 'g' ) );    // Test to ensure it returns true
     TTEST( v == "abcdefg" );
-    }
-    
-    {
+}
+
+TFUNCTION( dsl_pa_append_current_test )
+{
+    TBEGIN( "dsl_pa::append_current() operation" );
+
     reader_string my_reader( "abcdef" );
     dsl_pa my_dsl_pa( my_reader );
 
@@ -133,7 +135,6 @@ TFUNCTION( dsl_pa_append_test )
     std::string v( "abc" );
     TTEST( my_dsl_pa.append_current( v ) );    // Test to ensure it returns true
     TTEST( v == "abca" );
-    }
 }
 
 TFUNCTION( dsl_pa_error_test )
@@ -591,6 +592,42 @@ TFUNCTION( dsl_pa_fixed_test )
     TTEST( (my_pa.get_ifixed( &command, "MYrANGE" ) || my_pa.get_ifixed( &command, "MYmODE" )) );
 
     TTEST( command == "MyMode" );
+    }
+}
+
+TFUNCTION( dsl_pa_get_char_test )
+{
+    TBEGIN( "dsl_pa::get_char() Tests" );
+    
+    {
+    reader_string my_reader( "ABC" );
+    dsl_pa my_pa( my_reader );
+    int c;
+    TTEST( my_pa.get_char( &c ) );
+    TTEST( c == 'A' );
+    }
+    
+    {
+    reader_string my_reader( "ABC" );
+    dsl_pa my_pa( my_reader );
+    std::string out( "XYZ" );
+    TTEST( my_pa.get_char( &out ) );
+    TTEST( out == "A" );
+    }
+    
+    {
+    reader_string my_reader( "ABC" );
+    dsl_pa my_pa( my_reader );
+    std::string out( "XYZ" );
+    TTEST( my_pa.read_char( &out ) );
+    TTEST( out == "XYZA" );
+    }
+    
+    {
+    reader_string my_reader( "ABC" );
+    dsl_pa my_pa( my_reader );
+    TTEST( my_pa.get_char() );
+    TTEST( my_pa.current() == 'A' );
     }
 }
 
