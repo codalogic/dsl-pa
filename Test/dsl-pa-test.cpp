@@ -805,6 +805,36 @@ TFUNCTION( dsl_pa_get_sci_float_test )
     dsl_pa_sci_float_test( "w", 0.0f, false, 'w' );
 }
 
+TFUNCTION( dsl_pa_current_is_test )
+{
+    TBEGIN( "dsl_pa::current_is() Tests" );
+
+    {
+    reader_string my_reader( "ABC" );
+    dsl_pa my_pa( my_reader );
+    TTEST( my_pa.get_char() );
+    TTEST( my_pa.current_is( 'A' ) );
+    }
+
+    {
+    const alphabet_char_class alphabet_char_class( "ABX" );
+    reader_string my_reader( "ABC" );
+    dsl_pa my_pa( my_reader );
+
+    TTEST( my_pa.get_char() );
+    TTEST( my_pa.current_is( 'A' ) );
+    TTEST( my_pa.current_is_in( alphabet_char_class ) );
+
+    TTEST( my_pa.get_char() );
+    TTEST( my_pa.current_is( 'B' ) );
+    TTEST( my_pa.current_is_in( alphabet_char_class ) );
+
+    TTEST( my_pa.get_char() );
+    TTEST( my_pa.current_is( 'C' ) );
+    TTEST( ! my_pa.current_is_in( alphabet_char_class ) );
+    }
+}
+
 TFUNCTION( dsl_pa_optional_sequence_test )
 {
     TBEGIN( "optional_sequence class Tests" );

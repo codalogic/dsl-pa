@@ -306,6 +306,12 @@ size_t dsl_pa::wsp()
     return n_spaces;
 }
 
+bool /*is_not_eof*/ dsl_pa::get_char()		// Use dsl_pa::current() method is access value
+{
+	int c = get();
+	return c != r_reader.R_EOI;
+}
+
 bool /*is_not_eof*/ dsl_pa::get_char( std::string * p_input )
 {
     p_input->clear();
@@ -325,12 +331,6 @@ bool /*is_not_eof*/ dsl_pa::get_char( int * p_char )
 {
 	*p_char = get();
 	return *p_char != r_reader.R_EOI;
-}
-
-bool /*is_not_eof*/ dsl_pa::get_char()		// Use dsl_pa::current() method is access value
-{
-	int c = get();
-	return c != r_reader.R_EOI;
 }
 
 bool /*is_parsed*/ dsl_pa::get_bool( std::string * p_input )
@@ -492,6 +492,16 @@ bool dsl_pa::get_sci_float( double * p_float )
         return false;
     *p_float = atof( input.c_str() );
     return true;
+}
+
+bool dsl_pa::current_is( int c ) const
+{
+	return current() == c;
+}
+
+bool dsl_pa::current_is_in( const alphabet & r_alphabet ) const
+{
+	return r_alphabet.is_sought( current() );
 }
 
 } // End of namespace cl

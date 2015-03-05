@@ -133,10 +133,10 @@ public:
     size_t wsp();     // From ABNF (RFC5234) whitespace: non-newline space chars
     bool opt_wsp() { return optional( wsp() ); }
 
+    bool /*is_not_eof*/ get_char();		// Use current() method is access value
     bool /*is_not_eof*/ get_char( std::string * p_input );
     bool /*is_not_eof*/ read_char( std::string * p_input );
     bool /*is_not_eof*/ get_char( int * p_char );
-    bool /*is_not_eof*/ get_char();		// Use current() method is access value
     bool /*is_parsed*/ get_bool( std::string * p_input );
     bool /*is_parsed*/ read_bool( std::string * p_input );
     bool /*is_parsed*/ get_bool( bool * p_bool );
@@ -154,6 +154,9 @@ public:
     bool /*is_parsed*/ read_sci_float( std::string * p_num );
     bool /*is_parsed*/ get_sci_float( double * p_float );
     bool /*is_parsed*/ get_sci_float( float * p_float );
+
+    bool current_is( int c ) const;
+    bool current_is_in( const alphabet & r_alphabet ) const;
 
     // Low-level reader access
     reader & get_reader() { return r_reader; }  // Primarily for use with location_logger class
