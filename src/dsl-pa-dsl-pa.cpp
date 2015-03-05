@@ -78,18 +78,18 @@ size_t dsl_pa::get_until( std::string * p_output, const alphabet & r_alphabet, c
     return read_until( p_output, r_alphabet, escape_char, max_chars );
 }
 
-struct writer_read
+struct writer_read_mode
 {
     static void handle_char( std::string * p_output, char c ) { p_output->push_back( c ); }
 };
 
-struct writer_skip
+struct writer_skip_mode
 {
     static void handle_char( std::string * p_output, char c ) {}
 };
 
 template< typename Twriter >
-size_t dsl_pa::read_skip_handler( std::string * p_output, const alphabet & r_alphabet, size_t max_chars )
+size_t dsl_pa::read_or_skip_handler( std::string * p_output, const alphabet & r_alphabet, size_t max_chars )
 {
     size_t n_chars;
 
@@ -109,7 +109,7 @@ size_t dsl_pa::read_skip_handler( std::string * p_output, const alphabet & r_alp
 };
 
 template< typename Twriter >
-size_t dsl_pa::read_skip_until_handler( std::string * p_output, const alphabet & r_alphabet, char escape_char, size_t max_chars )
+size_t dsl_pa::read_or_skip_until_handler( std::string * p_output, const alphabet & r_alphabet, char escape_char, size_t max_chars )
 {
     size_t n_chars;
     bool is_escaped = false;
@@ -151,7 +151,7 @@ size_t dsl_pa::read( std::string * p_output, const alphabet & r_alphabet )
 
 size_t dsl_pa::read( std::string * p_output, const alphabet & r_alphabet, size_t max_chars )
 {
-    return read_skip_handler< writer_read >( p_output, r_alphabet, max_chars );
+    return read_or_skip_handler< writer_read_mode >( p_output, r_alphabet, max_chars );
 }
 
 size_t dsl_pa::read_until( std::string * p_output, const alphabet & r_alphabet )
@@ -171,7 +171,7 @@ size_t dsl_pa::read_escaped_until( std::string * p_output, const alphabet & r_al
 
 size_t dsl_pa::read_until( std::string * p_output, const alphabet & r_alphabet, char escape_char, size_t max_chars )
 {
-    return read_skip_until_handler< writer_read >( p_output, r_alphabet, escape_char, max_chars );
+    return read_or_skip_until_handler< writer_read_mode >( p_output, r_alphabet, escape_char, max_chars );
 }
 
 size_t dsl_pa::skip( const alphabet & r_alphabet )
@@ -181,7 +181,7 @@ size_t dsl_pa::skip( const alphabet & r_alphabet )
 
 size_t dsl_pa::skip( const alphabet & r_alphabet, size_t max_chars )
 {
-    return read_skip_handler< writer_skip >( 0, r_alphabet, max_chars );
+    return read_or_skip_handler< writer_skip_mode >( 0, r_alphabet, max_chars );
 }
 
 size_t dsl_pa::skip_until( const alphabet & r_alphabet )
@@ -201,7 +201,7 @@ size_t dsl_pa::skip_escaped_until( const alphabet & r_alphabet, char escape_char
 
 size_t dsl_pa::skip_until( const alphabet & r_alphabet, char escape_char, size_t max_chars )
 {
-    return read_skip_until_handler< writer_skip >( 0, r_alphabet, escape_char, max_chars );
+    return read_or_skip_until_handler< writer_skip_mode >( 0, r_alphabet, escape_char, max_chars );
 }
 
 bool dsl_pa::fixed( const char * p_seeking )
