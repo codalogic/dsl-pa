@@ -227,4 +227,37 @@ void example_parser::example7( std::ostream & fout )
     }
 }
 ```
+
+dsl-pa-lite
+===========
+dsl-pa-lite is a wrapper class that uses dsl-pa for situations where only simple parsing
+of input is required.  In some respects it is a light-weight alternative to parsing
+input via regular expressions.
+```c++
+    std::string my_input( "foo:123;" );
+    ...
+    int i;
+    if( dsl_pa_lite( my_input ).skip( alphabet_alpha() ).
+            opt_space().is_char( ':' ).opt_space().
+            get_int( &i ).is_char( ';' ) == true )
+    {
+        // Do something
+    }
+```
+In addition to combining matches via standard method concatenation, overloads of
+operator [] can be used to specify patterns, for example:
+```c++
+    std::string my_input( "date:   2012-02-09" );
+    ...
+    int year;
+    unsigned int month;
+    std::string dom;
+    if( dsl_pa_lite( my_input )
+            ["date"][""][':'][" "][&year]['-'][&month]['-'][&dom] == true )
+    {
+        // Do something
+    }
+```
+Here '[""]' is used to mean "skip whitespace".
+
 For more information see <https://github.com/codalogic/dsl-pa/blob/master/README.html>.
