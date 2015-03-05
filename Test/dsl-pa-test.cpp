@@ -111,6 +111,31 @@ TFUNCTION( dsl_pa_clear_test )
     TTEST( v.empty() );
 }
 
+TFUNCTION( dsl_pa_append_test )
+{
+    TBEGIN( "dsl_pa::append() operation" );
+
+	{
+    std::string v( "abc" );
+    TTEST( ! v.empty() );
+    TTEST( dsl_pa::append( v, "def" ) );    // Test to ensure it returns true
+    TTEST( v == "abcdef" );
+    TTEST( dsl_pa::append( v, 'g' ) );    // Test to ensure it returns true
+    TTEST( v == "abcdefg" );
+    }
+    
+    {
+    reader_string my_reader( "abcdef" );
+    dsl_pa my_dsl_pa( my_reader );
+
+    TTEST( my_dsl_pa.get() == 'a' );
+
+    std::string v( "abc" );
+    TTEST( my_dsl_pa.append_current( v ) );    // Test to ensure it returns true
+    TTEST( v == "abca" );
+    }
+}
+
 TFUNCTION( dsl_pa_error_test )
 {
     TBEGIN( "dsl_pa::error() operation" );

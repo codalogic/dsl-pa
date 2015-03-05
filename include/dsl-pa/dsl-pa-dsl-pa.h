@@ -203,10 +203,16 @@ public:
         r_value.clear();
         return true;
     }
-    template< typename T >
-    static bool append( T & r_variable, const T & r_value )
+    template< typename Tvar, typename Tval >
+    static bool append( Tvar & r_variable, const Tval & r_value )
     {
         r_variable += r_value;
+        return true;
+    }
+    template< typename Tvar >
+    bool append_current( Tvar & r_variable )
+    {
+        r_variable += current();
         return true;
     }
     template< typename T >
