@@ -88,7 +88,7 @@ protected:  // Give the user the chance to derive from this class and write thei
     }
 
     // Much of the code in this file is generated using the script gen-dsl-pa-inline.pl
-    struct action_is_peek_at_end {};
+    struct action_is_end {};
     struct action_is_char {};
     struct action_get {};
     struct action_get_until {};
@@ -374,14 +374,14 @@ public:
     }
 
 private:
-    bool action( const action_is_peek_at_end &, const params_none & )
+    bool action( const action_is_end &, const params_none & )
     {
         return pa.is_peek_at_end();
     }
 public:
-    dsl_pa_lite & is_peek_at_end()
+    dsl_pa_lite & is_end()
     {
-        return invoke( action_is_peek_at_end(), params_none() );
+        return invoke( action_is_end(), params_none() );
     }
 
 private:

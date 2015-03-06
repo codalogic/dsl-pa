@@ -1,4 +1,4 @@
-Tests run on Fri Mar 06 13:09:05 2015
+Tests run on Fri Mar 06 13:14:15 2015
 
 
     Alphabet tests [c:\home\pete\sw\dsl-pa\test\alphabet-test.cpp:42]
@@ -244,15 +244,15 @@ Tests run on Fri Mar 06 13:09:05 2015
     ok: dsl_pa_lite( "" ).result() == true
     ok: pal.result() == true
     ok: pal.is_char( 's' ).result() == true
-    ok: dsl_pa_lite( "s" ).is_char( 's' ).is_peek_at_end().result() == true
-    ok: dsl_pa_lite( "s" ).is_char( 's' ).is_peek_at_end() == true
-    ok: dsl_pa_lite( "s" ).is_char( 's' ).not().is_peek_at_end().result() == false
-    ok: dsl_pa_lite( "s" ).is_char( 's' ).not().is_peek_at_end() == false
-    ok: dsl_pa_lite( "se" ).is_char( 's' ).not().is_peek_at_end().result() == true
-    ok: dsl_pa_lite( "se" ).is_char( 's' ).not().is_peek_at_end() == true
-    ok: dsl_pa_lite( "se" ).is_char( 's' ).is_peek_at_end().result() == false
-    ok: dsl_pa_lite( "se" ).is_char( 's' ).is_peek_at_end() == false
-    ok: dsl_pa_lite( "se" ).optional().is_char( 'v' ).is_char( 's' ).is_peek_at_end() == false
+    ok: dsl_pa_lite( "s" ).is_char( 's' ).is_end().result() == true
+    ok: dsl_pa_lite( "s" ).is_char( 's' ).is_end() == true
+    ok: dsl_pa_lite( "s" ).is_char( 's' ).not().is_end().result() == false
+    ok: dsl_pa_lite( "s" ).is_char( 's' ).not().is_end() == false
+    ok: dsl_pa_lite( "se" ).is_char( 's' ).not().is_end().result() == true
+    ok: dsl_pa_lite( "se" ).is_char( 's' ).not().is_end() == true
+    ok: dsl_pa_lite( "se" ).is_char( 's' ).is_end().result() == false
+    ok: dsl_pa_lite( "se" ).is_char( 's' ).is_end() == false
+    ok: dsl_pa_lite( "se" ).optional().is_char( 'v' ).is_char( 's' ).is_end() == false
     ok: dsl_pa_lite( "se" ).get_int( &i ) == false
     ok: dsl_pa_lite( "se" ).optional().get_int( &i ) == true
     ok: dsl_pa_lite( "se" ).optional().get_int( &i ).is_char( 's' ) == true
