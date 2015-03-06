@@ -602,30 +602,6 @@ TFUNCTION( dsl_pa_get_char_test )
     {
     reader_string my_reader( "ABC" );
     dsl_pa my_pa( my_reader );
-    int c;
-    TTEST( my_pa.get_char( &c ) );
-    TTEST( c == 'A' );
-    }
-
-    {
-    reader_string my_reader( "ABC" );
-    dsl_pa my_pa( my_reader );
-    std::string out( "XYZ" );
-    TTEST( my_pa.get_char( &out ) );
-    TTEST( out == "A" );
-    }
-
-    {
-    reader_string my_reader( "ABC" );
-    dsl_pa my_pa( my_reader );
-    std::string out( "XYZ" );
-    TTEST( my_pa.read_char( &out ) );
-    TTEST( out == "XYZA" );
-    }
-
-    {
-    reader_string my_reader( "ABC" );
-    dsl_pa my_pa( my_reader );
     TTEST( my_pa.get_char() );
     TTEST( my_pa.current() == 'A' );
     }
@@ -696,6 +672,35 @@ TFUNCTION( dsl_pa_peek_char_no_space_test )
     TTEST( my_pa.get_char() );
     TTEST( my_pa.peek_char_no_wsp() );
     TTEST( my_pa.current() == 'C' );
+    }
+}
+
+TFUNCTION( dsl_pa_get_char_type_test )
+{
+    TBEGIN( "dsl_pa::get_char(...) Tests" );
+
+    {
+    reader_string my_reader( "ABC" );
+    dsl_pa my_pa( my_reader );
+    int c;
+    TTEST( my_pa.get_char( &c ) );
+    TTEST( c == 'A' );
+    }
+
+    {
+    reader_string my_reader( "ABC" );
+    dsl_pa my_pa( my_reader );
+    std::string out( "XYZ" );
+    TTEST( my_pa.get_char( &out ) );
+    TTEST( out == "A" );
+    }
+
+    {
+    reader_string my_reader( "ABC" );
+    dsl_pa my_pa( my_reader );
+    std::string out( "XYZ" );
+    TTEST( my_pa.read_char( &out ) );
+    TTEST( out == "XYZA" );
     }
 }
 

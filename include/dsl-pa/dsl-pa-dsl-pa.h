@@ -99,9 +99,6 @@ public:
     bool /*is_not_eof*/ peek_char();    // Use current(), current_is() and current_is_in() methods to access value
     bool /*is_not_eof*/ peek_char_no_space();     // Use current(), current_is() and current_is_in() methods to access value
     bool /*is_not_eof*/ peek_char_no_wsp();       // Use current(), current_is() and current_is_in() methods to access value
-    bool /*is_not_eof*/ get_char( std::string * p_input );
-    bool /*is_not_eof*/ read_char( std::string * p_input );
-    bool /*is_not_eof*/ get_char( int * p_char );
     bool is_get_char( char c ) { return r_reader.is_get_char( c ); }    // Will unget() if got char is not c
     bool current_is( int c ) const;
     bool current_is_in( const alphabet & r_alphabet ) const;
@@ -116,6 +113,9 @@ public:
     size_t wsp();     // From ABNF (RFC5234) whitespace: non-newline space chars
     bool opt_wsp() { return optional( wsp() ); }
 
+    bool /*is_not_eof*/ get_char( std::string * p_input );
+    bool /*is_not_eof*/ read_char( std::string * p_input );
+    bool /*is_not_eof*/ get_char( int * p_char );
     bool /*is_parsed*/ get_bool( std::string * p_input );
     bool /*is_parsed*/ read_bool( std::string * p_input );
     bool /*is_parsed*/ get_bool( bool * p_bool );
