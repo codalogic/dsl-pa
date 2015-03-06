@@ -99,7 +99,8 @@ public:
     bool /*is_not_eof*/ get_char( int * p_char );
     bool current_is( int c ) const;
     bool current_is_in( const alphabet & r_alphabet ) const;
-    bool is_end() { return r_reader.is_end(); }
+    bool is_peek_at_end() { return r_reader.is_peek_at_end(); }
+    bool is_current_at_end() { return r_reader.is_current_at_end(); }
 
     // Type specific parsing functions
     size_t space();

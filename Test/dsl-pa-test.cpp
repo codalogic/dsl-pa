@@ -867,22 +867,44 @@ TFUNCTION( dsl_pa_optional_sequence_test )
     }
 }
 
-TFUNCTION( dsl_pa_is_end_test )
+TFUNCTION( dsl_pa_is_peek_at_end_test )
 {
-    TBEGIN( "DSL PA is_end Tests" );
+    TBEGIN( "DSL PA is_peek_at_end Tests" );
 
     {
     reader_string my_reader( "" );
     dsl_pa my_pa( my_reader );
-    TTEST( my_pa.is_end() );
+    TTEST( my_pa.is_peek_at_end() );
     }
 
     {
     reader_string my_reader( "M" );
     dsl_pa my_pa( my_reader );
-    TTEST( ! my_pa.is_end() );
+    TTEST( ! my_pa.is_peek_at_end() );
     TTEST( my_pa.is_char( 'M' ) );
-    TTEST( my_pa.is_end() );
+    TTEST( my_pa.is_peek_at_end() );
+    }
+}
+
+TFUNCTION( dsl_pa_is_current_at_end_test )
+{
+    TBEGIN( "DSL PA is_current_at_end Tests" );
+
+    {
+    reader_string my_reader( "" );
+    dsl_pa my_pa( my_reader );
+    TTEST( my_pa.get_char() == false );		// get_char() returns false at EOF
+    TTEST( my_pa.is_current_at_end() );
+    }
+
+    {
+    reader_string my_reader( "M" );
+    dsl_pa my_pa( my_reader );
+    TTEST( my_pa.get_char() );
+    TTEST( my_pa.current_is( 'M' ) );
+    TTEST( ! my_pa.is_current_at_end() );
+    TTEST( my_pa.get_char() == false );		// get_char() returns false at EOF
+    TTEST( my_pa.is_current_at_end() );
     }
 }
 

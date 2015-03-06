@@ -64,18 +64,18 @@ TFUNCTION( dsl_lite_test )
     }
 
     {
-    TTEST( dsl_pa_lite( "s" ).is_char( 's' ).is_end().result() == true );
-    TTEST( dsl_pa_lite( "s" ).is_char( 's' ).is_end() == true );
-    TTEST( dsl_pa_lite( "s" ).is_char( 's' ).not().is_end().result() == false );
-    TTEST( dsl_pa_lite( "s" ).is_char( 's' ).not().is_end() == false );
+    TTEST( dsl_pa_lite( "s" ).is_char( 's' ).is_peek_at_end().result() == true );
+    TTEST( dsl_pa_lite( "s" ).is_char( 's' ).is_peek_at_end() == true );
+    TTEST( dsl_pa_lite( "s" ).is_char( 's' ).not().is_peek_at_end().result() == false );
+    TTEST( dsl_pa_lite( "s" ).is_char( 's' ).not().is_peek_at_end() == false );
     }
 
     {
-    TTEST( dsl_pa_lite( "se" ).is_char( 's' ).not().is_end().result() == true );
-    TTEST( dsl_pa_lite( "se" ).is_char( 's' ).not().is_end() == true );
-    TTEST( dsl_pa_lite( "se" ).is_char( 's' ).is_end().result() == false );
-    TTEST( dsl_pa_lite( "se" ).is_char( 's' ).is_end() == false );
-    TTEST( dsl_pa_lite( "se" ).optional().is_char( 'v' ).is_char( 's' ).is_end() == false );
+    TTEST( dsl_pa_lite( "se" ).is_char( 's' ).not().is_peek_at_end().result() == true );
+    TTEST( dsl_pa_lite( "se" ).is_char( 's' ).not().is_peek_at_end() == true );
+    TTEST( dsl_pa_lite( "se" ).is_char( 's' ).is_peek_at_end().result() == false );
+    TTEST( dsl_pa_lite( "se" ).is_char( 's' ).is_peek_at_end() == false );
+    TTEST( dsl_pa_lite( "se" ).optional().is_char( 'v' ).is_char( 's' ).is_peek_at_end() == false );
     }
     
     {

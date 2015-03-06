@@ -1,4 +1,4 @@
-Tests run on Fri Mar 06 12:07:29 2015
+Tests run on Fri Mar 06 12:26:10 2015
 
 
     Alphabet tests [c:\home\pete\sw\dsl-pa\test\alphabet-test.cpp:42]
@@ -244,15 +244,15 @@ Tests run on Fri Mar 06 12:07:29 2015
     ok: dsl_pa_lite( "" ).result() == true
     ok: pal.result() == true
     ok: pal.is_char( 's' ).result() == true
-    ok: dsl_pa_lite( "s" ).is_char( 's' ).is_end().result() == true
-    ok: dsl_pa_lite( "s" ).is_char( 's' ).is_end() == true
-    ok: dsl_pa_lite( "s" ).is_char( 's' ).not().is_end().result() == false
-    ok: dsl_pa_lite( "s" ).is_char( 's' ).not().is_end() == false
-    ok: dsl_pa_lite( "se" ).is_char( 's' ).not().is_end().result() == true
-    ok: dsl_pa_lite( "se" ).is_char( 's' ).not().is_end() == true
-    ok: dsl_pa_lite( "se" ).is_char( 's' ).is_end().result() == false
-    ok: dsl_pa_lite( "se" ).is_char( 's' ).is_end() == false
-    ok: dsl_pa_lite( "se" ).optional().is_char( 'v' ).is_char( 's' ).is_end() == false
+    ok: dsl_pa_lite( "s" ).is_char( 's' ).is_peek_at_end().result() == true
+    ok: dsl_pa_lite( "s" ).is_char( 's' ).is_peek_at_end() == true
+    ok: dsl_pa_lite( "s" ).is_char( 's' ).not().is_peek_at_end().result() == false
+    ok: dsl_pa_lite( "s" ).is_char( 's' ).not().is_peek_at_end() == false
+    ok: dsl_pa_lite( "se" ).is_char( 's' ).not().is_peek_at_end().result() == true
+    ok: dsl_pa_lite( "se" ).is_char( 's' ).not().is_peek_at_end() == true
+    ok: dsl_pa_lite( "se" ).is_char( 's' ).is_peek_at_end().result() == false
+    ok: dsl_pa_lite( "se" ).is_char( 's' ).is_peek_at_end() == false
+    ok: dsl_pa_lite( "se" ).optional().is_char( 'v' ).is_char( 's' ).is_peek_at_end() == false
     ok: dsl_pa_lite( "se" ).get_int( &i ) == false
     ok: dsl_pa_lite( "se" ).optional().get_int( &i ) == true
     ok: dsl_pa_lite( "se" ).optional().get_int( &i ).is_char( 's' ) == true
@@ -810,16 +810,28 @@ Tests run on Fri Mar 06 12:07:29 2015
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
 
-    DSL PA is_end Tests [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:872]
+    DSL PA is_peek_at_end Tests [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:872]
     ==========================
-    ok: my_pa.is_end()
-    ok: ! my_pa.is_end()
+    ok: my_pa.is_peek_at_end()
+    ok: ! my_pa.is_peek_at_end()
     ok: my_pa.is_char( 'M' )
-    ok: my_pa.is_end()
+    ok: my_pa.is_peek_at_end()
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
 
-    DSL PA get vs. read check [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:891]
+    DSL PA is_current_at_end Tests [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:891]
+    ==========================
+    ok: my_pa.get_char() == false
+    ok: my_pa.is_current_at_end()
+    ok: my_pa.get_char()
+    ok: my_pa.current_is( 'M' )
+    ok: ! my_pa.is_current_at_end()
+    ok: my_pa.get_char() == false
+    ok: my_pa.is_current_at_end()
+    ok: ! _CrtMemDifference( &s3, &s1, &s2 )
+
+
+    DSL PA get vs. read check [c:\home\pete\sw\dsl-pa\test\dsl-pa-test.cpp:913]
     ==========================
     ok: my_pa.read( &parsed, alphabet_char_class( "A" ) ) > 0
     ok: parsed == "originAAAAAA"
@@ -1423,4 +1435,4 @@ Tests run on Fri Mar 06 12:07:29 2015
       : my_reader.location_pop()
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
     ok: _CrtCheckMemory() != 0
-0 error(s), 0 todo(s), 1095 test(s)
+0 error(s), 0 todo(s), 1103 test(s)
