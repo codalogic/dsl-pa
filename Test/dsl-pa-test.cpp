@@ -631,6 +631,74 @@ TFUNCTION( dsl_pa_get_char_test )
     }
 }
 
+TFUNCTION( dsl_pa_get_char_no_space_test )
+{
+    TBEGIN( "dsl_pa::get_char_no_space() Tests" );
+
+    {
+    reader_string my_reader( "   A   BC" );
+    dsl_pa my_pa( my_reader );
+    TTEST( my_pa.get_char_no_space() );
+    TTEST( my_pa.current() == 'A' );
+    TTEST( my_pa.get_char_no_space() );
+    TTEST( my_pa.current() == 'B' );
+    TTEST( my_pa.get_char_no_space() );
+    TTEST( my_pa.current() == 'C' );
+    }
+
+    {
+    reader_string my_reader( "   A   BC" );
+    dsl_pa my_pa( my_reader );
+    TTEST( my_pa.get_char_no_wsp() );
+    TTEST( my_pa.current() == 'A' );
+    TTEST( my_pa.get_char_no_wsp() );
+    TTEST( my_pa.current() == 'B' );
+    TTEST( my_pa.get_char_no_wsp() );
+    TTEST( my_pa.current() == 'C' );
+    }
+}
+
+TFUNCTION( dsl_pa_peek_char_no_space_test )
+{
+    TBEGIN( "dsl_pa::peek_char_no_space() Tests" );
+
+    {
+    reader_string my_reader( "   A   BC" );
+    dsl_pa my_pa( my_reader );
+    TTEST( my_pa.peek_char_no_space() );
+    TTEST( my_pa.current() == 'A' );
+    TTEST( my_pa.get_char() );
+    TTEST( my_pa.current() == 'A' );
+    TTEST( my_pa.peek_char_no_space() );
+    TTEST( my_pa.current() == 'B' );
+
+    TTEST( my_pa.peek_char_no_space() );	// Peeking again should return same char
+    TTEST( my_pa.current() == 'B' );
+
+    TTEST( my_pa.get_char() );
+    TTEST( my_pa.peek_char_no_space() );
+    TTEST( my_pa.current() == 'C' );
+    }
+
+    {
+    reader_string my_reader( "   A   BC" );
+    dsl_pa my_pa( my_reader );
+    TTEST( my_pa.peek_char_no_wsp() );
+    TTEST( my_pa.current() == 'A' );
+    TTEST( my_pa.get_char() );
+    TTEST( my_pa.current() == 'A' );
+    TTEST( my_pa.peek_char_no_wsp() );
+    TTEST( my_pa.current() == 'B' );
+
+    TTEST( my_pa.peek_char_no_wsp() );	// Peeking again should return same char
+    TTEST( my_pa.current() == 'B' );
+
+    TTEST( my_pa.get_char() );
+    TTEST( my_pa.peek_char_no_wsp() );
+    TTEST( my_pa.current() == 'C' );
+    }
+}
+
 enum test_valid { TEST_VALID, TEST_INVALID };
 
 void dsl_pa_bool_test( const char * p_input, test_valid valid, bool expected_value, char next_char )

@@ -48,10 +48,30 @@ bool /*is_not_eof*/ dsl_pa::get_char()      // Use dsl_pa::current() method is a
     return c != r_reader.R_EOI;
 }
 
+bool /*is_not_eof*/ dsl_pa::get_char_no_space()     // Use current() method to access value
+{
+	return opt_space() && get_char();
+}
+
+bool /*is_not_eof*/ dsl_pa::get_char_no_wsp()        // Use current() method to access value
+{
+	return opt_wsp() && get_char();
+}
+
 bool /*is_not_eof*/ dsl_pa::peek_char()     // Use current(), current_is() and current_is_in() methods to access value
 {
     int c = peek();
     return c != r_reader.R_EOI;
+}
+
+bool /*is_not_eof*/ dsl_pa::peek_char_no_space()     // Use current(), current_is() and current_is_in() methods to access value
+{
+	return opt_space() && peek_char();
+}
+
+bool /*is_not_eof*/ dsl_pa::peek_char_no_wsp()       // Use current(), current_is() and current_is_in() methods to access value
+{
+	return opt_wsp() && peek_char();
 }
 
 bool /*is_not_eof*/ dsl_pa::get_char( std::string * p_input )
