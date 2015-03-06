@@ -161,13 +161,13 @@ public:
             unget();
         return is_c;
     }
-    bool is_peek_at_end()
-    {
-        return peek() == R_EOI;
-    }
     bool is_current_at_end()
     {
         return current() == R_EOI;
+    }
+    bool is_peek_at_end()
+    {
+        return peek() == R_EOI;
     }
 
     // Recording input locations and rewinding is based on stack operations.

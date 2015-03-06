@@ -79,6 +79,16 @@ bool dsl_pa::current_is_in( const alphabet & r_alphabet ) const
     return r_alphabet.is_sought( current() );
 }
 
+bool dsl_pa::peek_is( int c )
+{
+    return peek() == c;
+}
+
+bool dsl_pa::peek_is_in( const alphabet & r_alphabet )
+{
+    return r_alphabet.is_sought( peek() );
+}
+
 size_t dsl_pa::space()
 {
     size_t n_spaces = 0;
