@@ -817,21 +817,21 @@ TFUNCTION( dsl_pa_current_is_test )
     }
 
     {
-    const alphabet_char_class alphabet_char_class( "ABX" );
+    const alphabet_char_class alphabet_char_class_ABX( "ABX" );
     reader_string my_reader( "ABC" );
     dsl_pa my_pa( my_reader );
 
     TTEST( my_pa.get_char() );
     TTEST( my_pa.current_is( 'A' ) );
-    TTEST( my_pa.current_is_in( alphabet_char_class ) );
+    TTEST( my_pa.current_is_in( alphabet_char_class_ABX ) );
 
     TTEST( my_pa.get_char() );
     TTEST( my_pa.current_is( 'B' ) );
-    TTEST( my_pa.current_is_in( alphabet_char_class ) );
+    TTEST( my_pa.current_is_in( alphabet_char_class_ABX ) );
 
     TTEST( my_pa.get_char() );
     TTEST( my_pa.current_is( 'C' ) );
-    TTEST( ! my_pa.current_is_in( alphabet_char_class ) );
+    TTEST( ! my_pa.current_is_in( alphabet_char_class_ABX ) );
     }
 }
 
@@ -847,20 +847,55 @@ TFUNCTION( dsl_pa_peek_is_test )
     }
 
     {
-    const alphabet_char_class alphabet_char_class( "ABX" );
+    const alphabet_char_class alphabet_char_class_ABX( "ABX" );
     reader_string my_reader( "ABC" );
     dsl_pa my_pa( my_reader );
 
     TTEST( my_pa.peek_is( 'A' ) );
-    TTEST( my_pa.peek_is_in( alphabet_char_class ) );
+    TTEST( my_pa.peek_is_in( alphabet_char_class_ABX ) );
     TTEST( my_pa.get_char() );
 
     TTEST( my_pa.peek_is( 'B' ) );
-    TTEST( my_pa.peek_is_in( alphabet_char_class ) );
+    TTEST( my_pa.peek_is_in( alphabet_char_class_ABX ) );
     TTEST( my_pa.get_char() );
 
     TTEST( my_pa.peek_is( 'C' ) );
-    TTEST( ! my_pa.peek_is_in( alphabet_char_class ) );
+    TTEST( ! my_pa.peek_is_in( alphabet_char_class_ABX ) );
+    }
+}
+
+TFUNCTION( dsl_pa_peek_char_test )
+{
+    TBEGIN( "dsl_pa::peek_char() Tests" );
+
+    {
+    reader_string my_reader( "ABC" );
+    dsl_pa my_pa( my_reader );
+    TTEST( my_pa.peek_char() );
+    TTEST( my_pa.current_is( 'A' ) );      // Should be able to current_is() multiple times
+    TTEST( my_pa.current_is( 'A' ) );      // Should be able to current_is() multiple times
+    TTEST( ! my_pa.current_is( 'B' ) );
+    }
+
+    {
+    const alphabet_char_class alphabet_char_class_ABX( "ABX" );
+    reader_string my_reader( "ABC" );
+    dsl_pa my_pa( my_reader );
+
+    TTEST( my_pa.peek_char() );
+    TTEST( my_pa.current_is( 'A' ) );
+    TTEST( my_pa.current_is_in( alphabet_char_class_ABX ) );
+    TTEST( my_pa.get_char() );
+
+    TTEST( my_pa.peek_char() );
+    TTEST( my_pa.peek_is( 'B' ) );
+    TTEST( my_pa.current_is_in( alphabet_char_class_ABX ) );
+    TTEST( my_pa.current_is_in( alphabet_char_class_ABX ) );      // Should be able to current_is() multiple times
+    TTEST( my_pa.get_char() );
+
+    TTEST( my_pa.peek_char() );
+    TTEST( my_pa.peek_is( 'C' ) );
+    TTEST( ! my_pa.current_is_in( alphabet_char_class_ABX ) );
     }
 }
 

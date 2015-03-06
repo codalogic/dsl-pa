@@ -94,6 +94,7 @@ public:
 
     // Methods useful for deciding branches to take in BNF description
     bool /*is_not_eof*/ get_char();     // Use current() method to access value
+    bool /*is_not_eof*/ peek_char();    // Use current(), current_is() and current_is_in() methods to access value
     bool /*is_not_eof*/ get_char( std::string * p_input );
     bool /*is_not_eof*/ read_char( std::string * p_input );
     bool /*is_not_eof*/ get_char( int * p_char );

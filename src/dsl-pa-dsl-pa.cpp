@@ -48,6 +48,12 @@ bool /*is_not_eof*/ dsl_pa::get_char()      // Use dsl_pa::current() method is a
     return c != r_reader.R_EOI;
 }
 
+bool /*is_not_eof*/ dsl_pa::peek_char()     // Use current(), current_is() and current_is_in() methods to access value
+{
+    int c = peek();
+    return c != r_reader.R_EOI;
+}
+
 bool /*is_not_eof*/ dsl_pa::get_char( std::string * p_input )
 {
     p_input->clear();
