@@ -371,16 +371,16 @@ TFUNCTION( mem_buf_reader_test )
     all_reader_tests( reader_factory_mem_buf() );
 }
 
-TFUNCTION( is_char_reader_test )
+TFUNCTION( is_get_char_reader_test )
 {
-    TBEGIN( "Is char reader tests" );
+    TBEGIN( "is get char reader tests" );
 
     reader_string my_reader( "abcd" );
 
-    TTEST( ! my_reader.is_char( 'x' ) );
-    TTEST( my_reader.is_char( 'a' ) );
-    TTEST( ! my_reader.is_char( 'x' ) );
-    TTEST( my_reader.is_char( 'b' ) );
+    TTEST( ! my_reader.is_get_char( 'x' ) );
+    TTEST( my_reader.is_get_char( 'a' ) );
+    TTEST( ! my_reader.is_get_char( 'x' ) );
+    TTEST( my_reader.is_get_char( 'b' ) );
 }
 
 TFUNCTION( reader_line_counting_test )

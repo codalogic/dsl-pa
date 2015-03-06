@@ -97,6 +97,7 @@ public:
     bool /*is_not_eof*/ get_char( std::string * p_input );
     bool /*is_not_eof*/ read_char( std::string * p_input );
     bool /*is_not_eof*/ get_char( int * p_char );
+    bool is_get_char( char c ) { return r_reader.is_get_char( c ); }    // Will unget() if got char is not c
     bool current_is( int c ) const;
     bool current_is_in( const alphabet & r_alphabet ) const;
     bool is_peek_at_end() { return r_reader.is_peek_at_end(); }
@@ -166,7 +167,6 @@ public:
     bool unget() { r_reader.unget(); return true; }
     bool unget( char c ) { r_reader.unget( c ); return true; }
     char peek() { return r_reader.peek(); }
-    bool is_char( char c ) { return r_reader.is_char( c ); }
     bool location_push() { return r_reader.location_push(); }   // See reader class for documentation
     bool location_top() { return r_reader.location_top(); }
     bool location_pop() { return r_reader.location_pop(); }

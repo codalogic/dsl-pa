@@ -46,11 +46,11 @@ void example1( std::ostream & fout )
     // Parse the 'to_parse' string
     if( pa.opt_space() &&
             pa.fixed( "width" ) &&
-            pa.opt_space() && pa.is_char( '=' ) && pa.opt_space() &&
+            pa.opt_space() && pa.is_get_char( '=' ) && pa.opt_space() &&
             pa.get_uint( &width ) &&
-            pa.opt_space() && pa.is_char( ',' ) && pa.opt_space() &&
+            pa.opt_space() && pa.is_get_char( ',' ) && pa.opt_space() &&
             pa.fixed( "height" ) &&
-            pa.opt_space() && pa.is_char( '=' ) && pa.opt_space() &&
+            pa.opt_space() && pa.is_get_char( '=' ) && pa.opt_space() &&
             pa.get_uint( &height ) )
     {
         // Report the results
@@ -87,11 +87,11 @@ void example_parser::example2( std::ostream & fout )
 
     if( opt_space() &&
             fixed( "width" ) &&
-            opt_space() && is_char( '=' ) && opt_space() &&
+            opt_space() && is_get_char( '=' ) && opt_space() &&
             get_uint( &width ) &&
-            opt_space() && is_char( ',' ) && opt_space() &&
+            opt_space() && is_get_char( ',' ) && opt_space() &&
             fixed( "height" ) &&
-            opt_space() && is_char( '=' ) && opt_space() &&
+            opt_space() && is_get_char( '=' ) && opt_space() &&
             get_uint( &height ) )
     {
         fout << "Example 2 OK: w=" << width << " & h=" << height << "\n";
@@ -106,8 +106,8 @@ You can make the above syntax easier to parse if you make you own helper functio
 make the space surrounding the key tokens seem as if they are implicit.  For example,
 by including the following in your parser class:
 ```c++
-    bool eq() { return opt_space() && is_char( '=' ) && opt_space(); }
-    bool comma() { return opt_space() && is_char( ',' ) && opt_space(); }
+    bool eq() { return opt_space() && is_get_char( '=' ) && opt_space(); }
+    bool comma() { return opt_space() && is_get_char( ',' ) && opt_space(); }
 ```
 you can change the above code to:
 ```c++
@@ -168,9 +168,9 @@ bool example_parser::get_date( date * p_date )
     location_logger my_location( get_reader() );
 
     if( get_int( &p_date->year ) == 4 &&
-            is_char( '-' ) &&
+            is_get_char( '-' ) &&
             get_int( &p_date->month ) == 2 &&
-            is_char( '-' ) &&
+            is_get_char( '-' ) &&
             get_int( &p_date->dom ) == 2 )
         return true;
 

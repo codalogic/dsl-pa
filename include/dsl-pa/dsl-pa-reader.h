@@ -154,7 +154,7 @@ public:
         }
     }
     char peek() { get(); unget(); return current(); }
-    bool is_char( char c )
+    bool is_get_char( char c )
     {
         bool is_c = (c == get());
         if( ! is_c )

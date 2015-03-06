@@ -387,7 +387,7 @@ public:
 private:
     bool action( const action_is_char &, const params_char & params_in )
     {
-        return pa.is_char( params_in.c );
+        return pa.is_get_char( params_in.c );
     }
 public:
     dsl_pa_lite & is_char( char c )

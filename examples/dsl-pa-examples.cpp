@@ -57,11 +57,11 @@ void example1( std::ostream & fout )
     // Parse the 'to_parse' string
     if( pa.opt_space() &&
             pa.fixed( "width" ) &&
-            pa.opt_space() && pa.is_char( '=' ) && pa.opt_space() &&
+            pa.opt_space() && pa.is_get_char( '=' ) && pa.opt_space() &&
             pa.get_uint( &width ) &&
-            pa.opt_space() && pa.is_char( ',' ) && pa.opt_space() &&
+            pa.opt_space() && pa.is_get_char( ',' ) && pa.opt_space() &&
             pa.fixed( "height" ) &&
-            pa.opt_space() && pa.is_char( '=' ) && pa.opt_space() &&
+            pa.opt_space() && pa.is_get_char( '=' ) && pa.opt_space() &&
             pa.get_uint( &height ) )
     {
         // Report the results
@@ -93,8 +93,8 @@ public:
     void example6( std::ostream & fout );
     void example7( std::ostream & fout );
 
-    bool eq() { return opt_space() && is_char( '=' ) && opt_space(); }
-    bool comma() { return opt_space() && is_char( ',' ) && opt_space(); }
+    bool eq() { return opt_space() && is_get_char( '=' ) && opt_space(); }
+    bool comma() { return opt_space() && is_get_char( ',' ) && opt_space(); }
 
     bool get_date( date * p_date );
 };
@@ -148,11 +148,11 @@ void example_parser::example2( std::ostream & fout )
 
     if( opt_space() &&
             fixed( "width" ) &&
-            opt_space() && is_char( '=' ) && opt_space() &&
+            opt_space() && is_get_char( '=' ) && opt_space() &&
             get_uint( &width ) &&
-            opt_space() && is_char( ',' ) && opt_space() &&
+            opt_space() && is_get_char( ',' ) && opt_space() &&
             fixed( "height" ) &&
-            opt_space() && is_char( '=' ) && opt_space() &&
+            opt_space() && is_get_char( '=' ) && opt_space() &&
             get_uint( &height ) )
     {
         fout << "Example OK: w=" << width << " & h=" << height << "\n";
@@ -251,9 +251,9 @@ bool example_parser::get_date( date * p_date )
     location_logger my_location( get_reader() );
 
     if( get_int( &p_date->year ) == 4 &&
-            is_char( '-' ) &&
+            is_get_char( '-' ) &&
             get_int( &p_date->month ) == 2 &&
-            is_char( '-' ) &&
+            is_get_char( '-' ) &&
             get_int( &p_date->dom ) == 2 )
         return true;
 

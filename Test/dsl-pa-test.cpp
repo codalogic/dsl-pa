@@ -217,8 +217,8 @@ TFUNCTION( dsl_pa_low_level_read_test )
 
     {
     TSETUP( location_logger my_location_logger( my_dsl_pa.get_reader() ) );
-    TTEST( ! my_dsl_pa.is_char( 'x' ) );
-    TTEST( my_dsl_pa.is_char( 'd' ) );
+    TTEST( ! my_dsl_pa.is_get_char( 'x' ) );
+    TTEST( my_dsl_pa.is_get_char( 'd' ) );
     TTEST( my_dsl_pa.get() == 'e' );
     TTEST( my_dsl_pa.location_top() );
     TTEST( my_dsl_pa.get() == 'd' );
@@ -334,7 +334,7 @@ TFUNCTION( dsl_pa_get_test )
                 my_pa.space() &&
                 my_pa.get( &channel, alphabet_alpha() ) &&
                 my_pa.opt_space() &&
-                my_pa.is_char( '=' ) &&
+                my_pa.is_get_char( '=' ) &&
                 my_pa.opt_space() &&
                 my_pa.get( &level, alphabet_digit() ) );
 
@@ -368,7 +368,7 @@ TFUNCTION( dsl_pa_get_test )
                 my_pa.space() &&
                 my_pa.get( &channel, alphabet_alpha() ) &&
                 my_pa.opt_space() &&
-                my_pa.is_char( '=' ) &&
+                my_pa.is_get_char( '=' ) &&
                 my_pa.opt_space() &&
                 my_pa.get( &level, alphabet_digit() ) );
 
@@ -395,7 +395,7 @@ TFUNCTION( dsl_pa_get_until_test )
                 my_pa.space() &&
                 my_pa.get_until( &channel, alphabet_char_class( "=" ) ) &&
                 my_pa.opt_space() &&
-                my_pa.is_char( '=' ) &&
+                my_pa.is_get_char( '=' ) &&
                 my_pa.opt_space() &&
                 my_pa.get_until( &level, alphabet_space() ) );
 
@@ -425,11 +425,11 @@ TFUNCTION( dsl_pa_get_until_test )
 
     TTEST( my_pa.get_until( &channel, alphabet_char_class( "=" ) ) &&
                 my_pa.opt_space() &&
-                my_pa.is_char( '=' ) &&
+                my_pa.is_get_char( '=' ) &&
                 my_pa.opt_space() &&
-                my_pa.is_char( '\'' ) &&
+                my_pa.is_get_char( '\'' ) &&
                 my_pa.get_escaped_until( &sentence, alphabet_char_class( "'" ), '\\' ) &&
-                my_pa.is_char( '\'' ) &&
+                my_pa.is_get_char( '\'' ) &&
                 my_pa.space() &&
                 my_pa.get_until( &level, alphabet_space() ) );
 
@@ -452,7 +452,7 @@ TFUNCTION( dsl_pa_get_until_test )
                 my_pa.space() &&
                 my_pa.get_until( &channel, alphabet_char_class( "=" ) ) &&
                 my_pa.opt_space() &&
-                my_pa.is_char( '=' ) &&
+                my_pa.is_get_char( '=' ) &&
                 my_pa.opt_space() &&
                 my_pa.get_until( &level, alphabet_space() ) );
 
@@ -478,7 +478,7 @@ TFUNCTION( dsl_pa_skip_test )
                 my_pa.space() &&
                 my_pa.get( &channel, alphabet_alpha() ) &&
                 my_pa.opt_space() &&
-                my_pa.is_char( '=' ) &&
+                my_pa.is_get_char( '=' ) &&
                 my_pa.opt_space() &&
                 my_pa.get( &level, alphabet_digit() ) );
 
@@ -497,7 +497,7 @@ TFUNCTION( dsl_pa_skip_test )
                 my_pa.space() &&
                 my_pa.get_until( &channel, alphabet_char_class( "=" ) ) &&
                 my_pa.opt_space() &&
-                my_pa.is_char( '=' ) &&
+                my_pa.is_get_char( '=' ) &&
                 my_pa.opt_space() &&
                 my_pa.get_until( &level, alphabet_space() ) );
 
@@ -522,7 +522,7 @@ TFUNCTION( dsl_pa_fixed_test )
                 my_pa.space() &&
                 my_pa.get( &channel, alphabet_alpha() ) &&
                 my_pa.opt_space() &&
-                my_pa.is_char( '=' ) &&
+                my_pa.is_get_char( '=' ) &&
                 my_pa.opt_space() &&
                 my_pa.get( &level, alphabet_digit() ) );
 
@@ -542,7 +542,7 @@ TFUNCTION( dsl_pa_fixed_test )
                 my_pa.space() &&
                 my_pa.get( &channel, alphabet_alpha() ) &&
                 my_pa.opt_space() &&
-                my_pa.is_char( '=' ) &&
+                my_pa.is_get_char( '=' ) &&
                 my_pa.opt_space() &&
                 my_pa.get( &level, alphabet_digit() ) );
 
@@ -881,7 +881,7 @@ TFUNCTION( dsl_pa_is_peek_at_end_test )
     reader_string my_reader( "M" );
     dsl_pa my_pa( my_reader );
     TTEST( ! my_pa.is_peek_at_end() );
-    TTEST( my_pa.is_char( 'M' ) );
+    TTEST( my_pa.is_get_char( 'M' ) );
     TTEST( my_pa.is_peek_at_end() );
     }
 }
@@ -893,7 +893,7 @@ TFUNCTION( dsl_pa_is_current_at_end_test )
     {
     reader_string my_reader( "" );
     dsl_pa my_pa( my_reader );
-    TTEST( my_pa.get_char() == false );		// get_char() returns false at EOF
+    TTEST( my_pa.get_char() == false );     // get_char() returns false at EOF
     TTEST( my_pa.is_current_at_end() );
     }
 
@@ -903,7 +903,7 @@ TFUNCTION( dsl_pa_is_current_at_end_test )
     TTEST( my_pa.get_char() );
     TTEST( my_pa.current_is( 'M' ) );
     TTEST( ! my_pa.is_current_at_end() );
-    TTEST( my_pa.get_char() == false );		// get_char() returns false at EOF
+    TTEST( my_pa.get_char() == false );     // get_char() returns false at EOF
     TTEST( my_pa.is_current_at_end() );
     }
 }
