@@ -42,6 +42,228 @@ namespace cl {
 
 using namespace alphabet_helpers;
 
+bool /*is_not_eof*/ dsl_pa::get_char()      // Use dsl_pa::current() method is access value
+{
+    int c = get();
+    return c != r_reader.R_EOI;
+}
+
+bool /*is_not_eof*/ dsl_pa::get_char( std::string * p_input )
+{
+    p_input->clear();
+    return read_char( p_input );
+}
+
+bool /*is_not_eof*/ dsl_pa::read_char( std::string * p_input )
+{
+    int c = get();
+    if( c == r_reader.R_EOI )
+        return false;
+    *p_input += c;
+    return true;
+}
+
+bool /*is_not_eof*/ dsl_pa::get_char( int * p_char )
+{
+    *p_char = get();
+    return *p_char != r_reader.R_EOI;
+}
+
+bool dsl_pa::current_is( int c ) const
+{
+    return current() == c;
+}
+
+bool dsl_pa::current_is_in( const alphabet & r_alphabet ) const
+{
+    return r_alphabet.is_sought( current() );
+}
+
+size_t dsl_pa::space()
+{
+    size_t n_spaces = 0;
+
+    while( is_space( get() ) )
+        ++n_spaces;
+
+    unget();
+
+    return n_spaces;
+}
+
+size_t dsl_pa::wsp()
+{
+    size_t n_spaces = 0;
+
+    while( is_line_space( get() ) )
+        ++n_spaces;
+
+    unget();
+
+    return n_spaces;
+}
+
+bool /*is_parsed*/ dsl_pa::get_bool( std::string * p_input )
+{
+    return get_ifixed( p_input, "true" ) || get_ifixed( p_input, "false" );
+}
+
+bool /*is_parsed*/ dsl_pa::read_bool( std::string * p_input )
+{
+    return read_ifixed( p_input, "true" ) || read_ifixed( p_input, "false" );
+}
+
+bool /*is_parsed*/ dsl_pa::get_bool( bool * p_bool )
+{
+    return (ifixed( "true" ) && set( *p_bool, true )) ||
+            (ifixed( "false" ) && set( *p_bool, false ));
+}
+
+size_t /*num chars read*/ dsl_pa::get_int( std::string * p_num )
+{
+    p_num->clear();
+    return read_int( p_num );
+}
+
+size_t /*num chars read*/ dsl_pa::read_int( std::string * p_num )
+{
+    location_logger location( r_reader );
+
+    size_t n_sign_chars = read( p_num, alphabet_sign(), 1 );
+    size_t n_digits = read( p_num, alphabet_digit() );
+
+    if( n_digits == 0 )
+    {
+        location.top();
+        return 0;
+    }
+
+    return n_digits + n_sign_chars;
+}
+
+size_t /*num chars read*/ dsl_pa::get_int( int * p_int )
+{
+    std::string input;
+    size_t n_read = read_int( &input );
+    if( n_read > 0 )
+        *p_int = atoi( input.c_str() );
+    return n_read;
+}
+
+size_t /*num chars read*/ dsl_pa::get_uint( std::string * p_num )
+{
+    p_num->clear();
+    return read_uint( p_num );
+}
+
+size_t /*num chars read*/ dsl_pa::read_uint( std::string * p_num )
+{
+    return read( p_num, alphabet_digit() );
+}
+
+size_t /*num chars read*/ dsl_pa::get_uint( unsigned int * p_int )
+{
+    std::string input;
+    size_t n_read = get_int( &input );
+    if( n_read > 0 )
+        sscanf( input.c_str(), "%ud", p_int );
+    return n_read;
+}
+
+bool dsl_pa::get_float( std::string * p_num )
+{
+    p_num->clear();
+    return read_float( p_num );
+}
+
+bool dsl_pa::read_float( std::string * p_num )
+{
+    location_logger location( r_reader );
+
+    size_t n_digits_before_point = 0, n_digits_after_point = 0;
+
+    optional( read( p_num, alphabet_sign(), 1 ) ) &&
+            set( n_digits_before_point, read( p_num, alphabet_digit() ) ) &&
+            optional( read( p_num, alphabet_point() ) &&
+            set( n_digits_after_point, read( p_num, alphabet_digit() ) ) );
+
+    if( n_digits_before_point + n_digits_after_point == 0 )
+    {
+        location.top();
+        return false;
+    }
+
+    return true;
+}
+
+bool dsl_pa::get_float( double * p_float )
+{
+    std::string input;
+    if( ! get_float( &input ) )
+        return false;
+    *p_float = atof( input.c_str() );
+    return true;
+}
+
+bool dsl_pa::get_float( float * p_float )
+{
+    double double_value;
+    if( get_float( &double_value ) )
+    {
+        *p_float = static_cast< float >( double_value );
+        return true;
+    }
+    return false;
+}
+
+bool dsl_pa::get_sci_float( std::string * p_num )
+{
+    p_num->clear();
+    return read_sci_float( p_num );
+}
+
+bool dsl_pa::read_sci_float( std::string * p_num )
+{
+    location_logger location( r_reader );
+
+    if( read_float( p_num ) )
+    {
+        location_logger exponent_location( r_reader );
+
+        std::string exponent;
+
+        if( read( &exponent, alphabet_E(), 1 ) && read_int( &exponent ) )
+            p_num->append( exponent );
+        else
+            location.top();
+
+        return true;
+    }
+
+    location.top();
+    return false;
+}
+
+bool dsl_pa::get_sci_float( float * p_float )
+{
+    double double_value;
+    if( get_sci_float( &double_value ) )
+    {
+        *p_float = static_cast< float >( double_value );
+        return true;
+    }
+    return false;
+}
+
+bool dsl_pa::get_sci_float( double * p_float )
+{
+    std::string input;
+    if( ! get_sci_float( &input ) )
+        return false;
+    *p_float = atof( input.c_str() );
+    return true;
+}
+
 size_t dsl_pa::get( std::string * p_output, const alphabet & r_alphabet )
 {
     p_output->clear();
@@ -280,228 +502,6 @@ bool dsl_pa::read_fixed( std::string * p_output, const char * p_seeking )
 bool dsl_pa::read_ifixed( std::string * p_output, const char * p_seeking )
 {
     return read_fixed_or_ifixed< compare_ifixed >( p_output, p_seeking );
-}
-
-size_t dsl_pa::space()
-{
-    size_t n_spaces = 0;
-
-    while( is_space( get() ) )
-        ++n_spaces;
-
-    unget();
-
-    return n_spaces;
-}
-
-size_t dsl_pa::wsp()
-{
-    size_t n_spaces = 0;
-
-    while( is_line_space( get() ) )
-        ++n_spaces;
-
-    unget();
-
-    return n_spaces;
-}
-
-bool /*is_not_eof*/ dsl_pa::get_char()      // Use dsl_pa::current() method is access value
-{
-    int c = get();
-    return c != r_reader.R_EOI;
-}
-
-bool /*is_not_eof*/ dsl_pa::get_char( std::string * p_input )
-{
-    p_input->clear();
-    return read_char( p_input );
-}
-
-bool /*is_not_eof*/ dsl_pa::read_char( std::string * p_input )
-{
-    int c = get();
-    if( c == r_reader.R_EOI )
-        return false;
-    *p_input += c;
-    return true;
-}
-
-bool /*is_not_eof*/ dsl_pa::get_char( int * p_char )
-{
-    *p_char = get();
-    return *p_char != r_reader.R_EOI;
-}
-
-bool /*is_parsed*/ dsl_pa::get_bool( std::string * p_input )
-{
-    return get_ifixed( p_input, "true" ) || get_ifixed( p_input, "false" );
-}
-
-bool /*is_parsed*/ dsl_pa::read_bool( std::string * p_input )
-{
-    return read_ifixed( p_input, "true" ) || read_ifixed( p_input, "false" );
-}
-
-bool /*is_parsed*/ dsl_pa::get_bool( bool * p_bool )
-{
-    return (ifixed( "true" ) && set( *p_bool, true )) ||
-            (ifixed( "false" ) && set( *p_bool, false ));
-}
-
-size_t /*num chars read*/ dsl_pa::get_int( std::string * p_num )
-{
-    p_num->clear();
-    return read_int( p_num );
-}
-
-size_t /*num chars read*/ dsl_pa::read_int( std::string * p_num )
-{
-    location_logger location( r_reader );
-
-    size_t n_sign_chars = read( p_num, alphabet_sign(), 1 );
-    size_t n_digits = read( p_num, alphabet_digit() );
-
-    if( n_digits == 0 )
-    {
-        location.top();
-        return 0;
-    }
-
-    return n_digits + n_sign_chars;
-}
-
-size_t /*num chars read*/ dsl_pa::get_int( int * p_int )
-{
-    std::string input;
-    size_t n_read = read_int( &input );
-    if( n_read > 0 )
-        *p_int = atoi( input.c_str() );
-    return n_read;
-}
-
-size_t /*num chars read*/ dsl_pa::get_uint( std::string * p_num )
-{
-    p_num->clear();
-    return read_uint( p_num );
-}
-
-size_t /*num chars read*/ dsl_pa::read_uint( std::string * p_num )
-{
-    return read( p_num, alphabet_digit() );
-}
-
-size_t /*num chars read*/ dsl_pa::get_uint( unsigned int * p_int )
-{
-    std::string input;
-    size_t n_read = get_int( &input );
-    if( n_read > 0 )
-        sscanf( input.c_str(), "%ud", p_int );
-    return n_read;
-}
-
-bool dsl_pa::get_float( std::string * p_num )
-{
-    p_num->clear();
-    return read_float( p_num );
-}
-
-bool dsl_pa::read_float( std::string * p_num )
-{
-    location_logger location( r_reader );
-
-    size_t n_digits_before_point = 0, n_digits_after_point = 0;
-
-    optional( read( p_num, alphabet_sign(), 1 ) ) &&
-            set( n_digits_before_point, read( p_num, alphabet_digit() ) ) &&
-            optional( read( p_num, alphabet_point() ) &&
-            set( n_digits_after_point, read( p_num, alphabet_digit() ) ) );
-
-    if( n_digits_before_point + n_digits_after_point == 0 )
-    {
-        location.top();
-        return false;
-    }
-
-    return true;
-}
-
-bool dsl_pa::get_float( double * p_float )
-{
-    std::string input;
-    if( ! get_float( &input ) )
-        return false;
-    *p_float = atof( input.c_str() );
-    return true;
-}
-
-bool dsl_pa::get_float( float * p_float )
-{
-    double double_value;
-    if( get_float( &double_value ) )
-    {
-        *p_float = static_cast< float >( double_value );
-        return true;
-    }
-    return false;
-}
-
-bool dsl_pa::get_sci_float( std::string * p_num )
-{
-    p_num->clear();
-    return read_sci_float( p_num );
-}
-
-bool dsl_pa::read_sci_float( std::string * p_num )
-{
-    location_logger location( r_reader );
-
-    if( read_float( p_num ) )
-    {
-        location_logger exponent_location( r_reader );
-
-        std::string exponent;
-
-        if( read( &exponent, alphabet_E(), 1 ) && read_int( &exponent ) )
-            p_num->append( exponent );
-        else
-            location.top();
-
-        return true;
-    }
-
-    location.top();
-    return false;
-}
-
-bool dsl_pa::get_sci_float( float * p_float )
-{
-    double double_value;
-    if( get_sci_float( &double_value ) )
-    {
-        *p_float = static_cast< float >( double_value );
-        return true;
-    }
-    return false;
-}
-
-bool dsl_pa::get_sci_float( double * p_float )
-{
-    std::string input;
-    if( ! get_sci_float( &input ) )
-        return false;
-    *p_float = atof( input.c_str() );
-    return true;
-}
-
-bool dsl_pa::current_is( int c ) const
-{
-    return current() == c;
-}
-
-bool dsl_pa::current_is_in( const alphabet & r_alphabet ) const
-{
-    return r_alphabet.is_sought( current() );
 }
 
 } // End of namespace cl

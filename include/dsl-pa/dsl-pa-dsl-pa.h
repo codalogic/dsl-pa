@@ -92,7 +92,38 @@ public:
     // initiate parsing.
     virtual bool parse() { return false; }
 
+    // Methods useful for deciding branches to take in BNF description
+    bool /*is_not_eof*/ get_char();     // Use current() method to access value
+    bool /*is_not_eof*/ get_char( std::string * p_input );
+    bool /*is_not_eof*/ read_char( std::string * p_input );
+    bool /*is_not_eof*/ get_char( int * p_char );
+    bool current_is( int c ) const;
+    bool current_is_in( const alphabet & r_alphabet ) const;
     bool is_end() { return r_reader.is_end(); }
+
+    // Type specific parsing functions
+    size_t space();
+    bool opt_space() { return optional( space() ); }
+    size_t wsp();     // From ABNF (RFC5234) whitespace: non-newline space chars
+    bool opt_wsp() { return optional( wsp() ); }
+
+    bool /*is_parsed*/ get_bool( std::string * p_input );
+    bool /*is_parsed*/ read_bool( std::string * p_input );
+    bool /*is_parsed*/ get_bool( bool * p_bool );
+    size_t /*num chars read*/ get_int( std::string * p_num );
+    size_t /*num chars read*/ read_int( std::string * p_num );
+    size_t /*num chars read*/ get_int( int * p_int );
+    size_t /*num chars read*/ get_uint( std::string * p_num );
+    size_t /*num chars read*/ read_uint( std::string * p_num );
+    size_t /*num chars read*/ get_uint( unsigned int * p_int );
+    bool /*is_parsed*/ get_float( std::string * p_num );
+    bool /*is_parsed*/ read_float( std::string * p_num );
+    bool /*is_parsed*/ get_float( double * p_float );
+    bool /*is_parsed*/ get_float( float * p_float );
+    bool /*is_parsed*/ get_sci_float( std::string * p_num );
+    bool /*is_parsed*/ read_sci_float( std::string * p_num );
+    bool /*is_parsed*/ get_sci_float( double * p_float );
+    bool /*is_parsed*/ get_sci_float( float * p_float );
 
     // The primary workhorse functions
     // These get...() functions clear the output string before reading the input
@@ -126,37 +157,6 @@ public:
     bool get_ifixed( std::string * p_output, const char * p_seeking );
     bool read_fixed( std::string * p_output, const char * p_seeking );
     bool read_ifixed( std::string * p_output, const char * p_seeking );
-
-    // Type specific parsing functions
-    size_t space();
-    bool opt_space() { return optional( space() ); }
-    size_t wsp();     // From ABNF (RFC5234) whitespace: non-newline space chars
-    bool opt_wsp() { return optional( wsp() ); }
-
-    bool /*is_not_eof*/ get_char();     // Use current() method to access value
-    bool /*is_not_eof*/ get_char( std::string * p_input );
-    bool /*is_not_eof*/ read_char( std::string * p_input );
-    bool /*is_not_eof*/ get_char( int * p_char );
-    bool /*is_parsed*/ get_bool( std::string * p_input );
-    bool /*is_parsed*/ read_bool( std::string * p_input );
-    bool /*is_parsed*/ get_bool( bool * p_bool );
-    size_t /*num chars read*/ get_int( std::string * p_num );
-    size_t /*num chars read*/ read_int( std::string * p_num );
-    size_t /*num chars read*/ get_int( int * p_int );
-    size_t /*num chars read*/ get_uint( std::string * p_num );
-    size_t /*num chars read*/ read_uint( std::string * p_num );
-    size_t /*num chars read*/ get_uint( unsigned int * p_int );
-    bool /*is_parsed*/ get_float( std::string * p_num );
-    bool /*is_parsed*/ read_float( std::string * p_num );
-    bool /*is_parsed*/ get_float( double * p_float );
-    bool /*is_parsed*/ get_float( float * p_float );
-    bool /*is_parsed*/ get_sci_float( std::string * p_num );
-    bool /*is_parsed*/ read_sci_float( std::string * p_num );
-    bool /*is_parsed*/ get_sci_float( double * p_float );
-    bool /*is_parsed*/ get_sci_float( float * p_float );
-
-    bool current_is( int c ) const;
-    bool current_is_in( const alphabet & r_alphabet ) const;
 
     // Low-level reader access
     reader & get_reader() { return r_reader; }  // Primarily for use with location_logger class
