@@ -598,7 +598,7 @@ TFUNCTION( dsl_pa_fixed_test )
 TFUNCTION( dsl_pa_get_char_test )
 {
     TBEGIN( "dsl_pa::get_char() Tests" );
-    
+
     {
     reader_string my_reader( "ABC" );
     dsl_pa my_pa( my_reader );
@@ -606,7 +606,7 @@ TFUNCTION( dsl_pa_get_char_test )
     TTEST( my_pa.get_char( &c ) );
     TTEST( c == 'A' );
     }
-    
+
     {
     reader_string my_reader( "ABC" );
     dsl_pa my_pa( my_reader );
@@ -614,7 +614,7 @@ TFUNCTION( dsl_pa_get_char_test )
     TTEST( my_pa.get_char( &out ) );
     TTEST( out == "A" );
     }
-    
+
     {
     reader_string my_reader( "ABC" );
     dsl_pa my_pa( my_reader );
@@ -622,7 +622,7 @@ TFUNCTION( dsl_pa_get_char_test )
     TTEST( my_pa.read_char( &out ) );
     TTEST( out == "XYZA" );
     }
-    
+
     {
     reader_string my_reader( "ABC" );
     dsl_pa my_pa( my_reader );

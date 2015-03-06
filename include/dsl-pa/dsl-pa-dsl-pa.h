@@ -133,7 +133,7 @@ public:
     size_t wsp();     // From ABNF (RFC5234) whitespace: non-newline space chars
     bool opt_wsp() { return optional( wsp() ); }
 
-    bool /*is_not_eof*/ get_char();		// Use current() method is access value
+    bool /*is_not_eof*/ get_char();     // Use current() method to access value
     bool /*is_not_eof*/ get_char( std::string * p_input );
     bool /*is_not_eof*/ read_char( std::string * p_input );
     bool /*is_not_eof*/ get_char( int * p_char );
