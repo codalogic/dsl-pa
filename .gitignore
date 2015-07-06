@@ -24,6 +24,7 @@
 *.idb
 *.htm
 *.dll
+*.user
 
 # Project specific ignores
 FoxdfEr43De.txt
