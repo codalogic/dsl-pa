@@ -32,6 +32,7 @@
 //----------------------------------------------------------------------------
 
 #include "dsl-pa/dsl-pa.h"
+#include "dsl-pa/dsl-pa-lite.h"
 
 #include <iostream>
 #include <fstream>
