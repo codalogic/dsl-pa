@@ -142,6 +142,8 @@ public:
     reader() : current_char( R_EOI ) {}
     virtual ~reader() {}
 
+    virtual bool is_open() const { return true; }
+
     char get();
     char current() const { return current_char; }
     void unget() { unget( current() ); }    // Unget with argument ungets current char
@@ -295,6 +297,8 @@ public:
         :
         fin( p_input_in, std::ios::binary )
     {}
+
+    virtual bool is_open() const { return fin.is_open(); }
 
     virtual char get_next_input()
     {

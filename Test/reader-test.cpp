@@ -438,3 +438,26 @@ TFUNCTION( reader_line_counting_test )
 
     TSETUP( my_reader.location_pop() );
 }
+
+TFUNCTION( reader_is_open_test )
+{
+    TBEGIN( "Reader::is_open() tests" );
+
+    {
+    reader_string my_reader( "ab\r\ncd\nef\rgh\r\nij" );
+
+    TTEST( my_reader.is_open() );
+    }
+
+    {
+    reader_file my_reader( "l:\\::::" );    // Illegal file name
+
+    TTEST( ! my_reader.is_open() );
+    }
+
+    {
+    std::auto_ptr< reader > p_reader( reader_factory_file().create( "abc d" ) );
+
+    TTEST( p_reader->is_open() );
+    }
+}

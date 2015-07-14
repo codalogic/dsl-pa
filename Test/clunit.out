@@ -1,4 +1,4 @@
-Tests run on Fri Mar 06 17:44:31 2015
+Tests run on Tue Jul 14 17:08:31 2015
 
 
     Alphabet tests [c:\home\pete\sw\dsl-pa\test\alphabet-test.cpp:42]
@@ -1519,5 +1519,14 @@ Tests run on Fri Mar 06 17:44:31 2015
     ok: my_reader.get_line_number() == 3
       : my_reader.location_pop()
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
+
+
+    Reader::is_open() tests [c:\home\pete\sw\dsl-pa\test\reader-test.cpp:444]
+    ==========================
+    ok: my_reader.is_open()
+    ok: ! my_reader.is_open()
+    ok: fout.is_open()
+    ok: p_reader->is_open()
+    ok: ! _CrtMemDifference( &s3, &s1, &s2 )
     ok: _CrtCheckMemory() != 0
-0 error(s), 0 todo(s), 1168 test(s)
+0 error(s), 0 todo(s), 1173 test(s)
