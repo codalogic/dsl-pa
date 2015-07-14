@@ -648,7 +648,7 @@ TFUNCTION( dsl_pa_peek_char_no_space_test )
     TTEST( my_pa.peek_char_no_space() );
     TTEST( my_pa.current() == 'B' );
 
-    TTEST( my_pa.peek_char_no_space() );	// Peeking again should return same char
+    TTEST( my_pa.peek_char_no_space() );    // Peeking again should return same char
     TTEST( my_pa.current() == 'B' );
 
     TTEST( my_pa.get_char() );
@@ -666,7 +666,7 @@ TFUNCTION( dsl_pa_peek_char_no_space_test )
     TTEST( my_pa.peek_char_no_wsp() );
     TTEST( my_pa.current() == 'B' );
 
-    TTEST( my_pa.peek_char_no_wsp() );	// Peeking again should return same char
+    TTEST( my_pa.peek_char_no_wsp() );  // Peeking again should return same char
     TTEST( my_pa.current() == 'B' );
 
     TTEST( my_pa.get_char() );

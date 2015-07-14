@@ -43,7 +43,7 @@ TFUNCTION( dsl_lite_test )
 {
     {
     dsl_pa_lite pal( "" );
-    
+
     TTEST( pal.result() == true );
     }
 
@@ -53,13 +53,13 @@ TFUNCTION( dsl_lite_test )
 
     {
     dsl_pa_lite pal( std::string("") );
-    
+
     TTEST( pal.result() == true );
     }
 
     {
     dsl_pa_lite pal( "s" );
-    
+
     TTEST( pal.is_char( 's' ).result() == true );
     }
 
@@ -77,14 +77,14 @@ TFUNCTION( dsl_lite_test )
     TTEST( dsl_pa_lite( "se" ).is_char( 's' ).is_end() == false );
     TTEST( dsl_pa_lite( "se" ).optional().is_char( 'v' ).is_char( 's' ).is_end() == false );
     }
-    
+
     {
     int i;
     TTEST( dsl_pa_lite( "se" ).get_int( &i ) == false );
     TTEST( dsl_pa_lite( "se" ).optional().get_int( &i ) == true );
     TTEST( dsl_pa_lite( "se" ).optional().get_int( &i ).is_char( 's' ) == true );
     }
-    
+
     {
     int i = 0;
     TTEST( dsl_pa_lite( "s123" ).is_char( 's' ).get_int( &i ).min_size( 2 ) == true );
@@ -103,18 +103,18 @@ TFUNCTION( dsl_lite_test )
     TTEST( dsl_pa_lite( "s123" ).is_char( 's' ).get_int( &i ).size( 2, 3 ) == true );
     TTEST( dsl_pa_lite( "s123" ).is_char( 's' ).get_int( &i ).size( 2, 2 ) == false );
     }
-    
+
     {
     float f = 0.0;
     TTEST( dsl_pa_lite( "s1.5v" ).is_char( 's' ).get_float( &f ).is_char( 'v' ) == true );
     TTEST( f == 1.5 );
     }
-    
+
     {
     TTEST( dsl_pa_lite( "s123" ).fixed( "s12" ).is_char( '3' ) == true );
     TTEST( dsl_pa_lite( "s123" ).ifixed( "S12" ).is_char( '3' ) == true );
     }
-    
+
     {
     std::string name;
     int i;
@@ -123,7 +123,7 @@ TFUNCTION( dsl_lite_test )
     TTEST( name == "foo" );
     TTEST( i == 123 );
     }
-    
+
     {
     std::string name;
     int i;
@@ -132,7 +132,7 @@ TFUNCTION( dsl_lite_test )
     TTEST( name == "foo" );
     TTEST( i == 123 );
     }
-    
+
     {
     std::string name;
     int i;
@@ -141,7 +141,7 @@ TFUNCTION( dsl_lite_test )
     TTEST( name == "foo" );
     TTEST( i == 123 );
     }
-    
+
     {
     std::string name;
     int i;
@@ -150,7 +150,7 @@ TFUNCTION( dsl_lite_test )
     TTEST( name == "foo" );
     TTEST( i == 123 );
     }
-    
+
     {
     std::string name;
     int i;
@@ -159,7 +159,7 @@ TFUNCTION( dsl_lite_test )
     TTEST( name == "foo" );
     TTEST( i == 123 );
     }
-    
+
     {
     int i;
     TTEST( dsl_pa_lite( "foo:123;" ).skip( alphabet_alpha() ).
@@ -172,7 +172,7 @@ TFUNCTION( dsl_pa_lite_extension_test )
 {
     // dsl_pa_lite extension handlers are done by defining a separate class
     // whose parse() method is called during the relevant phase of the
-    // parsing by making an instance of the class an argument of the 
+    // parsing by making an instance of the class an argument of the
     // template method dsl_pa_lite::x().  If the extension doesn't record any
     // parsed data then it can be created as a temporary object in the parse
     // sequence.  If it does record data then it needs to be created outsde
@@ -182,7 +182,7 @@ TFUNCTION( dsl_pa_lite_extension_test )
     public:
         void parse( dsl_pa_lite & r_dsl_pa_lite ) const
         {
-            r_dsl_pa_lite.opt_space().is_char( ':' ).opt_space(); 
+            r_dsl_pa_lite.opt_space().is_char( ':' ).opt_space();
         }
     };
 
@@ -224,7 +224,7 @@ TFUNCTION( dsl_pa_lite_extension_test )
         {
             r_dsl_pa_lite.get_int( &year ).size( 4, 4 ).is_char( '-' ).
                     get_int( &month ).size( 2, 2 ).is_char( '-' ).
-                    get_int( &dom ).size( 2, 2 ); 
+                    get_int( &dom ).size( 2, 2 );
         }
         int get_year() const { return year; }
         int get_month() const { return month; }
@@ -267,7 +267,7 @@ TFUNCTION( dsl_pa_lite_extension_test )
         public:
             void parse( dsl_pa_lite & r_dsl_pa_lite ) const
             {
-                r_dsl_pa_lite.opt_space().is_char( '-' ).opt_space(); 
+                r_dsl_pa_lite.opt_space().is_char( '-' ).opt_space();
             }
         };
     public:
@@ -284,10 +284,10 @@ TFUNCTION( dsl_pa_lite_extension_test )
             TTEST( i == 123 );
         }
     };
-    
+
     my_dsl_pa_lite my_pa_lite;
     my_pa_lite.my_dsl_pa_lite_test();
-    
+
     {
     date my_date;
     TTEST( dsl_pa_lite( "date: 2012-02-09" )["date"][colon()]
@@ -296,7 +296,7 @@ TFUNCTION( dsl_pa_lite_extension_test )
     TTEST( my_date.get_month() == 2 );
     TTEST( my_date.get_dom() == 9 );
     }
-    
+
     {
     int year;
     unsigned int month;
@@ -317,13 +317,13 @@ TFUNCTION( dsl_pa_lite_extension_test )
     TTEST( dsl_pa_lite( "date :   12-02-09" )
             ["date"][colon()][&year][4][-4]['-'][&month][2][-2]['-'][&dom][2][-2] == false );
     }
-    
+
     {
     std::string alpha1;
     std::string digit;
     std::string alpha2;
 
-    // N.B. there may be an issue with the lifetimes of the temporary 
+    // N.B. there may be an issue with the lifetimes of the temporary
     // alphabet_alpha and alphabet_digit object lifetimes.
     TTEST( dsl_pa_lite( "abc123def" )
             [alphabet_alpha()][&alpha1][alphabet_digit()][&digit][alphabet_alpha()][&alpha2] == true );
@@ -354,6 +354,6 @@ TFUNCTION( dsl_pa_lite_extension_test )
 //    int year = 0;
 //    TTEST( my_dsl_pa_lite( "year : 2012" ).fixed( "year" ).x().colon().get_int( &year ) );
 //    TTEST( year == 2012 );
-//    
+//
 //    TTEST( my_dsl_pa_lite( std::striing("year : 2012") ).fixed( "year" ).x().colon().get_int( &year ) );
 //}
