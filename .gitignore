@@ -24,6 +24,11 @@
 *.idb
 *.htm
 *.dll
+*.res
+*.map
+*.RES
+*.manifest
+*.cod
 *.user
 
 # Project specific ignores
