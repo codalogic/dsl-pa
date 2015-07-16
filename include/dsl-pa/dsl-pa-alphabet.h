@@ -142,6 +142,21 @@ public:
     virtual bool is_sought( char c ) const = 0;
 };
 
+class alphabet_char : public alphabet
+{
+private:
+    char sought;
+
+public:
+    alphabet_char( char sought_in )
+        : sought( sought_in )
+    {}
+    virtual bool is_sought( char c ) const
+    {
+        return c == sought;
+    }
+};
+
 // This alphabet class takes a specification that mirrors a Perl character
 // class, such as in /[a-fA-F\d]/.  To specify that char class you would
 // do:
@@ -386,7 +401,30 @@ public:
     }
 };
 
+class alphabet_and : public alphabet
+{
+private:
+    const alphabet & r_alphabet_1;
+    const alphabet & r_alphabet_2;
+
+public:
+    alphabet_and(
+            const alphabet & r_alphabet_1_in,
+            const alphabet & r_alphabet_2_in )
+        :
+        r_alphabet_1( r_alphabet_1_in ),
+        r_alphabet_2( r_alphabet_2_in )
+    {}
+    virtual bool is_sought( char c ) const
+    {
+        return r_alphabet_1.is_sought( c ) &&
+                r_alphabet_2.is_sought( c );
+    }
+};
+
 namespace /*cl::*/ short_alphabets {
+    typedef alphabet_char               character;
+    typedef alphabet_char_class         char_class;
     typedef alphabet_space              space;
     typedef alphabet_line_space         line_space;
     typedef alphabet_eol                end_of_line;
@@ -398,6 +436,7 @@ namespace /*cl::*/ short_alphabets {
     typedef alphabet_uni                uni;
     typedef alphabet_not                not;
     typedef alphabet_or                 or;
+    typedef alphabet_and                and;
     typedef alphabet_sign               sign;
     typedef alphabet_point              point;
     typedef alphabet_dot                dot;

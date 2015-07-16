@@ -1,12 +1,15 @@
-Tests run on Tue Jul 14 17:17:32 2015
+Tests run on Thu Jul 16 12:04:19 2015
 
 
     Alphabet tests [c:\home\pete\sw\dsl-pa\test\alphabet-test.cpp:42]
     ==========================
       Word char alphabet
-    ok: my_alphabet.is_sought( 'b' )
-    ok: ! my_alphabet.is_sought( '$' )
-    ok: ! my_alphabet.is_sought( ' ' )
+    ok: my_char_alphabet.is_sought( '^' )
+    ok: ! my_char_alphabet.is_sought( '-' )
+      Word char alphabet
+    ok: my_word_alphabet.is_sought( 'b' )
+    ok: ! my_word_alphabet.is_sought( '$' )
+    ok: ! my_word_alphabet.is_sought( ' ' )
       Check word char alphabet polymorphism!
     ok: p_my_alphabet->is_sought( 'b' )
     ok: ! p_my_alphabet->is_sought( '$' )
@@ -34,7 +37,7 @@ Tests run on Tue Jul 14 17:17:32 2015
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
 
-    Alphabet combiners tests [c:\home\pete\sw\dsl-pa\test\alphabet-test.cpp:88]
+    Alphabet combiners tests [c:\home\pete\sw\dsl-pa\test\alphabet-test.cpp:94]
     ==========================
     ok: alphabet_digit().is_sought( '1' )
     ok: alphabet_not( alphabet_digit() ).is_sought( 'x' )
@@ -46,10 +49,20 @@ Tests run on Tue Jul 14 17:17:32 2015
     ok: alphabet_or( alphabet_space(), alphabet_or( alphabet_digit(), alphabet_uni() ) ).is_sought( '5' )
     ok: alphabet_or( alphabet_space(), alphabet_or( alphabet_digit(), alphabet_uni() ) ).is_sought( '\x80' )
     ok: ! alphabet_or( alphabet_space(), alphabet_or( alphabet_digit(), alphabet_uni() ) ).is_sought( '$' )
+    ok: alphabet_and( a_to_f, c_to_k ).is_sought( 'e' )
+    ok: ! alphabet_and( a_to_f, c_to_k ).is_sought( 'a' )
+    ok: ! alphabet_and( a_to_f, c_to_k ).is_sought( 'k' )
+    ok: ! alphabet_and( a_to_f, c_to_k ).is_sought( '0' )
+    ok: alphabet_and( a_to_f, alphabet_not( alphabet_char( 'c' ) ) ).is_sought( 'b' )
+    ok: ! alphabet_and( a_to_f, alphabet_not( alphabet_char( 'c' ) ) ).is_sought( 'c' )
+    ok: ! alphabet_and( a_to_f, alphabet_not( alphabet_char( 'c' ) ) ).is_sought( '0' )
+    ok: a_to_f_not_c.is_sought( 'b' )
+    ok: ! a_to_f_not_c.is_sought( 'c' )
+    ok: ! a_to_f_not_c.is_sought( '0' )
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
 
-    Alphabet typedefed tests [c:\home\pete\sw\dsl-pa\test\alphabet-test.cpp:106]
+    Alphabet typedefed tests [c:\home\pete\sw\dsl-pa\test\alphabet-test.cpp:132]
     ==========================
     ok: number().is_sought( '1' )
     ok: name().is_sought( 'g' )
@@ -60,11 +73,19 @@ Tests run on Tue Jul 14 17:17:32 2015
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
 
-    Alphabet short_alphabets tests [c:\home\pete\sw\dsl-pa\test\alphabet-test.cpp:128]
+    Alphabet short_alphabets tests [c:\home\pete\sw\dsl-pa\test\alphabet-test.cpp:154]
     ==========================
+    ok: character( '^' ).is_sought( '^' )
+    ok: ! character( '^' ).is_sought( '-' )
     ok: digit().is_sought( '1' )
     ok: not( digit() ).is_sought( 'x' )
     ok: or( space(), digit() ).is_sought( '5' )
+    ok: or( space(), digit() ).is_sought( ' ' )
+    ok: ! or( space(), digit() ).is_sought( 'F' )
+    ok: and( char_class( "A-F" ), char_class( "C-K" ) ).is_sought( 'D' )
+    ok: ! and( char_class( "A-F" ), char_class( "C-K" ) ).is_sought( 'A' )
+    ok: ! and( char_class( "A-F" ), char_class( "C-K" ) ).is_sought( 'K' )
+    ok: ! and( char_class( "A-F" ), char_class( "C-K" ) ).is_sought( '0' )
     ok: alpha().is_sought( 'a' )
     ok: line_space().is_sought( ' ' )
     ok: line_space().is_sought( '\t' )
@@ -93,7 +114,7 @@ Tests run on Tue Jul 14 17:17:32 2015
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
 
-    Alphabet char_to_size_t tests [c:\home\pete\sw\dsl-pa\test\alphabet-test.cpp:170]
+    Alphabet char_to_size_t tests [c:\home\pete\sw\dsl-pa\test\alphabet-test.cpp:207]
     ==========================
     ok: alphabet_helpers::char_to_size_t( 0 ) == 0
     ok: alphabet_helpers::char_to_size_t( 10 ) == 10
@@ -102,7 +123,7 @@ Tests run on Tue Jul 14 17:17:32 2015
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
 
-     Alphabet char_map tests [c:\home\pete\sw\dsl-pa\test\alphabet-test.cpp:183]
+    Alphabet char_map tests [c:\home\pete\sw\dsl-pa\test\alphabet-test.cpp:220]
     ==========================
     ok: ! my_map.is_set( 'a' )
     ok: ! my_map.is_set( 'b' )
@@ -181,7 +202,7 @@ Tests run on Tue Jul 14 17:17:32 2015
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
 
-     Alphabet_char_class tests [c:\home\pete\sw\dsl-pa\test\alphabet-test.cpp:292]
+    Alphabet_char_class tests [c:\home\pete\sw\dsl-pa\test\alphabet-test.cpp:329]
     ==========================
       : alphabet_char_class my_char_class( "a-z" )
     ok: my_char_class.is_sought( 'a' )
@@ -1529,4 +1550,4 @@ Tests run on Tue Jul 14 17:17:32 2015
     ok: p_reader->is_open()
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
     ok: _CrtCheckMemory() != 0
-0 error(s), 0 todo(s), 1173 test(s)
+0 error(s), 0 todo(s), 1193 test(s)

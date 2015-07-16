@@ -42,14 +42,20 @@ TFUNCTION( alphabet_test )
     TBEGIN( "Alphabet tests" );
 
     TDOC( "Word char alphabet" );
-    alphabet_word_char my_alphabet;
+    alphabet_char my_char_alphabet( '^' );
 
-    TTEST( my_alphabet.is_sought( 'b' ) );
-    TTEST( ! my_alphabet.is_sought( '$' ) );
-    TTEST( ! my_alphabet.is_sought( ' ' ) );
+    TTEST( my_char_alphabet.is_sought( '^' ) );
+    TTEST( ! my_char_alphabet.is_sought( '-' ) );
+
+    TDOC( "Word char alphabet" );
+    alphabet_word_char my_word_alphabet;
+
+    TTEST( my_word_alphabet.is_sought( 'b' ) );
+    TTEST( ! my_word_alphabet.is_sought( '$' ) );
+    TTEST( ! my_word_alphabet.is_sought( ' ' ) );
 
     TDOC( "Check word char alphabet polymorphism!" );
-    alphabet * p_my_alphabet = &my_alphabet;
+    alphabet * p_my_alphabet = &my_word_alphabet;
 
     TTEST( p_my_alphabet->is_sought( 'b' ) );
     TTEST( ! p_my_alphabet->is_sought( '$' ) );
@@ -99,6 +105,26 @@ TFUNCTION( alphabet_combiners_test )
     TTEST( alphabet_or( alphabet_space(), alphabet_or( alphabet_digit(), alphabet_uni() ) ).is_sought( '5' ) );
     TTEST( alphabet_or( alphabet_space(), alphabet_or( alphabet_digit(), alphabet_uni() ) ).is_sought( '\x80' ) );
     TTEST( ! alphabet_or( alphabet_space(), alphabet_or( alphabet_digit(), alphabet_uni() ) ).is_sought( '$' ) );
+
+    // alphabet_and
+    alphabet_char_class a_to_f( "a-f" );
+    alphabet_char_class c_to_k( "c-k" );
+    TTEST( alphabet_and( a_to_f, c_to_k ).is_sought( 'e' ) );
+    TTEST( ! alphabet_and( a_to_f, c_to_k ).is_sought( 'a' ) );
+    TTEST( ! alphabet_and( a_to_f, c_to_k ).is_sought( 'k' ) );
+    TTEST( ! alphabet_and( a_to_f, c_to_k ).is_sought( '0' ) );
+
+    TTEST( alphabet_and( a_to_f, alphabet_not( alphabet_char( 'c' ) ) ).is_sought( 'b' ) );
+    TTEST( ! alphabet_and( a_to_f, alphabet_not( alphabet_char( 'c' ) ) ).is_sought( 'c' ) );
+    TTEST( ! alphabet_and( a_to_f, alphabet_not( alphabet_char( 'c' ) ) ).is_sought( '0' ) );
+
+    // alphabet_and a_to_f_not_c( a_to_f, alphabet_not( alphabet_char( 'c' ) ); // Can't do this because temporaries will be destroyed before a_to_f_not_c is used
+    alphabet_char char_c( 'c' );
+    alphabet_not not_c( char_c );
+    alphabet_and a_to_f_not_c( a_to_f, not_c );
+    TTEST( a_to_f_not_c.is_sought( 'b' ) );
+    TTEST( ! a_to_f_not_c.is_sought( 'c' ) );
+    TTEST( ! a_to_f_not_c.is_sought( '0' ) );
 }
 
 TFUNCTION( alphabet_typedefed_test )
@@ -106,7 +132,7 @@ TFUNCTION( alphabet_typedefed_test )
     TBEGIN( "Alphabet typedefed tests" );
 
     // At times it my be appropriate to assign a name to a alphabet that is
-    // more appropriate to the language being pasred.  This can be done with
+    // more appropriate to the language being parsed.  This can be done with
     // typedefs.
 
     typedef alphabet_digit  number;
@@ -134,9 +160,20 @@ TFUNCTION( alphabet_short_alphabets_test )
 
     using namespace cl::short_alphabets;
 
+    TTEST( character( '^' ).is_sought( '^' ) );
+    TTEST( ! character( '^' ).is_sought( '-' ) );
+
     TTEST( digit().is_sought( '1' ) );
+
     TTEST( not( digit() ).is_sought( 'x' ) );
     TTEST( or( space(), digit() ).is_sought( '5' ) );
+    TTEST( or( space(), digit() ).is_sought( ' ' ) );
+    TTEST( ! or( space(), digit() ).is_sought( 'F' ) );
+    TTEST( and( char_class( "A-F" ), char_class( "C-K" ) ).is_sought( 'D' ) );
+    TTEST( ! and( char_class( "A-F" ), char_class( "C-K" ) ).is_sought( 'A' ) );
+    TTEST( ! and( char_class( "A-F" ), char_class( "C-K" ) ).is_sought( 'K' ) );
+    TTEST( ! and( char_class( "A-F" ), char_class( "C-K" ) ).is_sought( '0' ) );
+
     TTEST( alpha().is_sought( 'a' ) );
 
     TTEST( line_space().is_sought( ' ' ) );
@@ -180,7 +217,7 @@ TFUNCTION( alphabet_char_to_size_t_test )
 
 TFUNCTION( alphabet_char_map_test )
 {
-    TBEGIN( " Alphabet char_map tests" );
+    TBEGIN( "Alphabet char_map tests" );
 
     char_map my_map;
 
@@ -289,7 +326,7 @@ TFUNCTION( alphabet_char_map_test )
 
 TFUNCTION( alphabet_char_class_test )
 {
-    TBEGIN( " Alphabet_char_class tests" );
+    TBEGIN( "Alphabet_char_class tests" );
 
     {
     TSETUP( alphabet_char_class my_char_class( "a-z" ) );
