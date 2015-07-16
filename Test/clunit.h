@@ -9,82 +9,93 @@
 // modification, are permitted provided that the following conditions
 // are met:
 //
-// - Redistributions of source code must retain the above copyright
-//   notice, this list of conditions and the following disclaimer.
-// - Redistributions in binary form must reproduce the above copyright
-//   notice, this list of conditions and the following disclaimer in
-//   the documentation and/or other materials provided with the
-//   distribution.
+// - Redistributions of source code must retain the above copyright notice,
+//   this list of conditions and the following disclaimer.
+// - Redistributions in binary form must reproduce the above copyright notice,
+//   this list of conditions and the following disclaimer in the documentation
+//   and/or other materials provided with the distribution.
 // - Neither the name Codalogic nor the names of its contributors may be used
 //   to endorse or promote products derived from this software without
 //   specific prior written permission.
 //
-// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-// "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-// LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
-// FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
-// COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
-// INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
-// BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-// LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-// CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
-// LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
-// ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+// AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+// IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+// ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+// LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+// CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+// SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+// INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+// CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+// ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 // POSSIBILITY OF SUCH DAMAGE.
 //----------------------------------------------------------------------------
 
 //----------------------------------------------------------------------------
-// To use cl::clunit, create a function in a test file that has a similar
-// format to the example below.  To register the test function create a static
-// instance of cl::clunit with the test function as an argument. In main(),
-// call the TRUNALL macro, which will run all the registered tests and
-// report the results.  The TFUNCTION() macro allows starting a test function
-// and registering it at the same time. See example-test.cpp for an example.
+// cl::clunit, is a simple C++ unit testing framework.  It's USP is that it
+// supports to-do statements so that you can easily record tests that you plan
+// to do, but haven't implemented yet.  This allows you to plan ahead, but
+// still only work on fixing one test at a time.
 //
-// In the test file containing main(), do #define CLUNIT_HOME before
-// #include "clunit.h"to ensure the key declarations are included.
-// By default the test output goes to "clunit.out". If you wish to direct
-// the test output to a different file, do:
-//       #define CLUNIT_OUT "tout.out"
-// or similar.
-/* Example:
+// A test function is created using the TFEATURE( "A descriptive string" )
+// macro.  This represents the beginning of a test function that is
+// automagically registered for execution when the tests are initiated.
+//
+/* For example:
 
 example-test.cpp:
     #include "clunit.h"
 
-    void example_test()
+    TFEATURE( "Example tests" )         // Register test with descriptive name
     {
-        TBEGIN( "Example tests" );      // Document the beginning of a test function
-
         TDOC( "Test description" );     // Add any documentation (anywhere in function)
         TSETUP( int t=1 );              // Do any lines needed to setup a test
         int b=1;                        // Use of TSETUP for test setup is optional
         TTODO( "Need todo this" );      // Log any tests that need to be done
+        TTODON( 2, "Need todo this" );  // As above but with a depth indicator (i.e. 2) to help prioritise work
         TTODOX( t == b );               // Log a todo that is compilable but not trying to pass yet
+        TTODOXN( 2, t == b );           // A version of TTODOX() with a depth indicator
         TDOC( "More description" );
         TTEST( 1 != 0 );                // Run a test
+        TTESTN( 2, 1 != 0 );            // A version of TTEST() to mirror TTODOXN()
         TCRITICALTEST( 1 == 1 );        // Return from function immediately if test fails
+        TCRITICALTESTN( 2, 1 == 1 );    // Version of TCRITICALTEST() with depth indicator
+        TTESTFAIL( 1 != 0 );            // Fail a test that should pass - to check it's being run
+        TTESTNFAIL( 1, 1 != 0 );        // TTESTN variant of TTFAIL()
+        TCALL( func( 12, "y", "y" ) );  // Call a test function
     }
+*/
+// A note can be made of features that need to be tested using the TFEATTODO()
+// macros.  These effectively create a test function containing a single
+// TTODO() test description macro.
+//
+/* For example (not in a function):
 
-    TREGISTER( example_test );          // Register example_test() for calling
+    TFEATTODO( "Feature Todo" );        // A quick way of recording a feature that needs testing
 
-another-test.cpp:
-    #include "clunit.h"
-
-    TFUNCTION( another_test )           // A simpler way to both define and regsiter
-    {                                   // a test function called another_test()
-        ...
-    }
+    TFEATTODON( 2, "Feature N Todo" );  // As above but with a depth indicator
+*/
+//
+// The tests are initiated by calling the TRUNALL(); macro in the test
+// program's main() function.  Before doing #include "clunit.h" in the test
+// file containing main(), be sure to #define CLUNIT_HOME first.
+//
+/* For example:
 
 main-test.cpp:
     #define CLUNIT_HOME
     #include "clunit.h"
 
-    void main()
+    int main()
     {
-        TRUNALL();                      // Run registered tests and print final pass/fail result
+        TRUNALL();  // Run registered tests and print final pass/fail result
     }
 */
+//
+// By default the test output goes to "clunit.out". If you wish to direct
+// the test output to a different file, do:
+//       #define CLUNIT_OUT "tout.out"
+// or similar.
 //----------------------------------------------------------------------------
 
 #ifndef CLUNIT
@@ -92,11 +103,14 @@ main-test.cpp:
 
 #include <iostream>
 #include <fstream>
-#include <strstream>
+#ifdef _MSC_VER
+    #include <strstream>
+#endif
 #include <sstream>
 #include <vector>
 #include <string>
 #include <ctime>
+#include <cstring>
 
 #ifdef _MSC_VER
     #include <crtdbg.h>
@@ -107,6 +121,50 @@ main-test.cpp:
 #endif
 
 namespace cl {
+
+#define TCAT( x, y ) TCAT2( x, y )
+#define TCAT2( x, y ) x ## y
+
+#define TFEATURE( d ) TFEATURE_IMPL( d, TCAT( test_func_, __LINE__ ) )
+#define TFEATURE_IMPL( d, f ) static void f(); TREGISTERD( f, d ); void f()
+#define TREGISTERD( f, d ) static cl::clunit f ## _registered_clunit_test( f, d, __FILE__, __LINE__ );
+#define TFUNCTION( f ) static void f(); TREGISTER( f ); void f()
+#define TREGISTER( f ) static cl::clunit f ## _registered_clunit_test( f );
+#define TBEGIN( d ) cl::clunit::tbegin( d, __FILE__, __LINE__ )
+#define TDOC( d ) cl::clunit::tdoc( d )
+#define TSETUP( x ) cl::clunit::tsetup_log( #x ); x
+#define TTODO( d ) cl::clunit::ttodo( d, __FILE__, __LINE__ )
+#define TTODON( n, d ) cl::clunit::ttodo( "[" #n "] " d, __FILE__, __LINE__ )
+#define TTODOX( x ) { cl::clunit::ttodox( #x, (x), __FILE__, __LINE__ ); }
+#define TTODOXN( n, x ) { cl::clunit::ttodox( "[" #n "] " #x, (x), __FILE__, __LINE__ ); }
+#define TTEST( x ) { cl::clunit::ttest( #x, (x), __FILE__, __LINE__ ); }
+#define TTESTN( n, x ) TTEST( x )
+#define TTESTFAIL( x ) { cl::clunit::ttestfail( #x, (x), __FILE__, __LINE__ ); }
+#define TTESTNFAIL( n, x ) TTESTFAIL( x )
+#define TCRITICALTEST( x ) { if( ! cl::clunit::ttest( #x, (x), __FILE__, __LINE__ ) ) return; }
+#define TCRITICALTESTN( n, x ) TCRITICALTEST( x )
+#define TCALL( x ) { cl::clunit::tcall( #x, __FILE__, __LINE__ ); (x); }
+#define TFEATURETODO( d ) TFUNCTION( TCAT( todo_function_, __LINE__ ) ) { TTODO( d ); }
+#define TFEATURETODON( n, d ) TFUNCTION( TCAT( todo_function_, __LINE__ ) ) { TTODON( n, d ); }
+#define TRUNALL() { cl::clunit::run(); size_t n_errors = cl::clunit::report(); if( n_errors > 255 ) return 255; return n_errors; }
+
+typedef void(*job_func_ptr)();
+struct job_description
+{
+    job_func_ptr job;
+    const char * p_description;
+    const char * p_file;
+    int line;
+    job_description( job_func_ptr job_in )
+        : job( job_in ), p_description( 0 ), p_file( 0 ), line( 0 )
+    {}
+    job_description( job_func_ptr job_in, const char * p_description_in,
+            const char * p_file_in, int line_in )
+        : job( job_in ), p_description( p_description_in ),
+            p_file( p_file_in ), line( line_in )
+    {}
+};
+typedef std::vector< job_description > job_list;
 
 class fixed_size_log
 {
@@ -143,20 +201,6 @@ public:
     bool empty() const { return  n_items_logged == 0; }
 };
 
-#define TFUNCTION( x ) static void x(); TREGISTER( x ); void x()
-#define TREGISTER( x ) static cl::clunit x ## _registered_clunit_test( x );
-#define TBEGIN( x ) cl::clunit::tbegin( x, __FILE__, __LINE__ )
-#define TDOC( x ) cl::clunit::tdoc( x )
-#define TSETUP( x ) cl::clunit::tsetup_log( #x ); x
-#define TTODO( x ) cl::clunit::ttodo( x, __FILE__, __LINE__ )
-#define TTODOX( x ) { cl::clunit::ttodox( #x, (x), __FILE__, __LINE__ ); }
-#define TTEST( x ) { cl::clunit::ttest( #x, (x), __FILE__, __LINE__ ); }
-#define TCRITICALTEST( x ) { if( ! cl::clunit::ttest( #x, (x), __FILE__, __LINE__ ) ) return; }
-#define TRUNALL() { cl::clunit::run(); size_t n_errors = cl::clunit::report(); if( n_errors > 255 ) return 255; return n_errors; }
-
-typedef void(*job_func_ptr)();
-typedef std::vector< job_func_ptr > job_list;
-
 class clunit
 {
 private:
@@ -164,8 +208,12 @@ private:
     {
     private:
         bool is_first;
+        bool is_new_tout_section;
+        bool is_new_print_all_section;
         int n_tests;
         int n_errors;
+        int n_forced_fails_invoked;
+        int n_forced_fails_occurred;
         fixed_size_log todo_log;
 
         job_list & get_jobs();
@@ -175,22 +223,33 @@ private:
         singleton()
             :
             is_first( true ),
+            is_new_tout_section( false ),
+            is_new_print_all_section( false ),
             n_tests( 0 ),
             n_errors( 0 ),
+            n_forced_fails_invoked( 0 ),
+            n_forced_fails_occurred( 0 ),
             todo_log( 10000 )
         {}
 
         void tregister( job_func_ptr job )
         {
-            get_jobs().push_back( job );
+            get_jobs().push_back( job_description( job ) );
+        }
+        void tregister( job_func_ptr job, const char * p_description,
+                const char * p_file, int line )
+        {
+            get_jobs().push_back(
+                    job_description( job, p_description, p_file, line ) );
         }
         void tbegin( const char * what, const char * file, int line )
         {
+            std::string indent( "    " );
             std::ostringstream documentation;
-            documentation <<
-                    "    " << what << " [" << file << ":" << line << "]\n" <<
-                    "    ==========================\n";
-            print_to_all_outputs( documentation.str() );
+            documentation << what << " [" << file_base( file ) << ":" << line << "]";
+            std::string heading( documentation.str() );
+            std::string underline( heading.size(), '=' );
+            print_to_all_outputs( indent + heading + "\n" + indent + underline + "\n" );
         }
         void tdoc( const char * what )
         {
@@ -203,7 +262,7 @@ private:
         void ttodo( const char * what, const char * file, int line )
         {
             std::ostringstream report;
-            report << "- " << what << " [" << file << ":" << line << "]\n";
+            report << "- " << what << " [" << file_base( file ) << ":" << line << "]\n";
             todo_log.insert( report.str() );
         }
         void ttodox( const char * what, bool is_passed, const char * file, int line )
@@ -211,26 +270,43 @@ private:
             std::ostringstream report;
             report << "- " <<
                     what << ((is_passed)?" (passing)":" (failing)") <<
-                    " [" << file << ":" << line << "]\n";
+                    " [" << file_base( file ) << ":" << line << "]\n";
             todo_log.insert( report.str() );
         }
         bool ttest( const char * what, bool is_passed, const char * file, int line )
         {
+            std::ostringstream report;
             if( ! is_passed )
             {
-                tout() << "not ";
+                report << "not ";
                 ++n_errors;
             }
             else
             {
-                tout() << "    ";
+                report << "    ";
             }
             ++n_tests;
-            tout() << "ok: " << what;
+            report << "ok: " << what;
             if( ! is_passed )
-                tout() << " (" << line << ")";
-            tout() << "\n";
+                report << " (" << line << ")";
+            report << "\n";
+            if( is_passed )
+                tout() << report.str();
+            else
+                print_to_all_outputs( report.str() );
             return is_passed;
+        }
+        bool ttestfail( const char * what, bool is_passed, const char * file, int line )
+        {
+            ++n_forced_fails_invoked;
+            int n_errors_at_beginning = n_errors;
+            bool result = ttest( what, ! is_passed, file, line );
+            n_forced_fails_occurred += n_errors - n_errors_at_beginning;
+            return result;
+        }
+        void tcall( const char * what, const char * file, int line )
+        {
+            tout() << "      Calling: " << what << " (" << line << ")" << "\n";
         }
         void run()
         {
@@ -240,16 +316,18 @@ private:
             // -ends.  So that these allocations do not muck up the heap checking stats,
             // -dummy uses of the libraries are made so that they are initialised.  We
             // -can then checkpoint the heap after this point.
-            std::ostrstream t1;
-            t1 << "" << 12;
+            #ifdef _MSC_VER
+                std::ostrstream t1;
+                t1 << "" << 12;
+            #endif
             std::ostringstream t2;
             t2 << "" << 12;
             tout() << "";
             }
 
-            for( job_list::const_iterator task( get_jobs().begin() ), task_end( get_jobs().end() );
-                    task != task_end;
-                    ++task )
+            for( job_list::const_iterator job( get_jobs().begin() ), job_end( get_jobs().end() );
+                    job != job_end;
+                    ++job )
             {
 #if defined( _MSC_VER ) && defined( _DEBUG )
                 _CrtMemState s1, s2, s3;
@@ -259,8 +337,10 @@ private:
 
                 try
                 {
-                    print_to_all_outputs( "\n\n" ); // Make sure there's at least a gap between different test function outputs
-                    (*task)();
+                    is_new_tout_section = is_new_print_all_section = true;
+                    if( job->p_description )
+                        tbegin( job->p_description, job->p_file, job->line );
+                    job->job();
                 }
                 catch(...)
                 {
@@ -301,16 +381,39 @@ private:
                     n_errors << " error(s), " <<
                     todo_log.size() << " todo(s), " <<
                     n_tests << " test(s)\n";
+            if( n_forced_fails_invoked > 0 )
+                summary <<
+                        "FORCED FAILURES: " <<
+                            n_forced_fails_invoked << " invoked, " <<
+                            n_forced_fails_occurred << " occurred\n";
             print_to_all_outputs( summary.str() );
             return n_errors;
         }
         void print_to_all_outputs( const std::string & message )
         {
+            if( is_new_print_all_section )
+            {
+                is_new_print_all_section = false;
+                std::cout << "\n";
+                TVS_DEBUG_CONSOLE_OUT( std::string( "\n" ) );
+            }
             tout() << message;
             std::cout << message;
             TVS_DEBUG_CONSOLE_OUT( message );
         }
         void clear() { get_jobs().clear(); }
+    private:
+        static const char * file_base( const char * p_file )
+        {
+            const char * p_base = p_file;
+            for( const char * p_seek = "/\\:"; *p_seek; ++p_seek )
+            {
+                const char * p_found = strrchr( p_base, *p_seek );
+                if( p_found && *(p_found + 1) )
+                    p_base = p_found + 1;
+            }
+            return p_base;
+        }
     };
 
     static singleton my_singleton;
@@ -318,8 +421,14 @@ private:
 public:
     clunit( job_func_ptr job )
         { tregister( job ); }
+    clunit( job_func_ptr job, const char * p_description,
+                const char * p_file, int line )
+        { tregister( job, p_description, p_file, line ); }
     static void tregister( job_func_ptr job )
         { my_singleton.tregister( job ); }
+    static void tregister( job_func_ptr job, const char * p_description,
+                const char * p_file, int line )
+        { my_singleton.tregister( job, p_description, p_file, line ); }
     static void tbegin( const char * what, const char * file, int line )
         { my_singleton.tbegin( what, file, line ); }
     static void tdoc( const char * what )
@@ -332,6 +441,10 @@ public:
         { my_singleton.ttodox( what, is_passed, file, line ); }
     static bool ttest( const char * what, bool is_passed, const char * file, int line )
         { return my_singleton.ttest( what, is_passed, file, line ); }
+    static bool ttestfail( const char * what, bool is_passed, const char * file, int line )
+        { return my_singleton.ttestfail( what, is_passed, file, line ); }
+    static void tcall( const char * what, const char * file, int line )
+        { my_singleton.tcall( what, file, line ); }
     static void run()
         { my_singleton.run(); }
     static size_t report()
@@ -339,6 +452,18 @@ public:
     static void clear()
         { my_singleton.clear(); }
 };
+
+#ifdef CLUNIT_MAIN
+#define CLUNIT_HOME
+    } // End of namespace cl
+
+    int main( int argc, char * argv[] )
+    {
+        TRUNALL();
+    }
+
+    namespace cl {
+#endif
 
 #ifdef CLUNIT_HOME
     clunit::singleton clunit::my_singleton;
@@ -360,10 +485,15 @@ public:
             os << "Tests run on " << ctime(&t);
             is_first = false;
         }
+        if( is_new_tout_section )
+        {
+            is_new_tout_section = false;
+            os << "\n";
+        }
         return os;
     }
 #endif
 
 } // End of namespace cl
 
-#endif CLUNIT
+#endif // CLUNIT
