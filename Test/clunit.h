@@ -49,6 +49,7 @@ example-test.cpp:
     TFEATURE( "Example tests" )         // Register test with descriptive name
     {
         TDOC( "Test description" );     // Add any documentation (anywhere in function)
+        TTOC( "Example description" );  // Output table of contents entry to toc file
         TSETUP( int t=1 );              // Do any lines needed to setup a test
         int b=1;                        // Use of TSETUP for test setup is optional
         TTODO( "Need todo this" );      // Log any tests that need to be done
@@ -131,6 +132,7 @@ namespace cl {
 #define TFUNCTION( f ) static void f(); TREGISTER( f ); void f()
 #define TREGISTER( f ) static cl::clunit f ## _registered_clunit_test( f );
 #define TBEGIN( d ) cl::clunit::tbegin( d, __FILE__, __LINE__ )
+#define TTOC( d ) cl::clunit::ttoc( d, __FILE__, __LINE__ )
 #define TDOC( d ) cl::clunit::tdoc( d )
 #define TSETUP( x ) cl::clunit::tsetup_log( #x ); x
 #define TTODO( d ) cl::clunit::ttodo( d, __FILE__, __LINE__ )
@@ -207,28 +209,33 @@ private:
     class singleton
     {
     private:
-        bool is_first;
+        bool is_first_tout;
         bool is_new_tout_section;
         bool is_new_print_all_section;
         int n_tests;
         int n_errors;
         int n_forced_fails_invoked;
         int n_forced_fails_occurred;
+        bool is_first_ttoc;
+        const char * p_current_test_file;
         fixed_size_log todo_log;
 
         job_list & get_jobs();
         std::ostream & tout();
+        std::ostream & ttocout();
 
     public:
         singleton()
             :
-            is_first( true ),
+            is_first_tout( true ),
             is_new_tout_section( false ),
             is_new_print_all_section( false ),
             n_tests( 0 ),
             n_errors( 0 ),
             n_forced_fails_invoked( 0 ),
             n_forced_fails_occurred( 0 ),
+            is_first_ttoc( true ),
+            p_current_test_file( 0 ),
             todo_log( 10000 )
         {}
 
@@ -250,6 +257,19 @@ private:
             std::string heading( documentation.str() );
             std::string underline( heading.size(), '=' );
             print_to_all_outputs( indent + heading + "\n" + indent + underline + "\n" );
+            ttoc( what, file, line);
+        }
+        void ttoc( const char * what, const char * file, int line )
+        {
+            if( ! p_current_test_file || strcmp( p_current_test_file, file ) != 0 )
+            {
+                ttocout() << "\n";
+                ttocout() << "# " << file_base( file ) << "\n";
+                ttocout() << "| Description | Line |\n";
+                ttocout() << "|-------------|------|\n";
+                p_current_test_file = file;
+            }
+            ttocout() << "| " << what << " | " << line << " |\n";
         }
         void tdoc( const char * what )
         {
@@ -431,6 +451,8 @@ public:
         { my_singleton.tregister( job, p_description, p_file, line ); }
     static void tbegin( const char * what, const char * file, int line )
         { my_singleton.tbegin( what, file, line ); }
+    static void ttoc( const char * what, const char * file, int line )
+        { my_singleton.ttoc( what, file, line ); }
     static void tdoc( const char * what )
         { my_singleton.tdoc( what ); }
     static void tsetup_log( const char * what )
@@ -479,16 +501,27 @@ public:
 #else
         static std::ofstream os( "clunit.out" );
 #endif
-        if( is_first )
+        if( is_first_tout )
         {
             time_t t=time(NULL);
             os << "Tests run on " << ctime(&t);
-            is_first = false;
+            is_first_tout = false;
         }
         if( is_new_tout_section )
         {
             is_new_tout_section = false;
             os << "\n";
+        }
+        return os;
+    }
+    std::ostream & clunit::singleton::ttocout()
+    {
+        static std::ofstream os( "clunit-toc.md" );
+        if( is_first_ttoc )
+        {
+            time_t t=time(NULL);
+            os << "Tests table of contents generated on " << ctime(&t);
+            is_first_ttoc = false;
         }
         return os;
     }
