@@ -230,6 +230,7 @@ public:
         r_variable += current();
         return true;
     }
+
     template< typename T >
     static bool error( const T & r_exception )  // To throw custom exceptions
     {
@@ -244,6 +245,12 @@ public:
     static bool error_fatal( const char * p_what )
     {
         throw dsl_pa_fatal_exception( p_what );
+        return false;    // Won't be called!
+    }
+    template< typename T >
+    static bool retreat()   // Throw the specified exception in order to resume parsing at a different location in the parser
+    {
+        throw T();
         return false;    // Won't be called!
     }
 };
