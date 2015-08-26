@@ -189,7 +189,7 @@ public:
         source_location_top();
         unget_buffer.top();
         line_counter.top();
-        return true;
+        return false;
     }
 
     bool location_pop()

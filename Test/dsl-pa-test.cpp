@@ -191,6 +191,19 @@ TFUNCTION( dsl_pa_error_test )
     }
 }
 
+TFUNCTION( dsl_pa_location_top_return_codes )
+{
+    TBEGIN( "dsl pa location_top() return codes" );
+
+    reader_string my_reader( "abcdef" );
+    dsl_pa my_dsl_pa( my_reader );
+
+    TTEST( my_dsl_pa.location_push() );
+    TTEST( ! my_dsl_pa.location_top() );
+    TTEST( ! my_dsl_pa.location_top( false ) );
+    TTEST( my_dsl_pa.location_top( true ) );
+}
+
 TFUNCTION( dsl_pa_low_level_read_test )
 {
     TBEGIN( "dsl pa low level read tests" );
@@ -211,7 +224,7 @@ TFUNCTION( dsl_pa_low_level_read_test )
     TTEST( my_dsl_pa.get() == 'c' );
     TTEST( my_dsl_pa.get() == 'd' );
     TTEST( my_dsl_pa.get() == 'e' );
-    TTEST( my_dsl_pa.location_top() );
+    TTEST( ! my_dsl_pa.location_top() );
     TTEST( my_dsl_pa.get() == 'c' );
     TTEST( my_dsl_pa.location_pop() );
 
@@ -220,7 +233,7 @@ TFUNCTION( dsl_pa_low_level_read_test )
     TTEST( ! my_dsl_pa.is_get_char( 'x' ) );
     TTEST( my_dsl_pa.is_get_char( 'd' ) );
     TTEST( my_dsl_pa.get() == 'e' );
-    TTEST( my_dsl_pa.location_top() );
+    TTEST( ! my_dsl_pa.location_top() );
     TTEST( my_dsl_pa.get() == 'd' );
     }
 }

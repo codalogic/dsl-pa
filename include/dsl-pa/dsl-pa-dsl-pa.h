@@ -176,6 +176,7 @@ public:
     char peek() { return r_reader.peek(); }
     bool location_push() { return r_reader.location_push(); }   // See reader class for documentation
     bool location_top() { return r_reader.location_top(); }
+    bool location_top( bool ret ) { r_reader.location_top(); return ret; }
     bool location_pop() { return r_reader.location_pop(); }
 
     // optional() essentially ignore the result of the (single) function that
