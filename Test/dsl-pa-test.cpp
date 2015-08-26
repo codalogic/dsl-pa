@@ -202,6 +202,13 @@ TFUNCTION( dsl_pa_location_top_return_codes )
     TTEST( ! my_dsl_pa.location_top() );
     TTEST( ! my_dsl_pa.location_top( false ) );
     TTEST( my_dsl_pa.location_top( true ) );
+    TTEST( my_dsl_pa.location_pop() );
+
+    TTEST( my_dsl_pa.location_push() );
+    TTEST( my_dsl_pa.location_pop( true ) );
+
+    TTEST( my_dsl_pa.location_push() );
+    TTEST( ! my_dsl_pa.location_pop( false ) );
 }
 
 TFUNCTION( dsl_pa_low_level_read_test )

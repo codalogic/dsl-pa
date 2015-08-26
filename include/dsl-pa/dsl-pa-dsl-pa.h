@@ -178,6 +178,7 @@ public:
     bool location_top() { return r_reader.location_top(); }
     bool location_top( bool ret ) { r_reader.location_top(); return ret; }
     bool location_pop() { return r_reader.location_pop(); }
+    bool location_pop( bool ret ) { r_reader.location_pop(); return ret; }
 
     // optional() essentially ignore the result of the (single) function that
     // generated the input argument. e.g. allows optional( space() ); etc.
