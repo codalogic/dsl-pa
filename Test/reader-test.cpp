@@ -136,27 +136,27 @@ void reader_location_test( reader_factory & r_reader_factory )
     TTEST( p_reader->get() == 'b' );
     TTEST( p_reader->current() == 'b' );
 
-    TTEST( p_reader->location_push() ); // Not really a test, but we want to ensure it returns true
+    p_reader->location_push();
 
     TTEST( p_reader->get() == 'c' );
     TTEST( p_reader->get() == 'd' );
 
-    TTEST( p_reader->location_push() ); // Not really a test, but we want to ensure it returns true
+    p_reader->location_push();
 
     TTEST( p_reader->get() == 'e' );
     TTEST( p_reader->get() == 'f' );
     TTEST( p_reader->get() == reader::R_EOI );
     TTEST( p_reader->get() == reader::R_EOI );  // Should be able to repeatedly call get() once read end of input
 
-    TTEST( ! p_reader->location_top() );  // Not really a test, but we want to ensure it returns false
+    TTEST( p_reader->location_top() );  // Not really a test, but we want to ensure it returns true
     TTEST( p_reader->get() == 'e' );
     TTEST( p_reader->get() == 'f' );
-    TTEST( ! p_reader->location_top() );  // Not really a test, but we want to ensure it returns false
+    TTEST( p_reader->location_top() );  // Not really a test, but we want to ensure it returns true
     TTEST( p_reader->get() == 'e' );
     TTEST( p_reader->get() == 'f' );
 
-    TTEST( p_reader->location_pop() );  // Not really a test, but we want to ensure it returns true
-    TTEST( ! p_reader->location_top() );  // Not really a test, but we want to ensure it returns false
+    p_reader->location_pop();
+    TTEST( p_reader->location_top() );  // Not really a test, but we want to ensure it returns true
     TTEST( p_reader->get() == 'c' );
     TTEST( p_reader->get() == 'd' );
 }
@@ -174,23 +174,23 @@ void reader_location_with_newline_test( reader_factory & r_reader_factory )
     TTEST( p_reader->get() == 'a' );
     TTEST( p_reader->get() == 'b' );
 
-    TTEST( p_reader->location_push() ); // locatioin_push() before newline
+    p_reader->location_push();
 
     TTEST( p_reader->get() == 'c' );
     TTEST( p_reader->get() == '\n' );
     TTEST( p_reader->get() == 'd' );
 
-    TTEST( p_reader->location_push() ); // locatioin_push() after newline
+    p_reader->location_push();
 
     TTEST( p_reader->get() == 'e' );
     TTEST( p_reader->get() == 'f' );
 
-    TTEST( ! p_reader->location_top() );
+    TTEST( p_reader->location_top() );
     TTEST( p_reader->get() == 'e' );
 
-    TTEST( p_reader->location_pop() );
+    p_reader->location_pop();
 
-    TTEST( ! p_reader->location_top() );
+    TTEST( p_reader->location_top() );
     TTEST( p_reader->get() == 'c' );
     }
 
@@ -201,24 +201,24 @@ void reader_location_with_newline_test( reader_factory & r_reader_factory )
     TTEST( p_reader->get() == 'a' );
     TTEST( p_reader->get() == 'b' );
 
-    TTEST( p_reader->location_push() ); // locatioin_push() before newline
+    p_reader->location_push();
 
     TTEST( p_reader->get() == 'c' );
     TTEST( p_reader->get() == '\r' );
     TTEST( p_reader->get() == '\n' );
     TTEST( p_reader->get() == 'd' );
 
-    TTEST( p_reader->location_push() ); // locatioin_push() after newline
+    p_reader->location_push(); // locatioin_push() after newline
 
     TTEST( p_reader->get() == 'e' );
     TTEST( p_reader->get() == 'f' );
 
-    TTEST( ! p_reader->location_top() );
+    TTEST( p_reader->location_top() );
     TTEST( p_reader->get() == 'e' );
 
-    TTEST( p_reader->location_pop() );
+    p_reader->location_pop();
 
-    TTEST( ! p_reader->location_top() );
+    TTEST( p_reader->location_top() );
     TTEST( p_reader->get() == 'c' );
     }
 }
@@ -270,12 +270,12 @@ void reader_location_and_unget_test( reader_factory & r_reader_factory )
     // and requires necessitates care in the implementation. See
     // unget_buffer_size parameter for reader::source_location_push()
     TSETUP( p_reader->unget() );
-    TTEST( p_reader->location_push() );
+    p_reader->location_push();
 
     TTEST( p_reader->get() == 'c' );
     TTEST( p_reader->get() == 'd' );
     TTEST( p_reader->get() == 'e' );
-    TTEST( ! p_reader->location_top() );
+    TTEST( p_reader->location_top() );
     TTEST( p_reader->get() == 'c' );
     }
 
@@ -293,10 +293,10 @@ void reader_location_and_unget_test( reader_factory & r_reader_factory )
     // and requires necessitates care in the implementation. See
     // unget_buffer_size parameter for reader::source_location_push()
     TSETUP( p_reader->unget() );
-    TTEST( p_reader->location_push() );
+    p_reader->location_push();
 
     TTEST( p_reader->get() == '\0' );
-    TTEST( ! p_reader->location_top() );
+    TTEST( p_reader->location_top() );
     TTEST( p_reader->get() == '\0' );
     }
 }
@@ -314,7 +314,7 @@ void reader_location_logger_test( reader_factory & r_reader_factory )
     TTEST( p_reader->get() == 'b' );
     TTEST( p_reader->current() == 'b' );
 
-    TTEST( p_reader->location_push() ); // Not really a test, but we want to ensure it returns true
+    p_reader->location_push();
 
     TTEST( p_reader->get() == 'c' );
     TTEST( p_reader->get() == 'd' );
@@ -327,15 +327,15 @@ void reader_location_logger_test( reader_factory & r_reader_factory )
     TTEST( p_reader->get() == reader::R_EOI );
     TTEST( p_reader->get() == reader::R_EOI );  // Should be able to repeatedly call get() once read end of input
 
-    TTEST( ! p_reader->location_top() );  // Not really a test, but we want to ensure it returns false
+    TTEST( p_reader->location_top() );  // Not really a test, but we want to ensure it returns true
     TTEST( p_reader->get() == 'e' );
     TTEST( p_reader->get() == 'f' );
-    TTEST( ! p_reader->location_top() );  // Not really a test, but we want to ensure it returns false
+    TTEST( p_reader->location_top() );  // Not really a test, but we want to ensure it returns true
     TTEST( p_reader->get() == 'e' );
     }   // End of my_location_logger scope
 
     TTEST( p_reader->get() == 'f' );
-    TTEST( ! p_reader->location_top() );  // Not really a test, but we want to ensure it returns false
+    TTEST( p_reader->location_top() );  // Not really a test, but we want to ensure it returns true
     TTEST( p_reader->get() == 'c' );
     TTEST( p_reader->get() == 'd' );
 }

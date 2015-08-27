@@ -174,22 +174,25 @@ public:
     bool unget() { r_reader.unget(); return true; }
     bool unget( char c ) { r_reader.unget( c ); return true; }
     char peek() { return r_reader.peek(); }
-    bool location_push() { return r_reader.location_push(); }   // See reader class for documentation
-    bool location_top() { return r_reader.location_top(); }
+
+    // See class reader for documentation.  A typical code sequence might be:
+    // location_push(); path_a() || location_top() && path_b(); location_pop();
+    void location_push() { r_reader.location_push(); }
+    bool location_top() { r_reader.location_top(); return true; }
     bool location_top( bool ret ) { r_reader.location_top(); return ret; }
-    bool location_pop() { return r_reader.location_pop(); }
-    bool location_pop( bool ret ) { r_reader.location_pop(); return ret; }
+    void location_pop() { r_reader.location_pop(); }	// pop should always be called, so discourage it's use in a shortcut sequence
+
+    // optional_rewind() will call location_top() if the shortcut arguments
+    // it is called with yield false.  Used when the specified path is determined
+    // not to be the one encountered.
+    // Do location_push(); optional_rewind( XYZ() && ABC() ) && DEF(); location_pop()
+    bool optional_rewind( bool is_ok ) { if( ! is_ok ) location_top(); return true; }
 
     // optional() essentially ignore the result of the (single) function that
     // generated the input argument. e.g. allows optional( space() ); etc.
     static bool optional( bool ) { return true; }
     static bool optional( size_t ) { return true; } // Overloads to avoid performance warnings due to convertin size_t to bool
     static bool optional( int ) { return true; }
-
-    // optional_rewind() will call location_top() if the shortcut arguments
-    // it is called with yield false.
-    // Do location_push() && optional_rewind( XYZ() && ABC() ) && location_pop()
-    bool optional_rewind( bool is_ok ) { if( ! is_ok ) location_top(); return true; }
 
     // on_fail() allows inclusion of clean-up code in a short cut sequence
     // that is embedded in the parameters of an optional_rewind() call.

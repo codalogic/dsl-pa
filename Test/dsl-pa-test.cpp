@@ -198,17 +198,11 @@ TFUNCTION( dsl_pa_location_top_return_codes )
     reader_string my_reader( "abcdef" );
     dsl_pa my_dsl_pa( my_reader );
 
-    TTEST( my_dsl_pa.location_push() );
-    TTEST( ! my_dsl_pa.location_top() );
+    my_dsl_pa.location_push();
+    TTEST( my_dsl_pa.location_top() );
     TTEST( ! my_dsl_pa.location_top( false ) );
     TTEST( my_dsl_pa.location_top( true ) );
-    TTEST( my_dsl_pa.location_pop() );
-
-    TTEST( my_dsl_pa.location_push() );
-    TTEST( my_dsl_pa.location_pop( true ) );
-
-    TTEST( my_dsl_pa.location_push() );
-    TTEST( ! my_dsl_pa.location_pop( false ) );
+    my_dsl_pa.location_pop();
 }
 
 TFUNCTION( dsl_pa_low_level_read_test )
@@ -222,7 +216,7 @@ TFUNCTION( dsl_pa_low_level_read_test )
     TTEST( my_dsl_pa.get() == 'b' );
     TTEST( my_dsl_pa.current() == 'b' );
     TTEST( my_dsl_pa.current() == 'b' );
-    TTEST( my_dsl_pa.location_push() );
+    my_dsl_pa.location_push();
     TTEST( my_dsl_pa.unget() );         // Check true is returned
     TTEST( my_dsl_pa.get() == 'b' );
     TTEST( my_dsl_pa.unget( 'l' ) );    // Check true is returned
@@ -231,16 +225,16 @@ TFUNCTION( dsl_pa_low_level_read_test )
     TTEST( my_dsl_pa.get() == 'c' );
     TTEST( my_dsl_pa.get() == 'd' );
     TTEST( my_dsl_pa.get() == 'e' );
-    TTEST( ! my_dsl_pa.location_top() );
+    TTEST( my_dsl_pa.location_top() );
     TTEST( my_dsl_pa.get() == 'c' );
-    TTEST( my_dsl_pa.location_pop() );
+    my_dsl_pa.location_pop();
 
     {
     TSETUP( location_logger my_location_logger( my_dsl_pa.get_reader() ) );
     TTEST( ! my_dsl_pa.is_get_char( 'x' ) );
     TTEST( my_dsl_pa.is_get_char( 'd' ) );
     TTEST( my_dsl_pa.get() == 'e' );
-    TTEST( ! my_dsl_pa.location_top() );
+    TTEST( my_dsl_pa.location_top() );
     TTEST( my_dsl_pa.get() == 'd' );
     }
 }
@@ -1004,8 +998,8 @@ TFUNCTION( dsl_pa_optional_sequence_test )
     std::string type;
     bool is_empty_mode = false;
 
-    TTEST( my_pa.location_push() &&
-                my_pa.optional_rewind(
+    my_pa.location_push();
+    TTEST( my_pa.optional_rewind(
                     my_pa.get_fixed( &command, "Mode" ) &&
                     my_pa.space() &&
                     my_pa.get_fixed( &type, "empty" ) &&
@@ -1013,10 +1007,10 @@ TFUNCTION( dsl_pa_optional_sequence_test )
                     || my_pa.on_fail(
                             my_pa.clear( command ) && my_pa.clear( type ) )
                 ) &&
-                my_pa.location_pop() &&
                 my_pa.get_fixed( &command, "Mode" ) &&
                 my_pa.space() &&
                 my_pa.get_fixed( &type, "full" ) );
+    my_pa.location_pop();
 
     TTEST( command == "Mode" );
     TTEST( is_empty_mode == false );

@@ -176,12 +176,11 @@ public:
     // i.e. you can call location_top() many times and the return location
     // won't be deleted.  When the recorded location is no longer required,
     // do location_pop().  See also class location_logger.
-    bool location_push()
+    void location_push()
     {
         unget_buffer.push();
         line_counter.push();
         source_location_push();
-        return true;
     }
 
     bool location_top()
@@ -189,15 +188,14 @@ public:
         source_location_top();
         unget_buffer.top();
         line_counter.top();
-        return false;
+        return true;
     }
 
-    bool location_pop()
+    void location_pop()
     {
         source_location_pop();
         unget_buffer.pop();
         line_counter.pop();
-        return true;
     }
 
     int get_line_number() const { return line_counter.get_line_number(); }
