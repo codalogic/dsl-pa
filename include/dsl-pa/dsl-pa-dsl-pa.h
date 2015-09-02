@@ -191,7 +191,7 @@ public:
     // optional() essentially ignore the result of the (single) function that
     // generated the input argument. e.g. allows optional( space() ); etc.
     static bool optional( bool ) { return true; }
-    static bool optional( size_t ) { return true; } // Overloads to avoid performance warnings due to convertin size_t to bool
+    static bool optional( size_t ) { return true; } // Overloads to avoid performance warnings due to converting size_t to bool
     static bool optional( int ) { return true; }
 
     // on_fail() allows inclusion of clean-up code in a short cut sequence
