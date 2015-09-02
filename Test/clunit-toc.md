@@ -1,4 +1,4 @@
-Tests table of contents generated on Wed Sep 02 16:51:48 2015
+Tests table of contents generated on Wed Sep 02 17:03:45 2015
 
 # alphabet-test.cpp
 | Description | Line |
@@ -41,10 +41,10 @@ Tests table of contents generated on Wed Sep 02 16:51:48 2015
 | dsl_pa::current_is() Tests | 897 |
 | dsl_pa::peek_is() Tests | 927 |
 | dsl_pa::peek_char() Tests | 956 |
-| optional_sequence class Tests | 991 |
-| DSL PA is_peek_at_end Tests | 1049 |
-| DSL PA is_current_at_end Tests | 1068 |
-| DSL PA get vs. read check | 1090 |
+| optional_rewind class Tests | 1016 |
+| DSL PA is_peek_at_end Tests | 1045 |
+| DSL PA is_current_at_end Tests | 1064 |
+| DSL PA get vs. read check | 1086 |
 
 # reader-test.cpp
 | Description | Line |

@@ -986,19 +986,18 @@ TFUNCTION( dsl_pa_peek_char_test )
     }
 }
 
-TFUNCTION( dsl_pa_optional_sequence_test )
+void optional_rewind_test(
+            const char * p_msg,
+            std::string & command,
+            std::string & type,
+            bool & is_empty_mode )
 {
-    TBEGIN( "optional_sequence class Tests" );
-
-    {
-    reader_string my_reader( "Mode full" );
+    reader_string my_reader( p_msg );
     dsl_pa my_pa( my_reader );
 
-    std::string command;
-    std::string type;
-    bool is_empty_mode = false;
+    is_empty_mode = false;
 
-    my_pa.location_push();
+    location_logger loc( my_pa.get_reader() );
     TTEST( my_pa.optional_rewind(
                     my_pa.get_fixed( &command, "Mode" ) &&
                     my_pa.space() &&
@@ -1010,33 +1009,30 @@ TFUNCTION( dsl_pa_optional_sequence_test )
                 my_pa.get_fixed( &command, "Mode" ) &&
                 my_pa.space() &&
                 my_pa.get_fixed( &type, "full" ) );
-    my_pa.location_pop();
+}
+
+TFUNCTION( dsl_pa_optional_rewind_test )
+{
+    TBEGIN( "optional_rewind class Tests" );
+
+    {
+    std::string command;
+    std::string type;
+    bool is_empty_mode = false;
+
+    optional_rewind_test( "Mode full", command, type, is_empty_mode );
 
     TTEST( command == "Mode" );
     TTEST( is_empty_mode == false );
     TTEST( type == "full" );
     }
-    {
-    reader_string my_reader( "Mode empty" );
-    dsl_pa my_pa( my_reader );
 
+    {
     std::string command;
     std::string type;
     bool is_empty_mode = false;
 
-    my_pa.location_push();
-    TTEST( my_pa.optional_rewind(
-                    my_pa.get_fixed( &command, "Mode" ) &&
-                    my_pa.space() &&
-                    my_pa.get_fixed( &type, "empty" ) &&
-                    my_pa.set( is_empty_mode, true )
-                    || my_pa.on_fail(
-                            my_pa.clear( command ) && my_pa.clear( type ) )
-                ) ||
-                my_pa.get_fixed( &command, "Mode" ) &&
-                my_pa.space() &&
-                my_pa.get_fixed( &type, "full" ) );
-    my_pa.location_pop();
+    optional_rewind_test( "Mode empty", command, type, is_empty_mode );
 
     TTEST( command == "Mode" );
     TTEST( is_empty_mode == true );

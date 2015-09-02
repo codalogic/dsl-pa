@@ -180,7 +180,7 @@ public:
     void location_push() { r_reader.location_push(); }
     bool location_top() { r_reader.location_top(); return true; }
     bool location_top( bool ret ) { r_reader.location_top(); return ret; }
-    void location_pop() { r_reader.location_pop(); }	// pop should always be called, so discourage it's use in a shortcut sequence
+    void location_pop() { r_reader.location_pop(); }    // pop should always be called, so discourage it's use in a shortcut sequence
 
     // optional_rewind() will call location_top() if the shortcut arguments
     // it is called with yield false.  Used when the specified path is determined

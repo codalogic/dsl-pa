@@ -1,4 +1,4 @@
-Tests run on Wed Sep 02 16:51:48 2015
+Tests run on Wed Sep 02 17:03:45 2015
 
     Alphabet tests [alphabet-test.cpp:42]
     =====================================
@@ -876,8 +876,8 @@ Tests run on Wed Sep 02 16:51:48 2015
     ok: ! my_pa.current_is_in( alphabet_char_class_ABX )
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
-    optional_sequence class Tests [dsl-pa-test.cpp:991]
-    ===================================================
+    optional_rewind class Tests [dsl-pa-test.cpp:1016]
+    ==================================================
     ok: my_pa.optional_rewind( my_pa.get_fixed( &command, "Mode" ) && my_pa.space() && my_pa.get_fixed( &type, "empty" ) && my_pa.set( is_empty_mode, true ) || my_pa.on_fail( my_pa.clear( command ) && my_pa.clear( type ) ) ) || my_pa.get_fixed( &command, "Mode" ) && my_pa.space() && my_pa.get_fixed( &type, "full" )
     ok: command == "Mode"
     ok: is_empty_mode == false
@@ -888,7 +888,7 @@ Tests run on Wed Sep 02 16:51:48 2015
     ok: type == "empty"
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
-    DSL PA is_peek_at_end Tests [dsl-pa-test.cpp:1049]
+    DSL PA is_peek_at_end Tests [dsl-pa-test.cpp:1045]
     ==================================================
     ok: my_pa.is_peek_at_end()
     ok: ! my_pa.is_peek_at_end()
@@ -896,7 +896,7 @@ Tests run on Wed Sep 02 16:51:48 2015
     ok: my_pa.is_peek_at_end()
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
-    DSL PA is_current_at_end Tests [dsl-pa-test.cpp:1068]
+    DSL PA is_current_at_end Tests [dsl-pa-test.cpp:1064]
     =====================================================
     ok: my_pa.get_char() == false
     ok: my_pa.is_current_at_end()
@@ -907,7 +907,7 @@ Tests run on Wed Sep 02 16:51:48 2015
     ok: my_pa.is_current_at_end()
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
-    DSL PA get vs. read check [dsl-pa-test.cpp:1090]
+    DSL PA get vs. read check [dsl-pa-test.cpp:1086]
     ================================================
     ok: my_pa.read( &parsed, alphabet_char_class( "A" ) ) > 0
     ok: parsed == "originAAAAAA"
