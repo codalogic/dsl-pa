@@ -1006,7 +1006,7 @@ TFUNCTION( dsl_pa_optional_sequence_test )
                     my_pa.set( is_empty_mode, true )
                     || my_pa.on_fail(
                             my_pa.clear( command ) && my_pa.clear( type ) )
-                ) &&
+                ) ||
                 my_pa.get_fixed( &command, "Mode" ) &&
                 my_pa.space() &&
                 my_pa.get_fixed( &type, "full" ) );
@@ -1015,6 +1015,32 @@ TFUNCTION( dsl_pa_optional_sequence_test )
     TTEST( command == "Mode" );
     TTEST( is_empty_mode == false );
     TTEST( type == "full" );
+    }
+    {
+    reader_string my_reader( "Mode empty" );
+    dsl_pa my_pa( my_reader );
+
+    std::string command;
+    std::string type;
+    bool is_empty_mode = false;
+
+    my_pa.location_push();
+    TTEST( my_pa.optional_rewind(
+                    my_pa.get_fixed( &command, "Mode" ) &&
+                    my_pa.space() &&
+                    my_pa.get_fixed( &type, "empty" ) &&
+                    my_pa.set( is_empty_mode, true )
+                    || my_pa.on_fail(
+                            my_pa.clear( command ) && my_pa.clear( type ) )
+                ) ||
+                my_pa.get_fixed( &command, "Mode" ) &&
+                my_pa.space() &&
+                my_pa.get_fixed( &type, "full" ) );
+    my_pa.location_pop();
+
+    TTEST( command == "Mode" );
+    TTEST( is_empty_mode == true );
+    TTEST( type == "empty" );
     }
 }
 

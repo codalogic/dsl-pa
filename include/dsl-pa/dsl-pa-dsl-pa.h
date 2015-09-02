@@ -186,7 +186,7 @@ public:
     // it is called with yield false.  Used when the specified path is determined
     // not to be the one encountered.
     // Do location_push(); optional_rewind( XYZ() && ABC() ) && DEF(); location_pop()
-    bool optional_rewind( bool is_ok ) { if( ! is_ok ) location_top(); return true; }
+    bool optional_rewind( bool is_ok ) { if( ! is_ok ) location_top(); return is_ok; }
 
     // optional() essentially ignore the result of the (single) function that
     // generated the input argument. e.g. allows optional( space() ); etc.
@@ -196,7 +196,7 @@ public:
 
     // on_fail() allows inclusion of clean-up code in a short cut sequence
     // that is embedded in the parameters of an optional_rewind() call.
-    // Do ...optioinal_rewind( XYZ() && ABC() || on_fail( DEF() && GHI() ) )...
+    // Do ...optional_rewind( XYZ() && ABC() || on_fail( DEF() && GHI() ) )...
     static bool on_fail( bool ) { return false; }
     static bool on_fail( size_t ) { return false; }
     static bool on_fail( int ) { return false; }
