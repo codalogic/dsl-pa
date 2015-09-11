@@ -247,11 +247,11 @@ human.
 
 As a result, there are a number of scenarios for what to return:
 
-| Path correct?  | Errors occured? | Action                                                      |
-|----------------|-----------------|-------------------------------------------------------------|
-| Path correct   | No errors       | Return true                                                 |
-| Path correct   | Errors          | Record error, re-sync & return `true` or use retreat action |
-| Path incorrect | Not relevant    | Return false                                                |
+| Path correct?  | Errors occured? | Action                                                          |
+|----------------|-----------------|-----------------------------------------------------------------|
+| Path correct   | No errors       | Return true                                                     |
+| Path correct   | Errors          | Record error, re-sync & return `true` **or** use retreat action |
+| Path incorrect | Not relevant    | Return false                                                    |
 
 dsl-pa-lite
 ===========
