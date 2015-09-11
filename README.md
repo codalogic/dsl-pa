@@ -228,6 +228,29 @@ void example_parser::example7( std::ostream & fout )
 }
 ```
 
+## Parser Function Return Codes
+
+As stated above, each parser function (either from the library or user generated) returns a
+Boolean.  It's worth exploring a bit further exactly what that Boolen value represents.
+When you have code of the form:
+
+```c++
+if( path_a() || path_b() )
+```
+
+then returning `true` for `path_a()` indicates that *path_a* was taken.  It does not necessarily
+mean that *path_a* was successfuly parsed without errors.  This is particularly the case when
+you are not trying to do a simple 'this message is a valid' parsing (in which case you can let
+both paths indicate that they are not the correct path), but trying to recover from
+errors and continue processing, as you might of you are trying to present parsing results to a 
+human.
+
+As a result, there are a number of scenarios for what to return:
+
+| Path correct   | No errors    | Return true                                                 |
+| Path correct   | Errors       | Record error, re-sync & return `true` or use retreat action |
+| Path incorrect | Not relevant | Return false                                                |
+
 dsl-pa-lite
 ===========
 dsl-pa-lite is a wrapper class that uses dsl-pa for situations where only simple parsing
