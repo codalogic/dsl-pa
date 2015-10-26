@@ -69,6 +69,21 @@ public:
     {}
 };
 
+class converter
+{
+private:
+    char basic_return[2];
+
+public:
+    virtual const char * operator() ( char c ) = 0;
+    const char * from_char( char c )
+    {
+        basic_return[0] = c;
+        basic_return[1] = '\0';
+        return basic_return;
+    }
+};
+
 class dsl_pa
 {
 private:
@@ -80,6 +95,8 @@ private:
     size_t read_or_skip_handler( std::string * p_output, const alphabet & r_alphabet, size_t max_chars );
     template< typename Twriter >
     size_t read_or_skip_until_handler( std::string * p_output, const alphabet & r_alphabet, char escape_char, size_t max_chars );
+    template< typename Twriter >
+    size_t read_or_skip_handler( std::string * p_output, converter & r_converter );
     template< class Tcomparer >
     bool read_fixed_or_ifixed( std::string * p_output, const char * p_seeking );
 
@@ -142,6 +159,7 @@ public:
     size_t get_bounded_until( std::string * p_output, const alphabet & r_alphabet, size_t max_chars );
     size_t get_escaped_until( std::string * p_output, const alphabet & r_alphabet, char escape_char );
     size_t get_until( std::string * p_output, const alphabet & r_alphabet, char escape_char, size_t max_chars );
+    size_t get( std::string * p_output, converter & r_converter );
 
     // These read...() functions DO NOT clear the output string before reading the input
     size_t /*num chars read*/ read( std::string * p_output, const alphabet & r_alphabet );
@@ -150,6 +168,7 @@ public:
     size_t read_bounded_until( std::string * p_output, const alphabet & r_alphabet, size_t max_chars );
     size_t read_escaped_until( std::string * p_output, const alphabet & r_alphabet, char escape_char );
     size_t read_until( std::string * p_output, const alphabet & r_alphabet, char escape_char, size_t max_chars );
+    size_t read( std::string * p_output, converter & r_converter );
 
     size_t /*num chars skipped*/ skip( const alphabet & r_alphabet );
     size_t skip( const alphabet & r_alphabet, size_t max_chars );
@@ -157,6 +176,7 @@ public:
     size_t skip_bounded_until( const alphabet & r_alphabet, size_t max_chars );
     size_t skip_escaped_until( const alphabet & r_alphabet, char escape_char );
     size_t skip_until( const alphabet & r_alphabet, char escape_char, size_t max_chars );
+    size_t skip( converter & r_converter );
 
     // fixed() ensures that the specified text is read from the input, or leave input location unchanged.
     // ifixed() ignores ASCII case.

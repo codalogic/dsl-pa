@@ -242,7 +242,7 @@ then returning `true` for `path_a()` indicates that *path_a* was taken.  It does
 mean that *path_a* was successfuly parsed without errors.  This is particularly the case when
 you are not trying to do a simple 'this message is a valid' parsing (in which case you can let
 both paths indicate that they are not the correct path), but trying to recover from
-errors and continue processing, as you might of you are trying to present parsing results to a 
+errors and continue processing, as you might of you are trying to present parsing results to a
 human.
 
 As a result, there are a number of scenarios for what to return:

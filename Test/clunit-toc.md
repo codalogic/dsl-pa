@@ -1,4 +1,4 @@
-Tests table of contents generated on Wed Sep 02 17:12:16 2015
+Tests table of contents generated on Mon Oct 26 20:03:15 2015
 
 # alphabet-test.cpp
 | Description | Line |
@@ -10,6 +10,11 @@ Tests table of contents generated on Wed Sep 02 17:12:16 2015
 | Alphabet char_to_size_t tests | 207 |
 | Alphabet char_map tests | 220 |
 | Alphabet_char_class tests | 329 |
+
+# converter-test.cpp
+| Description | Line |
+|-------------|------|
+| class converter | 40 |
 
 # dsl-pa-test.cpp
 | Description | Line |

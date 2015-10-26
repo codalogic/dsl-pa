@@ -185,6 +185,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\converter-test.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\dsl-pa-lite-test.cpp"
 				>
 			</File>

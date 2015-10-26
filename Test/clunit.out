@@ -1,4 +1,4 @@
-Tests run on Wed Sep 02 17:12:16 2015
+Tests run on Mon Oct 26 20:03:15 2015
 
     Alphabet tests [alphabet-test.cpp:42]
     =====================================
@@ -251,6 +251,13 @@ Tests run on Wed Sep 02 17:12:16 2015
       : alphabet_char_class my_char_class( "~d~w" )
     ok: my_char_class.is_sought( '2' )
     ok: my_char_class.is_sought( 'l' )
+    ok: ! _CrtMemDifference( &s3, &s1, &s2 )
+
+    class converter [converter-test.cpp:40]
+    =======================================
+    ok: out == "AAAb12b3"
+    ok: out == "e"
+    ok: out == "AAAb12b"
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
     ok: pal.result() == true
@@ -1478,4 +1485,4 @@ Tests run on Wed Sep 02 17:12:16 2015
     ok: p_reader->is_open()
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
     ok: _CrtCheckMemory() != 0
-0 error(s), 0 todo(s), 1163 test(s)
+0 error(s), 0 todo(s), 1167 test(s)
