@@ -336,10 +336,10 @@ size_t dsl_pa::get_until( std::string * p_output, const alphabet & r_alphabet, c
     return read_until( p_output, r_alphabet, escape_char, max_chars );
 }
 
-size_t dsl_pa::get( std::string * p_output, converter & r_converter )
+size_t dsl_pa::get( std::string * p_output, mutator & r_mutator )
 {
     p_output->clear();
-    return read( p_output, r_converter );
+    return read( p_output, r_mutator );
 }
 
 struct writer_read_mode
@@ -411,15 +411,15 @@ size_t dsl_pa::read_or_skip_until_handler( std::string * p_output, const alphabe
 }
 
 template< typename Twriter >
-size_t dsl_pa::read_or_skip_handler( std::string * p_output, converter & r_converter )
+size_t dsl_pa::read_or_skip_handler( std::string * p_output, mutator & r_mutator )
 {
-    size_t n_chars = 0;
+    size_t n_chars_read = 0;
     for( ;; )
     {
         if( get() == reader::R_EOI )
-            break;
+            return r_mutator.got_eof() ? n_chars_read : 0;
 
-        const char * p_new = r_converter( current() );
+        const char * p_new = r_mutator( current() );
         if( ! p_new )
         {
             unget();
@@ -427,10 +427,10 @@ size_t dsl_pa::read_or_skip_handler( std::string * p_output, converter & r_conve
         }
 
         Twriter::handle_string( p_output, p_new );
-        n_chars += strlen( p_new );
+        ++n_chars_read;
     }
 
-    return n_chars;
+    return n_chars_read;
 };
 
 size_t dsl_pa::read( std::string * p_output, const alphabet & r_alphabet )
@@ -463,9 +463,9 @@ size_t dsl_pa::read_until( std::string * p_output, const alphabet & r_alphabet, 
     return read_or_skip_until_handler< writer_read_mode >( p_output, r_alphabet, escape_char, max_chars );
 }
 
-size_t dsl_pa::read( std::string * p_output, converter & r_converter )
+size_t dsl_pa::read( std::string * p_output, mutator & r_mutator )
 {
-    return read_or_skip_handler< writer_read_mode >( p_output, r_converter );
+    return read_or_skip_handler< writer_read_mode >( p_output, r_mutator );
 }
 
 size_t dsl_pa::skip( const alphabet & r_alphabet )
@@ -498,9 +498,9 @@ size_t dsl_pa::skip_until( const alphabet & r_alphabet, char escape_char, size_t
     return read_or_skip_until_handler< writer_skip_mode >( 0, r_alphabet, escape_char, max_chars );
 }
 
-size_t dsl_pa::skip( converter & r_converter )
+size_t dsl_pa::skip( mutator & r_mutator )
 {
-    return read_or_skip_handler< writer_skip_mode >( 0, r_converter );
+    return read_or_skip_handler< writer_skip_mode >( 0, r_mutator );
 }
 
 bool dsl_pa::fixed( const char * p_seeking )

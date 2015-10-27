@@ -44,13 +44,15 @@ TFEATURE( "class converter" )
     // when not interested in further input.  The class deriving from
     // converter can be stateful.
 
-    class mutator : public converter
+    class example_mutator : public mutator
     {
     private:
         size_t n_ds;
+        bool m_is_eof;
 
     public:
-        mutator() { n_ds = 0; }
+        example_mutator() : n_ds( 0 ), m_is_eof( false ) {}
+
         virtual const char * operator() ( char c )
         {
             if( c == 'a' )
@@ -66,19 +68,23 @@ TFEATURE( "class converter" )
             else
                 return "x";
         }
+        virtual bool got_eof() { m_is_eof = true; return true; }
+
+        bool is_eof() const { return m_is_eof; }
     };
 
     {
-    mutator my_mutator;
+    example_mutator my_mutator;
 
     reader_string my_reader( "abdcdbde" );
     dsl_pa my_pa( my_reader );
 
     std::string out;
 
-    my_pa.get( &out, my_mutator );
+    TTEST( my_pa.get( &out, my_mutator ) == 7 );
 
     TTEST( out == "AAAb12b3" );
+    TTEST( ! my_mutator.is_eof() );
 
     my_pa.get_char( &out );
 
@@ -86,7 +92,7 @@ TFEATURE( "class converter" )
     }
 
     {
-    mutator my_mutator;
+    example_mutator my_mutator;
 
     reader_string my_reader( "abdcdb" );
     dsl_pa my_pa( my_reader );
@@ -96,5 +102,6 @@ TFEATURE( "class converter" )
     my_pa.get( &out, my_mutator );
 
     TTEST( out == "AAAb12b" );
+    TTEST( my_mutator.is_eof() );
     }
 }

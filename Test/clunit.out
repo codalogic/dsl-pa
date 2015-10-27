@@ -1,4 +1,4 @@
-Tests run on Mon Oct 26 20:03:15 2015
+Tests run on Tue Oct 27 11:55:39 2015
 
     Alphabet tests [alphabet-test.cpp:42]
     =====================================
@@ -255,9 +255,12 @@ Tests run on Mon Oct 26 20:03:15 2015
 
     class converter [converter-test.cpp:40]
     =======================================
+    ok: my_pa.get( &out, my_mutator ) == 7
     ok: out == "AAAb12b3"
+    ok: ! my_mutator.is_eof()
     ok: out == "e"
     ok: out == "AAAb12b"
+    ok: my_mutator.is_eof()
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
     ok: pal.result() == true
@@ -1485,4 +1488,4 @@ Tests run on Mon Oct 26 20:03:15 2015
     ok: p_reader->is_open()
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
     ok: _CrtCheckMemory() != 0
-0 error(s), 0 todo(s), 1167 test(s)
+0 error(s), 0 todo(s), 1170 test(s)
