@@ -33,10 +33,10 @@
 
 //----------------------------------------------------------------------------
 // dsl-pa is a Domain Specific Language Parsing Assistant library designed to
-// take advantage of the C++ logic shortcut operators such as && and ||.
+// take advantage of the C++ logic shortcircuit operators such as && and ||.
 // dsl-pa function calls extract sections of language input based on a
 // specified alphabet.  Calls to dsl-pa functions are combined using the C++
-// shortcut operators in order to parse a language in a reasonably compact
+// shortcircuit operators in order to parse a language in a reasonably compact
 // form.  Consequently all dsl-pa functions return either a boolean value or
 // a value, such as an integer, that can be implicitly converted to a bool.
 // For more information see README.html at https://github.com/codalogic/dsl-pa

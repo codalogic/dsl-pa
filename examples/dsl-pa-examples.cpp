@@ -192,7 +192,7 @@ void example_parser::example4( std::ostream & fout )
     // For machine-to-machine languages you can usually survive with fairly
     // coarse error reporting.  For finer-grain error reporting you can use
     // the dsl_pa::error() methods:
-    // (P.S. The excessive number of brackets in the shortcuts are to avoid
+    // (P.S. The excessive number of brackets in the shortcircuits are to avoid
     // gcc warnings.)
     size_t width, height;
 
@@ -222,7 +222,7 @@ void example_parser::example4( std::ostream & fout )
 void example_parser::example5( std::ostream & fout )
 {
     // dsl-pa has additional helper functions to record and update state
-    // information in the middle of shortcut sequences.  These are
+    // information in the middle of shortcircuit sequences.  These are
     // dsl_pa::set(), record(), clear() and append():
     size_t width, height;
     bool is_width_found = false;

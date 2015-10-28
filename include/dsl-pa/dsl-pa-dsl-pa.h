@@ -33,7 +33,7 @@
 
 //----------------------------------------------------------------------------
 // dsl-pa is a Domain Specific Language Parsing Assistant library designed to
-// take advantage of the C++ logic shortcut operators such as && and ||.
+// take advantage of the C++ logic shortcircuit operators such as && and ||.
 // See the brief overview in dsl-pa.h or, for more information, README.html
 // at https://github.com/codalogic/dsl-pa
 //----------------------------------------------------------------------------
@@ -204,9 +204,9 @@ public:
     void location_push() { r_reader.location_push(); }
     bool location_top() { r_reader.location_top(); return true; }
     bool location_top( bool ret ) { r_reader.location_top(); return ret; }
-    void location_pop() { r_reader.location_pop(); }    // pop should always be called, so discourage it's use in a shortcut sequence
+    void location_pop() { r_reader.location_pop(); }    // pop should always be called, so discourage it's use in a shortcircuit sequence
 
-    // optional_rewind() will call location_top() if the shortcut arguments
+    // optional_rewind() will call location_top() if the shortcircuit arguments
     // it is called with yield false.  Used when the specified path is determined
     // not to be the one encountered.
     // Do location_push(); optional_rewind( XYZ() && ABC() ) && DEF(); location_pop()
@@ -226,7 +226,7 @@ public:
     static bool on_fail( int ) { return false; }
 
     // set() allows setting of state information within a set of
-    // shortcut operators
+    // shortcircuit operators
     template< typename T >
     static bool set( T & r_variable, const T & r_value )
     {
@@ -234,7 +234,7 @@ public:
         return true;
     }
     // record() allows recording the return values of parsing functions in the
-    // middle of a sequence of shortcut operators
+    // middle of a sequence of shortcircuit operators
     template< typename T, typename U >
     static const U & record( T & r_variable, const U & r_value )
     {
