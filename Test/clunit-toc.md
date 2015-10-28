@@ -1,4 +1,4 @@
-Tests table of contents generated on Tue Oct 27 11:55:39 2015
+Tests table of contents generated on Wed Oct 28 09:33:50 2015
 
 # alphabet-test.cpp
 | Description | Line |
@@ -25,31 +25,32 @@ Tests table of contents generated on Tue Oct 27 11:55:39 2015
 | dsl_pa::clear() operation | 106 |
 | dsl_pa::append() operation | 116 |
 | dsl_pa::append_current() operation | 128 |
-| dsl_pa::error() operation | 142 |
-| dsl pa location_top() return codes | 196 |
-| dsl pa low level read tests | 210 |
-| dsl pa ws tests | 244 |
-| dsl pa wsp tests | 277 |
-| dsl pa get() tests | 337 |
-| dsl pa get_until() tests | 398 |
-| dsl pa skip() tests | 482 |
-| dsl pa fixed and ifixed tests | 525 |
-| dsl_pa::get_char() Tests | 614 |
-| dsl_pa::get_char_no_space() Tests | 626 |
-| dsl_pa::peek_char_no_space() Tests | 653 |
-| dsl_pa::get_char(...) Tests | 694 |
-| dsl_pa::get_bool() Tests | 748 |
-| dsl_pa::get_int() Tests | 773 |
-| dsl_pa::get_uint() Tests | 803 |
-| dsl_pa::get_float() Tests | 833 |
-| dsl_pa::get_sci_float() Tests | 866 |
-| dsl_pa::current_is() Tests | 897 |
-| dsl_pa::peek_is() Tests | 927 |
-| dsl_pa::peek_char() Tests | 956 |
-| optional_rewind class Tests | 1016 |
-| DSL PA is_peek_at_end Tests | 1045 |
-| DSL PA is_current_at_end Tests | 1064 |
-| DSL PA get vs. read check | 1086 |
+| dsl_pa::push_back() operation | 142 |
+| dsl_pa::error() operation | 153 |
+| dsl pa location_top() return codes | 207 |
+| dsl pa low level read tests | 221 |
+| dsl pa ws tests | 255 |
+| dsl pa wsp tests | 288 |
+| dsl pa get() tests | 348 |
+| dsl pa get_until() tests | 409 |
+| dsl pa skip() tests | 493 |
+| dsl pa fixed and ifixed tests | 536 |
+| dsl_pa::get_char() Tests | 625 |
+| dsl_pa::get_char_no_space() Tests | 637 |
+| dsl_pa::peek_char_no_space() Tests | 664 |
+| dsl_pa::get_char(...) Tests | 705 |
+| dsl_pa::get_bool() Tests | 759 |
+| dsl_pa::get_int() Tests | 784 |
+| dsl_pa::get_uint() Tests | 814 |
+| dsl_pa::get_float() Tests | 844 |
+| dsl_pa::get_sci_float() Tests | 877 |
+| dsl_pa::current_is() Tests | 908 |
+| dsl_pa::peek_is() Tests | 938 |
+| dsl_pa::peek_char() Tests | 967 |
+| optional_rewind class Tests | 1027 |
+| DSL PA is_peek_at_end Tests | 1056 |
+| DSL PA is_current_at_end Tests | 1075 |
+| DSL PA get vs. read check | 1097 |
 
 # reader-test.cpp
 | Description | Line |

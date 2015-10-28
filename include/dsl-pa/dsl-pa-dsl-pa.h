@@ -259,6 +259,12 @@ public:
         r_variable += current();
         return true;
     }
+    template< typename Tcontainer, typename Tval >
+    static bool push_back( Tcontainer & r_container, const Tval & r_value )
+    {
+        r_container.push_back( r_value );
+        return true;
+    }
 
     template< typename T >
     static bool error( const T & r_exception )  // To throw custom exceptions

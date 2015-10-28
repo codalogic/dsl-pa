@@ -137,6 +137,17 @@ TFUNCTION( dsl_pa_append_current_test )
     TTEST( v == "abca" );
 }
 
+TFUNCTION( dsl_pa_push_back_test )
+{
+    TBEGIN( "dsl_pa::push_back() operation" );
+
+    std::vector<char> v;
+
+    TTEST( dsl_pa::push_back( v, 'a' ) );    // Test to ensure it returns true
+
+    TTEST( v.size() == 1 && v[0] == 'a' );
+}
+
 TFUNCTION( dsl_pa_error_test )
 {
     TBEGIN( "dsl_pa::error() operation" );
