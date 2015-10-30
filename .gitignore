@@ -35,3 +35,6 @@
 FoxdfEr43De.txt
 fix-eol.pl
 util/*
+abnf2dsl-pa/*.abnf
+abnf2dsl-pa/*.cpp
+abnf2dsl-pa/*.h
