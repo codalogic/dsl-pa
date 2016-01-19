@@ -285,4 +285,16 @@ operator [] can be used to specify patterns, for example:
 ```
 Here '[""]' is used to mean "skip whitespace".
 
+Parser creation from ABNF
+=========================
+
+`abnf2dsl-pa.py` in the `abnf2dsl-pa` directory is provided to assist with writing a parser from an ABNF
+definition.  `abnf2dsl-pa.py` is not a comprehensive solution to this problem.  It only creates outline
+C++ code based on the ABNF definition.  Much additional work will be requyired to make a complete parser.
+
+A suggested workflow to create a parser from ABNF is to first use `abnf2dsl-pa.py` to create outline code.
+Fill in the generated methods with suitable content so that example messages can be successfully parsed,
+but not actually record any of the message details.  Once this is done, work through the methods again
+adding code to record the information stored in the message format into appropriate C++ class members.
+
 For more information see <https://github.com/codalogic/dsl-pa/blob/master/README.html>.
