@@ -1,4 +1,4 @@
-Tests run on Wed Oct 28 09:33:50 2015
+Tests run on Thu Jan 21 18:15:16 2016
 
     Alphabet tests [alphabet-test.cpp:42]
     =====================================
@@ -979,6 +979,15 @@ Tests run on Wed Oct 28 09:33:50 2015
     ok: parsed == "456"
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
+    accumulator test [dsl-pa-test.cpp:1297]
+    =======================================
+    ok: my_pa.accumulate( alphabet_char_class( "A" ) )
+    ok: my_pa.accumulate( alphabet_char_class( "B" ) )
+    ok: ! my_pa.accumulate( alphabet_char_class( "Z" ) )
+    ok: my_pa.accumulate( alphabet_char_class( "C" ) )
+    ok: accumulated == "ABC"
+    ok: ! _CrtMemDifference( &s3, &s1, &s2 )
+
     String reader tests [reader-test.cpp:355]
     =========================================
     String reader basic tests [reader-test.cpp:101]
@@ -1494,4 +1503,4 @@ Tests run on Wed Oct 28 09:33:50 2015
     ok: p_reader->is_open()
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
     ok: _CrtCheckMemory() != 0
-0 error(s), 0 todo(s), 1173 test(s)
+0 error(s), 0 todo(s), 1179 test(s)

@@ -94,6 +94,7 @@ private:
     const static size_t unbounded = ~0;
 
     reader & r_reader;
+    std::string * p_accumulator;
 
     template< typename Twriter >
     size_t read_or_skip_handler( std::string * p_output, const alphabet & r_alphabet, size_t max_chars );
@@ -105,7 +106,7 @@ private:
     bool read_fixed_or_ifixed( std::string * p_output, const char * p_seeking );
 
 public:
-    dsl_pa( reader & r_reader_in ) : r_reader( r_reader_in ) {}
+    dsl_pa( reader & r_reader_in ) : r_reader( r_reader_in ), p_accumulator( 0 ) {}
     virtual ~dsl_pa() {}
 
     // parse() provides a hook to allow use with factories that return
@@ -181,6 +182,26 @@ public:
     size_t skip_escaped_until( const alphabet & r_alphabet, char escape_char );
     size_t skip_until( const alphabet & r_alphabet, char escape_char, size_t max_chars );
     size_t skip( mutator & r_mutator );
+
+    // If the next input character is in the alphabet then add it to the string pointed to by p_accumulator
+    bool accumulate( const alphabet & r_alphabet );
+    class accumulator_setter        // Control access to dsl_pa::p_accumulator so it has to be used in a RAII fashion
+    {                               // Do: dsl_pa::accumulator_setter my_value_accumulator( this, my_value );
+    private:
+        dsl_pa * p_dsl_pa;
+        std::string * p_previous_accumulator;
+    public:
+        accumulator_setter( dsl_pa * p_dsl_pa_in, std::string & r_new_accumulator_in )
+            : p_dsl_pa( p_dsl_pa_in ), p_previous_accumulator( p_dsl_pa_in->p_accumulator )
+        {
+            p_dsl_pa->p_accumulator = &r_new_accumulator_in;
+        }
+        ~accumulator_setter()
+        {
+            p_dsl_pa->p_accumulator = p_previous_accumulator;
+        }
+    };
+    friend class accumulator_setter;
 
     // fixed() ensures that the specified text is read from the input, or leave input location unchanged.
     // ifixed() ignores ASCII case.

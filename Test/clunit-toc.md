@@ -1,4 +1,4 @@
-Tests table of contents generated on Wed Oct 28 09:33:50 2015
+Tests table of contents generated on Thu Jan 21 18:15:16 2016
 
 # alphabet-test.cpp
 | Description | Line |
@@ -51,6 +51,7 @@ Tests table of contents generated on Wed Oct 28 09:33:50 2015
 | DSL PA is_peek_at_end Tests | 1056 |
 | DSL PA is_current_at_end Tests | 1075 |
 | DSL PA get vs. read check | 1097 |
+| accumulator test | 1297 |
 
 # reader-test.cpp
 | Description | Line |

@@ -228,6 +228,38 @@ void example_parser::example7( std::ostream & fout )
 }
 ```
 
+With a more literal translation of an ABNF grammar to a parser, common
+sub-expressions such as DIGIT may be used in a number of places.  The
+accumulate() method supports directing this input to the desired string.
+
+Use dsl_pa::accumulator_setter to specify the string that should receive
+the input.
+```c++
+void example_parser::example8( std::ostream & fout )
+{
+
+    // Input is ABC3D
+    std::string accumulated;
+    dsl_pa::accumulator_setter accumulator( this, accumulated );
+    while( ALPHA() || DIGIT() )
+    {}
+    if( accumulated == "ABC3D" )
+        fout << "Example OK: Accumulated " << accumulated << "\n";
+    else
+        fout << "Example Failed: Accumulated " << accumulated << "\n";
+}
+
+bool example_parser::ALPHA()
+{
+    return accumulate( alphabet_alpha() );
+}
+
+bool example_parser::DIGIT()
+{
+    return accumulate( alphabet_digit() );
+}
+```
+
 ## Parser Function Return Codes
 
 As stated above, each parser function (either from the library or user generated) returns a

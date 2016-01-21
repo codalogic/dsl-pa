@@ -39,6 +39,11 @@ Example 7
 (Input =  year = MMXII, width::10 more)
 Example OK: w=MMXII & non_space=width::10
 
+Example 8
+==============
+(Input = ABC3D+)
+Example OK: Accumulated ABC3D
+
 Example Lite
 ==============
 Example OK: year=2012

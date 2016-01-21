@@ -1291,3 +1291,22 @@ TFUNCTION( get_read_check )
     TTEST( parsed == "456" );
     }
 }
+
+TFUNCTION( accumulator_check )
+{
+    TBEGIN( "accumulator test" );
+
+    {
+    std::string in( "ABCDE" );
+
+    reader_string my_reader( in );
+    dsl_pa my_pa( my_reader );
+    std::string accumulated;
+    dsl_pa::accumulator_setter accumulator( &my_pa, accumulated );
+    TTEST( my_pa.accumulate( alphabet_char_class( "A" ) ) );
+    TTEST( my_pa.accumulate( alphabet_char_class( "B" ) ) );
+    TTEST( ! my_pa.accumulate( alphabet_char_class( "Z" ) ) );
+    TTEST( my_pa.accumulate( alphabet_char_class( "C" ) ) );
+    TTEST( accumulated == "ABC" );
+    }
+}

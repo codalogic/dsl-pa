@@ -503,6 +503,18 @@ size_t dsl_pa::skip( mutator & r_mutator )
     return read_or_skip_handler< writer_skip_mode >( 0, r_mutator );
 }
 
+bool dsl_pa::accumulate( const alphabet & r_alphabet )
+{
+    if( r_alphabet.is_sought( get() ) )
+    {
+        if( p_accumulator )
+            *p_accumulator += current();
+        return true;
+    }
+    unget();
+    return false;
+}
+
 bool dsl_pa::fixed( const char * p_seeking )
 {
     return get_fixed( 0, p_seeking );

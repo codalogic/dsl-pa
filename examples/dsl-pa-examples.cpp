@@ -93,16 +93,20 @@ public:
     void example5( std::ostream & fout );
     void example6( std::ostream & fout );
     void example7( std::ostream & fout );
+    void example8( std::ostream & fout );
 
     bool eq() { return opt_space() && is_get_char( '=' ) && opt_space(); }
     bool comma() { return opt_space() && is_get_char( ',' ) && opt_space(); }
 
     bool get_date( date * p_date );
+
+    bool ALPHA();
+    bool DIGIT();
 };
 
 enum example_key {
         EXAMPLE_1 = 1, EXAMPLE_2, EXAMPLE_3, EXAMPLE_4, EXAMPLE_5, EXAMPLE_6,
-        EXAMPLE_7 };
+        EXAMPLE_7, EXAMPLE_8 };
 
 void class_example(
             example_key key,
@@ -139,6 +143,10 @@ void class_example(
 
     case EXAMPLE_7:
         my_parser.example7( fout );
+    break;
+
+    case EXAMPLE_8:
+        my_parser.example8( fout );
     break;
     }
 }
@@ -314,6 +322,36 @@ void example_parser::example7( std::ostream & fout )
     }
 }
 
+void example_parser::example8( std::ostream & fout )
+{
+    // With a more literal translation of an ABNF grammar to a parser, common
+    // sub-expressions such as DIGIT may be used in a number of places.  The
+    // accumulate() method supports directing this input to the desired string.
+
+    // Use dsl_pa::accumulator_setter to specify the string that should receive
+    // the input.
+
+    // Input is ABC3D
+    std::string accumulated;
+    dsl_pa::accumulator_setter accumulator( this, accumulated );
+    while( ALPHA() || DIGIT() )
+    {}
+    if( accumulated == "ABC3D" )
+        fout << "Example OK: Accumulated " << accumulated << "\n";
+    else
+        fout << "Example Failed: Accumulated " << accumulated << "\n";
+}
+
+bool example_parser::ALPHA()
+{
+    return accumulate( alphabet_alpha() );
+}
+
+bool example_parser::DIGIT()
+{
+    return accumulate( alphabet_digit() );
+}
+
 void example_lite( std::ostream & fout )
 {
     // dsl_pa_lite is intended for light-weight parsing of short strings.
@@ -348,6 +386,7 @@ int main()
     class_example( EXAMPLE_6, fout, " when = 2012-05-31, width=10" );
     class_example( EXAMPLE_6, fout, " when = 12-05-31, width=10" );
     class_example( EXAMPLE_7, fout, " year = MMXII, width::10 more" );
+    class_example( EXAMPLE_8, fout, "ABC3D+" );
 
     example_lite( fout );
 }
