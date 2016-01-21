@@ -1,4 +1,4 @@
-Tests run on Thu Jan 21 18:41:22 2016
+Tests run on Thu Jan 21 19:28:23 2016
 
     Alphabet tests [alphabet-test.cpp:42]
     =====================================
@@ -986,6 +986,14 @@ Tests run on Thu Jan 21 18:41:22 2016
     ok: ! my_pa.accumulate( alphabet_char_class( "Z" ) )
     ok: my_pa.accumulate( alphabet_char_class( "C" ) )
     ok: accumulated == "ABC"
+      Can use accumulate() without having somewhere to accumulate to
+    ok: my_pa.accumulate( alphabet_char_class( "A" ) )
+    ok: my_pa.accumulate( alphabet_char_class( "B" ) )
+    ok: ! my_pa.accumulate( alphabet_char_class( "Z" ) )
+    ok: my_pa.accumulate( alphabet_char_class( "C" ) )
+      Specifying an accumulator operates in a stack-like nesting order
+    ok: digit_accumulated == "123"
+    ok: alpha_accumulated == "ABCDEFG"
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
     String reader tests [reader-test.cpp:355]
@@ -1503,4 +1511,4 @@ Tests run on Thu Jan 21 18:41:22 2016
     ok: p_reader->is_open()
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
     ok: _CrtCheckMemory() != 0
-0 error(s), 0 todo(s), 1179 test(s)
+0 error(s), 0 todo(s), 1185 test(s)

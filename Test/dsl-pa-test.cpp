@@ -1309,4 +1309,44 @@ TFUNCTION( accumulator_check )
     TTEST( my_pa.accumulate( alphabet_char_class( "C" ) ) );
     TTEST( accumulated == "ABC" );
     }
+
+    {
+    TDOC( "Can use accumulate() without having somewhere to accumulate to" );
+    std::string in( "ABCDE" );
+
+    reader_string my_reader( in );
+    dsl_pa my_pa( my_reader );
+    TTEST( my_pa.accumulate( alphabet_char_class( "A" ) ) );
+    TTEST( my_pa.accumulate( alphabet_char_class( "B" ) ) );
+    TTEST( ! my_pa.accumulate( alphabet_char_class( "Z" ) ) );
+    TTEST( my_pa.accumulate( alphabet_char_class( "C" ) ) );
+    }
+
+    {
+    TDOC( "Specifying an accumulator operates in a stack-like nesting order" );
+    std::string in( "+-ABCD123EFG+-" );
+
+    reader_string my_reader( in );
+    dsl_pa my_pa( my_reader );
+    while( my_pa.accumulate( alphabet_not( alphabet_alpha() ) ) )
+    {}
+        {
+        std::string alpha_accumulated;
+        dsl_pa::accumulator_setter alpha_accumulator( &my_pa, alpha_accumulated );
+        while( my_pa.accumulate( alphabet_alpha() ) )
+        {}
+            {
+            std::string digit_accumulated;
+            dsl_pa::accumulator_setter digit_accumulator( &my_pa, digit_accumulated );
+            while( my_pa.accumulate( alphabet_digit() ) )
+            {}
+            TTEST( digit_accumulated == "123" );
+            }
+        while( my_pa.accumulate( alphabet_alpha() ) )
+        {}
+        TTEST( alpha_accumulated == "ABCDEFG" );
+        }
+    while( my_pa.accumulate( alphabet_not( alphabet_alpha() ) ) )   // Check reading ends
+    {}
+    }
 }
