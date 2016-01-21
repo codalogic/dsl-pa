@@ -237,8 +237,7 @@ the input.
 ```c++
 void example_parser::example8( std::ostream & fout )
 {
-
-    // Input is ABC3D
+    // Input is ABC3D+
     std::string accumulated;
     dsl_pa::accumulator_setter accumulator( this, accumulated );
     while( ALPHA() || DIGIT() )
