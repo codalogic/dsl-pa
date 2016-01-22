@@ -1301,13 +1301,12 @@ TFUNCTION( accumulator_check )
 
     reader_string my_reader( in );
     dsl_pa my_pa( my_reader );
-    std::string accumulated;
-    dsl_pa::accumulator_setter accumulator( &my_pa, accumulated );
+    accumulator accumulator( &my_pa );
     TTEST( my_pa.accumulate( alphabet_char_class( "A" ) ) );
     TTEST( my_pa.accumulate( alphabet_char_class( "B" ) ) );
     TTEST( ! my_pa.accumulate( alphabet_char_class( "Z" ) ) );
     TTEST( my_pa.accumulate( alphabet_char_class( "C" ) ) );
-    TTEST( accumulated == "ABC" );
+    TTEST( accumulator.get() == "ABC" );
     }
 
     {
@@ -1331,20 +1330,18 @@ TFUNCTION( accumulator_check )
     while( my_pa.accumulate( alphabet_not( alphabet_alpha() ) ) )
     {}
         {
-        std::string alpha_accumulated;
-        dsl_pa::accumulator_setter alpha_accumulator( &my_pa, alpha_accumulated );
+        accumulator alpha_accumulator( &my_pa );
         while( my_pa.accumulate( alphabet_alpha() ) )
         {}
             {
-            std::string digit_accumulated;
-            dsl_pa::accumulator_setter digit_accumulator( &my_pa, digit_accumulated );
+            accumulator digit_accumulator( &my_pa );
             while( my_pa.accumulate( alphabet_digit() ) )
             {}
-            TTEST( digit_accumulated == "123" );
+            TTEST( digit_accumulator.get() == "123" );
             }
         while( my_pa.accumulate( alphabet_alpha() ) )
         {}
-        TTEST( alpha_accumulated == "ABCDEFG" );
+        TTEST( alpha_accumulator.get() == "ABCDEFG" );
         }
     while( my_pa.accumulate( alphabet_not( alphabet_alpha() ) ) )   // Check reading ends
     {}
@@ -1356,10 +1353,8 @@ TFUNCTION( accumulator_check )
 
     reader_string my_reader( in );
     dsl_pa my_pa( my_reader );
-    std::string alphas_accumulated;
-    dsl_pa::accumulator_setter_deferred alphas_accumulator( &my_pa, alphas_accumulated );
-    std::string digits_accumulated;
-    dsl_pa::accumulator_setter_deferred digits_accumulator( &my_pa, digits_accumulated );
+    accumulator_deferred alphas_accumulator( &my_pa );
+    accumulator_deferred digits_accumulator( &my_pa );
     while( my_pa.accumulate( alphabet_not( alphabet_alpha() ) ) )
     {}
     alphas_accumulator.select();
@@ -1372,8 +1367,8 @@ TFUNCTION( accumulator_check )
         my_pa.accumulate_all( alphabet_digit() ) &&
         alphas_accumulator.select() &&
         my_pa.accumulate_all( alphabet_alpha() );
-    TTEST( digits_accumulated == "123" );
-    TTEST( alphas_accumulated == "ABCDEFG" );
+    TTEST( digits_accumulator.get() == "123" );
+    TTEST( alphas_accumulator.get() == "ABCDEFG" );
     while( my_pa.accumulate( alphabet_not( alphabet_alpha() ) ) )   // Check reading ends
     {}
     }

@@ -192,44 +192,10 @@ public:
     bool read_fixed( std::string * p_output, const char * p_seeking );
     bool read_ifixed( std::string * p_output, const char * p_seeking );
 
-    // If the next input character is in the alphabet then add it to the string pointed to by p_accumulator
+    // If the next input character is in the alphabet then add it to the string in the active accumulator object
     bool accumulate( const alphabet & r_alphabet );
     size_t accumulate_all( const alphabet & r_alphabet );
-    class accumulator_setter        // Control access to dsl_pa::p_accumulator so it has to be used in a RAII fashion
-    {                               // Do: dsl_pa::accumulator_setter my_value_accumulator( this, my_value );
-    private:
-        dsl_pa * p_dsl_pa;
-        std::string * p_previous_accumulator;
-        std::string * p_my_accumulator;
-    public:
-        accumulator_setter(
-            dsl_pa * p_dsl_pa_in,
-            std::string & r_new_accumulator_in )
-            :
-            p_dsl_pa( p_dsl_pa_in ),
-            p_previous_accumulator( p_dsl_pa_in->p_accumulator ),
-            p_my_accumulator( &r_new_accumulator_in )
-        {
-            select();
-        }
-        ~accumulator_setter() { previous(); }
-        bool select() { p_dsl_pa->p_accumulator = p_my_accumulator; return true; }
-        bool previous() { p_dsl_pa->p_accumulator = p_previous_accumulator; return true; }
-        bool none() { p_dsl_pa->p_accumulator = 0; return true; }
-    };
-    friend class accumulator_setter;
-    class accumulator_setter_deferred : public accumulator_setter
-    {
-    public:
-        accumulator_setter_deferred(
-            dsl_pa * p_dsl_pa_in,
-            std::string & r_new_accumulator_in )
-            :
-            accumulator_setter( p_dsl_pa_in, r_new_accumulator_in )
-        {
-            none();
-        }
-    };
+    friend class accumulator;   // Use an instance of the acculator class to store accumulated input
 
     // Low-level reader access
     reader & get_reader() { return r_reader; }  // Primarily for use with locator class
@@ -359,6 +325,38 @@ public:
 
     //void top()
     // Use r_reader.location_top() directly instead to avoid confusion
+};
+
+class accumulator        // Control access to dsl_pa::p_accumulator so it has to be used in a RAII fashion
+{                        // Do: accumulator my_value_accumulator( this, my_value );
+private:
+    dsl_pa * p_dsl_pa;
+    std::string * p_previous_accumulator;
+    std::string my_accumulator;
+public:
+    accumulator( dsl_pa * p_dsl_pa_in )
+        :
+        p_dsl_pa( p_dsl_pa_in ),
+        p_previous_accumulator( p_dsl_pa_in->p_accumulator )
+    {
+        select();
+    }
+    ~accumulator() { previous(); }
+    bool select() { p_dsl_pa->p_accumulator = &my_accumulator; return true; }
+    bool previous() { p_dsl_pa->p_accumulator = p_previous_accumulator; return true; }
+    bool none() { p_dsl_pa->p_accumulator = 0; return true; }
+    const std::string & get() const { return my_accumulator; }
+};
+
+class accumulator_deferred : public accumulator
+{
+public:
+    accumulator_deferred( dsl_pa * p_dsl_pa_in )
+        :
+        accumulator( p_dsl_pa_in )
+    {
+        none();
+    }
 };
 
 // The following strategy for handling an optional sequence does not work
