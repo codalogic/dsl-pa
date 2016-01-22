@@ -346,6 +346,7 @@ public:
     bool previous() { p_dsl_pa->p_accumulator = p_previous_accumulator; return true; }
     bool none() { p_dsl_pa->p_accumulator = 0; return true; }
     const std::string & get() const { return my_accumulator; }
+    bool put_in( std::string & r_place_where ) const { r_place_where = get(); return true; }
 };
 
 class accumulator_deferred : public accumulator

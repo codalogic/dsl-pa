@@ -1,4 +1,4 @@
-Tests run on Fri Jan 22 13:47:51 2016
+Tests run on Fri Jan 22 14:20:09 2016
 
     Alphabet tests [alphabet-test.cpp:42]
     =====================================
@@ -996,7 +996,7 @@ Tests run on Fri Jan 22 13:47:51 2016
     ok: alpha_accumulator.get() == "ABCDEFG"
       Accumaltors can be selected and unselected
     ok: digits_accumulator.get() == "123"
-    ok: alphas_accumulator.get() == "ABCDEFG"
+    ok: alphas == "ABCDEFG"
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
     String reader tests [reader-test.cpp:355]

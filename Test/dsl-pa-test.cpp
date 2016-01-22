@@ -1363,12 +1363,14 @@ TFUNCTION( accumulator_check )
     alphas_accumulator.none();
     while( my_pa.accumulate( alphabet_not( alphabet_digit() ) ) )
     {}
+    std::string alphas;
     digits_accumulator.select() &&
         my_pa.accumulate_all( alphabet_digit() ) &&
         alphas_accumulator.select() &&
-        my_pa.accumulate_all( alphabet_alpha() );
+        my_pa.accumulate_all( alphabet_alpha() ) &&
+        alphas_accumulator.put_in( alphas );
     TTEST( digits_accumulator.get() == "123" );
-    TTEST( alphas_accumulator.get() == "ABCDEFG" );
+    TTEST( alphas == "ABCDEFG" );
     while( my_pa.accumulate( alphabet_not( alphabet_alpha() ) ) )   // Check reading ends
     {}
     }
