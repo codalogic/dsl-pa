@@ -197,7 +197,7 @@ public:
     bool accumulate( const alphabet & r_alphabet );
     bool accumulate( char c );
     size_t accumulate_all( const alphabet & r_alphabet );
-    friend class accumulator;   // Use an instance of the acculator class to store accumulated input
+    friend class accumulator_deferred;   // Use an instance of the acculator class to store accumulated input
 
     // Low-level reader access
     reader & get_reader() { return r_reader; }  // Primarily for use with locator class
@@ -329,21 +329,20 @@ public:
     // Use r_reader.location_top() directly instead to avoid confusion
 };
 
-class accumulator        // Control access to dsl_pa::p_accumulator so it has to be used in a RAII fashion
-{                        // Do: accumulator my_value_accumulator( this, my_value );
+class accumulator_deferred      // Control access to dsl_pa::p_accumulator so it has to be used in a RAII fashion
+{                               // Do: accumulator my_value_accumulator( this, my_value );
 private:
     dsl_pa * p_dsl_pa;
     std::string * p_previous_accumulator;
     std::string my_accumulator;
 public:
-    accumulator( dsl_pa * p_dsl_pa_in )
+    accumulator_deferred( dsl_pa * p_dsl_pa_in )
         :
         p_dsl_pa( p_dsl_pa_in ),
         p_previous_accumulator( p_dsl_pa_in->p_accumulator )
     {
-        select();
     }
-    ~accumulator() { previous(); }
+    ~accumulator_deferred() { previous(); }
     bool select() { p_dsl_pa->p_accumulator = &my_accumulator; return true; }
     bool previous() { p_dsl_pa->p_accumulator = p_previous_accumulator; return true; }
     bool none() { p_dsl_pa->p_accumulator = 0; return true; }
@@ -351,14 +350,14 @@ public:
     bool put_in( std::string & r_place_where ) const { r_place_where = get(); return true; }
 };
 
-class accumulator_deferred : public accumulator
+class accumulator : public accumulator_deferred
 {
 public:
-    accumulator_deferred( dsl_pa * p_dsl_pa_in )
+    accumulator( dsl_pa * p_dsl_pa_in )
         :
-        accumulator( p_dsl_pa_in )
+        accumulator_deferred( p_dsl_pa_in )
     {
-        none();
+        select();
     }
 };
 
