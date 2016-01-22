@@ -1,4 +1,4 @@
-Tests run on Thu Jan 21 19:28:23 2016
+Tests run on Fri Jan 22 10:27:04 2016
 
     Alphabet tests [alphabet-test.cpp:42]
     =====================================
@@ -994,6 +994,9 @@ Tests run on Thu Jan 21 19:28:23 2016
       Specifying an accumulator operates in a stack-like nesting order
     ok: digit_accumulated == "123"
     ok: alpha_accumulated == "ABCDEFG"
+      Accumaltors can be selected and unselected
+    ok: digits_accumulated == "123"
+    ok: alphas_accumulated == "ABCDEFG"
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
     String reader tests [reader-test.cpp:355]
@@ -1511,4 +1514,4 @@ Tests run on Thu Jan 21 19:28:23 2016
     ok: p_reader->is_open()
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
     ok: _CrtCheckMemory() != 0
-0 error(s), 0 todo(s), 1185 test(s)
+0 error(s), 0 todo(s), 1187 test(s)

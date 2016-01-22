@@ -1349,4 +1349,34 @@ TFUNCTION( accumulator_check )
     while( my_pa.accumulate( alphabet_not( alphabet_alpha() ) ) )   // Check reading ends
     {}
     }
+
+    {
+    TDOC( "Accumaltors can be selected and unselected" );
+    std::string in( "+-ABCD**123EFG+-" );
+
+    reader_string my_reader( in );
+    dsl_pa my_pa( my_reader );
+    std::string alphas_accumulated;
+    dsl_pa::accumulator_setter_deferred alphas_accumulator( &my_pa, alphas_accumulated );
+    std::string digits_accumulated;
+    dsl_pa::accumulator_setter_deferred digits_accumulator( &my_pa, digits_accumulated );
+    while( my_pa.accumulate( alphabet_not( alphabet_alpha() ) ) )
+    {}
+    alphas_accumulator.select();
+    while( my_pa.accumulate( alphabet_alpha() ) )
+    {}
+    alphas_accumulator.none();
+    while( my_pa.accumulate( alphabet_not( alphabet_digit() ) ) )
+    {}
+    digits_accumulator.select();
+    while( my_pa.accumulate( alphabet_digit() ) )
+    {}
+    alphas_accumulator.select();
+    while( my_pa.accumulate( alphabet_alpha() ) )
+    {}
+    TTEST( digits_accumulated == "123" );
+    TTEST( alphas_accumulated == "ABCDEFG" );
+    while( my_pa.accumulate( alphabet_not( alphabet_alpha() ) ) )   // Check reading ends
+    {}
+    }
 }

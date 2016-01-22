@@ -190,18 +190,36 @@ public:
     private:
         dsl_pa * p_dsl_pa;
         std::string * p_previous_accumulator;
+        std::string * p_my_accumulator;
     public:
-        accumulator_setter( dsl_pa * p_dsl_pa_in, std::string & r_new_accumulator_in )
-            : p_dsl_pa( p_dsl_pa_in ), p_previous_accumulator( p_dsl_pa_in->p_accumulator )
+        accumulator_setter(
+            dsl_pa * p_dsl_pa_in,
+            std::string & r_new_accumulator_in )
+            :
+            p_dsl_pa( p_dsl_pa_in ),
+            p_previous_accumulator( p_dsl_pa_in->p_accumulator ),
+            p_my_accumulator( &r_new_accumulator_in )
         {
-            p_dsl_pa->p_accumulator = &r_new_accumulator_in;
+            select();
         }
-        ~accumulator_setter()
-        {
-            p_dsl_pa->p_accumulator = p_previous_accumulator;
-        }
+        ~accumulator_setter() { previous(); }
+        bool select() { p_dsl_pa->p_accumulator = p_my_accumulator; return true; }
+        bool previous() { p_dsl_pa->p_accumulator = p_previous_accumulator; return true; }
+        bool none() { p_dsl_pa->p_accumulator = 0; return true; }
     };
     friend class accumulator_setter;
+    class accumulator_setter_deferred : public accumulator_setter
+    {
+    public:
+        accumulator_setter_deferred(
+            dsl_pa * p_dsl_pa_in,
+            std::string & r_new_accumulator_in )
+            :
+            accumulator_setter( p_dsl_pa_in, r_new_accumulator_in )
+        {
+            none();
+        }
+    };
 
     // fixed() ensures that the specified text is read from the input, or leave input location unchanged.
     // ifixed() ignores ASCII case.
