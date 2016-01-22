@@ -424,3 +424,21 @@ TFUNCTION( alphabet_char_class_test )
     //TTEST( ! my_char_class.is_sought( 'l' ) );
     }
 }
+
+bool lower_case_odd_letter( char c )
+{
+    return c >= 'a' && c <= 'z' && ((c - 'a' + 1) % 2 == 1);
+}
+
+TFUNCTION( alphabet_function_test )
+{
+    TBEGIN( "Alphabet_function tests" );
+
+    TSETUP( alphabet_function my_function_alphabet( lower_case_odd_letter ) );
+    TTEST( ! my_function_alphabet.is_sought( '2' ) );
+    TTEST( my_function_alphabet.is_sought( 'a' ) );
+    TTEST( ! my_function_alphabet.is_sought( 'b' ) );
+    TTEST( my_function_alphabet.is_sought( 'c' ) );
+    TTEST( ! my_function_alphabet.is_sought( 'd' ) );
+    TTEST( ! my_function_alphabet.is_sought( 'A' ) );
+}

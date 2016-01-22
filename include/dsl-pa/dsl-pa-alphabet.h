@@ -193,6 +193,25 @@ private:
     bool add_special_char_class( char key );
 };
 
+// alphabet_function calls a non-member function to see if the input
+// character is wanted
+
+class alphabet_function : public alphabet
+{
+public:
+    typedef bool (*func_t)( char );
+
+private:
+    func_t f;
+
+public:
+    alphabet_function( func_t f_in ) : f( f_in ) {}
+    virtual bool is_sought( char c ) const
+    {
+        return f( c );
+    }
+};
+
 // Common alphabets
 
 class alphabet_space : public alphabet

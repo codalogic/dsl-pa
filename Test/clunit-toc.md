@@ -1,4 +1,4 @@
-Tests table of contents generated on Fri Jan 22 15:18:42 2016
+Tests table of contents generated on Fri Jan 22 16:01:32 2016
 
 # alphabet-test.cpp
 | Description | Line |
@@ -10,6 +10,7 @@ Tests table of contents generated on Fri Jan 22 15:18:42 2016
 | Alphabet char_to_size_t tests | 207 |
 | Alphabet char_map tests | 220 |
 | Alphabet_char_class tests | 329 |
+| Alphabet_function tests | 435 |
 
 # converter-test.cpp
 | Description | Line |

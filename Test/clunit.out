@@ -1,4 +1,4 @@
-Tests run on Fri Jan 22 15:18:42 2016
+Tests run on Fri Jan 22 16:01:32 2016
 
     Alphabet tests [alphabet-test.cpp:42]
     =====================================
@@ -251,6 +251,17 @@ Tests run on Fri Jan 22 15:18:42 2016
       : alphabet_char_class my_char_class( "~d~w" )
     ok: my_char_class.is_sought( '2' )
     ok: my_char_class.is_sought( 'l' )
+    ok: ! _CrtMemDifference( &s3, &s1, &s2 )
+
+    Alphabet_function tests [alphabet-test.cpp:435]
+    ===============================================
+      : alphabet_function my_function_alphabet( lower_case_odd_letter )
+    ok: ! my_function_alphabet.is_sought( '2' )
+    ok: my_function_alphabet.is_sought( 'a' )
+    ok: ! my_function_alphabet.is_sought( 'b' )
+    ok: my_function_alphabet.is_sought( 'c' )
+    ok: ! my_function_alphabet.is_sought( 'd' )
+    ok: ! my_function_alphabet.is_sought( 'A' )
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
     class converter [converter-test.cpp:40]
@@ -1519,4 +1530,4 @@ Tests run on Fri Jan 22 15:18:42 2016
     ok: p_reader->is_open()
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
     ok: _CrtCheckMemory() != 0
-0 error(s), 0 todo(s), 1192 test(s)
+0 error(s), 0 todo(s), 1199 test(s)
