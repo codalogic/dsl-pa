@@ -1,4 +1,4 @@
-Tests table of contents generated on Fri Jan 22 14:20:09 2016
+Tests table of contents generated on Fri Jan 22 15:18:42 2016
 
 # alphabet-test.cpp
 | Description | Line |
@@ -32,26 +32,26 @@ Tests table of contents generated on Fri Jan 22 14:20:09 2016
 | dsl pa ws tests | 255 |
 | dsl pa wsp tests | 288 |
 | dsl pa get() tests | 348 |
-| dsl pa get_until() tests | 409 |
-| dsl pa skip() tests | 493 |
-| dsl pa fixed and ifixed tests | 536 |
-| dsl_pa::get_char() Tests | 625 |
-| dsl_pa::get_char_no_space() Tests | 637 |
-| dsl_pa::peek_char_no_space() Tests | 664 |
-| dsl_pa::get_char(...) Tests | 705 |
-| dsl_pa::get_bool() Tests | 759 |
-| dsl_pa::get_int() Tests | 784 |
-| dsl_pa::get_uint() Tests | 814 |
-| dsl_pa::get_float() Tests | 844 |
-| dsl_pa::get_sci_float() Tests | 877 |
-| dsl_pa::current_is() Tests | 908 |
-| dsl_pa::peek_is() Tests | 938 |
-| dsl_pa::peek_char() Tests | 967 |
-| optional_rewind class Tests | 1027 |
-| DSL PA is_peek_at_end Tests | 1056 |
-| DSL PA is_current_at_end Tests | 1075 |
-| DSL PA get vs. read check | 1097 |
-| accumulator test | 1297 |
+| dsl pa get_until() tests | 433 |
+| dsl pa skip() tests | 517 |
+| dsl pa fixed and ifixed tests | 560 |
+| dsl_pa::get_char() Tests | 649 |
+| dsl_pa::get_char_no_space() Tests | 661 |
+| dsl_pa::peek_char_no_space() Tests | 688 |
+| dsl_pa::get_char(...) Tests | 729 |
+| dsl_pa::get_bool() Tests | 783 |
+| dsl_pa::get_int() Tests | 808 |
+| dsl_pa::get_uint() Tests | 838 |
+| dsl_pa::get_float() Tests | 868 |
+| dsl_pa::get_sci_float() Tests | 901 |
+| dsl_pa::current_is() Tests | 932 |
+| dsl_pa::peek_is() Tests | 962 |
+| dsl_pa::peek_char() Tests | 991 |
+| optional_rewind class Tests | 1051 |
+| DSL PA is_peek_at_end Tests | 1080 |
+| DSL PA is_current_at_end Tests | 1099 |
+| DSL PA get vs. read check | 1121 |
+| accumulator test | 1321 |
 
 # reader-test.cpp
 | Description | Line |

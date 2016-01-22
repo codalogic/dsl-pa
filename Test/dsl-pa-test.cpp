@@ -402,6 +402,30 @@ TFUNCTION( dsl_pa_get_test )
     TTEST( channel == "p" );
     TTEST( level == "12" );
     }
+
+    {
+    reader_string my_reader( "Mode p=12" );
+    dsl_pa my_pa( my_reader );
+
+    std::string command_1;
+    std::string command_2;
+    std::string channel;
+    std::string level;
+
+    TTEST( my_pa.get( &command_1, alphabet_word_char(), 2 ) &&
+                my_pa.get( &command_2, alphabet_word_char() ) &&
+                my_pa.space() &&
+                my_pa.get( &channel, alphabet_alpha() ) &&
+                my_pa.opt_space() &&
+                my_pa.is_get_char_in( alphabet_char_class( "<=" ) ) &&
+                my_pa.opt_space() &&
+                my_pa.get( &level, alphabet_digit() ) );
+
+    TTEST( command_1 == "Mo" );
+    TTEST( command_2 == "de" );
+    TTEST( channel == "p" );
+    TTEST( level == "12" );
+    }
 }
 
 TFUNCTION( dsl_pa_get_until_test )

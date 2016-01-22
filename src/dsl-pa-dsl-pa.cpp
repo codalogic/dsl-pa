@@ -74,6 +74,13 @@ bool /*is_not_eof*/ dsl_pa::peek_char_no_wsp()       // Use current(), current_i
     return opt_wsp() && peek_char();
 }
 
+bool dsl_pa::is_get_char_in( const alphabet & r_alphabet )    // Will unget() if got char is not c
+{
+    if( peek_is_in( r_alphabet ) )
+        return get_char();
+    return false;
+}
+
 bool dsl_pa::current_is( int c ) const
 {
     return current() == c;

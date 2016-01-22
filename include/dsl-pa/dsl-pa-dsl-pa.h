@@ -122,6 +122,7 @@ public:
     bool /*is_not_eof*/ peek_char_no_space();     // Use current(), current_is() and current_is_in() methods to access value
     bool /*is_not_eof*/ peek_char_no_wsp();       // Use current(), current_is() and current_is_in() methods to access value
     bool is_get_char( char c ) { return r_reader.is_get_char( c ); }    // Will unget() if got char is not c
+    bool is_get_char_in( const alphabet & r_alphabet );    // Will unget() if got char is not c
     bool current_is( int c ) const;
     bool current_is_in( const alphabet & r_alphabet ) const;
     bool peek_is( int c );
