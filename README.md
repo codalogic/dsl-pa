@@ -162,10 +162,10 @@ than expand the non-terminal inline (e.g. get_date() below):
 ```c++
 bool example_parser::get_date( date * p_date )
 {
-    // location_logger is a class that uses RAII to ensure that a
+    // locator is a class that uses RAII to ensure that a
     // location_push() has a corresponding location_pop() when the
     // function exits.
-    location_logger my_location( get_reader() );
+    locator my_location( get_reader() );
 
     if( get_int( &p_date->year ) == 4 &&
             is_get_char( '-' ) &&
@@ -232,20 +232,19 @@ With a more literal translation of an ABNF grammar to a parser, common
 sub-expressions such as DIGIT may be used in a number of places.  The
 accumulate() method supports directing this input to the desired string.
 
-Use dsl_pa::accumulator_setter to specify the string that should receive
+Use the accumulator class to specify the string that should receive
 the input.
 ```c++
 void example_parser::example8( std::ostream & fout )
 {
-    // Input is ABC3D+
-    std::string accumulated;
-    dsl_pa::accumulator_setter accumulator( this, accumulated );
+    // Input is ABC3D
+    accumulator accumulated( this );
     while( ALPHA() || DIGIT() )
     {}
-    if( accumulated == "ABC3D" )
-        fout << "Example OK: Accumulated " << accumulated << "\n";
+    if( accumulated.get() == "ABC3D" )
+        fout << "Example OK: Accumulated " << accumulated.get() << "\n";
     else
-        fout << "Example Failed: Accumulated " << accumulated << "\n";
+        fout << "Example Failed: Accumulated " << accumulated.get() << "\n";
 }
 
 bool example_parser::ALPHA()
