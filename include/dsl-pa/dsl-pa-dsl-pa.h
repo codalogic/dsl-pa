@@ -183,8 +183,18 @@ public:
     size_t skip_until( const alphabet & r_alphabet, char escape_char, size_t max_chars );
     size_t skip( mutator & r_mutator );
 
+    // fixed() ensures that the specified text is read from the input, or leave input location unchanged.
+    // ifixed() ignores ASCII case.
+    bool fixed( const char * p_seeking );
+    bool ifixed( const char * p_seeking );
+    bool get_fixed( std::string * p_output, const char * p_seeking );
+    bool get_ifixed( std::string * p_output, const char * p_seeking );
+    bool read_fixed( std::string * p_output, const char * p_seeking );
+    bool read_ifixed( std::string * p_output, const char * p_seeking );
+
     // If the next input character is in the alphabet then add it to the string pointed to by p_accumulator
     bool accumulate( const alphabet & r_alphabet );
+    size_t accumulate_all( const alphabet & r_alphabet );
     class accumulator_setter        // Control access to dsl_pa::p_accumulator so it has to be used in a RAII fashion
     {                               // Do: dsl_pa::accumulator_setter my_value_accumulator( this, my_value );
     private:
@@ -220,15 +230,6 @@ public:
             none();
         }
     };
-
-    // fixed() ensures that the specified text is read from the input, or leave input location unchanged.
-    // ifixed() ignores ASCII case.
-    bool fixed( const char * p_seeking );
-    bool ifixed( const char * p_seeking );
-    bool get_fixed( std::string * p_output, const char * p_seeking );
-    bool get_ifixed( std::string * p_output, const char * p_seeking );
-    bool read_fixed( std::string * p_output, const char * p_seeking );
-    bool read_ifixed( std::string * p_output, const char * p_seeking );
 
     // Low-level reader access
     reader & get_reader() { return r_reader; }  // Primarily for use with location_logger class

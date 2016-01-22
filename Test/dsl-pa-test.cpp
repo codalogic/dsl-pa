@@ -1368,12 +1368,10 @@ TFUNCTION( accumulator_check )
     alphas_accumulator.none();
     while( my_pa.accumulate( alphabet_not( alphabet_digit() ) ) )
     {}
-    digits_accumulator.select();
-    while( my_pa.accumulate( alphabet_digit() ) )
-    {}
-    alphas_accumulator.select();
-    while( my_pa.accumulate( alphabet_alpha() ) )
-    {}
+    digits_accumulator.select() &&
+        my_pa.accumulate_all( alphabet_digit() ) &&
+        alphas_accumulator.select() &&
+        my_pa.accumulate_all( alphabet_alpha() );
     TTEST( digits_accumulated == "123" );
     TTEST( alphas_accumulated == "ABCDEFG" );
     while( my_pa.accumulate( alphabet_not( alphabet_alpha() ) ) )   // Check reading ends
