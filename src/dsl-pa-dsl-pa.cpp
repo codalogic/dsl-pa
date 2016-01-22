@@ -163,14 +163,14 @@ size_t /*num chars read*/ dsl_pa::get_int( std::string * p_num )
 
 size_t /*num chars read*/ dsl_pa::read_int( std::string * p_num )
 {
-    location_logger location( r_reader );
+    locator location( r_reader );
 
     size_t n_sign_chars = read( p_num, alphabet_sign(), 1 );
     size_t n_digits = read( p_num, alphabet_digit() );
 
     if( n_digits == 0 )
     {
-        location.top();
+        location_top();
         return 0;
     }
 
@@ -214,7 +214,7 @@ bool dsl_pa::get_float( std::string * p_num )
 
 bool dsl_pa::read_float( std::string * p_num )
 {
-    location_logger location( r_reader );
+    locator location( r_reader );
 
     size_t n_digits_before_point = 0, n_digits_after_point = 0;
 
@@ -225,7 +225,7 @@ bool dsl_pa::read_float( std::string * p_num )
 
     if( n_digits_before_point + n_digits_after_point == 0 )
     {
-        location.top();
+        location_top();
         return false;
     }
 
@@ -260,23 +260,23 @@ bool dsl_pa::get_sci_float( std::string * p_num )
 
 bool dsl_pa::read_sci_float( std::string * p_num )
 {
-    location_logger location( r_reader );
+    locator location( r_reader );
 
     if( read_float( p_num ) )
     {
-        location_logger exponent_location( r_reader );
+        locator exponent_location( r_reader );
 
         std::string exponent;
 
         if( read( &exponent, alphabet_E(), 1 ) && read_int( &exponent ) )
             p_num->append( exponent );
         else
-            location.top();
+            location_top();
 
         return true;
     }
 
-    location.top();
+    location_top();
     return false;
 }
 
@@ -549,7 +549,7 @@ bool dsl_pa::read_fixed_or_ifixed( std::string * p_output, const char * p_seekin
 {
     std::string read;
 
-    location_logger location( r_reader );
+    locator location( r_reader );
 
     for( ; *p_seeking != '\0'; ++p_seeking )
     {
@@ -560,7 +560,7 @@ bool dsl_pa::read_fixed_or_ifixed( std::string * p_output, const char * p_seekin
         }
         else
         {
-            location.top();
+            location_top();
             return false;
         }
     }

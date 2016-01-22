@@ -325,30 +325,6 @@ public:
     }
 };
 
-class location_logger
-{
-    // Allows RAII operation of the reader locations to ensure that
-    // location_pop() is not forgotten!
-
-private:
-    reader & r_reader;
-
-public:
-    location_logger( reader & r_reader_in ) : r_reader( r_reader_in )
-    {
-        r_reader.location_push();
-    }
-    ~location_logger()
-    {
-        r_reader.location_pop();
-    }
-
-    void top()
-    {
-        r_reader.location_top();
-    }
-};
-
 } // End of namespace cl
 
 #endif // CL_DSL_PA_READER

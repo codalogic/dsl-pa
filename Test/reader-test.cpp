@@ -320,7 +320,7 @@ void reader_location_logger_test( reader_factory & r_reader_factory )
     TTEST( p_reader->get() == 'd' );
 
     {   // Control scope of my_location_logger
-    TSETUP( location_logger my_location_logger( *p_reader ) );
+    TSETUP( locator my_location_logger( *p_reader ) );
 
     TTEST( p_reader->get() == 'e' );
     TTEST( p_reader->get() == 'f' );

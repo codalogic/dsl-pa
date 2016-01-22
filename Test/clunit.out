@@ -1,4 +1,4 @@
-Tests run on Fri Jan 22 10:49:14 2016
+Tests run on Fri Jan 22 12:23:34 2016
 
     Alphabet tests [alphabet-test.cpp:42]
     =====================================
@@ -441,7 +441,7 @@ Tests run on Fri Jan 22 10:49:14 2016
     ok: my_dsl_pa.get() == 'e'
     ok: my_dsl_pa.location_top()
     ok: my_dsl_pa.get() == 'c'
-      : location_logger my_location_logger( my_dsl_pa.get_reader() )
+      : locator my_location_logger( my_dsl_pa.get_reader() )
     ok: ! my_dsl_pa.is_get_char( 'x' )
     ok: my_dsl_pa.is_get_char( 'd' )
     ok: my_dsl_pa.get() == 'e'
@@ -1130,7 +1130,7 @@ Tests run on Fri Jan 22 10:49:14 2016
     ok: p_reader->current() == 'b'
     ok: p_reader->get() == 'c'
     ok: p_reader->get() == 'd'
-      : location_logger my_location_logger( *p_reader )
+      : locator my_location_logger( *p_reader )
     ok: p_reader->get() == 'e'
     ok: p_reader->get() == 'f'
     ok: p_reader->get() == reader::R_EOI
@@ -1286,7 +1286,7 @@ Tests run on Fri Jan 22 10:49:14 2016
     ok: p_reader->current() == 'b'
     ok: p_reader->get() == 'c'
     ok: p_reader->get() == 'd'
-      : location_logger my_location_logger( *p_reader )
+      : locator my_location_logger( *p_reader )
     ok: p_reader->get() == 'e'
     ok: p_reader->get() == 'f'
     ok: p_reader->get() == reader::R_EOI
@@ -1433,7 +1433,7 @@ Tests run on Fri Jan 22 10:49:14 2016
     ok: p_reader->current() == 'b'
     ok: p_reader->get() == 'c'
     ok: p_reader->get() == 'd'
-      : location_logger my_location_logger( *p_reader )
+      : locator my_location_logger( *p_reader )
     ok: p_reader->get() == 'e'
     ok: p_reader->get() == 'f'
     ok: p_reader->get() == reader::R_EOI

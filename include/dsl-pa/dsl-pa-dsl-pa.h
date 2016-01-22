@@ -232,7 +232,7 @@ public:
     };
 
     // Low-level reader access
-    reader & get_reader() { return r_reader; }  // Primarily for use with location_logger class
+    reader & get_reader() { return r_reader; }  // Primarily for use with locator class
     char get() { return r_reader.get(); }
     char current() const { return r_reader.current(); }
     bool unget() { r_reader.unget(); return true; }
@@ -249,7 +249,8 @@ public:
     // optional_rewind() will call location_top() if the shortcircuit arguments
     // it is called with yield false.  Used when the specified path is determined
     // not to be the one encountered.
-    // Do location_push(); optional_rewind( XYZ() && ABC() ) && DEF(); location_pop()
+    // Do location_push(); optional_rewind( XYZ() && ABC() ) || DEF(); location_pop()
+    // Or { locator location(this); optional_rewind( XYZ() && ABC() ) || DEF(); }
     bool optional_rewind( bool is_ok ) { if( ! is_ok ) location_top(); return is_ok; }
 
     // optional() essentially ignore the result of the (single) function that
@@ -328,6 +329,36 @@ public:
         throw T();
         return false;    // Won't be called!
     }
+};
+
+class locator
+{
+    // Allows RAII operation of the reader locations to ensure that
+    // location_pop() is not forgotten!
+
+private:
+    reader & r_reader;
+
+public:
+    locator( reader & r_reader_in ) : r_reader( r_reader_in )
+    {
+        r_reader.location_push();
+    }
+    locator( dsl_pa & r_dsl_pa_in ) : r_reader( r_dsl_pa_in.get_reader() )
+    {
+        r_reader.location_push();
+    }
+    locator( dsl_pa * p_dsl_pa_in ) : r_reader( p_dsl_pa_in->get_reader() )
+    {
+        r_reader.location_push();
+    }
+    ~locator()
+    {
+        r_reader.location_pop();
+    }
+
+    //void top()
+    // Use r_reader.location_top() directly instead to avoid confusion
 };
 
 // The following strategy for handling an optional sequence does not work

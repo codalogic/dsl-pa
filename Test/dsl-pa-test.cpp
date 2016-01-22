@@ -241,7 +241,7 @@ TFUNCTION( dsl_pa_low_level_read_test )
     my_dsl_pa.location_pop();
 
     {
-    TSETUP( location_logger my_location_logger( my_dsl_pa.get_reader() ) );
+    TSETUP( locator my_location_logger( my_dsl_pa.get_reader() ) );
     TTEST( ! my_dsl_pa.is_get_char( 'x' ) );
     TTEST( my_dsl_pa.is_get_char( 'd' ) );
     TTEST( my_dsl_pa.get() == 'e' );
@@ -1008,7 +1008,7 @@ void optional_rewind_test(
 
     is_empty_mode = false;
 
-    location_logger loc( my_pa.get_reader() );
+    locator loc( my_pa.get_reader() );
     TTEST( my_pa.optional_rewind(
                     my_pa.get_fixed( &command, "Mode" ) &&
                     my_pa.space() &&
