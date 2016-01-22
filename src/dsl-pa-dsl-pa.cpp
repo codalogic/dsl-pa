@@ -600,6 +600,17 @@ bool dsl_pa::accumulate( const alphabet & r_alphabet )
     return false;
 }
 
+bool dsl_pa::accumulate( char c )
+{
+    if( is_get_char( c ) )
+    {
+        if( p_accumulator )
+            *p_accumulator += c;
+        return true;
+    }
+    return false;
+}
+
 size_t dsl_pa::accumulate_all( const alphabet & r_alphabet )
 {
     size_t num = 0;

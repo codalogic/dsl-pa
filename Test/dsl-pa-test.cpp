@@ -1333,6 +1333,21 @@ TFUNCTION( accumulator_check )
     TTEST( accumulator.get() == "ABC" );
     }
 
+
+    {
+    TDOC( "Can use accumulate() on specific chars" );
+    std::string in( "ABCDE" );
+
+    reader_string my_reader( in );
+    dsl_pa my_pa( my_reader );
+    accumulator accumulator( &my_pa );
+    TTEST( my_pa.accumulate( 'A' ) );
+    TTEST( my_pa.accumulate( 'B' ) );
+    TTEST( ! my_pa.accumulate( 'Z' ) );
+    TTEST( my_pa.accumulate( 'C' ) );
+    TTEST( accumulator.get() == "ABC" );
+    }
+
     {
     TDOC( "Can use accumulate() without having somewhere to accumulate to" );
     std::string in( "ABCDE" );

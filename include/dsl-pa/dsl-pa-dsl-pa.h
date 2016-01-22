@@ -195,6 +195,7 @@ public:
 
     // If the next input character is in the alphabet then add it to the string in the active accumulator object
     bool accumulate( const alphabet & r_alphabet );
+    bool accumulate( char c );
     size_t accumulate_all( const alphabet & r_alphabet );
     friend class accumulator;   // Use an instance of the acculator class to store accumulated input
 

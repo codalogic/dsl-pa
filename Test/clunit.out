@@ -1,4 +1,4 @@
-Tests run on Fri Jan 22 16:01:32 2016
+Tests run on Fri Jan 22 20:03:13 2016
 
     Alphabet tests [alphabet-test.cpp:42]
     =====================================
@@ -1002,6 +1002,12 @@ Tests run on Fri Jan 22 16:01:32 2016
     ok: ! my_pa.accumulate( alphabet_char_class( "Z" ) )
     ok: my_pa.accumulate( alphabet_char_class( "C" ) )
     ok: accumulator.get() == "ABC"
+      Can use accumulate() on specific chars
+    ok: my_pa.accumulate( 'A' )
+    ok: my_pa.accumulate( 'B' )
+    ok: ! my_pa.accumulate( 'Z' )
+    ok: my_pa.accumulate( 'C' )
+    ok: accumulator.get() == "ABC"
       Can use accumulate() without having somewhere to accumulate to
     ok: my_pa.accumulate( alphabet_char_class( "A" ) )
     ok: my_pa.accumulate( alphabet_char_class( "B" ) )
@@ -1530,4 +1536,4 @@ Tests run on Fri Jan 22 16:01:32 2016
     ok: p_reader->is_open()
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
     ok: _CrtCheckMemory() != 0
-0 error(s), 0 todo(s), 1199 test(s)
+0 error(s), 0 todo(s), 1204 test(s)
