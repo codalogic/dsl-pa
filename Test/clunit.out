@@ -1,4 +1,4 @@
-Tests run on Fri Jan 22 20:39:17 2016
+Tests run on Mon Jan 25 16:44:51 2016
 
     Alphabet tests [alphabet-test.cpp:42]
     =====================================
@@ -1019,6 +1019,18 @@ Tests run on Fri Jan 22 20:39:17 2016
       Accumaltors can be selected and unselected
     ok: digits_accumulator.get() == "123"
     ok: alphas == "ABCDEFG"
+      Accumaltors can be cleared
+    ok: my_pa.accumulate( alphabet_char_class( "A" ) )
+    ok: my_pa.accumulate( alphabet_char_class( "B" ) )
+    ok: accumulator.get() == "AB"
+    ok: accumulator.clear()
+    ok: my_pa.accumulate( alphabet_char_class( "C" ) )
+    ok: my_pa.accumulate( alphabet_char_class( "D" ) )
+    ok: accumulator.get() == "CD"
+      Accumaltors can be selected and cleared in one method
+    ok: alphas_accumulator.get() == "ABCD"
+    ok: digits_accumulator.get() == "123"
+    ok: alphas_accumulator.get() == "EFG"
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
     String reader tests [reader-test.cpp:355]
@@ -1536,4 +1548,4 @@ Tests run on Fri Jan 22 20:39:17 2016
     ok: p_reader->is_open()
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
     ok: _CrtCheckMemory() != 0
-0 error(s), 0 todo(s), 1204 test(s)
+0 error(s), 0 todo(s), 1214 test(s)

@@ -1333,7 +1333,6 @@ TFUNCTION( accumulator_check )
     TTEST( accumulator.get() == "ABC" );
     }
 
-
     {
     TDOC( "Can use accumulate() on specific chars" );
     std::string in( "ABCDE" );
@@ -1410,6 +1409,43 @@ TFUNCTION( accumulator_check )
         alphas_accumulator.put_in( alphas );
     TTEST( digits_accumulator.get() == "123" );
     TTEST( alphas == "ABCDEFG" );
+    while( my_pa.accumulate( alphabet_not( alphabet_alpha() ) ) )   // Check reading ends
+    {}
+    }
+
+    {
+    TDOC( "Accumaltors can be cleared" );
+    std::string in( "ABCDE" );
+
+    reader_string my_reader( in );
+    dsl_pa my_pa( my_reader );
+    accumulator accumulator( &my_pa );
+    TTEST( my_pa.accumulate( alphabet_char_class( "A" ) ) );
+    TTEST( my_pa.accumulate( alphabet_char_class( "B" ) ) );
+    TTEST( accumulator.get() == "AB" );
+    TTEST( accumulator.clear() );   // clear() method always returns 'true'
+    TTEST( my_pa.accumulate( alphabet_char_class( "C" ) ) );
+    TTEST( my_pa.accumulate( alphabet_char_class( "D" ) ) );
+    TTEST( accumulator.get() == "CD" );
+    }
+
+    {
+    TDOC( "Accumaltors can be selected and cleared in one method" );
+    std::string in( "ABCD123EFG" );
+
+    reader_string my_reader( in );
+    dsl_pa my_pa( my_reader );
+    accumulator_deferred alphas_accumulator( &my_pa );
+    accumulator_deferred digits_accumulator( &my_pa );
+    alphas_accumulator.select() &&
+        my_pa.accumulate_all( alphabet_alpha() );
+    TTEST( alphas_accumulator.get() == "ABCD" );
+    digits_accumulator.select() &&
+        my_pa.accumulate_all( alphabet_digit() ) &&
+        alphas_accumulator.select_and_clear() &&
+        my_pa.accumulate_all( alphabet_alpha() );
+    TTEST( digits_accumulator.get() == "123" );
+    TTEST( alphas_accumulator.get() == "EFG" );
     while( my_pa.accumulate( alphabet_not( alphabet_alpha() ) ) )   // Check reading ends
     {}
     }
