@@ -228,17 +228,21 @@ void example_parser::example7( std::ostream & fout )
 }
 ```
 
+## Accumulators
+
 With a more literal translation of an ABNF grammar to a parser, common
 sub-expressions such as DIGIT may be used in a number of places.  The
-accumulate() method supports directing this input to the desired string.
+`accumulate()` method along with the `accumulator` and `accumulator_deferred`
+classes support directing this input to the desired string.
 
-Use the accumulator class to specify the string that should receive
-the input.
+Use the `accumulator` and `accumulator_deferred` classes to specify the string
+that should receive the input.
 ```c++
 void example_parser::example8( std::ostream & fout )
 {
     // Input is ABC3D
     accumulator accumulated( this );
+
     while( ALPHA() || DIGIT() )
     {}
     if( accumulated.get() == "ABC3D" )
@@ -257,6 +261,30 @@ bool example_parser::DIGIT()
     return accumulate( alphabet_digit() );
 }
 ```
+
+An `accumulator` object selects itself as the active character accumulator
+immediately, whereas an `accumulator_deferred` object does not.
+
+`accumulator::select()` makes the accumulator object the active accumulator.
+The `select()` method needs to be called on an `accumulator_deferred` object
+for it to be made the active accumulator.
+`accumulator::previous()` restores the accumulator that was active when
+the new accumulator was constructed to being the
+active accumulator.  `accumulator::none()` stops any accumulation.
+`accumulator::clear()` clears the characters that have been accumulated by the
+object on which is it called, but does not change which is the active accumulator.
+`accumulator::select_and_clear()` does the `select()` and `clear()` operations
+in one method for convenience.  All of these method return `true` so they can be
+chained together along with other `dsl_pa` methods.
+
+When an accumulator is destructed it calls the `previous()` method.  This is because
+accumulators are assumed to be stack-based objects that are strictly nested.
+
+There are a number of `dsl_pa::accumlate()` variants.  These are:
+`dsl_pa::accumlate( const alphabet & )`, `dsl_pa::accumlate( char )`,
+and `dsl_pa::accumlate_all( const alphabet & )`.  The `accumlate()`
+variants only accumulate a single character at a time, whereas the `accumlate_all()`
+variant will accumulate all characters that match the input `alphabet`.
 
 ## Parser Function Return Codes
 
