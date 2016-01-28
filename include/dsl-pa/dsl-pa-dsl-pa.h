@@ -236,8 +236,8 @@ public:
 
     // set() allows setting of state information within a set of
     // shortcircuit operators
-    template< typename T >
-    static bool set( T & r_variable, const T & r_value )
+    template< typename T, typename U >
+    static bool set( T & r_variable, const U & r_value )
     {
         r_variable = r_value;
         return true;
