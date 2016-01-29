@@ -289,7 +289,7 @@ variant will accumulate all characters that match the input `alphabet`.
 There is also the `dsl_pa::acumulator_append()` methods.  These methods unconditionally
 append the specified char or string to the active accumulator.  Their use-case is for
 code such as `is_get_char( 'n' ) && accumulator_append( '\n' ) || is_get_char( 'r' )
-&& accumulator_append( '\n' )`.
+&& accumulator_append( '\r' )`.
 
 ## Parser Function Return Codes
 
