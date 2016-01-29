@@ -619,4 +619,18 @@ size_t dsl_pa::accumulate_all( const alphabet & r_alphabet )
     return num;
 }
 
+bool dsl_pa::accumulator_append( char c )
+{
+    if( p_accumulator )
+        *p_accumulator += c;
+    return true;
+}
+
+bool dsl_pa::accumulator_append( const char * s )
+{
+    if( p_accumulator )
+        *p_accumulator += s;
+    return true;
+}
+
 } // End of namespace cl

@@ -286,6 +286,11 @@ and `dsl_pa::accumlate_all( const alphabet & )`.  The `accumlate()`
 variants only accumulate a single character at a time, whereas the `accumlate_all()`
 variant will accumulate all characters that match the input `alphabet`.
 
+There is also the `dsl_pa::acumulator_append()` methods.  These methods unconditionally
+append the specified char or string to the active accumulator.  Their use-case is for
+code such as `is_get_char( 'n' ) && accumulator_append( '\n' ) || is_get_char( 'r' )
+&& accumulator_append( '\n' )`.
+
 ## Parser Function Return Codes
 
 As stated above, each parser function (either from the library or user generated) returns a

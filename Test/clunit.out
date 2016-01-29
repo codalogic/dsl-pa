@@ -1,4 +1,4 @@
-Tests run on Thu Jan 28 11:24:31 2016
+Tests run on Fri Jan 29 16:20:18 2016
 
     Alphabet tests [alphabet-test.cpp:42]
     =====================================
@@ -1031,6 +1031,11 @@ Tests run on Thu Jan 28 11:24:31 2016
     ok: alphas_accumulator.get() == "ABCD"
     ok: digits_accumulator.get() == "123"
     ok: alphas_accumulator.get() == "EFG"
+      Accumaltors can be unconditionally appended to using accumulator_append()
+    ok: my_pa.accumulator_append( 'b' )
+    ok: my_pa.accumulator_append( 'X' )
+    ok: my_pa.accumulator_append( "yz" )
+    ok: my_accumulator.get() == "Xyz"
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
     String reader tests [reader-test.cpp:355]
@@ -1548,4 +1553,4 @@ Tests run on Thu Jan 28 11:24:31 2016
     ok: p_reader->is_open()
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
     ok: _CrtCheckMemory() != 0
-0 error(s), 0 todo(s), 1214 test(s)
+0 error(s), 0 todo(s), 1218 test(s)

@@ -1449,4 +1449,17 @@ TFUNCTION( accumulator_check )
     while( my_pa.accumulate( alphabet_not( alphabet_alpha() ) ) )   // Check reading ends
     {}
     }
+
+    {
+    TDOC( "Accumaltors can be unconditionally appended to using accumulator_append()" );
+    std::string in( "" );
+
+    reader_string my_reader( in );
+    dsl_pa my_pa( my_reader );
+    TTEST( my_pa.accumulator_append( 'b' ) );    // No active accumulator, but should be a safe operation
+    accumulator my_accumulator( &my_pa );
+    TTEST( my_pa.accumulator_append( 'X' ) );
+    TTEST( my_pa.accumulator_append( "yz" ) );
+    TTEST( my_accumulator.get() == "Xyz" );
+    }
 }
