@@ -1,4 +1,4 @@
-Tests run on Fri Jan 29 16:20:18 2016
+Tests run on Wed Feb 03 09:33:57 2016
 
     Alphabet tests [alphabet-test.cpp:42]
     =====================================
@@ -1036,6 +1036,10 @@ Tests run on Fri Jan 29 16:20:18 2016
     ok: my_pa.accumulator_append( 'X' )
     ok: my_pa.accumulator_append( "yz" )
     ok: my_accumulator.get() == "Xyz"
+      Accumaltors can return a value converted to int
+    ok: my_accumulator.to_int() == 101
+      Accumaltors can return a value converted to float/double
+    ok: my_accumulator.to_float() == 101.5
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
     String reader tests [reader-test.cpp:355]
@@ -1553,4 +1557,4 @@ Tests run on Fri Jan 29 16:20:18 2016
     ok: p_reader->is_open()
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
     ok: _CrtCheckMemory() != 0
-0 error(s), 0 todo(s), 1218 test(s)
+0 error(s), 0 todo(s), 1220 test(s)

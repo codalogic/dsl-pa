@@ -291,6 +291,10 @@ append the specified char or string to the active accumulator.  Their use-case i
 code such as `is_get_char( 'n' ) && accumulator_append( '\n' ) || is_get_char( 'r' )
 && accumulator_append( '\r' )`.
 
+To retrieve the accumulated value from an accumulator as a string, use the `get()`
+method.  The accumulated value can also be retrieved as an int using the `to_int()`
+method and as a float / double using the `to_float()` method.
+
 ## Parser Function Return Codes
 
 As stated above, each parser function (either from the library or user generated) returns a

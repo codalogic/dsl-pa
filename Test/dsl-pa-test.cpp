@@ -1462,4 +1462,26 @@ TFUNCTION( accumulator_check )
     TTEST( my_pa.accumulator_append( "yz" ) );
     TTEST( my_accumulator.get() == "Xyz" );
     }
+
+    {
+    TDOC( "Accumaltors can return a value converted to int" );
+    std::string in( "101" );
+
+    reader_string my_reader( in );
+    dsl_pa my_pa( my_reader );
+    accumulator my_accumulator( &my_pa );
+    my_pa.accumulate_all( alphabet_digit() );
+    TTEST( my_accumulator.to_int() == 101 );
+    }
+
+    {
+    TDOC( "Accumaltors can return a value converted to float/double" );
+    std::string in( "101.5" );
+
+    reader_string my_reader( in );
+    dsl_pa my_pa( my_reader );
+    accumulator my_accumulator( &my_pa );
+    my_pa.accumulate_all( alphabet_or( alphabet_digit(), alphabet_char( '.' ) ) );
+    TTEST( my_accumulator.to_float() == 101.5 );
+    }
 }
