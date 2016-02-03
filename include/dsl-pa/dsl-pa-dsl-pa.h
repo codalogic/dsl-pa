@@ -42,6 +42,7 @@
 #define CL_DSL_PA_DSL_PA
 
 #include <string>
+#include <cstdlib>
 
 #include "dsl-pa-reader.h"
 #include "dsl-pa-alphabet.h"
