@@ -67,6 +67,7 @@ public:
         stack.push( unget_buffer_t() );
         stack.top() = unget_buffer;
     }
+    void revise() { if( ! stack.empty() ) stack.top() = unget_buffer; }
     void top() { if( ! stack.empty() ) unget_buffer = stack.top(); }
     void pop() { if( ! stack.empty() ) stack.pop(); }
 };
@@ -119,6 +120,7 @@ public:
     }
 
     void push() { stack.push( current ); }
+    void revise() { if( ! stack.empty() ) stack.top() = current; }
     void top() { if( ! stack.empty() ) current = stack.top(); }
     void pop() { if( ! stack.empty() ) stack.pop(); }
 };
@@ -133,6 +135,7 @@ private:
     virtual char get_next_input() = 0;
 
     virtual void source_location_push() = 0;
+    virtual void source_location_revise() = 0;
     virtual void source_location_top() = 0;
     virtual void source_location_pop() = 0;
 
@@ -183,6 +186,13 @@ public:
         source_location_push();
     }
 
+    void location_revise()
+    {
+        unget_buffer.revise();
+        line_counter.revise();
+        source_location_revise();
+    }
+
     bool location_top()
     {
         source_location_top();
@@ -230,6 +240,10 @@ public:
     {
         location_buffer.push( p_input );
     }
+    virtual void source_location_revise()
+    {
+        location_buffer.top() = p_input;
+    }
     virtual void source_location_top()
     {
         if( ! location_buffer.empty() )
@@ -273,6 +287,10 @@ public:
     {
         location_buffer.push( p_current );
     }
+    virtual void source_location_revise()
+    {
+        location_buffer.top() = p_current;
+    }
     virtual void source_location_top()
     {
         if( ! location_buffer.empty() )
@@ -309,6 +327,10 @@ public:
     virtual void source_location_push()
     {
         location_buffer.push( fin.tellg() );
+    }
+    virtual void source_location_revise()
+    {
+        location_buffer.top() = fin.tellg();
     }
     virtual void source_location_top()
     {

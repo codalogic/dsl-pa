@@ -213,6 +213,7 @@ public:
     // See class reader for documentation.  A typical code sequence might be:
     // location_push(); path_a() || location_top() && path_b(); location_pop();
     void location_push() { r_reader.location_push(); }
+    bool location_revise() { r_reader.location_revise(); return true; } // Allows incremental revision of the topmost stored location
     bool location_top() { r_reader.location_top(); return true; }
     bool location_top( bool ret ) { r_reader.location_top(); return ret; }
     void location_pop() { r_reader.location_pop(); }    // pop should always be called, so discourage it's use in a shortcircuit sequence

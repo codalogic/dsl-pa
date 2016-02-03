@@ -216,6 +216,27 @@ TFUNCTION( dsl_pa_location_top_return_codes )
     my_dsl_pa.location_pop();
 }
 
+TFUNCTION( dsl_pa_location_revise )
+{
+    TBEGIN( "dsl pa location_revise()" );
+
+    reader_string my_reader( "abcdefg" );
+    dsl_pa my_dsl_pa( my_reader );
+
+    TTEST( my_dsl_pa.get() == 'a' );
+    TTEST( my_dsl_pa.get() == 'b' );
+    my_dsl_pa.location_push();
+    TTEST( my_dsl_pa.get() == 'c' );
+    TTEST( my_dsl_pa.get() == 'd' );
+    TTEST( my_dsl_pa.location_revise() );
+    TTEST( my_dsl_pa.get() == 'e' );
+    TTEST( my_dsl_pa.get() == 'f' );
+    TTEST( my_dsl_pa.location_top() );
+    TTEST( my_dsl_pa.get() == 'e' );
+    TTEST( my_dsl_pa.get() == 'f' );
+    my_dsl_pa.location_pop();
+}
+
 TFUNCTION( dsl_pa_low_level_read_test )
 {
     TBEGIN( "dsl pa low level read tests" );

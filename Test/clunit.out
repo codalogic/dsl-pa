@@ -1,4 +1,4 @@
-Tests run on Wed Feb 03 09:33:57 2016
+Tests run on Wed Feb 03 18:56:34 2016
 
     Alphabet tests [alphabet-test.cpp:42]
     =====================================
@@ -436,7 +436,21 @@ Tests run on Wed Feb 03 09:33:57 2016
     ok: my_dsl_pa.location_top( true )
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
-    dsl pa low level read tests [dsl-pa-test.cpp:221]
+    dsl pa location_revise() [dsl-pa-test.cpp:221]
+    ==============================================
+    ok: my_dsl_pa.get() == 'a'
+    ok: my_dsl_pa.get() == 'b'
+    ok: my_dsl_pa.get() == 'c'
+    ok: my_dsl_pa.get() == 'd'
+    ok: my_dsl_pa.location_revise()
+    ok: my_dsl_pa.get() == 'e'
+    ok: my_dsl_pa.get() == 'f'
+    ok: my_dsl_pa.location_top()
+    ok: my_dsl_pa.get() == 'e'
+    ok: my_dsl_pa.get() == 'f'
+    ok: ! _CrtMemDifference( &s3, &s1, &s2 )
+
+    dsl pa low level read tests [dsl-pa-test.cpp:242]
     =================================================
     ok: my_dsl_pa.get() == 'a'
     ok: my_dsl_pa.get() == 'b'
@@ -460,7 +474,7 @@ Tests run on Wed Feb 03 09:33:57 2016
     ok: my_dsl_pa.get() == 'd'
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
-    dsl pa ws tests [dsl-pa-test.cpp:255]
+    dsl pa ws tests [dsl-pa-test.cpp:276]
     =====================================
     ok: pa.get() == 'a' && pa.get() == 'b' && pa.space()
     ok: pa.get() == 'c'
@@ -471,7 +485,7 @@ Tests run on Wed Feb 03 09:33:57 2016
     ok: pa.get() == 'c'
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
-    dsl pa wsp tests [dsl-pa-test.cpp:288]
+    dsl pa wsp tests [dsl-pa-test.cpp:309]
     ======================================
     ok: pa.get() == 'a' && pa.get() == 'b' && pa.wsp()
     ok: pa.get() == 'c'
@@ -488,7 +502,7 @@ Tests run on Wed Feb 03 09:33:57 2016
     ok: pa.get() == '\n' && pa.get() == 'c'
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
-    dsl pa get() tests [dsl-pa-test.cpp:348]
+    dsl pa get() tests [dsl-pa-test.cpp:369]
     ========================================
     ok: my_pa.get( &command, alphabet_word_char() ) && my_pa.space() && my_pa.get( &channel, alphabet_alpha() ) && my_pa.opt_space() && my_pa.is_get_char( '=' ) && my_pa.opt_space() && my_pa.get( &level, alphabet_digit() )
     ok: command == "Mode"
@@ -508,7 +522,7 @@ Tests run on Wed Feb 03 09:33:57 2016
     ok: level == "12"
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
-    dsl pa get_until() tests [dsl-pa-test.cpp:433]
+    dsl pa get_until() tests [dsl-pa-test.cpp:454]
     ==============================================
     ok: my_pa.get_until( &command, alphabet_space() ) && my_pa.space() && my_pa.get_until( &channel, alphabet_char_class( "=" ) ) && my_pa.opt_space() && my_pa.is_get_char( '=' ) && my_pa.opt_space() && my_pa.get_until( &level, alphabet_space() )
     ok: command == "Mode"
@@ -527,7 +541,7 @@ Tests run on Wed Feb 03 09:33:57 2016
     ok: level == "12"
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
-    dsl pa skip() tests [dsl-pa-test.cpp:517]
+    dsl pa skip() tests [dsl-pa-test.cpp:538]
     =========================================
     ok: my_pa.skip( alphabet_word_char() ) && my_pa.space() && my_pa.get( &channel, alphabet_alpha() ) && my_pa.opt_space() && my_pa.is_get_char( '=' ) && my_pa.opt_space() && my_pa.get( &level, alphabet_digit() )
     ok: channel == "p"
@@ -537,7 +551,7 @@ Tests run on Wed Feb 03 09:33:57 2016
     ok: level == "12"
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
-    dsl pa fixed and ifixed tests [dsl-pa-test.cpp:560]
+    dsl pa fixed and ifixed tests [dsl-pa-test.cpp:581]
     ===================================================
     ok: (my_pa.fixed( "Range" ) || my_pa.fixed( "Mode" )) && my_pa.space() && my_pa.get( &channel, alphabet_alpha() ) && my_pa.opt_space() && my_pa.is_get_char( '=' ) && my_pa.opt_space() && my_pa.get( &level, alphabet_digit() )
     ok: channel == "p"
@@ -555,13 +569,13 @@ Tests run on Wed Feb 03 09:33:57 2016
     ok: command == "MyMode"
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
-    dsl_pa::get_char() Tests [dsl-pa-test.cpp:649]
+    dsl_pa::get_char() Tests [dsl-pa-test.cpp:670]
     ==============================================
     ok: my_pa.get_char()
     ok: my_pa.current() == 'A'
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
-    dsl_pa::get_char_no_space() Tests [dsl-pa-test.cpp:661]
+    dsl_pa::get_char_no_space() Tests [dsl-pa-test.cpp:682]
     =======================================================
     ok: my_pa.get_char_no_space()
     ok: my_pa.current() == 'A'
@@ -577,7 +591,7 @@ Tests run on Wed Feb 03 09:33:57 2016
     ok: my_pa.current() == 'C'
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
-    dsl_pa::peek_char_no_space() Tests [dsl-pa-test.cpp:688]
+    dsl_pa::peek_char_no_space() Tests [dsl-pa-test.cpp:709]
     ========================================================
     ok: my_pa.peek_char_no_space()
     ok: my_pa.current() == 'A'
@@ -603,7 +617,7 @@ Tests run on Wed Feb 03 09:33:57 2016
     ok: my_pa.current() == 'C'
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
-    dsl_pa::get_char(...) Tests [dsl-pa-test.cpp:729]
+    dsl_pa::get_char(...) Tests [dsl-pa-test.cpp:750]
     =================================================
     ok: my_pa.get_char( &c )
     ok: c == 'A'
@@ -613,7 +627,7 @@ Tests run on Wed Feb 03 09:33:57 2016
     ok: out == "XYZA"
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
-    dsl_pa::get_bool() Tests [dsl-pa-test.cpp:783]
+    dsl_pa::get_bool() Tests [dsl-pa-test.cpp:804]
     ==============================================
       Input: true
     ok: my_pa.get_bool( &result ) == (valid == TEST_VALID)
@@ -651,7 +665,7 @@ Tests run on Wed Feb 03 09:33:57 2016
     ok: my_pa.get() == next_char
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
-    dsl_pa::get_int() Tests [dsl-pa-test.cpp:808]
+    dsl_pa::get_int() Tests [dsl-pa-test.cpp:829]
     =============================================
       Input: 100
     ok: my_pa.get_int( &result ) == n_chars
@@ -685,7 +699,7 @@ Tests run on Wed Feb 03 09:33:57 2016
     ok: my_pa.get() == *p_input
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
-    dsl_pa::get_uint() Tests [dsl-pa-test.cpp:838]
+    dsl_pa::get_uint() Tests [dsl-pa-test.cpp:859]
     ==============================================
       Input: 100
     ok: my_pa.get_uint( &result ) == n_chars
@@ -719,7 +733,7 @@ Tests run on Wed Feb 03 09:33:57 2016
     ok: my_pa.get() == *p_input
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
-    dsl_pa::get_float() Tests [dsl-pa-test.cpp:868]
+    dsl_pa::get_float() Tests [dsl-pa-test.cpp:889]
     ===============================================
       Input: 1
     ok: my_pa.get_float( &result ) == is_valid
@@ -765,7 +779,7 @@ Tests run on Wed Feb 03 09:33:57 2016
     ok: my_pa.get() == *p_input
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
-    dsl_pa::get_sci_float() Tests [dsl-pa-test.cpp:901]
+    dsl_pa::get_sci_float() Tests [dsl-pa-test.cpp:922]
     ===================================================
       Input: 1 
     ok: my_pa.get_sci_float( &result ) == is_valid
@@ -859,7 +873,7 @@ Tests run on Wed Feb 03 09:33:57 2016
     ok: my_pa.get() == next_char
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
-    dsl_pa::current_is() Tests [dsl-pa-test.cpp:932]
+    dsl_pa::current_is() Tests [dsl-pa-test.cpp:953]
     ================================================
     ok: my_pa.get_char()
     ok: my_pa.current_is( 'A' )
@@ -874,7 +888,7 @@ Tests run on Wed Feb 03 09:33:57 2016
     ok: ! my_pa.current_is_in( alphabet_char_class_ABX )
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
-    dsl_pa::peek_is() Tests [dsl-pa-test.cpp:962]
+    dsl_pa::peek_is() Tests [dsl-pa-test.cpp:983]
     =============================================
     ok: my_pa.peek_is( 'A' )
     ok: my_pa.peek_is( 'A' )
@@ -888,8 +902,8 @@ Tests run on Wed Feb 03 09:33:57 2016
     ok: ! my_pa.peek_is_in( alphabet_char_class_ABX )
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
-    dsl_pa::peek_char() Tests [dsl-pa-test.cpp:991]
-    ===============================================
+    dsl_pa::peek_char() Tests [dsl-pa-test.cpp:1012]
+    ================================================
     ok: my_pa.peek_char()
     ok: my_pa.current_is( 'A' )
     ok: my_pa.current_is( 'A' )
@@ -908,7 +922,7 @@ Tests run on Wed Feb 03 09:33:57 2016
     ok: ! my_pa.current_is_in( alphabet_char_class_ABX )
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
-    optional_rewind class Tests [dsl-pa-test.cpp:1051]
+    optional_rewind class Tests [dsl-pa-test.cpp:1072]
     ==================================================
     ok: my_pa.optional_rewind( my_pa.get_fixed( &command, "Mode" ) && my_pa.space() && my_pa.get_fixed( &type, "empty" ) && my_pa.set( is_empty_mode, true ) || my_pa.on_fail( my_pa.clear( command ) && my_pa.clear( type ) ) ) || my_pa.get_fixed( &command, "Mode" ) && my_pa.space() && my_pa.get_fixed( &type, "full" )
     ok: command == "Mode"
@@ -920,7 +934,7 @@ Tests run on Wed Feb 03 09:33:57 2016
     ok: type == "empty"
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
-    DSL PA is_peek_at_end Tests [dsl-pa-test.cpp:1080]
+    DSL PA is_peek_at_end Tests [dsl-pa-test.cpp:1101]
     ==================================================
     ok: my_pa.is_peek_at_end()
     ok: ! my_pa.is_peek_at_end()
@@ -928,7 +942,7 @@ Tests run on Wed Feb 03 09:33:57 2016
     ok: my_pa.is_peek_at_end()
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
-    DSL PA is_current_at_end Tests [dsl-pa-test.cpp:1099]
+    DSL PA is_current_at_end Tests [dsl-pa-test.cpp:1120]
     =====================================================
     ok: my_pa.get_char() == false
     ok: my_pa.is_current_at_end()
@@ -939,7 +953,7 @@ Tests run on Wed Feb 03 09:33:57 2016
     ok: my_pa.is_current_at_end()
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
-    DSL PA get vs. read check [dsl-pa-test.cpp:1121]
+    DSL PA get vs. read check [dsl-pa-test.cpp:1142]
     ================================================
     ok: my_pa.read( &parsed, alphabet_char_class( "A" ) ) > 0
     ok: parsed == "originAAAAAA"
@@ -995,7 +1009,7 @@ Tests run on Wed Feb 03 09:33:57 2016
     ok: parsed == "456"
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
-    accumulator test [dsl-pa-test.cpp:1321]
+    accumulator test [dsl-pa-test.cpp:1342]
     =======================================
     ok: my_pa.accumulate( alphabet_char_class( "A" ) )
     ok: my_pa.accumulate( alphabet_char_class( "B" ) )
@@ -1557,4 +1571,4 @@ Tests run on Wed Feb 03 09:33:57 2016
     ok: p_reader->is_open()
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
     ok: _CrtCheckMemory() != 0
-0 error(s), 0 todo(s), 1220 test(s)
+0 error(s), 0 todo(s), 1231 test(s)
