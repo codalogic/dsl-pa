@@ -41,4 +41,4 @@ int main( int argc, char * argv[] )
     TRUNALL();
 }
 
-TFEATURETODO( "converter-test.cpp needs to be renamed to mutator-test.cpp etc" )
+TFEATURETODO( "Complete parsing of QString" )
