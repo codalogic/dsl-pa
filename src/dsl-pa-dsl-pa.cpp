@@ -343,7 +343,7 @@ public:
 
         cl::accumulator q_string_accumulator( this );
 
-        star_qs_char() && quotation_mark();
+        star_qs_char();
 
         *m.p_v = q_string_accumulator.get();
 
@@ -511,13 +511,6 @@ private:
         // DIGIT() = %x30-39      ; 0-9
 
         return accumulate( cl::alphabet_digit() );
-    }
-
-    bool quotation_mark()
-    {
-        // quotation-mark   = %x22      ; "
-
-        return is_get_char( '"' );
     }
 
     bool error() { m.is_errored = true; return false; }

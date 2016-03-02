@@ -956,9 +956,14 @@ void dsl_pa_qstring_test( std::string input, const std::string & r_expected_valu
     std::string result;
     TTEST( my_pa.get_qstring_contents( &result ) == is_valid );
     if( is_valid )
-        { TTEST( result == r_expected_value ); }
+    {
+        TTEST( result == r_expected_value );
+        TTEST( my_pa.is_get_char( '"' ) );
+    }
     else
-        { TTEST( my_pa.get() == input[0] ); }   // Check input location rewound
+    {
+        TTEST( my_pa.get() == input[0] );   // Check input location rewound
+    }
 }
 
 TFUNCTION( dsl_pa_get_qstring_contents_test )
