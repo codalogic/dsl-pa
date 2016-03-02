@@ -847,6 +847,17 @@ bool dsl_pa::read_ifixed( std::string * p_output, const char * p_seeking )
     return read_fixed_or_ifixed< compare_ifixed >( p_output, p_seeking );
 }
 
+bool dsl_pa::accumulate( char c )
+{
+    if( is_get_char( c ) )
+    {
+        if( p_accumulator )
+            p_accumulator->append( c );
+        return true;
+    }
+    return false;
+}
+
 bool dsl_pa::accumulate( const alphabet & r_alphabet )
 {
     if( r_alphabet.is_sought( get() ) )
@@ -856,17 +867,6 @@ bool dsl_pa::accumulate( const alphabet & r_alphabet )
         return true;
     }
     unget();
-    return false;
-}
-
-bool dsl_pa::accumulate( char c )
-{
-    if( is_get_char( c ) )
-    {
-        if( p_accumulator )
-            p_accumulator->append( c );
-        return true;
-    }
     return false;
 }
 

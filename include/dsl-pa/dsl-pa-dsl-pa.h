@@ -197,11 +197,10 @@ public:
     bool read_fixed( std::string * p_output, const char * p_seeking );
     bool read_ifixed( std::string * p_output, const char * p_seeking );
 
-    // If the next input character is in the alphabet then add it to the string in the active accumulator object
-    bool accumulate( const alphabet & r_alphabet );
-    bool accumulate( char c );
-    size_t accumulate_all( const alphabet & r_alphabet );
     friend class accumulator_deferred;      // Use an instance of the accumulator class to store accumulated input
+    bool accumulate( char c );
+    bool accumulate( const alphabet & r_alphabet ); // If next input character is in alphabet then add it to the active accumulator
+    size_t accumulate_all( const alphabet & r_alphabet );
     bool accumulator_append( char c );          // Append character c to the active accumulator
     bool accumulator_append( const char * s );  // Append the string s to the active accumulator
     bool accumulator_append( const std::string & r_s );  // Append the string r_s to the active accumulator
