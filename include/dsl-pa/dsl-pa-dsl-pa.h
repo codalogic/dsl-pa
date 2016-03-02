@@ -198,9 +198,11 @@ public:
     bool accumulate( const alphabet & r_alphabet );
     bool accumulate( char c );
     size_t accumulate_all( const alphabet & r_alphabet );
+    friend class accumulator_deferred;      // Use an instance of the acculator class to store accumulated input
     bool accumulator_append( char c );          // Append character c to the active accumulator
     bool accumulator_append( const char * s );  // Append the string s to the active accumulator
-    friend class accumulator_deferred;      // Use an instance of the acculator class to store accumulated input
+    bool accumulator_append( const std::string & r_s );  // Append the string s to the active accumulator
+    bool accumulator_append( const accumulator_deferred & r_a );  // Append another accumulator to the active accumulator
 
     // Low-level reader access
     reader & get_reader() { return r_reader; }  // Primarily for use with locator class
@@ -354,6 +356,12 @@ public:
     bool none() { p_dsl_pa->p_accumulator = 0; return true; }
     bool clear() { my_accumulator.clear(); return true; }
     bool select_and_clear() { select(); return clear(); }
+
+    bool append( char c ) { my_accumulator += c; return true; }
+    bool append( const char * s ) { my_accumulator += s; return true; }
+    bool append( const std::string & r_s ) { my_accumulator += r_s; return true; }
+    bool append( const accumulator_deferred & r_a ) { my_accumulator += r_a.my_accumulator; return true; }
+    bool append_to_previous() const { if( p_previous_accumulator ) p_previous_accumulator->append( my_accumulator ); return true; }
 
     const std::string & get() const { return my_accumulator; }
     bool put_in( std::string & r_place_where ) const { r_place_where = get(); return true; }

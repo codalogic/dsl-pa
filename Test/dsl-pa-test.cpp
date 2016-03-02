@@ -1407,7 +1407,7 @@ TFUNCTION( accumulator_check )
     }
 
     {
-    TDOC( "Accumaltors can be selected and unselected" );
+    TDOC( "Accumulators can be selected and unselected" );
     std::string in( "+-ABCD**123EFG+-" );
 
     reader_string my_reader( in );
@@ -1435,7 +1435,7 @@ TFUNCTION( accumulator_check )
     }
 
     {
-    TDOC( "Accumaltors can be cleared" );
+    TDOC( "Accumulators can be cleared" );
     std::string in( "ABCDE" );
 
     reader_string my_reader( in );
@@ -1451,7 +1451,7 @@ TFUNCTION( accumulator_check )
     }
 
     {
-    TDOC( "Accumaltors can be selected and cleared in one method" );
+    TDOC( "Accumulators can be selected and cleared in one method" );
     std::string in( "ABCD123EFG" );
 
     reader_string my_reader( in );
@@ -1472,7 +1472,7 @@ TFUNCTION( accumulator_check )
     }
 
     {
-    TDOC( "Accumaltors can be unconditionally appended to using accumulator_append()" );
+    TDOC( "Accumulators can be unconditionally appended to using accumulator_append()" );
     std::string in( "" );
 
     reader_string my_reader( in );
@@ -1481,11 +1481,60 @@ TFUNCTION( accumulator_check )
     accumulator my_accumulator( &my_pa );
     TTEST( my_pa.accumulator_append( 'X' ) );
     TTEST( my_pa.accumulator_append( "yz" ) );
-    TTEST( my_accumulator.get() == "Xyz" );
+    std::string extra( "AB" );
+    TTEST( my_pa.accumulator_append( extra ) );
+    TTEST( my_accumulator.get() == "XyzAB" );
     }
 
     {
-    TDOC( "Accumaltors can return a value converted to int" );
+    TDOC( "Accumulators can be appended to another accumulator using accumulator_append()" );
+    std::string in( "" );
+
+    reader_string my_reader( in );
+    dsl_pa my_pa( my_reader );
+    accumulator my_accumulator( &my_pa );
+    TTEST( my_pa.accumulator_append( "abc" ) );
+    accumulator other_accumulator( &my_pa );
+    TTEST( my_pa.accumulator_append( "def" ) );
+    TTEST( my_accumulator.get() == "abc" );
+    TTEST( other_accumulator.get() == "def" );
+    other_accumulator.previous();
+    TTEST( my_pa.accumulator_append( other_accumulator ) );
+    TTEST( my_accumulator.get() == "abcdef" );
+    }
+
+    {
+    TDOC( "Accumulators can be appended to the previous accumulator using accumulator::append_to_previous()" );
+    std::string in( "" );
+
+    reader_string my_reader( in );
+    dsl_pa my_pa( my_reader );
+    accumulator my_accumulator( &my_pa );
+    TTEST( my_pa.accumulator_append( "abc" ) );
+    accumulator other_accumulator( &my_pa );
+    TTEST( my_pa.accumulator_append( "def" ) );
+    TTEST( my_accumulator.get() == "abc" );
+    TTEST( other_accumulator.get() == "def" );
+    TTEST( other_accumulator.append_to_previous() );
+    TTEST( my_accumulator.get() == "abcdef" );
+    }
+
+    {
+    TDOC( "Accumulators can be directly appended to using accumulator::append()" );
+    std::string in( "" );
+
+    reader_string my_reader( in );
+    dsl_pa my_pa( my_reader );
+    accumulator my_accumulator( &my_pa );
+    TTEST( my_accumulator.append( 'X' ) );
+    TTEST( my_accumulator.append( "yz" ) );
+    std::string extra( "AB" );
+    TTEST( my_accumulator.append( extra ) );
+    TTEST( my_accumulator.get() == "XyzAB" );
+    }
+
+    {
+    TDOC( "Accumulators can return a value converted to int" );
     std::string in( "101" );
 
     reader_string my_reader( in );
@@ -1496,7 +1545,7 @@ TFUNCTION( accumulator_check )
     }
 
     {
-    TDOC( "Accumaltors can return a value converted to float/double" );
+    TDOC( "Accumulators can return a value converted to float/double" );
     std::string in( "101.5" );
 
     reader_string my_reader( in );

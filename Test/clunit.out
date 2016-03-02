@@ -1,4 +1,4 @@
-Tests run on Wed Feb 03 18:56:34 2016
+Tests run on Wed Mar 02 14:00:40 2016
 
     Alphabet tests [alphabet-test.cpp:42]
     =====================================
@@ -1030,10 +1030,10 @@ Tests run on Wed Feb 03 18:56:34 2016
       Specifying an accumulator operates in a stack-like nesting order
     ok: digit_accumulator.get() == "123"
     ok: alpha_accumulator.get() == "ABCDEFG"
-      Accumaltors can be selected and unselected
+      Accumulators can be selected and unselected
     ok: digits_accumulator.get() == "123"
     ok: alphas == "ABCDEFG"
-      Accumaltors can be cleared
+      Accumulators can be cleared
     ok: my_pa.accumulate( alphabet_char_class( "A" ) )
     ok: my_pa.accumulate( alphabet_char_class( "B" ) )
     ok: accumulator.get() == "AB"
@@ -1041,18 +1041,38 @@ Tests run on Wed Feb 03 18:56:34 2016
     ok: my_pa.accumulate( alphabet_char_class( "C" ) )
     ok: my_pa.accumulate( alphabet_char_class( "D" ) )
     ok: accumulator.get() == "CD"
-      Accumaltors can be selected and cleared in one method
+      Accumulators can be selected and cleared in one method
     ok: alphas_accumulator.get() == "ABCD"
     ok: digits_accumulator.get() == "123"
     ok: alphas_accumulator.get() == "EFG"
-      Accumaltors can be unconditionally appended to using accumulator_append()
+      Accumulators can be unconditionally appended to using accumulator_append()
     ok: my_pa.accumulator_append( 'b' )
     ok: my_pa.accumulator_append( 'X' )
     ok: my_pa.accumulator_append( "yz" )
-    ok: my_accumulator.get() == "Xyz"
-      Accumaltors can return a value converted to int
+    ok: my_pa.accumulator_append( extra )
+    ok: my_accumulator.get() == "XyzAB"
+      Accumulators can be appended to another accumulator using accumulator_append()
+    ok: my_pa.accumulator_append( "abc" )
+    ok: my_pa.accumulator_append( "def" )
+    ok: my_accumulator.get() == "abc"
+    ok: other_accumulator.get() == "def"
+    ok: my_pa.accumulator_append( other_accumulator )
+    ok: my_accumulator.get() == "abcdef"
+      Accumulators can be appended to the previous accumulator using accumulator::append_to_previous()
+    ok: my_pa.accumulator_append( "abc" )
+    ok: my_pa.accumulator_append( "def" )
+    ok: my_accumulator.get() == "abc"
+    ok: other_accumulator.get() == "def"
+    ok: other_accumulator.append_to_previous()
+    ok: my_accumulator.get() == "abcdef"
+      Accumulators can be directly appended to using accumulator::append()
+    ok: my_accumulator.append( 'X' )
+    ok: my_accumulator.append( "yz" )
+    ok: my_accumulator.append( extra )
+    ok: my_accumulator.get() == "XyzAB"
+      Accumulators can return a value converted to int
     ok: my_accumulator.to_int() == 101
-      Accumaltors can return a value converted to float/double
+      Accumulators can return a value converted to float/double
     ok: my_accumulator.to_float() == 101.5
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
@@ -1571,4 +1591,4 @@ Tests run on Wed Feb 03 18:56:34 2016
     ok: p_reader->is_open()
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
     ok: _CrtCheckMemory() != 0
-0 error(s), 0 todo(s), 1231 test(s)
+0 error(s), 0 todo(s), 1248 test(s)

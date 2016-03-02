@@ -633,4 +633,18 @@ bool dsl_pa::accumulator_append( const char * s )
     return true;
 }
 
+bool dsl_pa::accumulator_append( const std::string & r_s )
+{
+    if( p_accumulator )
+        *p_accumulator += r_s;
+    return true;
+}
+
+bool dsl_pa::accumulator_append( const accumulator_deferred & r_a )
+{
+    if( p_accumulator )
+        *p_accumulator += r_a.get();
+    return true;
+}
+
 } // End of namespace cl
