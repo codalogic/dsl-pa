@@ -159,6 +159,7 @@ public:
     bool /*is_parsed*/ read_sci_float( std::string * p_num );
     bool /*is_parsed*/ get_sci_float( double * p_float );
     bool /*is_parsed*/ get_sci_float( float * p_float );
+    bool /*is_parsed*/ get_qstring_contents( std::string * p_string );   // Assumes opening quotes already read. Consumes closing quotes.
 
     // The primary workhorse functions
     // These get...() functions clear the output string before reading the input
@@ -420,6 +421,31 @@ public:
 //        return true;
 //    }
 //};
+
+//----------------------------------------------------------------------------
+//                             Unicode utilities
+//----------------------------------------------------------------------------
+
+int code_point_from_hex( const std::string & r_hex_string );
+bool is_high_surrogate( int code_point );
+bool is_low_surrogate( int code_point );
+int code_point_from_surrogates( int high_surrogate, int low_surrogate );
+
+class MakeUTF8
+{
+private:
+    char utf8[6];
+
+public:
+    MakeUTF8( int code_point );
+
+    // Use as 'MakeUTF8( combined_code_point ).get()'
+    const char * get() const { return utf8; }
+
+private:
+    void pack_ascii( int code_point );
+    void pack( char marker, size_t length, int code_point );
+};
 
 } // End of namespace cl
 

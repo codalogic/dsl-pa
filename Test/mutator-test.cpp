@@ -37,12 +37,12 @@
 
 using namespace cl;
 
-TFEATURE( "class converter" )
+TFEATURE( "class mutator" )
 {
-    // The converter class allows a character to be converted into an
+    // The mutator class allows a character to be converted into an
     // alternative (possibly empty) character sequence.  Return NULL
     // when not interested in further input.  The class deriving from
-    // converter can be stateful.
+    // mutator can be stateful.
 
     class example_mutator : public mutator
     {

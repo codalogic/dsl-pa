@@ -228,6 +228,13 @@ void example_parser::example7( std::ostream & fout )
 }
 ```
 
+## QStrings
+
+dsl_pa supports reading JSON-like QStrings into a UTF-8 encoded std::string
+using the `dsl_pa::get_qstring_contents( std::string * p_string )` method.  The
+method assumes that the opening quotation mark has already been read, and
+consumes the closing quotation mark.
+
 ## Accumulators
 
 With a more literal translation of an ABNF grammar to a parser, common

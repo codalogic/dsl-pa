@@ -185,10 +185,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\converter-test.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\dsl-pa-lite-test.cpp"
 				>
 			</File>
@@ -198,6 +194,10 @@
 			</File>
 			<File
 				RelativePath=".\main-test.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\mutator-test.cpp"
 				>
 			</File>
 			<File

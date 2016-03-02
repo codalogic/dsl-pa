@@ -1,5 +1,5 @@
 //----------------------------------------------------------------------
-// Copyright (c) 2012, Codalogic Ltd (http://www.codalogic.com)
+// Copyright (c) 2012-2016, Codalogic Ltd (http://www.codalogic.com)
 // All rights reserved.
 //
 // The license for this file is based on the BSD-3-Clause license
@@ -946,6 +946,72 @@ TFUNCTION( dsl_pa_get_sci_float_test )
     dsl_pa_sci_float_test( "-e", 0.0f, false, '-' );
     dsl_pa_sci_float_test( "", 0.0f, false, '\0' );
     dsl_pa_sci_float_test( "w", 0.0f, false, 'w' );
+}
+
+void dsl_pa_qstring_test( std::string input, const std::string & r_expected_value, bool is_valid )
+{
+    input += '"';
+    reader_string my_reader( input );
+    dsl_pa my_pa( my_reader );
+    std::string result;
+    TTEST( my_pa.get_qstring_contents( &result ) == is_valid );
+    if( is_valid )
+        { TTEST( result == r_expected_value ); }
+    else
+        { TTEST( my_pa.get() == input[0] ); }   // Check input location rewound
+}
+
+TFUNCTION( dsl_pa_get_qstring_contents_test )
+{
+    TBEGIN( "dsl_pa::get_qstring_contents() Tests" );
+
+    TCALL( dsl_pa_qstring_test( "", "", true ) );
+    TCALL( dsl_pa_qstring_test( "a", "a", true ) );
+    TCALL( dsl_pa_qstring_test( "ba", "ba", true ) );
+    TCALL( dsl_pa_qstring_test( "b\\/a", "b/a", true ) );
+    TCALL( dsl_pa_qstring_test( "b\\\"a", "b\"a", true ) );
+    TCALL( dsl_pa_qstring_test( "b\\ta", "b\ta", true ) );
+    TCALL( dsl_pa_qstring_test( "b\\t\\r\\na", "b\t\r\na", true ) );
+    TCALL( dsl_pa_qstring_test( "b\\f\\ba", "b\f\ba", true ) );
+    TCALL( dsl_pa_qstring_test( "b\\\\a", "b\\a", true ) );
+    TCALL( dsl_pa_qstring_test( "b\\u0020a", "b a", true ) );
+
+
+    // The following converted using http://rishida.net/tools/conversion/
+    TCALL( dsl_pa_qstring_test( "\\uD800\\uDC02", "\xF0\x90\x80\x82", true ) );  // \uD800\uDC02 -> u+10002
+    TCALL( dsl_pa_qstring_test( "\\ud800\\udc02", "\xF0\x90\x80\x82", true ) );  // \ud800\udc02 -> u+10002
+    TCALL( dsl_pa_qstring_test( "\\u0802", "\xE0\xA0\x82", true ) );
+    TCALL( dsl_pa_qstring_test( "\\uFFFC", "\xEF\xBF\xBC", true ) );
+    TCALL( dsl_pa_qstring_test( "\\ufffc", "\xEF\xBF\xBC", true ) );
+    TCALL( dsl_pa_qstring_test( "\\u0082", "\xC2\x82", true ) );
+    TCALL( dsl_pa_qstring_test( "\\u07FC", "\xDF\xBC", true ) );
+
+    // Check conversions also work within a string
+    TCALL( dsl_pa_qstring_test( "X\\uD800\\uDC02A", "X\xF0\x90\x80\x82""A", true ) );    // \uD800\uDC02 -> u+10002
+    TCALL( dsl_pa_qstring_test( "X\\u0802A", "X\xE0\xA0\x82""A", true ) );
+    TCALL( dsl_pa_qstring_test( "X\\u0082A", "X\xC2\x82""A", true ) );
+
+    TDOC( "Parser::get_string() - truncated BMP unicode escape fails" );
+    TCALL( dsl_pa_qstring_test( "Say \\u002 Fred", "", false ) );
+    TCALL( dsl_pa_qstring_test( "Say \\u002QFred", "", false ) );
+
+    // From rfc3629
+    TCALL( dsl_pa_qstring_test( "\\u65E5\\u672C\\u8A9E", "\xE6\x97\xA5\xE6\x9C\xAC\xE8\xAA\x9E", true ) );
+
+    // From rfc2781
+    TDOC( "Parser::get_string() - Surrogates unicode escape" );
+    TCALL( dsl_pa_qstring_test( "\\uD808\\uDF45=Ra", "\xF0\x92\x8D\x85=Ra", true ) );
+
+    TDOC( "Parser::get_string() - High surrogate without following low surrogate fails" );
+    TCALL( dsl_pa_qstring_test( "\\uD808Fred", "", false ) );
+    TCALL( dsl_pa_qstring_test( "\\uD808\\u0022", "", false ) );
+
+    TDOC( "Parser::get_string() - Low surrogate without preceeding high surrogate fails" );
+    TCALL( dsl_pa_qstring_test( "\\uDF45Fred", "", false ) );
+    TCALL( dsl_pa_qstring_test( "\\uDF45\\u0022", "", false ) );
+
+    TTODO( "Add code and tests to ensure that read UTF-8 sequences are valid" );
+        // See QStringParser::unescaped_utf8()
 }
 
 TFUNCTION( dsl_pa_current_is_test )

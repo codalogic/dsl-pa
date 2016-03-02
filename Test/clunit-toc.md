@@ -1,4 +1,4 @@
-Tests table of contents generated on Wed Mar 02 14:07:39 2016
+Tests table of contents generated on Wed Mar 02 14:17:20 2016
 
 # alphabet-test.cpp
 | Description | Line |
@@ -11,11 +11,6 @@ Tests table of contents generated on Wed Mar 02 14:07:39 2016
 | Alphabet char_map tests | 220 |
 | Alphabet_char_class tests | 329 |
 | Alphabet_function tests | 435 |
-
-# converter-test.cpp
-| Description | Line |
-|-------------|------|
-| class converter | 40 |
 
 # dsl-pa-test.cpp
 | Description | Line |
@@ -46,14 +41,20 @@ Tests table of contents generated on Wed Mar 02 14:07:39 2016
 | dsl_pa::get_uint() Tests | 859 |
 | dsl_pa::get_float() Tests | 889 |
 | dsl_pa::get_sci_float() Tests | 922 |
-| dsl_pa::current_is() Tests | 953 |
-| dsl_pa::peek_is() Tests | 983 |
-| dsl_pa::peek_char() Tests | 1012 |
-| optional_rewind class Tests | 1072 |
-| DSL PA is_peek_at_end Tests | 1101 |
-| DSL PA is_current_at_end Tests | 1120 |
-| DSL PA get vs. read check | 1142 |
-| accumulator test | 1342 |
+| dsl_pa::get_qstring_contents() Tests | 966 |
+| dsl_pa::current_is() Tests | 1019 |
+| dsl_pa::peek_is() Tests | 1049 |
+| dsl_pa::peek_char() Tests | 1078 |
+| optional_rewind class Tests | 1138 |
+| DSL PA is_peek_at_end Tests | 1167 |
+| DSL PA is_current_at_end Tests | 1186 |
+| DSL PA get vs. read check | 1208 |
+| accumulator test | 1408 |
+
+# mutator-test.cpp
+| Description | Line |
+|-------------|------|
+| class mutator | 40 |
 
 # reader-test.cpp
 | Description | Line |

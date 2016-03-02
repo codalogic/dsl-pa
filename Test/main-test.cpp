@@ -1,5 +1,5 @@
 //----------------------------------------------------------------------
-// Copyright (c) 2012, Codalogic Ltd (http://www.codalogic.com)
+// Copyright (c) 2012-2016, Codalogic Ltd (http://www.codalogic.com)
 // All rights reserved.
 //
 // The license for this file is based on the BSD-3-Clause license
@@ -40,3 +40,5 @@ int main( int argc, char * argv[] )
 {
     TRUNALL();
 }
+
+TFEATURETODO( "Complete parsing of QString" )
