@@ -201,10 +201,10 @@ public:
     bool accumulate( const alphabet & r_alphabet );
     bool accumulate( char c );
     size_t accumulate_all( const alphabet & r_alphabet );
-    friend class accumulator_deferred;      // Use an instance of the acculator class to store accumulated input
+    friend class accumulator_deferred;      // Use an instance of the accumulator class to store accumulated input
     bool accumulator_append( char c );          // Append character c to the active accumulator
     bool accumulator_append( const char * s );  // Append the string s to the active accumulator
-    bool accumulator_append( const std::string & r_s );  // Append the string s to the active accumulator
+    bool accumulator_append( const std::string & r_s );  // Append the string r_s to the active accumulator
     bool accumulator_append( const accumulator_deferred & r_a );  // Append another accumulator to the active accumulator
 
     // Low-level reader access
