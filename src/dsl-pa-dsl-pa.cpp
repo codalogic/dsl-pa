@@ -593,7 +593,7 @@ bool dsl_pa::accumulate( const alphabet & r_alphabet )
     if( r_alphabet.is_sought( get() ) )
     {
         if( p_accumulator )
-            *p_accumulator += current();
+            p_accumulator->append( current() );
         return true;
     }
     unget();
@@ -605,7 +605,7 @@ bool dsl_pa::accumulate( char c )
     if( is_get_char( c ) )
     {
         if( p_accumulator )
-            *p_accumulator += c;
+            p_accumulator->append( c );
         return true;
     }
     return false;
@@ -622,28 +622,28 @@ size_t dsl_pa::accumulate_all( const alphabet & r_alphabet )
 bool dsl_pa::accumulator_append( char c )
 {
     if( p_accumulator )
-        *p_accumulator += c;
+        p_accumulator->append( c );
     return true;
 }
 
 bool dsl_pa::accumulator_append( const char * s )
 {
     if( p_accumulator )
-        *p_accumulator += s;
+        p_accumulator->append( s );
     return true;
 }
 
 bool dsl_pa::accumulator_append( const std::string & r_s )
 {
     if( p_accumulator )
-        *p_accumulator += r_s;
+        p_accumulator->append( r_s );
     return true;
 }
 
 bool dsl_pa::accumulator_append( const accumulator_deferred & r_a )
 {
     if( p_accumulator )
-        *p_accumulator += r_a.get();
+        p_accumulator->append( r_a.get() );
     return true;
 }
 

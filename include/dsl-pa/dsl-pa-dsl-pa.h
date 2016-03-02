@@ -89,13 +89,15 @@ public:
     }
 };
 
+class accumulator_deferred;
+
 class dsl_pa
 {
 private:
     const static size_t unbounded = ~0;
 
     reader & r_reader;
-    std::string * p_accumulator;
+    accumulator_deferred * p_accumulator;
 
     template< typename Twriter >
     size_t read_or_skip_handler( std::string * p_output, const alphabet & r_alphabet, size_t max_chars );
@@ -339,7 +341,7 @@ class accumulator_deferred      // Control access to dsl_pa::p_accumulator so it
 {                               // Do: accumulator my_value_accumulator( this );
 private:
     dsl_pa * p_dsl_pa;
-    std::string * p_previous_accumulator;
+    accumulator_deferred * p_previous_accumulator;
     std::string my_accumulator;
 
 public:
@@ -351,7 +353,7 @@ public:
     }
     ~accumulator_deferred() { previous(); }
 
-    bool select() { p_dsl_pa->p_accumulator = &my_accumulator; return true; }
+    bool select() { p_dsl_pa->p_accumulator = this; return true; }
     bool previous() { p_dsl_pa->p_accumulator = p_previous_accumulator; return true; }
     bool none() { p_dsl_pa->p_accumulator = 0; return true; }
     bool clear() { my_accumulator.clear(); return true; }
