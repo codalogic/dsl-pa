@@ -389,7 +389,7 @@ private:
         return unescaped_ascii() || unescaped_utf8();
     }
 
-    static bool is_qstring_unescaped_ascii( char c )
+    static bool is_unescaped_ascii( char c )
     {
         // unescaped-ascii        = %x20-21 / %x23-5B / %x5D-7F
 
@@ -400,24 +400,69 @@ private:
     {
         // unescaped_ascii        = %x20-21 / %x23-5B / %x5D-7F
 
-        return accumulate( cl::alphabet_function( is_qstring_unescaped_ascii ) );
+        return accumulate( cl::alphabet_function( is_unescaped_ascii ) );
     }
 
-    static bool is_qstring_unescaped_utf8( char c )
+    static bool is_unescaped_leading_utf8( char c )
     {
         // unescaped-utf8        = %x80-FF
 
-        return c >= 0x80;
+        return static_cast<unsigned char>(c) >= 0xc2;
+    }
+
+    static bool is_unescaped_continuation_utf8( char c )
+    {
+        // unescaped-utf8        = %x80-FF
+
+        return static_cast<unsigned char>(c) >= 0x80 && static_cast<unsigned char>(c) <= 0xbf;
     }
 
     bool unescaped_utf8()
     {
         // unescaped-utf8        = %x80-10FFFF
 
-        // DEBUG - TODO - this needs to be a lot smarter
-        // See cl-json-pull :: ReadUTF8::state_utf8_reading_non_ascii for examples
+        cl::accumulator utf8_accumulator( this );
+        
+        if( accumulate( cl::alphabet_function( is_unescaped_leading_utf8 ) ) )
+        {
+            while( accumulate( cl::alphabet_function( is_unescaped_continuation_utf8 ) ) )
+            {}
+            
+            unsigned char c1 = static_cast<unsigned char>( utf8_accumulator.get()[0] );
+            unsigned char c2 = static_cast<unsigned char>( utf8_accumulator.get()[1] );
+            size_t length = utf8_accumulator.get().length();
 
-        return accumulate( cl::alphabet_function( is_qstring_unescaped_utf8 ) );
+            if( c1 == 0xef && c2 == 0xbe && ( utf8_accumulator.get()[2] == 0xbe || utf8_accumulator.get()[2] == 0xbf ) ) // U+FFFE & U+FFFF are illegal
+                return error();
+
+            // From RFC 3629 - Make sure sequence is valid (e.g. doesn't encode a surrogate etc.)
+            // UTF8-octets = *( UTF8-char )
+            // UTF8-char   = UTF8-1 / UTF8-2 / UTF8-3 / UTF8-4
+            // UTF8-1      = %x00-7F - (Handled outside this function)
+            // UTF8-2      = %xC2-DF UTF8-tail
+            // UTF8-3      = %xE0 %xA0-BF UTF8-tail / %xE1-EC 2( UTF8-tail ) /
+            //               %xED %x80-9F UTF8-tail / %xEE-EF 2( UTF8-tail )
+            // UTF8-4      = %xF0 %x90-BF 2( UTF8-tail ) / %xF1-F3 3( UTF8-tail ) /
+            //               %xF4 %x80-8F 2( UTF8-tail )
+            // UTF8-tail   = %x80-BF
+            if( (c1 >= 0xc2 && c1 <= 0xdf && length == 2) ||
+                    (c1 == 0xe0 && (c2 >= 0xa0 && c2 <= 0xbf) && length == 3) ||
+                    (c1 >= 0xe1 && c1 <= 0xec && length == 3) ||
+                    (c1 == 0xed && (c2 >= 0x80 && c2 <= 0x9f) && length == 3) ||
+                    (c1 >= 0xee && c1 <= 0xef && length == 3) ||
+                    (c1 == 0xf0 && (c2 >= 0x90 && c2 <= 0xbf) && length == 4) ||
+                    (c1 >= 0xf1 && c1 <= 0xf3 && length == 4) ||
+                    (c1 == 0xf4 && (c2 >= 0x80 && c2 <= 0x8f) && length == 4) )
+            {
+                utf8_accumulator.append_to_previous();
+
+                return true;
+            }
+
+            return error();
+        }
+        
+        return false;
     }
 
     bool escape()

@@ -996,7 +996,7 @@ TFUNCTION( dsl_pa_get_qstring_contents_test )
     TCALL( dsl_pa_qstring_test( "X\\u0802A", "X\xE0\xA0\x82""A", true ) );
     TCALL( dsl_pa_qstring_test( "X\\u0082A", "X\xC2\x82""A", true ) );
 
-    TDOC( "Parser::get_string() - truncated BMP unicode escape fails" );
+    TDOC( "get_qstring_contents() - truncated BMP unicode escape fails" );
     TCALL( dsl_pa_qstring_test( "Say \\u002 Fred", "", false ) );
     TCALL( dsl_pa_qstring_test( "Say \\u002QFred", "", false ) );
 
@@ -1004,19 +1004,69 @@ TFUNCTION( dsl_pa_get_qstring_contents_test )
     TCALL( dsl_pa_qstring_test( "\\u65E5\\u672C\\u8A9E", "\xE6\x97\xA5\xE6\x9C\xAC\xE8\xAA\x9E", true ) );
 
     // From rfc2781
-    TDOC( "Parser::get_string() - Surrogates unicode escape" );
+    TDOC( "get_qstring_contents() - Surrogates unicode escape" );
     TCALL( dsl_pa_qstring_test( "\\uD808\\uDF45=Ra", "\xF0\x92\x8D\x85=Ra", true ) );
 
-    TDOC( "Parser::get_string() - High surrogate without following low surrogate fails" );
+    TDOC( "get_qstring_contents() - High surrogate without following low surrogate fails" );
     TCALL( dsl_pa_qstring_test( "\\uD808Fred", "", false ) );
     TCALL( dsl_pa_qstring_test( "\\uD808\\u0022", "", false ) );
 
-    TDOC( "Parser::get_string() - Low surrogate without preceeding high surrogate fails" );
+    TDOC( "get_qstring_contents() - Low surrogate without preceeding high surrogate fails" );
     TCALL( dsl_pa_qstring_test( "\\uDF45Fred", "", false ) );
     TCALL( dsl_pa_qstring_test( "\\uDF45\\u0022", "", false ) );
 
-    TTODO( "Add code and tests to ensure that read UTF-8 sequences are valid" );
-        // See QStringParser::unescaped_utf8()
+    TDOC( "get_qstring_contents() - UTF-8 sequences are valid" );
+    TCALL( dsl_pa_qstring_test( "\xE0\xAC\x8Bz", "\xE0\xAC\x8Bz", true ) );
+    TCALL( dsl_pa_qstring_test( "abc\xE0\xAC\x8Bz", "abc\xE0\xAC\x8Bz", true ) );
+    TCALL( dsl_pa_qstring_test( "abc\xE0\xAC\x8Bz\xE0\xAC\x8Bz", "abc\xE0\xAC\x8Bz\xE0\xAC\x8Bz", true ) );
+    TCALL( dsl_pa_qstring_test( "abc\xE0\xAC\x8B\xE0\xAC\x8Bz", "abc\xE0\xAC\x8B\xE0\xAC\x8Bz", true ) );
+
+    // Test the following from RFC 3629 is satisfied:
+    // UTF8-2      = %xC2-DF UTF8-tail
+    // UTF8-3      = %xE0 %xA0-BF UTF8-tail / %xE1-EC 2( UTF8-tail ) /
+    //               %xED %x80-9F UTF8-tail / %xEE-EF 2( UTF8-tail )
+    // UTF8-4      = %xF0 %x90-BF 2( UTF8-tail ) / %xF1-F3 3( UTF8-tail ) /
+    //               %xF4 %x80-8F 2( UTF8-tail )
+    // UTF8-tail   = %x80-BF
+    TCALL( dsl_pa_qstring_test( "a\xc2\x8Bz", "a\xc2\x8Bz", true ) );
+    TCALL( dsl_pa_qstring_test( "a\xdf\x8Bz", "a\xdf\x8Bz", true ) );
+    TCALL( dsl_pa_qstring_test( "a\xdf\x8B\x8Bz", "", false ) );    // To long
+    TCALL( dsl_pa_qstring_test( "a\xdfz", "", false ) );            // To short
+    TCALL( dsl_pa_qstring_test( "a\xe0\xa0\x8Bz", "a\xe0\xa0\x8Bz", true ) );
+    TCALL( dsl_pa_qstring_test( "a\xe0\xbf\x8Bz", "a\xe0\xbf\x8Bz", true ) );
+    TCALL( dsl_pa_qstring_test( "a\xe0\x8B\x8Bz", "", false ) );
+    TCALL( dsl_pa_qstring_test( "a\xe0\xbf\x8B\x8Bz", "", false ) );    // To long
+    TCALL( dsl_pa_qstring_test( "a\xe0\xbfz", "", false ) );            // To short
+    TCALL( dsl_pa_qstring_test( "a\xe1\xbf\x8Bz", "a\xe1\xbf\x8Bz", true ) );
+    TCALL( dsl_pa_qstring_test( "a\xec\xbf\x8Bz", "a\xec\xbf\x8Bz", true ) );
+    TCALL( dsl_pa_qstring_test( "a\xec\xbf\x8B\x8Bz", "", false ) );    // To long
+    TCALL( dsl_pa_qstring_test( "a\xec\xbfz", "", false ) );            // To short
+    TCALL( dsl_pa_qstring_test( "a\xed\x80\x8Bz", "a\xed\x80\x8Bz", true ) );
+    TCALL( dsl_pa_qstring_test( "a\xed\x9f\x8Bz", "a\xed\x9f\x8Bz", true ) );
+    TCALL( dsl_pa_qstring_test( "a\xed\xa0\x8Bz", "a\xed\xa0\x8Bz", false ) );
+    TCALL( dsl_pa_qstring_test( "a\xed\xa0\x8B\x8Bz", "", false ) );    // To long
+    TCALL( dsl_pa_qstring_test( "a\xed\xa0z", "", false ) );            // To short
+    TCALL( dsl_pa_qstring_test( "a\xee\xb0\x8Bz", "a\xee\xb0\x8Bz", true ) );
+    TCALL( dsl_pa_qstring_test( "a\xef\xb0\x8Bz", "a\xef\xb0\x8Bz", true ) );
+    TCALL( dsl_pa_qstring_test( "a\xef\xb0\x8B\x8Bz", "", false ) );    // To long
+    TCALL( dsl_pa_qstring_test( "a\xef\xb0z", "", false ) );            // To short
+    TCALL( dsl_pa_qstring_test( "a\xf0\x90\x8B\x8Bz", "a\xf0\x90\x8B\x8Bz", true ) );
+    TCALL( dsl_pa_qstring_test( "a\xf0\xbf\x8B\x8Bz", "a\xf0\xbf\x8B\x8Bz", true ) );
+    TCALL( dsl_pa_qstring_test( "a\xf0\x80\x8B\x8Bz", "a\xf0\x80\x8B\x8Bz", false ) );
+    TCALL( dsl_pa_qstring_test( "a\xf0\xbf\x8B\x8B\x8Bz", "", false ) );    // To long
+    TCALL( dsl_pa_qstring_test( "a\xf0\xbf\x8Bz", "", false ) );            // To short
+    TCALL( dsl_pa_qstring_test( "a\xf1\xbf\x8B\x8Bz", "a\xf1\xbf\x8B\x8Bz", true ) );
+    TCALL( dsl_pa_qstring_test( "a\xf3\xbf\x8B\x8Bz", "a\xf3\xbf\x8B\x8Bz", true ) );
+    TCALL( dsl_pa_qstring_test( "a\xf3\xbf\x8B\x8B\x8Bz", "", false ) );    // To long
+    TCALL( dsl_pa_qstring_test( "a\xf3\xbf\x8Bz", "", false ) );            // To short
+    TCALL( dsl_pa_qstring_test( "a\xf4\x80\x8B\x8Bz", "a\xf4\x80\x8B\x8Bz", true ) );
+    TCALL( dsl_pa_qstring_test( "a\xf4\x8f\x8B\x8Bz", "a\xf4\x8f\x8B\x8Bz", true ) );
+    TCALL( dsl_pa_qstring_test( "a\xf4\x90\x8B\x8Bz", "a\xf4\x90\x8B\x8Bz", false ) );
+    TCALL( dsl_pa_qstring_test( "a\xf4\x90\x8B\x8B\x8Bz", "", false ) );    // To long
+    TCALL( dsl_pa_qstring_test( "a\xf4\x90\x8Bz", "", false ) );            // To short
+
+    TCALL( dsl_pa_qstring_test( "abc\xE0\xAC\x8B\xE0\xE0\xAC\x8Bz", "", false ) );  // Duplicate UTF-8 start character \xE0
+    TCALL( dsl_pa_qstring_test( "abc\xE0\xAC\x8B\xE0\xAC\x8B\x8Bz", "", false ) );  // Additional UTF-8 continuation character \x8B
 }
 
 TFUNCTION( dsl_pa_current_is_test )

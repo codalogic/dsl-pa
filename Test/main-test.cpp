@@ -40,5 +40,3 @@ int main( int argc, char * argv[] )
 {
     TRUNALL();
 }
-
-TFEATURETODO( "Complete parsing of QString" )
