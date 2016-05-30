@@ -121,12 +121,12 @@ def rule_name( rule ) :
 
 def rule_to_cpp( rule, rule_name_map ) :
     cpp = rule
+    cpp = re.sub( r'^\s*\S+\s*=\s*', '', cpp )                        # Remove rule name
     for mapping in rule_name_map :
         cpp = re.sub( r'\b' + mapping[0] + r'\b', mapping[1] + "()", cpp )
     cpp = re.sub( r'([\)"\]])\s+/\s+([\w*("])', r'\1 || \2', cpp )    # Insert || operators
     cpp = re.sub( r'([\)"\]])\s+([\w*(])',      r'\1 && \2', cpp )    # Insert && operators
     cpp = re.sub( r'([\r\n]+)(\s+\S)', r'\1    // \2', cpp )          # Add comments to follow-on lines
-    cpp = re.sub( r'\s*=\s*', r' = ', cpp )                           # Compact speces around = sign
     return cpp
 
 main()
