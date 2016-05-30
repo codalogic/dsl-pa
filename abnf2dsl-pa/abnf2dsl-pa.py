@@ -91,6 +91,7 @@ def write_cpp( rules, file_name ) :
             name = rule_name_in_cpp( rule )
             print( "bool my_class::" + name + "()", file=fout )
             print( "{", file=fout )
+            print( "    /* ABNF: \n    " + rule + "    */", file=fout )
             cpp_rule = rule_to_cpp( rule, rule_name_map )
             print( "    // " + cpp_rule, file=fout )
             print( "    return false;", file=fout )
