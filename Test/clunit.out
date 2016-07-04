@@ -1,4 +1,4 @@
-Tests run on Wed Mar 02 16:27:47 2016
+Tests run on Mon Jul 04 16:15:00 2016
 
     Alphabet tests [alphabet-test.cpp:42]
     =====================================
@@ -1283,6 +1283,9 @@ Tests run on Wed Mar 02 16:27:47 2016
     ok: alpha_accumulator.get() == "ABCDEFG"
       Accumulators can be selected and unselected
     ok: digits_accumulator.get() == "123"
+    ok: int_digits == 123
+    ok: float_digits == 123
+    ok: double_digits == 123
     ok: alphas == "ABCDEFG"
       Accumulators can be cleared
     ok: my_pa.accumulate( alphabet_char_class( "A" ) )
@@ -1321,10 +1324,19 @@ Tests run on Wed Mar 02 16:27:47 2016
     ok: my_accumulator.append( "yz" )
     ok: my_accumulator.append( extra )
     ok: my_accumulator.get() == "XyzAB"
+      Accumulators can be put_in a string
+    ok: my_accumulator.put_in( collected_alphas )
+    ok: collected_alphas == "abcd"
       Accumulators can return a value converted to int
     ok: my_accumulator.to_int() == 101
+    ok: my_accumulator.put_in( collected_int )
+    ok: collected_int == 101
       Accumulators can return a value converted to float/double
     ok: my_accumulator.to_float() == 101.5
+    ok: my_accumulator.put_in( collected_float )
+    ok: collected_float == 101.5
+    ok: my_accumulator.put_in( collected_double )
+    ok: collected_double == 101.5
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
     class mutator [mutator-test.cpp:40]
@@ -1852,4 +1864,4 @@ Tests run on Wed Mar 02 16:27:47 2016
     ok: p_reader->is_open()
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
     ok: _CrtCheckMemory() != 0
-0 error(s), 0 todo(s), 1431 test(s)
+0 error(s), 0 todo(s), 1442 test(s)

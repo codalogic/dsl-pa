@@ -1544,12 +1544,21 @@ TFUNCTION( accumulator_check )
     while( my_pa.accumulate( alphabet_not( alphabet_digit() ) ) )
     {}
     std::string alphas;
+    int int_digits = 0;
+    float float_digits = 0.0;
+    double double_digits = 0.0;
     digits_accumulator.select() &&
         my_pa.accumulate_all( alphabet_digit() ) &&
         alphas_accumulator.select() &&
         my_pa.accumulate_all( alphabet_alpha() ) &&
-        alphas_accumulator.put_in( alphas );
+        alphas_accumulator.put_in( alphas ) &&
+        digits_accumulator.put_in( int_digits ) &&
+        digits_accumulator.put_in( float_digits ) &&
+        digits_accumulator.put_in( double_digits );
     TTEST( digits_accumulator.get() == "123" );
+    TTEST( int_digits == 123 );
+    TTEST( float_digits == 123 );
+    TTEST( double_digits == 123 );
     TTEST( alphas == "ABCDEFG" );
     while( my_pa.accumulate( alphabet_not( alphabet_alpha() ) ) )   // Check reading ends
     {}
@@ -1655,6 +1664,19 @@ TFUNCTION( accumulator_check )
     }
 
     {
+    TDOC( "Accumulators can be put_in a string" );
+    std::string in( "abcd0123" );
+
+    reader_string my_reader( in );
+    dsl_pa my_pa( my_reader );
+    accumulator my_accumulator( &my_pa );
+    my_pa.accumulate_all( alphabet_alpha() );
+    std::string collected_alphas;
+    TTEST( my_accumulator.put_in( collected_alphas ) );
+    TTEST( collected_alphas == "abcd" );
+    }
+
+    {
     TDOC( "Accumulators can return a value converted to int" );
     std::string in( "101" );
 
@@ -1663,6 +1685,9 @@ TFUNCTION( accumulator_check )
     accumulator my_accumulator( &my_pa );
     my_pa.accumulate_all( alphabet_digit() );
     TTEST( my_accumulator.to_int() == 101 );
+    int collected_int = 0;
+    TTEST( my_accumulator.put_in( collected_int ) );
+    TTEST( collected_int == 101 );
     }
 
     {
@@ -1674,5 +1699,11 @@ TFUNCTION( accumulator_check )
     accumulator my_accumulator( &my_pa );
     my_pa.accumulate_all( alphabet_or( alphabet_digit(), alphabet_char( '.' ) ) );
     TTEST( my_accumulator.to_float() == 101.5 );
+    float collected_float = 0.0;
+    double collected_double = 0.0;
+    TTEST( my_accumulator.put_in( collected_float ) );
+    TTEST( collected_float == 101.5 );
+    TTEST( my_accumulator.put_in( collected_double ) );
+    TTEST( collected_double == 101.5 );
     }
 }

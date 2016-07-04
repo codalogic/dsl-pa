@@ -366,10 +366,14 @@ public:
     bool append_to_previous() const { if( p_previous_accumulator ) p_previous_accumulator->append( my_accumulator ); return true; }
 
     const std::string & get() const { return my_accumulator; }
-    bool put_in( std::string & r_place_where ) const { r_place_where = get(); return true; }
     int to_int() const { return atoi( my_accumulator.c_str() ); }
     double to_float() const { return atof( my_accumulator.c_str() ); }
     // bool to_bool() const = delete - Textual definitions of Boolean are very application specific so not supported here
+
+    bool put_in( std::string & r_place_where ) const { r_place_where = get(); return true; }
+    bool put_in( int & r_place_where ) const { r_place_where = to_int(); return true; }
+    bool put_in( float & r_place_where ) const { r_place_where = static_cast<float>(to_float()); return true; }
+    bool put_in( double & r_place_where ) const { r_place_where = to_float(); return true; }
 };
 
 class accumulator : public accumulator_deferred
