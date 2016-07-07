@@ -1,4 +1,4 @@
-Tests run on Thu Jul 07 12:57:36 2016
+Tests run on Thu Jul 07 14:08:18 2016
 
     Alphabet tests [alphabet-test.cpp:42]
     =====================================
@@ -1330,16 +1330,16 @@ Tests run on Thu Jul 07 12:57:36 2016
       Accumulators can return a value converted to int
     ok: my_accumulator.to_int() == 101
     ok: my_accumulator.to_uint() == 101
-    ok: my_accumulator.to_long() == 101L
-    ok: my_accumulator.to_ulong() == 101L
+    ok: my_accumulator.to_int64() == 101L
+    ok: my_accumulator.to_uint64() == 101L
     ok: my_accumulator.put_in( collected_int )
     ok: collected_int == 101
     ok: my_accumulator.put_in( collected_uint )
     ok: collected_uint == 101
-    ok: my_accumulator.put_in( collected_long )
-    ok: collected_long == 101
-    ok: my_accumulator.put_in( collected_ulong )
-    ok: collected_ulong == 101
+    ok: my_accumulator.put_in( collected_int64 )
+    ok: collected_int64 == 101
+    ok: my_accumulator.put_in( collected_uint64 )
+    ok: collected_uint64 == 101
       Accumulators can return a value converted to float/double
     ok: my_accumulator.to_float() == 101.5
     ok: my_accumulator.put_in( collected_float )

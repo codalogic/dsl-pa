@@ -38,6 +38,8 @@
 
 #include "dsl-pa/dsl-pa-dsl-pa.h"
 
+#include <sstream>
+
 namespace cl {
 
 using namespace alphabet_helpers;
@@ -422,12 +424,12 @@ private:
         // unescaped-utf8        = %x80-10FFFF
 
         cl::accumulator utf8_accumulator( this );
-        
+
         if( accumulate( cl::alphabet_function( is_unescaped_leading_utf8 ) ) )
         {
             while( accumulate( cl::alphabet_function( is_unescaped_continuation_utf8 ) ) )
             {}
-            
+
             unsigned char c1 = static_cast<unsigned char>( utf8_accumulator.get()[0] );
             unsigned char c2 = static_cast<unsigned char>( utf8_accumulator.get()[1] );
             size_t length = utf8_accumulator.get().length();
@@ -461,7 +463,7 @@ private:
 
             return error();
         }
-        
+
         return false;
     }
 
@@ -904,6 +906,24 @@ bool dsl_pa::accumulator_append( const accumulator_deferred & r_a )
     if( p_accumulator )
         p_accumulator->append( r_a.get() );
     return true;
+}
+
+//----------------------------------------------------------------------------
+//                             accumulator implementation
+//----------------------------------------------------------------------------
+
+int64 accumulator_deferred::to_int64() const
+{
+    int64 v;
+    std::istringstream( my_accumulator ) >> v;
+    return v;
+}
+
+uint64 accumulator_deferred::to_uint64() const
+{
+    uint64 v;
+    std::istringstream( my_accumulator ) >> v;
+    return v;
 }
 
 //----------------------------------------------------------------------------

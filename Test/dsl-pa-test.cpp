@@ -1686,20 +1686,20 @@ TFUNCTION( accumulator_check )
     my_pa.accumulate_all( alphabet_digit() );
     TTEST( my_accumulator.to_int() == 101 );
     TTEST( my_accumulator.to_uint() == 101 );
-    TTEST( my_accumulator.to_long() == 101L );
-    TTEST( my_accumulator.to_ulong() == 101L );
+    TTEST( my_accumulator.to_int64() == 101L );
+    TTEST( my_accumulator.to_uint64() == 101L );
     int collected_int = 0;
     TTEST( my_accumulator.put_in( collected_int ) );
     TTEST( collected_int == 101 );
     unsigned int collected_uint = 0;
     TTEST( my_accumulator.put_in( collected_uint ) );
     TTEST( collected_uint == 101 );
-    long collected_long = 0;
-    TTEST( my_accumulator.put_in( collected_long ) );
-    TTEST( collected_long == 101 );
-    unsigned int collected_ulong = 0;
-    TTEST( my_accumulator.put_in( collected_ulong ) );
-    TTEST( collected_ulong == 101 );
+    int64 collected_int64 = 0;
+    TTEST( my_accumulator.put_in( collected_int64 ) );
+    TTEST( collected_int64 == 101 );
+    uint64 collected_uint64 = 0;
+    TTEST( my_accumulator.put_in( collected_uint64 ) );
+    TTEST( collected_uint64 == 101 );
     }
 
     {

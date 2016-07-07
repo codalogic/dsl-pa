@@ -47,7 +47,19 @@
 #include "dsl-pa-reader.h"
 #include "dsl-pa-alphabet.h"
 
+#if __cplusplus >= 201103L
+    #include <cstdint>
+#endif
+
 namespace cl {
+
+#if __cplusplus < 201103L
+    typedef long long int64;
+    typedef unsigned long long uint64;
+#else
+    typedef std::int64_t int64;
+    typedef std::uint64_t uint64;
+#endif
 
 class dsl_pa_exception : public std::exception
 {
@@ -366,18 +378,18 @@ public:
     bool append_to_previous() const { if( p_previous_accumulator ) p_previous_accumulator->append( my_accumulator ); return true; }
 
     const std::string & get() const { return my_accumulator; }
-    int           to_int() const { return atoi( my_accumulator.c_str() ); }
+    int to_int() const { return atoi( my_accumulator.c_str() ); }
     unsigned int  to_uint() const { return static_cast<unsigned int>( strtoul( my_accumulator.c_str(), 0, 10 ) ); }
-    long          to_long() const { return strtol( my_accumulator.c_str(), 0, 10 ); }
-    unsigned long to_ulong() const { return strtoul( my_accumulator.c_str(), 0, 10 ); }
-    double        to_float() const { return atof( my_accumulator.c_str() ); }
+    int64 to_int64() const;
+    uint64 to_uint64() const;
+    double to_float() const { return atof( my_accumulator.c_str() ); }
     // bool to_bool() const = delete - Textual definitions of Boolean are very application specific so not supported here
 
     bool put_in( std::string & r_place_where ) const { r_place_where = get(); return true; }
     bool put_in( int & r_place_where ) const { r_place_where = to_int(); return true; }
     bool put_in( unsigned int & r_place_where ) const { r_place_where = to_uint(); return true; }
-    bool put_in( long & r_place_where ) const { r_place_where = to_long(); return true; }
-    bool put_in( unsigned long & r_place_where ) const { r_place_where = to_ulong(); return true; }
+    bool put_in( int64 & r_place_where ) const { r_place_where = to_int64(); return true; }
+    bool put_in( uint64 & r_place_where ) const { r_place_where = to_uint64(); return true; }
     bool put_in( float & r_place_where ) const { r_place_where = static_cast<float>(to_float()); return true; }
     bool put_in( double & r_place_where ) const { r_place_where = to_float(); return true; }
 };
