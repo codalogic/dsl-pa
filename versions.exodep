@@ -1,0 +1,10 @@
+# Mapping of 'strand' name to git branch / tag / commit
+#
+# Different strands are not expected to be backwards compatible, so
+# the more strands you have the worse the backwards compatibilty story is.
+# This is an alphabetical sequence of strand names that reflect increasing
+# despair if more strand names are used.
+#
+# Strand names: ansgt belief care dread escape fear grief hide inquire jump
+
+master angst
