@@ -155,7 +155,7 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath=".\src\dsl-pa-alphabet.cpp"
+				RelativePath=".\src\dsl-pa\dsl-pa-alphabet.cpp"
 				>
 			</File>
 			<File
@@ -163,7 +163,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\src\dsl-pa-dsl-pa.cpp"
+				RelativePath=".\src\dsl-pa\dsl-pa-dsl-pa.cpp"
 				>
 			</File>
 			<File
@@ -175,7 +175,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\src\dsl-pa-reader.cpp"
+				RelativePath=".\src\dsl-pa\dsl-pa-reader.cpp"
 				>
 			</File>
 			<File

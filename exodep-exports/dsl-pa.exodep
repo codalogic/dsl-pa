@@ -1,0 +1,23 @@
+default $dsl_pa_h_dst_path   include/dsl-pa/
+default $dsl_pa_cpp_dst_path src/dsl-pa/
+
+default $h_dst   ${dsl_pa_h_dst_path}
+default $cpp_dst ${dsl_pa_cpp_dst_path}
+
+$owner codalogic
+$project dsl-pa
+$strand angst
+
+hosting github
+versions    # Invoking 'versions' must happen after setting up $owner/$project variables
+
+$path include/dsl-pa/
+copy dsl-pa.h          ${h_dst}
+copy dsl-pa-dsl-pa.h   ${h_dst}
+copy dsl-pa-alphabet.h ${h_dst}
+copy dsl-pa-reader.h   ${h_dst}
+
+$path src/dsl-pa/
+copy dsl-pa-dsl-pa.cpp   ${cpp_dst}
+copy dsl-pa-alphabet.cpp ${cpp_dst}
+copy dsl-pa-reader.cpp   ${cpp_dst}
