@@ -255,7 +255,7 @@ void reader_unget_test( reader_factory & r_reader_factory )
 
 void reader_location_and_unget_test( reader_factory & r_reader_factory )
 {
-    TBEGIN( (std::string( r_reader_factory.form_name() ) + " reader location tests").c_str() );
+    TBEGIN( (std::string( r_reader_factory.form_name() ) + " reader location and unget tests").c_str() );
 
     {
     TSETUP( std::auto_ptr< reader > p_reader( r_reader_factory.create( "abcdef" ) ) );
@@ -297,6 +297,24 @@ void reader_location_and_unget_test( reader_factory & r_reader_factory )
 
     TTEST( p_reader->get() == '\0' );
     TTEST( p_reader->location_top() );
+    TTEST( p_reader->get() == '\0' );
+    }
+
+    {
+    TSETUP( std::auto_ptr< reader > p_reader( r_reader_factory.create( "abcdef" ) ) );
+    TCRITICALTEST( p_reader.get() != 0 );
+
+    TTEST( p_reader->get() == 'a' );
+    TTEST( p_reader->get() == 'b' );
+    TTEST( p_reader->get() == 'c' );
+    TTEST( p_reader->get() == 'd' );
+    TTEST( p_reader->get() == 'e' );
+    TTEST( p_reader->get() == 'f' );
+    TTEST( p_reader->get() == '\0' );
+    TTEST( p_reader->get() == '\0' );
+    p_reader->location_push();
+    TTEST( p_reader->location_top() );
+    TSETUP( p_reader->location_pop() );
     TTEST( p_reader->get() == '\0' );
     }
 }

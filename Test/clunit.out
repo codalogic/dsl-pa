@@ -1,4 +1,4 @@
-Tests run on Thu Jul 20 09:03:56 2017
+Tests run on Thu Jul 20 13:25:02 2017
 
     Alphabet tests [alphabet-test.cpp:42]
     =====================================
@@ -1358,7 +1358,7 @@ Tests run on Thu Jul 20 09:03:56 2017
     ok: my_mutator.is_eof()
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
-    String reader tests [reader-test.cpp:355]
+    String reader tests [reader-test.cpp:373]
     =========================================
     String reader basic tests [reader-test.cpp:101]
     ===============================================
@@ -1455,8 +1455,8 @@ Tests run on Thu Jul 20 09:03:56 2017
     ok: p_reader->get() == 'd'
     ok: p_reader->peek() == 'e'
     ok: p_reader->get() == 'e'
-    String reader location tests [reader-test.cpp:258]
-    ==================================================
+    String reader location and unget tests [reader-test.cpp:258]
+    ============================================================
       : std::auto_ptr< reader > p_reader( r_reader_factory.create( "abcdef" ) )
     ok: p_reader.get() != 0
     ok: p_reader->get() == 'a'
@@ -1478,7 +1478,20 @@ Tests run on Thu Jul 20 09:03:56 2017
     ok: p_reader->get() == '\0'
     ok: p_reader->location_top()
     ok: p_reader->get() == '\0'
-    String reader location logger tests [reader-test.cpp:306]
+      : std::auto_ptr< reader > p_reader( r_reader_factory.create( "abcdef" ) )
+    ok: p_reader.get() != 0
+    ok: p_reader->get() == 'a'
+    ok: p_reader->get() == 'b'
+    ok: p_reader->get() == 'c'
+    ok: p_reader->get() == 'd'
+    ok: p_reader->get() == 'e'
+    ok: p_reader->get() == 'f'
+    ok: p_reader->get() == '\0'
+    ok: p_reader->get() == '\0'
+    ok: p_reader->location_top()
+      : p_reader->location_pop()
+    ok: p_reader->get() == '\0'
+    String reader location logger tests [reader-test.cpp:324]
     =========================================================
       : std::auto_ptr< reader > p_reader( r_reader_factory.create( "abcdef" ) )
     ok: p_reader.get() != 0
@@ -1505,7 +1518,7 @@ Tests run on Thu Jul 20 09:03:56 2017
     ok: p_reader->get() == 'd'
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
-    File reader tests [reader-test.cpp:362]
+    File reader tests [reader-test.cpp:380]
     =======================================
     File reader basic tests [reader-test.cpp:101]
     =============================================
@@ -1608,8 +1621,8 @@ Tests run on Thu Jul 20 09:03:56 2017
     ok: p_reader->get() == 'd'
     ok: p_reader->peek() == 'e'
     ok: p_reader->get() == 'e'
-    File reader location tests [reader-test.cpp:258]
-    ================================================
+    File reader location and unget tests [reader-test.cpp:258]
+    ==========================================================
       : std::auto_ptr< reader > p_reader( r_reader_factory.create( "abcdef" ) )
     ok: fout.is_open()
     ok: p_reader.get() != 0
@@ -1633,7 +1646,21 @@ Tests run on Thu Jul 20 09:03:56 2017
     ok: p_reader->get() == '\0'
     ok: p_reader->location_top()
     ok: p_reader->get() == '\0'
-    File reader location logger tests [reader-test.cpp:306]
+      : std::auto_ptr< reader > p_reader( r_reader_factory.create( "abcdef" ) )
+    ok: fout.is_open()
+    ok: p_reader.get() != 0
+    ok: p_reader->get() == 'a'
+    ok: p_reader->get() == 'b'
+    ok: p_reader->get() == 'c'
+    ok: p_reader->get() == 'd'
+    ok: p_reader->get() == 'e'
+    ok: p_reader->get() == 'f'
+    ok: p_reader->get() == '\0'
+    ok: p_reader->get() == '\0'
+    ok: p_reader->location_top()
+      : p_reader->location_pop()
+    ok: p_reader->get() == '\0'
+    File reader location logger tests [reader-test.cpp:324]
     =======================================================
       : std::auto_ptr< reader > p_reader( r_reader_factory.create( "abcdef" ) )
     ok: fout.is_open()
@@ -1661,7 +1688,7 @@ Tests run on Thu Jul 20 09:03:56 2017
     ok: p_reader->get() == 'd'
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
-    Mem buf reader tests [reader-test.cpp:369]
+    Mem buf reader tests [reader-test.cpp:387]
     ==========================================
     Mem buf reader basic tests [reader-test.cpp:101]
     ================================================
@@ -1758,8 +1785,8 @@ Tests run on Thu Jul 20 09:03:56 2017
     ok: p_reader->get() == 'd'
     ok: p_reader->peek() == 'e'
     ok: p_reader->get() == 'e'
-    Mem buf reader location tests [reader-test.cpp:258]
-    ===================================================
+    Mem buf reader location and unget tests [reader-test.cpp:258]
+    =============================================================
       : std::auto_ptr< reader > p_reader( r_reader_factory.create( "abcdef" ) )
     ok: p_reader.get() != 0
     ok: p_reader->get() == 'a'
@@ -1781,7 +1808,20 @@ Tests run on Thu Jul 20 09:03:56 2017
     ok: p_reader->get() == '\0'
     ok: p_reader->location_top()
     ok: p_reader->get() == '\0'
-    Mem buf reader location logger tests [reader-test.cpp:306]
+      : std::auto_ptr< reader > p_reader( r_reader_factory.create( "abcdef" ) )
+    ok: p_reader.get() != 0
+    ok: p_reader->get() == 'a'
+    ok: p_reader->get() == 'b'
+    ok: p_reader->get() == 'c'
+    ok: p_reader->get() == 'd'
+    ok: p_reader->get() == 'e'
+    ok: p_reader->get() == 'f'
+    ok: p_reader->get() == '\0'
+    ok: p_reader->get() == '\0'
+    ok: p_reader->location_top()
+      : p_reader->location_pop()
+    ok: p_reader->get() == '\0'
+    Mem buf reader location logger tests [reader-test.cpp:324]
     ==========================================================
       : std::auto_ptr< reader > p_reader( r_reader_factory.create( "abcdef" ) )
     ok: p_reader.get() != 0
@@ -1808,7 +1848,7 @@ Tests run on Thu Jul 20 09:03:56 2017
     ok: p_reader->get() == 'd'
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
-    is get char reader tests [reader-test.cpp:376]
+    is get char reader tests [reader-test.cpp:394]
     ==============================================
     ok: ! my_reader.is_get_char( 'x' )
     ok: my_reader.is_get_char( 'a' )
@@ -1816,7 +1856,7 @@ Tests run on Thu Jul 20 09:03:56 2017
     ok: my_reader.is_get_char( 'b' )
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
-    Reader line counting tests [reader-test.cpp:388]
+    Reader line counting tests [reader-test.cpp:406]
     ================================================
     ok: my_reader.get_line_number() == 1
     ok: my_reader.get() == 'a'
@@ -1865,7 +1905,7 @@ Tests run on Thu Jul 20 09:03:56 2017
       : my_reader.location_pop()
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
-    Reader::is_open() tests [reader-test.cpp:444]
+    Reader::is_open() tests [reader-test.cpp:462]
     =============================================
     ok: my_reader.is_open()
     ok: ! my_reader.is_open()
@@ -1873,4 +1913,4 @@ Tests run on Thu Jul 20 09:03:56 2017
     ok: p_reader->is_open()
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
     ok: _CrtCheckMemory() != 0
-0 error(s), 0 todo(s), 1451 test(s)
+0 error(s), 0 todo(s), 1485 test(s)

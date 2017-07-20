@@ -326,6 +326,8 @@ public:
 
     virtual void source_location_push()
     {
+        if( fin.eof() )
+            fin.clear();
         location_buffer.push( fin.tellg() );
     }
     virtual void source_location_revise()

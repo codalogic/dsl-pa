@@ -1,4 +1,4 @@
-Tests table of contents generated on Thu Jul 20 09:03:56 2017
+Tests table of contents generated on Thu Jul 20 13:25:02 2017
 
 # alphabet-test.cpp
 | Description | Line |
@@ -59,27 +59,27 @@ Tests table of contents generated on Thu Jul 20 09:03:56 2017
 # reader-test.cpp
 | Description | Line |
 |-------------|------|
-| String reader tests | 355 |
+| String reader tests | 373 |
 | String reader basic tests | 101 |
 | String reader location tests | 128 |
 | String reader location with newline tests | 168 |
 | String reader unget/peek tests | 228 |
-| String reader location tests | 258 |
-| String reader location logger tests | 306 |
-| File reader tests | 362 |
+| String reader location and unget tests | 258 |
+| String reader location logger tests | 324 |
+| File reader tests | 380 |
 | File reader basic tests | 101 |
 | File reader location tests | 128 |
 | File reader location with newline tests | 168 |
 | File reader unget/peek tests | 228 |
-| File reader location tests | 258 |
-| File reader location logger tests | 306 |
-| Mem buf reader tests | 369 |
+| File reader location and unget tests | 258 |
+| File reader location logger tests | 324 |
+| Mem buf reader tests | 387 |
 | Mem buf reader basic tests | 101 |
 | Mem buf reader location tests | 128 |
 | Mem buf reader location with newline tests | 168 |
 | Mem buf reader unget/peek tests | 228 |
-| Mem buf reader location tests | 258 |
-| Mem buf reader location logger tests | 306 |
-| is get char reader tests | 376 |
-| Reader line counting tests | 388 |
-| Reader::is_open() tests | 444 |
+| Mem buf reader location and unget tests | 258 |
+| Mem buf reader location logger tests | 324 |
+| is get char reader tests | 394 |
+| Reader line counting tests | 406 |
+| Reader::is_open() tests | 462 |
