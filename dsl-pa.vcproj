@@ -186,6 +186,10 @@
 				RelativePath=".\include\dsl-pa\dsl-pa.h"
 				>
 			</File>
+			<File
+				RelativePath=".\include\cl-utils\history-buffer.h"
+				>
+			</File>
 		</Filter>
 	</Files>
 	<Globals>

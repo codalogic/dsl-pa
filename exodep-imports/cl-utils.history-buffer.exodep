@@ -1,0 +1,20 @@
+# See https://github.com/codalogic/exodep for details on use and format of
+# exodep file
+
+# cl-utils.command-line-args documentation at:
+#
+#    https://github.com/codalogic/cl-utils
+
+default $h_dst   include/cl-utils/
+default $cpp_dst src/cl-utils/
+
+default $cl_utils_h_dst   ${h_dst}
+default $cl_utils_cpp_dst ${cpp_dst}
+
+$owner codalogic
+$project cl-utils
+$strand angst
+
+versions    # Invoking 'versions' must happen after setting up $owner/$project variables
+
+get include/cl-utils/history-buffer.h   ${cl_utils_h_dst}
