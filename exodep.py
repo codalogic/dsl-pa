@@ -90,8 +90,9 @@ class ProcessDeps:
         self.is_last_file_changed = self.are_files_changed = False
         self.line_num = 0
         self.uritemplate = host_templates['github']
-        self.vars = vars.copy()
+        self.set_vars( vars )
         self.versions = {}  # Each entry is <string of space separated strand names> : <string to use as strand in uri template>
+        self.sought_condition = True
         if isinstance( dependencies_src, str ):
             if self.is_config_already_processed( dependencies_src ):
                 return
@@ -103,8 +104,13 @@ class ProcessDeps:
         else:
             self.error( "Unrecognised dependencies_src type format" )
 
-    def get_vars():
+    def get_vars( self ):
         return self.vars
+
+    def set_vars( self, vars ):
+        self.vars = vars.copy()
+        # Remove non-exportable vars
+        self.vars.pop( '__authority', None )
 
     def is_config_already_processed( self, dependencies_src ):
         abs_dependencies_src = os.path.abspath( dependencies_src )
@@ -123,6 +129,7 @@ class ProcessDeps:
     def process_dependency_stream( self, f ):
         for line in f:
             self.line_num += 1
+            self.sought_condition = True
             self.process_line( line )
 
     def process_line( self, line ):
@@ -142,6 +149,7 @@ class ProcessDeps:
                 self.consider_file_ops( line ) or
                 self.consider_exec( line ) or
                 self.consider_subst( line ) or
+                self.consider_authority( line ) or
                 self.consider_on_conditional( line ) or
                 self.consider_ondir( line ) or
                 self.consider_onfile( line ) or
@@ -150,6 +158,7 @@ class ProcessDeps:
                 self.consider_onanychanged( line ) or
                 self.consider_onalerts( line ) or
                 self.consider_os_conditional( line ) or
+                self.consider_not( line ) or
                 self.consider_echo( line ) or
                 self.consider_pause( line ) or
                 self.consider_alert( line ) or
@@ -479,15 +488,27 @@ class ProcessDeps:
             return True
         return False
 
+    def consider_authority( self, line ):
+        m = re.match( '^authority\s+(.+)', line )
+        if m != None:
+            src = m.group(1)
+            from_uri = self.make_uri( src )
+            self.vars['__authority'] = from_uri
+            # Currently ignored.  Treated as a human readable documentation feature
+            # TODO - See https://github.com/codalogic/exodep/issues/26
+            return True
+        return False
+
     def consider_on_conditional( self, line ):
         m = re.match( '^on\s+\$(\w+)\s+(.+)', line )
         if m != None:
             var_name = m.group(1)
             command = m.group(2)
-            if var_name in self.vars and \
+            if self.is_sought_condition( \
+                    var_name in self.vars and \
                     self.vars[var_name] != '' and \
                     self.vars[var_name] != '0' and \
-                    self.vars[var_name].lower() != 'false':
+                    self.vars[var_name].lower() != 'false' ):
                 self.process_line( command )
             return True
         return False
@@ -497,7 +518,7 @@ class ProcessDeps:
         if m != None:
             dir = m.group(1)
             command = m.group(2)
-            if os.path.isdir( dir ):
+            if self.is_sought_condition( os.path.isdir( dir ) ):
                 self.process_line( command )
             return True
         return False
@@ -507,7 +528,7 @@ class ProcessDeps:
         if m != None:
             file = m.group(1)
             command = m.group(2)
-            if os.path.isfile( file ):
+            if self.is_sought_condition( os.path.isfile( file ) ):
                 self.process_line( command )
             return True
         return False
@@ -516,7 +537,7 @@ class ProcessDeps:
         m = re.match( '^onlastchanged\s+(.+)', line )
         if m != None:
             command = m.group(1)
-            if self.is_last_file_changed:
+            if self.is_sought_condition( self.is_last_file_changed ):
                 self.process_line( command )
             return True
         return False
@@ -525,7 +546,7 @@ class ProcessDeps:
         m = re.match( '^onchanged\s+(.+)', line )
         if m != None:
             command = m.group(1)
-            if self.are_files_changed:
+            if self.is_sought_condition( self.are_files_changed ):
                 self.process_line( command )
             return True
         return False
@@ -534,7 +555,7 @@ class ProcessDeps:
         m = re.match( '^onanychanged\s+(.+)', line )
         if m != None:
             command = m.group(1)
-            if ProcessDeps.are_any_files_changed:
+            if self.is_sought_condition( ProcessDeps.are_any_files_changed ):
                 self.process_line( command )
             return True
         return False
@@ -543,7 +564,7 @@ class ProcessDeps:
         m = re.match( '^onalerts\s+(.+)', line )
         if m != None:
             command = m.group(1)
-            if ProcessDeps.shown_alert_messages != "" or ProcessDeps.alert_messages != "":
+            if self.is_sought_condition( ProcessDeps.shown_alert_messages != "" or ProcessDeps.alert_messages != "" ):
                 self.process_line( command )
             return True
         return False
@@ -555,10 +576,26 @@ class ProcessDeps:
         if m != None:
             os_key = m.group(1)
             command = m.group(2)
-            if sys.platform.startswith( ProcessDeps.os_names[os_key] ):
+            if self.is_sought_condition( sys.platform.startswith( ProcessDeps.os_names[os_key] ) ):
                 self.process_line( command )
             return True
         return False
+
+    def consider_not( self, line ):
+        m = re.match( '^not\s+(.+)', line )
+        if m != None:
+            command = m.group(1)
+            self.sought_condition = not self.sought_condition
+            self.process_line( command )
+            return True
+        return False
+
+    def is_sought_condition( self, condition ):
+        my_sought_condition = self.sought_condition
+        self.sought_condition = True    # Reset sought_condition so it doesn't affect conditions later in the same command line
+        if condition:
+            return my_sought_condition
+        return not my_sought_condition
 
     def consider_echo( self, line ):
         m = re.match( '^echo(?:\s+(.*))?', line )

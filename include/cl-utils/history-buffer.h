@@ -42,46 +42,48 @@
 #ifndef CL_UTILS__HISTORY_BUFFER
 #define CL_UTILS__HISTORY_BUFFER
 
-#include <vector>
 #include <cassert>
+#include <cstddef>     // For size_t
 
 namespace clutils {
 
-template< typename T >
+template< typename T, size_t S >
 class HistoryBuffer
 {
 private:
     struct Members {
-        std::vector< T > buffer;
+        char buffer[(S+1)*sizeof(T)];    // Use char array instead of typed array to avoid need for T to have a default constructor
+                                         // Use an extra place, so when the buffer has buffer_size members we can tell if it's full or empty
+        size_t n_buffer_slots_used;
         size_t top;     // top points to the next free location. i.e. one above the active top of the stack
         size_t pos;     // pos points to the next location. i.e. one above the active location
         size_t bottom;
-        Members() : top( 0 ), pos( 0 ), bottom( 0 ) {}
+        Members() : n_buffer_slots_used( 0 ), top( 0 ), pos( 0 ), bottom( 0 ) {}
     } m;
 
 public:
-    HistoryBuffer( size_t buffer_size )
+    ~HistoryBuffer()
     {
-        m.buffer.reserve( buffer_size + 1 );    // We use an extra place, so when the buffer has buffer_size members we can tell if it's full or empty
+        clear();
     }
     void push( const T & v )
     {
-        if( m.top == m.pos && m.buffer.size() < m.buffer.capacity() )
-            m.buffer.push_back( v );
+        if( m.top == m.pos && m.n_buffer_slots_used < (S+1) )
+            new (&buffer( m.n_buffer_slots_used++ )) T( v );
         else
-            m.buffer[m.pos] = v;
-        m.top = m.pos = (m.pos + 1) % m.buffer.capacity();
+            buffer( m.pos ) = v;
+        m.top = m.pos = (m.pos + 1) % (S+1);
         if( m.pos == m.bottom )
-            m.bottom = (m.bottom + 1) % m.buffer.capacity();
+            m.bottom = (m.bottom + 1) % (S+1);
     }
-    bool has_back() const { return m.pos != m.bottom && m.pos != (m.bottom + 1) % m.buffer.capacity(); }
+    bool has_back() const { return m.pos != m.bottom && m.pos != (m.bottom + 1) % (S+1); }
     void go_back()
     {
         assert( has_back() );
         if( has_back() )
         {
             if( m.pos == 0 )    // Can't use modulo arithmetic when doing unsigned subtraction
-                m.pos = m.buffer.capacity() - 1;
+                m.pos = (S+1) - 1;
             else
                 --m.pos;
         }
@@ -91,16 +93,25 @@ public:
     {
         assert( has_frwd() );
         if( has_frwd() )
-            m.pos = (m.pos + 1) % m.buffer.capacity();
+            m.pos = (m.pos + 1) % (S+1);
     }
     const T & get() const
     {
         assert( m.pos != m.bottom );
         if( m.pos == 0 )    // Can't use modulo arithmetic when doing unsigned subtraction
-            return m.buffer[m.buffer.capacity() - 1];
+            return buffer( (S+1) - 1 );
         else
-            return m.buffer[m.pos - 1];
+            return buffer( m.pos - 1 );
     }
+    void clear()
+    {
+        for( size_t i=0; i<m.n_buffer_slots_used; ++i )
+            (&buffer( i ))->~T();
+        m = Members();
+    }
+private:
+    T & buffer( size_t index ) { return *(T *)&(m.buffer[index*sizeof(T)]); }
+    const T & buffer( size_t index ) const { return *(const T *)&(m.buffer[index*sizeof(T)]); }
 };
 
 } // namespace clutils
