@@ -1,12 +1,15 @@
 # See https://github.com/codalogic/exodep for details on use and format of
 # exodep file
 
-# cl-utils.command-line-args documentation at:
+# For documentation on this project see:
 #
 #    https://github.com/codalogic/cl-utils
 
-default $h_dst   include/cl-utils/
-default $cpp_dst src/cl-utils/
+default $ext_h_home   include/
+default $ext_cpp_home src/
+
+default $h_dst   ${ext_h_home}cl-utils/
+default $cpp_dst ${ext_cpp_home}cl-utils/
 
 default $cl_utils_h_dst   ${h_dst}
 default $cl_utils_cpp_dst ${cpp_dst}
