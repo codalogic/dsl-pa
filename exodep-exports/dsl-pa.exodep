@@ -5,29 +5,20 @@
 #
 #    https://github.com/codalogic/dsl-pa
 
-default $ext_h_home   include/
-default $ext_cpp_home src/
-
-default $h_dst   ${ext_h_home}dsl-pa/
-default $cpp_dst ${ext_cpp_home}dsl-pa/
-
-default $dsl_pa_h_dst   ${h_dst}
-default $dsl_pa_cpp_dst ${cpp_dst}
-
 hosting github
 $owner codalogic
 $project dsl-pa
 $strand angst
 
-versions    # Invoking 'versions' must happen after setting up $owner/$project variables
+autovars
 
 $path include/dsl-pa/
-get dsl-pa.h          ${dsl_pa_h_dst}
-get dsl-pa-dsl-pa.h   ${dsl_pa_h_dst}
-get dsl-pa-alphabet.h ${dsl_pa_h_dst}
-get dsl-pa-reader.h   ${dsl_pa_h_dst}
+get dsl-pa.h          ${dsl_pa_inc_dst}
+get dsl-pa-dsl-pa.h   ${dsl_pa_inc_dst}
+get dsl-pa-alphabet.h ${dsl_pa_inc_dst}
+get dsl-pa-reader.h   ${dsl_pa_inc_dst}
 
 $path src/dsl-pa/
-get dsl-pa-dsl-pa.cpp   ${dsl_pa_cpp_dst}
-get dsl-pa-alphabet.cpp ${dsl_pa_cpp_dst}
-get dsl-pa-reader.cpp   ${dsl_pa_cpp_dst}
+get dsl-pa-dsl-pa.cpp   ${dsl_pa_src_dst}
+get dsl-pa-alphabet.cpp ${dsl_pa_src_dst}
+get dsl-pa-reader.cpp   ${dsl_pa_src_dst}
