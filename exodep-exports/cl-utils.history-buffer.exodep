@@ -5,19 +5,10 @@
 #
 #    https://github.com/codalogic/cl-utils
 
-default $ext_h_home   include/
-default $ext_cpp_home src/
-
-default $h_dst   ${ext_h_home}cl-utils/
-default $cpp_dst ${ext_cpp_home}cl-utils/
-
-default $cl_utils_h_dst   ${h_dst}
-default $cl_utils_cpp_dst ${cpp_dst}
-
 $owner codalogic
 $project cl-utils
 $strand angst
 
-versions    # Invoking 'versions' must happen after setting up $owner/$project variables
+autovars
 
-get include/cl-utils/history-buffer.h   ${cl_utils_h_dst}
+get include/cl-utils/history-buffer.h   ${cl_utils_inc_dst}

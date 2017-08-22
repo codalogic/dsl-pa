@@ -45,8 +45,6 @@ init_exodep = 'exodep-imports/__init.exodep'
 end_exodep = 'exodep-imports/__end.exodep'
 onstop_exodep = 'exodep-imports/__onstop.exodep'
 
-glob_ignore = [ init_exodep, end_exodep, onstop_exodep ]
-
 default_vars = { 'strand': 'master', 'path': '' }
 
 class StopException( Exception ):
@@ -73,11 +71,13 @@ def process_globbed_exodep_imports():
         vars = pd.get_vars()
     for file in glob.glob( 'exodep-imports/*.exodep' ):
         file = file.replace( '\\', '/' )
-        if file not in glob_ignore:
+        if not is_ignored_glob( file ):
             ProcessDeps( file, vars )
     if os.path.isfile( end_exodep ):
         ProcessDeps( end_exodep, vars )
 
+def is_ignored_glob( file ):
+    return file.find( '/__' ) >= 0 or file.find( '/^' ) >= 0;
 
 class ProcessDeps:
     are_any_files_changed = False
@@ -144,6 +144,8 @@ class ProcessDeps:
                 self.consider_versions( line ) or
                 self.consider_variable( line ) or
                 self.consider_default_variable( line ) or
+                self.consider_showvars( line ) or
+                self.consider_autovars( line ) or
                 self.consider_get( line ) or
                 self.consider_bget( line ) or
                 self.consider_file_ops( line ) or
@@ -236,17 +238,58 @@ class ProcessDeps:
                     self.versions[m.group(2)] = m.group(1)
 
     def consider_variable( self, line ):
-        m = re.match( '^\$(\w+)(?:\s+(.*))?$', line )
+        m = re.match( '^\$(\w+)(?:\s+(.*))?', line )
         if m != None:
             self.vars[m.group(1)] = m.group(2) if m.group(2) else ''
             return True
         return False
 
     def consider_default_variable( self, line ):
-        m = re.match( '^default\s+\$(\w+)\s+(.*)', line )
+        m = re.match( '^default\s+\$(\w+)(?:\s+(.*))?', line )
         if m != None:
             if m.group(1) not in self.vars:
-                self.vars[m.group(1)] = m.group(2)
+                self.vars[m.group(1)] = m.group(2) if m.group(2) else ''
+            return True
+        return False
+
+    def consider_showvars( self, line ):
+        m = re.match( '^showvars', line )
+        if m != None:
+            for var in sorted( self.vars.keys() ):
+                raw = self.vars[var]
+                expanded = self.expand_variables( raw )
+                expansion = '' if expanded == raw else (' -> ' + expanded)
+                print( var + ": " + raw + expansion )
+            return True
+        return False
+
+    def consider_autovars( self, line ):
+        m = re.match( '^autovars', line )
+        if m != None:
+            uri = re.compile( '-' ).sub( 'master', self.uritemplate )
+            project = self.vars['project']
+            safe_project = project.replace( '-', '_' )
+            if project != '':
+                self.process_line( 'versions' )
+            self.process_line( 'default $ext_home' )
+
+            self.process_line( 'default $ext_inc_home   ${ext_home}include/' )
+            self.process_line( 'default $ext_src_home   ${ext_home}src/' )
+            self.process_line( 'default $ext_build_home ${ext_home}build/' )
+            self.process_line( 'default $ext_lib_home   ${ext_home}lib/' )
+            self.process_line( 'default $ext_bin_home   ${ext_home}bin/' )
+
+            self.process_line( 'default $inc_dst   ${ext_inc_home}' +   project + '/' )
+            self.process_line( 'default $src_dst   ${ext_src_home}' +   project + '/' )
+            self.process_line( 'default $build_dst ${ext_build_home}' + project + '/' )
+            self.process_line( 'default $lib_dst   ${ext_lib_home}' +   project + '/' )
+            self.process_line( 'default $bin_dst   ${ext_bin_home}' +   project + '/' )
+
+            self.process_line( 'default $' + safe_project + '_inc_dst   ${inc_dst}' )
+            self.process_line( 'default $' + safe_project + '_src_dst   ${src_dst}' )
+            self.process_line( 'default $' + safe_project + '_build_dst ${build_dst}' )
+            self.process_line( 'default $' + safe_project + '_lib_dst   ${lib_dst}' )
+            self.process_line( 'default $' + safe_project + '_bin_dst   ${bin_dst}' )
             return True
         return False
 
