@@ -76,14 +76,6 @@ public:
 
 class line_counter_with_stack
 {
-    // This is a simple class for keeping track of the line number (and in
-    // future, column number) from which parsed input is read.  The intention
-    // is that a better implementation can be installed in future without
-    // changing the way the reader class uses it.
-    // The policy of this implementation is to ignore column numbers and also
-    // ignore complexities associated with ungetting and then re-getting
-    // ungotten chars.  Hence, there may be some situations where the
-    // returned line number is slightly wrong!
 public:
     static const int UNKNOWN = -1;
 
