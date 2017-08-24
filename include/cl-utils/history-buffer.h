@@ -44,12 +44,15 @@
 
 #include <cassert>
 #include <cstddef>     // For size_t
+#include <utility>
 
 namespace clutils {
 
 template< typename T, size_t S >
 class HistoryBuffer
 {
+    typedef HistoryBuffer< T, S > t_self;
+
 private:
     struct Members {
         char buffer[(S+1)*sizeof(T)];    // Use char array instead of typed array to avoid need for T to have a default constructor
@@ -62,6 +65,24 @@ private:
     } m;
 
 public:
+    HistoryBuffer()
+    {
+    }
+    HistoryBuffer( const t_self & rhs )
+    {
+        m.n_buffer_slots_used = rhs.m.n_buffer_slots_used;
+        m.top = rhs.m.top;
+        m.pos = rhs.m.pos;
+        m.bottom = rhs.m.bottom;
+        for( size_t i=0; i<rhs.m.n_buffer_slots_used; ++i )
+            new (&buffer( i )) T( rhs.buffer( i ) );
+    }
+    t_self & operator = ( const t_self & rhs )
+    {
+        t_self tmp( rhs );
+        std::swap( m, tmp.m );
+        return *this;
+    }
     ~HistoryBuffer()
     {
         clear();

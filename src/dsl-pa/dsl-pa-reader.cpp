@@ -42,16 +42,25 @@ namespace cl {
 
 void line_counter_with_stack::got_char( char c )
 {
+    int line_number = get_line_number();
+    int column_number = get_column_number();
+
     if( c == '\r' || c == '\n' )
     {
+        column_number = 0;
         if( current.last_nl_char == '\0' || current.last_nl_char == c )
-        {
-            ++current.line_number;
-            current.last_nl_char = c;
-            return;
-        }
+            ++line_number;
+
+        current.last_nl_char = c;
     }
-    current.last_nl_char = '\0';
+    else
+    {
+        ++column_number;
+
+        current.last_nl_char = '\0';
+    }
+
+    set_position( line_number, column_number, c );
 }
 
 char reader::get()

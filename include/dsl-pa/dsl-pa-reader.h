@@ -46,6 +46,8 @@
 #include <stack>
 #include <fstream>
 
+#include "cl-utils/history-buffer.h"
+
 namespace cl {
 
 class unget_buffer_with_stack
@@ -86,37 +88,59 @@ public:
     static const int UNKNOWN = -1;
 
 private:
-    struct stack_item
+    struct position
     {
         int line_number;
+        int column_number;
+        char last_char;
+
+        position() : line_number( 0 ), column_number( 0 ), last_char( '\0' ) {}
+        position( int line_number_in, int column_number_in, char last_char_in )
+            : line_number( line_number_in ), column_number( column_number_in ), last_char( last_char_in )
+        {}
+    };
+
+    struct stack_item
+    {
+        clutils::HistoryBuffer< position, 10 > history_buffer;
         char last_nl_char;
-        stack_item() : line_number( 1 ), last_nl_char( '\0' ) {}
+        stack_item() : last_nl_char( '\0' ) {}
         // stack_item & operator = ( const stack_item & rhs ) = default;
     };
     stack_item current;
     std::stack< stack_item > stack;
 
+    void set_position( int line_number, int column_number, char last_char )
+    {
+        current.history_buffer.push( position( line_number, column_number,  last_char) );
+    }
+
 public:
-    line_counter_with_stack() {}
+    line_counter_with_stack()
+    {
+            set_position( 1, 0, '\0' );
+    }
 
     void got_char( char c );
     void ungot_char( char c )
     {
-        // For now, ignore ungot chars
+        if( current.history_buffer.has_back() )
+            current.history_buffer.go_back();
     }
     void retrieved_ungot_char( char c )
     {
-        // For now, ignore retrieved ungot chars
+        if( current.history_buffer.has_frwd() )
+            current.history_buffer.go_frwd();
     }
 
     int get_line_number() const
     {
-        return current.line_number;
+        return current.history_buffer.get().line_number;
     }
     int get_column_number() const
     {
         // Tracking column numbers not implemented by this class
-        return UNKNOWN;
+        return current.history_buffer.get().column_number;
     }
 
     void push() { stack.push( current ); }

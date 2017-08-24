@@ -1,4 +1,4 @@
-Tests run on Thu Jul 20 13:25:02 2017
+Tests run on Thu Aug 24 17:58:08 2017
 
     Alphabet tests [alphabet-test.cpp:42]
     =====================================
@@ -1859,53 +1859,81 @@ Tests run on Thu Jul 20 13:25:02 2017
     Reader line counting tests [reader-test.cpp:406]
     ================================================
     ok: my_reader.get_line_number() == 1
+    ok: my_reader.get_column_number() == 0
     ok: my_reader.get() == 'a'
+    ok: my_reader.get_column_number() == 1
     ok: my_reader.get() == 'b'
     ok: my_reader.get_line_number() == 1
+    ok: my_reader.get_column_number() == 2
     ok: my_reader.get() == '\r'
+    ok: my_reader.get_line_number() == 2
+    ok: my_reader.get_column_number() == 0
     ok: my_reader.get() == '\n'
     ok: my_reader.get_line_number() == 2
+    ok: my_reader.get_column_number() == 0
     ok: my_reader.get() == 'c'
     ok: my_reader.get_line_number() == 2
+    ok: my_reader.get_column_number() == 1
       : my_reader.location_push()
     ok: my_reader.get() == 'd'
     ok: my_reader.get_line_number() == 2
+    ok: my_reader.get_column_number() == 2
     ok: my_reader.get() == '\n'
     ok: my_reader.get_line_number() == 3
+    ok: my_reader.get_column_number() == 0
     ok: my_reader.get() == 'e'
     ok: my_reader.get_line_number() == 3
+    ok: my_reader.get_column_number() == 1
     ok: my_reader.get() == 'f'
     ok: my_reader.get_line_number() == 3
+    ok: my_reader.get_column_number() == 2
     ok: my_reader.get() == '\r'
     ok: my_reader.get_line_number() == 4
+    ok: my_reader.get_column_number() == 0
       : my_reader.unget()
+      : my_reader.unget( 'f' )
+    ok: my_reader.get() == 'f'
+    ok: my_reader.get_line_number() == 3
+    ok: my_reader.get_column_number() == 2
     ok: my_reader.get() == '\r'
     ok: my_reader.get_line_number() == 4
+    ok: my_reader.get_column_number() == 0
     ok: my_reader.get() == 'g'
     ok: my_reader.get_line_number() == 4
+    ok: my_reader.get_column_number() == 1
     ok: my_reader.get() == 'h'
     ok: my_reader.get_line_number() == 4
+    ok: my_reader.get_column_number() == 2
     ok: my_reader.get() == '\r'
     ok: my_reader.get_line_number() == 5
+    ok: my_reader.get_column_number() == 0
     ok: my_reader.get() == '\n'
     ok: my_reader.get_line_number() == 5
+    ok: my_reader.get_column_number() == 0
     ok: my_reader.get() == 'i'
     ok: my_reader.get_line_number() == 5
+    ok: my_reader.get_column_number() == 1
     ok: my_reader.get() == 'j'
+    ok: my_reader.get_line_number() == 5
+    ok: my_reader.get_column_number() == 2
       : my_reader.location_top()
     ok: my_reader.get() == 'd'
     ok: my_reader.get_line_number() == 2
+    ok: my_reader.get_column_number() == 2
     ok: my_reader.get() == '\n'
     ok: my_reader.get_line_number() == 3
+    ok: my_reader.get_column_number() == 0
       : my_reader.location_top()
     ok: my_reader.get() == 'd'
     ok: my_reader.get_line_number() == 2
+    ok: my_reader.get_column_number() == 2
     ok: my_reader.get() == '\n'
     ok: my_reader.get_line_number() == 3
+    ok: my_reader.get_column_number() == 0
       : my_reader.location_pop()
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
-    Reader::is_open() tests [reader-test.cpp:462]
+    Reader::is_open() tests [reader-test.cpp:492]
     =============================================
     ok: my_reader.is_open()
     ok: ! my_reader.is_open()
@@ -1913,4 +1941,4 @@ Tests run on Thu Jul 20 13:25:02 2017
     ok: p_reader->is_open()
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
     ok: _CrtCheckMemory() != 0
-0 error(s), 0 todo(s), 1485 test(s)
+0 error(s), 0 todo(s), 1512 test(s)
