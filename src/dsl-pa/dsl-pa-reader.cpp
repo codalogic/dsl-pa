@@ -60,7 +60,7 @@ void line_counter_with_stack::got_char( char c )
         current.last_nl_char = '\0';
     }
 
-    set_position( line_number, column_number, c );
+    set_position( line_number, column_number );
 }
 
 char reader::get()

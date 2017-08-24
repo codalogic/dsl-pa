@@ -84,11 +84,10 @@ private:
     {
         int line_number;
         int column_number;
-        char last_char;
 
-        position() : line_number( 0 ), column_number( 0 ), last_char( '\0' ) {}
-        position( int line_number_in, int column_number_in, char last_char_in )
-            : line_number( line_number_in ), column_number( column_number_in ), last_char( last_char_in )
+        position() : line_number( 0 ), column_number( 0 ) {}
+        position( int line_number_in, int column_number_in )
+            : line_number( line_number_in ), column_number( column_number_in )
         {}
     };
 
@@ -102,15 +101,15 @@ private:
     stack_item current;
     std::stack< stack_item > stack;
 
-    void set_position( int line_number, int column_number, char last_char )
+    void set_position( int line_number, int column_number )
     {
-        current.history_buffer.push( position( line_number, column_number,  last_char) );
+        current.history_buffer.push( position( line_number, column_number ) );
     }
 
 public:
     line_counter_with_stack()
     {
-            set_position( 1, 0, '\0' );
+            set_position( 1, 0 );
     }
 
     void got_char( char c );
