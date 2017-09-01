@@ -1,4 +1,4 @@
-Tests table of contents generated on Thu Aug 24 20:26:50 2017
+Tests table of contents generated on Fri Sep 01 10:23:13 2017
 
 # alphabet-test.cpp
 | Description | Line |
@@ -45,7 +45,7 @@ Tests table of contents generated on Thu Aug 24 20:26:50 2017
 | dsl_pa::current_is() Tests | 1074 |
 | dsl_pa::peek_is() Tests | 1104 |
 | dsl_pa::peek_char() Tests | 1133 |
-| optional_rewind class Tests | 1193 |
+| rewind_on_reject class Tests | 1193 |
 | DSL PA is_peek_at_end Tests | 1222 |
 | DSL PA is_current_at_end Tests | 1241 |
 | DSL PA get vs. read check | 1263 |

@@ -1163,7 +1163,7 @@ TFUNCTION( dsl_pa_peek_char_test )
     }
 }
 
-void optional_rewind_test(
+void rewind_on_reject_test(
             const char * p_msg,
             std::string & command,
             std::string & type,
@@ -1175,7 +1175,7 @@ void optional_rewind_test(
     is_empty_mode = false;
 
     locator loc( my_pa.get_reader() );
-    TTEST( my_pa.optional_rewind(
+    TTEST( my_pa.rewind_on_reject(
                     my_pa.get_fixed( &command, "Mode" ) &&
                     my_pa.space() &&
                     my_pa.get_fixed( &type, "empty" ) &&
@@ -1188,16 +1188,16 @@ void optional_rewind_test(
                 my_pa.get_fixed( &type, "full" ) );
 }
 
-TFUNCTION( dsl_pa_optional_rewind_test )
+TFUNCTION( dsl_pa_rewind_on_reject_test )
 {
-    TBEGIN( "optional_rewind class Tests" );
+    TBEGIN( "rewind_on_reject class Tests" );
 
     {
     std::string command;
     std::string type;
     bool is_empty_mode = false;
 
-    optional_rewind_test( "Mode full", command, type, is_empty_mode );
+    rewind_on_reject_test( "Mode full", command, type, is_empty_mode );
 
     TTEST( command == "Mode" );
     TTEST( is_empty_mode == false );
@@ -1209,7 +1209,7 @@ TFUNCTION( dsl_pa_optional_rewind_test )
     std::string type;
     bool is_empty_mode = false;
 
-    optional_rewind_test( "Mode empty", command, type, is_empty_mode );
+    rewind_on_reject_test( "Mode empty", command, type, is_empty_mode );
 
     TTEST( command == "Mode" );
     TTEST( is_empty_mode == true );
