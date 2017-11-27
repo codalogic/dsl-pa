@@ -59,7 +59,7 @@ static size_t size_12_optional_test_helper()
     return 12;
 }
 
-static size_t int_minus_2_optional_test_helper()
+static int int_minus_2_optional_test_helper()
 {
     return -2;
 }
@@ -68,11 +68,23 @@ TFUNCTION( dsl_pa_optional_test )
 {
     TBEGIN( "dsl_pa::optional() operation" );
 
-    TTEST( dsl_pa::optional( is_false_optional_test_helper() ) );
-    TTEST( dsl_pa::optional( is_true_optional_test_helper() ) );
-    TTEST( dsl_pa::optional( size_0_optional_test_helper() ) );
-    TTEST( dsl_pa::optional( size_12_optional_test_helper() ) );
-    TTEST( dsl_pa::optional( int_minus_2_optional_test_helper() ) );
+    TTEST( dsl_pa::optional( is_false_optional_test_helper() ) == true );
+    TTEST( dsl_pa::optional( is_true_optional_test_helper() ) == true );
+    TTEST( dsl_pa::optional( size_0_optional_test_helper() ) == true );
+    TTEST( dsl_pa::optional( size_12_optional_test_helper() ) == true );
+    TTEST( dsl_pa::optional( int_minus_2_optional_test_helper() ) == true );
+}
+
+TFUNCTION( dsl_pa_on_fail_test )
+{
+    TTEST( dsl_pa::on_fail( is_false_optional_test_helper() ) == false );
+    TTEST( dsl_pa::on_fail( is_true_optional_test_helper() ) == false );
+}
+
+TFUNCTION( dsl_pa_end_path_with_test )
+{
+    TTEST( dsl_pa::end_path_with( is_false_optional_test_helper() ) == false );
+    TTEST( dsl_pa::end_path_with( is_true_optional_test_helper() ) == false );
 }
 
 TFUNCTION( dsl_pa_set_test )

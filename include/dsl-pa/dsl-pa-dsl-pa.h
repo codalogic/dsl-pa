@@ -261,6 +261,12 @@ public:
     static bool on_fail( size_t ) { return false; }
     static bool on_fail( int ) { return false; }
 
+    // end_path_with() allows marking of a sequence of actions when a parse
+    // path is to be abandoned.
+    // Do (ABC() || end_path_with( DEF() && GHI() ))
+    // E.g. (ABC() || end_path_with( error( "ABC expected" ) && move_to( 'D' ) ))
+    static bool end_path_with( bool ) { return false; }
+
     // set() allows setting of state information within a set of
     // shortcircuit operators
     template< typename T, typename U >
