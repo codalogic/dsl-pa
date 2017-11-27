@@ -130,20 +130,26 @@ public:
     virtual bool parse() { return false; }
 
     // Methods useful for deciding branches to take in BNF description
-    bool /*is_not_eof*/ get_char();     // Use current() method to access value
-    bool /*is_not_eof*/ get_char_no_space();     // Use current() method to access value
-    bool /*is_not_eof*/ get_char_no_wsp();       // Use current() method to access value
-    bool /*is_not_eof*/ peek_char();    // Use current(), current_is() and current_is_in() methods to access value
-    bool /*is_not_eof*/ peek_char_no_space();     // Use current(), current_is() and current_is_in() methods to access value
-    bool /*is_not_eof*/ peek_char_no_wsp();       // Use current(), current_is() and current_is_in() methods to access value
+    bool /*is_not_eof*/ get_char();             // Use current() method to access value
+    bool /*is_not_eof*/ get_char_no_space();    // Use current() method to access value
+    bool /*is_not_eof*/ get_char_no_wsp();      // Use current() method to access value
+    bool /*is_not_eof*/ peek_char();            // Use current(), current_is() and current_is_in() methods to access value
+    bool /*is_not_eof*/ peek_char_no_space();   // Use current(), current_is() and current_is_in() methods to access value
+    bool /*is_not_eof*/ peek_char_no_wsp();     // Use current(), current_is() and current_is_in() methods to access value
     bool is_get_char( char c ) { return r_reader.is_get_char( c ); }    // Will unget() if got char is not c
     bool is_get_char_in( const alphabet & r_alphabet );    // Will unget() if got char is not c
-    bool current_is( int c ) const;
-    bool current_is_in( const alphabet & r_alphabet ) const;
-    bool peek_is( int c );
-    bool peek_is_in( const alphabet & r_alphabet );
+    bool is_current( int c ) const;
+    bool is_current_in( const alphabet & r_alphabet ) const;
     bool is_current_at_end() { return r_reader.is_current_at_end(); }
+    bool is_peek( int c );
+    bool is_peek_in( const alphabet & r_alphabet );
     bool is_peek_at_end() { return r_reader.is_peek_at_end(); }
+
+    // Deprecated versions of above
+    bool current_is( int c ) const { return is_current( c ); }
+    bool current_is_in( const alphabet & r_alphabet ) const { return is_current_in( r_alphabet ); }
+    bool peek_is( int c ) { return is_peek( c ); }
+    bool peek_is_in( const alphabet & r_alphabet ) { return is_peek_in( r_alphabet ); }
 
     // Type specific parsing functions
     size_t space();

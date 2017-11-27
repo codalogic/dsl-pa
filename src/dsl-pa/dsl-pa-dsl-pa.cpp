@@ -83,22 +83,22 @@ bool dsl_pa::is_get_char_in( const alphabet & r_alphabet )    // Will unget() if
     return false;
 }
 
-bool dsl_pa::current_is( int c ) const
+bool dsl_pa::is_current( int c ) const
 {
     return current() == c;
 }
 
-bool dsl_pa::current_is_in( const alphabet & r_alphabet ) const
+bool dsl_pa::is_current_in( const alphabet & r_alphabet ) const
 {
     return r_alphabet.is_sought( current() );
 }
 
-bool dsl_pa::peek_is( int c )
+bool dsl_pa::is_peek( int c )
 {
     return peek() == c;
 }
 
-bool dsl_pa::peek_is_in( const alphabet & r_alphabet )
+bool dsl_pa::is_peek_in( const alphabet & r_alphabet )
 {
     return r_alphabet.is_sought( peek() );
 }
