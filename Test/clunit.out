@@ -1,4 +1,4 @@
-Tests run on Mon Nov 27 18:41:51 2017
+Tests run on Wed Jan 17 14:53:33 2018
 
     Alphabet tests [alphabet-test.cpp:42]
     =====================================
@@ -871,268 +871,318 @@ Tests run on Mon Nov 27 18:41:51 2017
     ok: my_pa.get() == next_char
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
-    dsl_pa::get_qstring_contents() Tests [dsl-pa-test.cpp:983]
-    ==========================================================
-      Calling: dsl_pa_qstring_test( "", "", true ) (985)
+    dsl_pa::get_qstring_contents() Tests [dsl-pa-test.cpp:1002]
+    ===========================================================
+      Calling: dsl_pa_qstring_test( "", "", true ) (1004)
     ok: my_pa.get_qstring_contents( &result ) == is_valid
     ok: result == r_expected_value
     ok: my_pa.is_get_char( '"' )
-      Calling: dsl_pa_qstring_test( "a", "a", true ) (986)
+      Calling: dsl_pa_qstring_test( "a", "a", true ) (1005)
     ok: my_pa.get_qstring_contents( &result ) == is_valid
     ok: result == r_expected_value
     ok: my_pa.is_get_char( '"' )
-      Calling: dsl_pa_qstring_test( "ba", "ba", true ) (987)
+      Calling: dsl_pa_qstring_test( "ba", "ba", true ) (1006)
     ok: my_pa.get_qstring_contents( &result ) == is_valid
     ok: result == r_expected_value
     ok: my_pa.is_get_char( '"' )
-      Calling: dsl_pa_qstring_test( "b\\/a", "b/a", true ) (988)
+      Calling: dsl_pa_qstring_test( "b\\/a", "b/a", true ) (1007)
     ok: my_pa.get_qstring_contents( &result ) == is_valid
     ok: result == r_expected_value
     ok: my_pa.is_get_char( '"' )
-      Calling: dsl_pa_qstring_test( "b\\\"a", "b\"a", true ) (989)
+      Calling: dsl_pa_qstring_test( "b\\\"a", "b\"a", true ) (1008)
     ok: my_pa.get_qstring_contents( &result ) == is_valid
     ok: result == r_expected_value
     ok: my_pa.is_get_char( '"' )
-      Calling: dsl_pa_qstring_test( "b\\ta", "b\ta", true ) (990)
+      Calling: dsl_pa_qstring_test( "b\\ta", "b\ta", true ) (1009)
     ok: my_pa.get_qstring_contents( &result ) == is_valid
     ok: result == r_expected_value
     ok: my_pa.is_get_char( '"' )
-      Calling: dsl_pa_qstring_test( "b\\t\\r\\na", "b\t\r\na", true ) (991)
+      Calling: dsl_pa_qstring_test( "b\\t\\r\\na", "b\t\r\na", true ) (1010)
     ok: my_pa.get_qstring_contents( &result ) == is_valid
     ok: result == r_expected_value
     ok: my_pa.is_get_char( '"' )
-      Calling: dsl_pa_qstring_test( "b\\f\\ba", "b\f\ba", true ) (992)
+      Calling: dsl_pa_qstring_test( "b\\f\\ba", "b\f\ba", true ) (1011)
     ok: my_pa.get_qstring_contents( &result ) == is_valid
     ok: result == r_expected_value
     ok: my_pa.is_get_char( '"' )
-      Calling: dsl_pa_qstring_test( "b\\\\a", "b\\a", true ) (993)
+      Calling: dsl_pa_qstring_test( "b\\\\a", "b\\a", true ) (1012)
     ok: my_pa.get_qstring_contents( &result ) == is_valid
     ok: result == r_expected_value
     ok: my_pa.is_get_char( '"' )
-      Calling: dsl_pa_qstring_test( "b\\u0020a", "b a", true ) (994)
+      Calling: dsl_pa_qstring_test( "b\\u0020a", "b a", true ) (1013)
     ok: my_pa.get_qstring_contents( &result ) == is_valid
     ok: result == r_expected_value
     ok: my_pa.is_get_char( '"' )
-      Calling: dsl_pa_qstring_test( "\\uD800\\uDC02", "\xF0\x90\x80\x82", true ) (998)
+      Calling: dsl_pa_qstring_test( "\\uD800\\uDC02", "\xF0\x90\x80\x82", true ) (1017)
     ok: my_pa.get_qstring_contents( &result ) == is_valid
     ok: result == r_expected_value
     ok: my_pa.is_get_char( '"' )
-      Calling: dsl_pa_qstring_test( "\\ud800\\udc02", "\xF0\x90\x80\x82", true ) (999)
+      Calling: dsl_pa_qstring_test( "\\ud800\\udc02", "\xF0\x90\x80\x82", true ) (1018)
     ok: my_pa.get_qstring_contents( &result ) == is_valid
     ok: result == r_expected_value
     ok: my_pa.is_get_char( '"' )
-      Calling: dsl_pa_qstring_test( "\\u0802", "\xE0\xA0\x82", true ) (1000)
+      Calling: dsl_pa_qstring_test( "\\u0802", "\xE0\xA0\x82", true ) (1019)
     ok: my_pa.get_qstring_contents( &result ) == is_valid
     ok: result == r_expected_value
     ok: my_pa.is_get_char( '"' )
-      Calling: dsl_pa_qstring_test( "\\uFFFC", "\xEF\xBF\xBC", true ) (1001)
+      Calling: dsl_pa_qstring_test( "\\uFFFC", "\xEF\xBF\xBC", true ) (1020)
     ok: my_pa.get_qstring_contents( &result ) == is_valid
     ok: result == r_expected_value
     ok: my_pa.is_get_char( '"' )
-      Calling: dsl_pa_qstring_test( "\\ufffc", "\xEF\xBF\xBC", true ) (1002)
+      Calling: dsl_pa_qstring_test( "\\ufffc", "\xEF\xBF\xBC", true ) (1021)
     ok: my_pa.get_qstring_contents( &result ) == is_valid
     ok: result == r_expected_value
     ok: my_pa.is_get_char( '"' )
-      Calling: dsl_pa_qstring_test( "\\u0082", "\xC2\x82", true ) (1003)
+      Calling: dsl_pa_qstring_test( "\\u0082", "\xC2\x82", true ) (1022)
     ok: my_pa.get_qstring_contents( &result ) == is_valid
     ok: result == r_expected_value
     ok: my_pa.is_get_char( '"' )
-      Calling: dsl_pa_qstring_test( "\\u07FC", "\xDF\xBC", true ) (1004)
+      Calling: dsl_pa_qstring_test( "\\u07FC", "\xDF\xBC", true ) (1023)
     ok: my_pa.get_qstring_contents( &result ) == is_valid
     ok: result == r_expected_value
     ok: my_pa.is_get_char( '"' )
-      Calling: dsl_pa_qstring_test( "X\\uD800\\uDC02A", "X\xF0\x90\x80\x82""A", true ) (1007)
+      Calling: dsl_pa_qstring_test( "X\\uD800\\uDC02A", "X\xF0\x90\x80\x82""A", true ) (1026)
     ok: my_pa.get_qstring_contents( &result ) == is_valid
     ok: result == r_expected_value
     ok: my_pa.is_get_char( '"' )
-      Calling: dsl_pa_qstring_test( "X\\u0802A", "X\xE0\xA0\x82""A", true ) (1008)
+      Calling: dsl_pa_qstring_test( "X\\u0802A", "X\xE0\xA0\x82""A", true ) (1027)
     ok: my_pa.get_qstring_contents( &result ) == is_valid
     ok: result == r_expected_value
     ok: my_pa.is_get_char( '"' )
-      Calling: dsl_pa_qstring_test( "X\\u0082A", "X\xC2\x82""A", true ) (1009)
+      Calling: dsl_pa_qstring_test( "X\\u0082A", "X\xC2\x82""A", true ) (1028)
     ok: my_pa.get_qstring_contents( &result ) == is_valid
     ok: result == r_expected_value
     ok: my_pa.is_get_char( '"' )
       get_qstring_contents() - truncated BMP unicode escape fails
-      Calling: dsl_pa_qstring_test( "Say \\u002 Fred", "", false ) (1012)
+      Calling: dsl_pa_qstring_test( "Say \\u002 Fred", "", false ) (1031)
     ok: my_pa.get_qstring_contents( &result ) == is_valid
     ok: my_pa.get() == input[0]
-      Calling: dsl_pa_qstring_test( "Say \\u002QFred", "", false ) (1013)
+      Calling: dsl_pa_qstring_test( "Say \\u002QFred", "", false ) (1032)
     ok: my_pa.get_qstring_contents( &result ) == is_valid
     ok: my_pa.get() == input[0]
-      Calling: dsl_pa_qstring_test( "\\u65E5\\u672C\\u8A9E", "\xE6\x97\xA5\xE6\x9C\xAC\xE8\xAA\x9E", true ) (1016)
+      Calling: dsl_pa_qstring_test( "\\u65E5\\u672C\\u8A9E", "\xE6\x97\xA5\xE6\x9C\xAC\xE8\xAA\x9E", true ) (1035)
     ok: my_pa.get_qstring_contents( &result ) == is_valid
     ok: result == r_expected_value
     ok: my_pa.is_get_char( '"' )
       get_qstring_contents() - Surrogates unicode escape
-      Calling: dsl_pa_qstring_test( "\\uD808\\uDF45=Ra", "\xF0\x92\x8D\x85=Ra", true ) (1020)
+      Calling: dsl_pa_qstring_test( "\\uD808\\uDF45=Ra", "\xF0\x92\x8D\x85=Ra", true ) (1039)
     ok: my_pa.get_qstring_contents( &result ) == is_valid
     ok: result == r_expected_value
     ok: my_pa.is_get_char( '"' )
       get_qstring_contents() - High surrogate without following low surrogate fails
-      Calling: dsl_pa_qstring_test( "\\uD808Fred", "", false ) (1023)
+      Calling: dsl_pa_qstring_test( "\\uD808Fred", "", false ) (1042)
     ok: my_pa.get_qstring_contents( &result ) == is_valid
     ok: my_pa.get() == input[0]
-      Calling: dsl_pa_qstring_test( "\\uD808\\u0022", "", false ) (1024)
+      Calling: dsl_pa_qstring_test( "\\uD808\\u0022", "", false ) (1043)
     ok: my_pa.get_qstring_contents( &result ) == is_valid
     ok: my_pa.get() == input[0]
       get_qstring_contents() - Low surrogate without preceeding high surrogate fails
-      Calling: dsl_pa_qstring_test( "\\uDF45Fred", "", false ) (1027)
+      Calling: dsl_pa_qstring_test( "\\uDF45Fred", "", false ) (1046)
     ok: my_pa.get_qstring_contents( &result ) == is_valid
     ok: my_pa.get() == input[0]
-      Calling: dsl_pa_qstring_test( "\\uDF45\\u0022", "", false ) (1028)
+      Calling: dsl_pa_qstring_test( "\\uDF45\\u0022", "", false ) (1047)
     ok: my_pa.get_qstring_contents( &result ) == is_valid
     ok: my_pa.get() == input[0]
       get_qstring_contents() - UTF-8 sequences are valid
-      Calling: dsl_pa_qstring_test( "\xE0\xAC\x8Bz", "\xE0\xAC\x8Bz", true ) (1031)
+      Calling: dsl_pa_qstring_test( "\xE0\xAC\x8Bz", "\xE0\xAC\x8Bz", true ) (1050)
     ok: my_pa.get_qstring_contents( &result ) == is_valid
     ok: result == r_expected_value
     ok: my_pa.is_get_char( '"' )
-      Calling: dsl_pa_qstring_test( "abc\xE0\xAC\x8Bz", "abc\xE0\xAC\x8Bz", true ) (1032)
+      Calling: dsl_pa_qstring_test( "abc\xE0\xAC\x8Bz", "abc\xE0\xAC\x8Bz", true ) (1051)
     ok: my_pa.get_qstring_contents( &result ) == is_valid
     ok: result == r_expected_value
     ok: my_pa.is_get_char( '"' )
-      Calling: dsl_pa_qstring_test( "abc\xE0\xAC\x8Bz\xE0\xAC\x8Bz", "abc\xE0\xAC\x8Bz\xE0\xAC\x8Bz", true ) (1033)
+      Calling: dsl_pa_qstring_test( "abc\xE0\xAC\x8Bz\xE0\xAC\x8Bz", "abc\xE0\xAC\x8Bz\xE0\xAC\x8Bz", true ) (1052)
     ok: my_pa.get_qstring_contents( &result ) == is_valid
     ok: result == r_expected_value
     ok: my_pa.is_get_char( '"' )
-      Calling: dsl_pa_qstring_test( "abc\xE0\xAC\x8B\xE0\xAC\x8Bz", "abc\xE0\xAC\x8B\xE0\xAC\x8Bz", true ) (1034)
+      Calling: dsl_pa_qstring_test( "abc\xE0\xAC\x8B\xE0\xAC\x8Bz", "abc\xE0\xAC\x8B\xE0\xAC\x8Bz", true ) (1053)
     ok: my_pa.get_qstring_contents( &result ) == is_valid
     ok: result == r_expected_value
     ok: my_pa.is_get_char( '"' )
-      Calling: dsl_pa_qstring_test( "a\xc2\x8Bz", "a\xc2\x8Bz", true ) (1043)
+      Calling: dsl_pa_qstring_test( "a\xc2\x8Bz", "a\xc2\x8Bz", true ) (1062)
     ok: my_pa.get_qstring_contents( &result ) == is_valid
     ok: result == r_expected_value
     ok: my_pa.is_get_char( '"' )
-      Calling: dsl_pa_qstring_test( "a\xdf\x8Bz", "a\xdf\x8Bz", true ) (1044)
+      Calling: dsl_pa_qstring_test( "a\xdf\x8Bz", "a\xdf\x8Bz", true ) (1063)
     ok: my_pa.get_qstring_contents( &result ) == is_valid
     ok: result == r_expected_value
     ok: my_pa.is_get_char( '"' )
-      Calling: dsl_pa_qstring_test( "a\xdf\x8B\x8Bz", "", false ) (1045)
+      Calling: dsl_pa_qstring_test( "a\xdf\x8B\x8Bz", "", false ) (1064)
     ok: my_pa.get_qstring_contents( &result ) == is_valid
     ok: my_pa.get() == input[0]
-      Calling: dsl_pa_qstring_test( "a\xdfz", "", false ) (1046)
+      Calling: dsl_pa_qstring_test( "a\xdfz", "", false ) (1065)
     ok: my_pa.get_qstring_contents( &result ) == is_valid
     ok: my_pa.get() == input[0]
-      Calling: dsl_pa_qstring_test( "a\xe0\xa0\x8Bz", "a\xe0\xa0\x8Bz", true ) (1047)
+      Calling: dsl_pa_qstring_test( "a\xe0\xa0\x8Bz", "a\xe0\xa0\x8Bz", true ) (1066)
     ok: my_pa.get_qstring_contents( &result ) == is_valid
     ok: result == r_expected_value
     ok: my_pa.is_get_char( '"' )
-      Calling: dsl_pa_qstring_test( "a\xe0\xbf\x8Bz", "a\xe0\xbf\x8Bz", true ) (1048)
+      Calling: dsl_pa_qstring_test( "a\xe0\xbf\x8Bz", "a\xe0\xbf\x8Bz", true ) (1067)
     ok: my_pa.get_qstring_contents( &result ) == is_valid
     ok: result == r_expected_value
     ok: my_pa.is_get_char( '"' )
-      Calling: dsl_pa_qstring_test( "a\xe0\x8B\x8Bz", "", false ) (1049)
+      Calling: dsl_pa_qstring_test( "a\xe0\x8B\x8Bz", "", false ) (1068)
     ok: my_pa.get_qstring_contents( &result ) == is_valid
     ok: my_pa.get() == input[0]
-      Calling: dsl_pa_qstring_test( "a\xe0\xbf\x8B\x8Bz", "", false ) (1050)
+      Calling: dsl_pa_qstring_test( "a\xe0\xbf\x8B\x8Bz", "", false ) (1069)
     ok: my_pa.get_qstring_contents( &result ) == is_valid
     ok: my_pa.get() == input[0]
-      Calling: dsl_pa_qstring_test( "a\xe0\xbfz", "", false ) (1051)
+      Calling: dsl_pa_qstring_test( "a\xe0\xbfz", "", false ) (1070)
     ok: my_pa.get_qstring_contents( &result ) == is_valid
     ok: my_pa.get() == input[0]
-      Calling: dsl_pa_qstring_test( "a\xe1\xbf\x8Bz", "a\xe1\xbf\x8Bz", true ) (1052)
+      Calling: dsl_pa_qstring_test( "a\xe1\xbf\x8Bz", "a\xe1\xbf\x8Bz", true ) (1071)
     ok: my_pa.get_qstring_contents( &result ) == is_valid
     ok: result == r_expected_value
     ok: my_pa.is_get_char( '"' )
-      Calling: dsl_pa_qstring_test( "a\xec\xbf\x8Bz", "a\xec\xbf\x8Bz", true ) (1053)
+      Calling: dsl_pa_qstring_test( "a\xec\xbf\x8Bz", "a\xec\xbf\x8Bz", true ) (1072)
     ok: my_pa.get_qstring_contents( &result ) == is_valid
     ok: result == r_expected_value
     ok: my_pa.is_get_char( '"' )
-      Calling: dsl_pa_qstring_test( "a\xec\xbf\x8B\x8Bz", "", false ) (1054)
+      Calling: dsl_pa_qstring_test( "a\xec\xbf\x8B\x8Bz", "", false ) (1073)
     ok: my_pa.get_qstring_contents( &result ) == is_valid
     ok: my_pa.get() == input[0]
-      Calling: dsl_pa_qstring_test( "a\xec\xbfz", "", false ) (1055)
+      Calling: dsl_pa_qstring_test( "a\xec\xbfz", "", false ) (1074)
     ok: my_pa.get_qstring_contents( &result ) == is_valid
     ok: my_pa.get() == input[0]
-      Calling: dsl_pa_qstring_test( "a\xed\x80\x8Bz", "a\xed\x80\x8Bz", true ) (1056)
+      Calling: dsl_pa_qstring_test( "a\xed\x80\x8Bz", "a\xed\x80\x8Bz", true ) (1075)
     ok: my_pa.get_qstring_contents( &result ) == is_valid
     ok: result == r_expected_value
     ok: my_pa.is_get_char( '"' )
-      Calling: dsl_pa_qstring_test( "a\xed\x9f\x8Bz", "a\xed\x9f\x8Bz", true ) (1057)
+      Calling: dsl_pa_qstring_test( "a\xed\x9f\x8Bz", "a\xed\x9f\x8Bz", true ) (1076)
     ok: my_pa.get_qstring_contents( &result ) == is_valid
     ok: result == r_expected_value
     ok: my_pa.is_get_char( '"' )
-      Calling: dsl_pa_qstring_test( "a\xed\xa0\x8Bz", "a\xed\xa0\x8Bz", false ) (1058)
+      Calling: dsl_pa_qstring_test( "a\xed\xa0\x8Bz", "a\xed\xa0\x8Bz", false ) (1077)
     ok: my_pa.get_qstring_contents( &result ) == is_valid
     ok: my_pa.get() == input[0]
-      Calling: dsl_pa_qstring_test( "a\xed\xa0\x8B\x8Bz", "", false ) (1059)
+      Calling: dsl_pa_qstring_test( "a\xed\xa0\x8B\x8Bz", "", false ) (1078)
     ok: my_pa.get_qstring_contents( &result ) == is_valid
     ok: my_pa.get() == input[0]
-      Calling: dsl_pa_qstring_test( "a\xed\xa0z", "", false ) (1060)
+      Calling: dsl_pa_qstring_test( "a\xed\xa0z", "", false ) (1079)
     ok: my_pa.get_qstring_contents( &result ) == is_valid
     ok: my_pa.get() == input[0]
-      Calling: dsl_pa_qstring_test( "a\xee\xb0\x8Bz", "a\xee\xb0\x8Bz", true ) (1061)
+      Calling: dsl_pa_qstring_test( "a\xee\xb0\x8Bz", "a\xee\xb0\x8Bz", true ) (1080)
     ok: my_pa.get_qstring_contents( &result ) == is_valid
     ok: result == r_expected_value
     ok: my_pa.is_get_char( '"' )
-      Calling: dsl_pa_qstring_test( "a\xef\xb0\x8Bz", "a\xef\xb0\x8Bz", true ) (1062)
+      Calling: dsl_pa_qstring_test( "a\xef\xb0\x8Bz", "a\xef\xb0\x8Bz", true ) (1081)
     ok: my_pa.get_qstring_contents( &result ) == is_valid
     ok: result == r_expected_value
     ok: my_pa.is_get_char( '"' )
-      Calling: dsl_pa_qstring_test( "a\xef\xb0\x8B\x8Bz", "", false ) (1063)
+      Calling: dsl_pa_qstring_test( "a\xef\xb0\x8B\x8Bz", "", false ) (1082)
     ok: my_pa.get_qstring_contents( &result ) == is_valid
     ok: my_pa.get() == input[0]
-      Calling: dsl_pa_qstring_test( "a\xef\xb0z", "", false ) (1064)
+      Calling: dsl_pa_qstring_test( "a\xef\xb0z", "", false ) (1083)
     ok: my_pa.get_qstring_contents( &result ) == is_valid
     ok: my_pa.get() == input[0]
-      Calling: dsl_pa_qstring_test( "a\xf0\x90\x8B\x8Bz", "a\xf0\x90\x8B\x8Bz", true ) (1065)
+      Calling: dsl_pa_qstring_test( "a\xf0\x90\x8B\x8Bz", "a\xf0\x90\x8B\x8Bz", true ) (1084)
     ok: my_pa.get_qstring_contents( &result ) == is_valid
     ok: result == r_expected_value
     ok: my_pa.is_get_char( '"' )
-      Calling: dsl_pa_qstring_test( "a\xf0\xbf\x8B\x8Bz", "a\xf0\xbf\x8B\x8Bz", true ) (1066)
+      Calling: dsl_pa_qstring_test( "a\xf0\xbf\x8B\x8Bz", "a\xf0\xbf\x8B\x8Bz", true ) (1085)
     ok: my_pa.get_qstring_contents( &result ) == is_valid
     ok: result == r_expected_value
     ok: my_pa.is_get_char( '"' )
-      Calling: dsl_pa_qstring_test( "a\xf0\x80\x8B\x8Bz", "a\xf0\x80\x8B\x8Bz", false ) (1067)
+      Calling: dsl_pa_qstring_test( "a\xf0\x80\x8B\x8Bz", "a\xf0\x80\x8B\x8Bz", false ) (1086)
     ok: my_pa.get_qstring_contents( &result ) == is_valid
     ok: my_pa.get() == input[0]
-      Calling: dsl_pa_qstring_test( "a\xf0\xbf\x8B\x8B\x8Bz", "", false ) (1068)
+      Calling: dsl_pa_qstring_test( "a\xf0\xbf\x8B\x8B\x8Bz", "", false ) (1087)
     ok: my_pa.get_qstring_contents( &result ) == is_valid
     ok: my_pa.get() == input[0]
-      Calling: dsl_pa_qstring_test( "a\xf0\xbf\x8Bz", "", false ) (1069)
+      Calling: dsl_pa_qstring_test( "a\xf0\xbf\x8Bz", "", false ) (1088)
     ok: my_pa.get_qstring_contents( &result ) == is_valid
     ok: my_pa.get() == input[0]
-      Calling: dsl_pa_qstring_test( "a\xf1\xbf\x8B\x8Bz", "a\xf1\xbf\x8B\x8Bz", true ) (1070)
+      Calling: dsl_pa_qstring_test( "a\xf1\xbf\x8B\x8Bz", "a\xf1\xbf\x8B\x8Bz", true ) (1089)
     ok: my_pa.get_qstring_contents( &result ) == is_valid
     ok: result == r_expected_value
     ok: my_pa.is_get_char( '"' )
-      Calling: dsl_pa_qstring_test( "a\xf3\xbf\x8B\x8Bz", "a\xf3\xbf\x8B\x8Bz", true ) (1071)
+      Calling: dsl_pa_qstring_test( "a\xf3\xbf\x8B\x8Bz", "a\xf3\xbf\x8B\x8Bz", true ) (1090)
     ok: my_pa.get_qstring_contents( &result ) == is_valid
     ok: result == r_expected_value
     ok: my_pa.is_get_char( '"' )
-      Calling: dsl_pa_qstring_test( "a\xf3\xbf\x8B\x8B\x8Bz", "", false ) (1072)
+      Calling: dsl_pa_qstring_test( "a\xf3\xbf\x8B\x8B\x8Bz", "", false ) (1091)
     ok: my_pa.get_qstring_contents( &result ) == is_valid
     ok: my_pa.get() == input[0]
-      Calling: dsl_pa_qstring_test( "a\xf3\xbf\x8Bz", "", false ) (1073)
+      Calling: dsl_pa_qstring_test( "a\xf3\xbf\x8Bz", "", false ) (1092)
     ok: my_pa.get_qstring_contents( &result ) == is_valid
     ok: my_pa.get() == input[0]
-      Calling: dsl_pa_qstring_test( "a\xf4\x80\x8B\x8Bz", "a\xf4\x80\x8B\x8Bz", true ) (1074)
+      Calling: dsl_pa_qstring_test( "a\xf4\x80\x8B\x8Bz", "a\xf4\x80\x8B\x8Bz", true ) (1093)
     ok: my_pa.get_qstring_contents( &result ) == is_valid
     ok: result == r_expected_value
     ok: my_pa.is_get_char( '"' )
-      Calling: dsl_pa_qstring_test( "a\xf4\x8f\x8B\x8Bz", "a\xf4\x8f\x8B\x8Bz", true ) (1075)
+      Calling: dsl_pa_qstring_test( "a\xf4\x8f\x8B\x8Bz", "a\xf4\x8f\x8B\x8Bz", true ) (1094)
     ok: my_pa.get_qstring_contents( &result ) == is_valid
     ok: result == r_expected_value
     ok: my_pa.is_get_char( '"' )
-      Calling: dsl_pa_qstring_test( "a\xf4\x90\x8B\x8Bz", "a\xf4\x90\x8B\x8Bz", false ) (1076)
+      Calling: dsl_pa_qstring_test( "a\xf4\x90\x8B\x8Bz", "a\xf4\x90\x8B\x8Bz", false ) (1095)
     ok: my_pa.get_qstring_contents( &result ) == is_valid
     ok: my_pa.get() == input[0]
-      Calling: dsl_pa_qstring_test( "a\xf4\x90\x8B\x8B\x8Bz", "", false ) (1077)
+      Calling: dsl_pa_qstring_test( "a\xf4\x90\x8B\x8B\x8Bz", "", false ) (1096)
     ok: my_pa.get_qstring_contents( &result ) == is_valid
     ok: my_pa.get() == input[0]
-      Calling: dsl_pa_qstring_test( "a\xf4\x90\x8Bz", "", false ) (1078)
+      Calling: dsl_pa_qstring_test( "a\xf4\x90\x8Bz", "", false ) (1097)
     ok: my_pa.get_qstring_contents( &result ) == is_valid
     ok: my_pa.get() == input[0]
-      Calling: dsl_pa_qstring_test( "abc\xE0\xAC\x8B\xE0\xE0\xAC\x8Bz", "", false ) (1080)
+      Calling: dsl_pa_qstring_test( "abc\xE0\xAC\x8B\xE0\xE0\xAC\x8Bz", "", false ) (1099)
     ok: my_pa.get_qstring_contents( &result ) == is_valid
     ok: my_pa.get() == input[0]
-      Calling: dsl_pa_qstring_test( "abc\xE0\xAC\x8B\xE0\xAC\x8B\x8Bz", "", false ) (1081)
+      Calling: dsl_pa_qstring_test( "abc\xE0\xAC\x8B\xE0\xAC\x8B\x8Bz", "", false ) (1100)
     ok: my_pa.get_qstring_contents( &result ) == is_valid
+    ok: my_pa.get() == input[0]
+      Calling: dsl_pa_single_quoted_qstring_test( "", "", true ) (1102)
+    ok: my_pa.get_qstring_contents( &result, '\'' ) == is_valid
+    ok: result == r_expected_value
+    ok: my_pa.is_get_char( '\'' )
+      Calling: dsl_pa_single_quoted_qstring_test( "a", "a", true ) (1103)
+    ok: my_pa.get_qstring_contents( &result, '\'' ) == is_valid
+    ok: result == r_expected_value
+    ok: my_pa.is_get_char( '\'' )
+      Calling: dsl_pa_single_quoted_qstring_test( "ba", "ba", true ) (1104)
+    ok: my_pa.get_qstring_contents( &result, '\'' ) == is_valid
+    ok: result == r_expected_value
+    ok: my_pa.is_get_char( '\'' )
+      Calling: dsl_pa_single_quoted_qstring_test( "b\\/a", "b/a", true ) (1105)
+    ok: my_pa.get_qstring_contents( &result, '\'' ) == is_valid
+    ok: result == r_expected_value
+    ok: my_pa.is_get_char( '\'' )
+      Calling: dsl_pa_single_quoted_qstring_test( "b\\'a", "b'a", true ) (1106)
+    ok: my_pa.get_qstring_contents( &result, '\'' ) == is_valid
+    ok: result == r_expected_value
+    ok: my_pa.is_get_char( '\'' )
+      Calling: dsl_pa_single_quoted_qstring_test( "b\\ta", "b\ta", true ) (1107)
+    ok: my_pa.get_qstring_contents( &result, '\'' ) == is_valid
+    ok: result == r_expected_value
+    ok: my_pa.is_get_char( '\'' )
+      Calling: dsl_pa_single_quoted_qstring_test( "b\\t\\r\\na", "b\t\r\na", true ) (1108)
+    ok: my_pa.get_qstring_contents( &result, '\'' ) == is_valid
+    ok: result == r_expected_value
+    ok: my_pa.is_get_char( '\'' )
+      Calling: dsl_pa_single_quoted_qstring_test( "b\\f\\ba", "b\f\ba", true ) (1109)
+    ok: my_pa.get_qstring_contents( &result, '\'' ) == is_valid
+    ok: result == r_expected_value
+    ok: my_pa.is_get_char( '\'' )
+      Calling: dsl_pa_single_quoted_qstring_test( "b\\\\a", "b\\a", true ) (1110)
+    ok: my_pa.get_qstring_contents( &result, '\'' ) == is_valid
+    ok: result == r_expected_value
+    ok: my_pa.is_get_char( '\'' )
+      Calling: dsl_pa_single_quoted_qstring_test( "b\\u0020a", "b a", true ) (1111)
+    ok: my_pa.get_qstring_contents( &result, '\'' ) == is_valid
+    ok: result == r_expected_value
+    ok: my_pa.is_get_char( '\'' )
+      Calling: dsl_pa_single_quoted_qstring_test( "a\xdf\x8Bz", "a\xdf\x8Bz", true ) (1113)
+    ok: my_pa.get_qstring_contents( &result, '\'' ) == is_valid
+    ok: result == r_expected_value
+    ok: my_pa.is_get_char( '\'' )
+      Calling: dsl_pa_single_quoted_qstring_test( "a\xdf\x8B\x8Bz", "", false ) (1114)
+    ok: my_pa.get_qstring_contents( &result, '\'' ) == is_valid
+    ok: my_pa.get() == input[0]
+      Calling: dsl_pa_single_quoted_qstring_test( "a\xdfz", "", false ) (1115)
+    ok: my_pa.get_qstring_contents( &result, '\'' ) == is_valid
     ok: my_pa.get() == input[0]
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
-    dsl_pa::current_is() Tests [dsl-pa-test.cpp:1086]
+    dsl_pa::current_is() Tests [dsl-pa-test.cpp:1120]
     =================================================
     ok: my_pa.get_char()
     ok: my_pa.current_is( 'A' )
@@ -1147,7 +1197,7 @@ Tests run on Mon Nov 27 18:41:51 2017
     ok: ! my_pa.current_is_in( alphabet_char_class_ABX )
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
-    dsl_pa::peek_is() Tests [dsl-pa-test.cpp:1116]
+    dsl_pa::peek_is() Tests [dsl-pa-test.cpp:1150]
     ==============================================
     ok: my_pa.peek_is( 'A' )
     ok: my_pa.peek_is( 'A' )
@@ -1161,7 +1211,7 @@ Tests run on Mon Nov 27 18:41:51 2017
     ok: ! my_pa.peek_is_in( alphabet_char_class_ABX )
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
-    dsl_pa::peek_char() Tests [dsl-pa-test.cpp:1145]
+    dsl_pa::peek_char() Tests [dsl-pa-test.cpp:1179]
     ================================================
     ok: my_pa.peek_char()
     ok: my_pa.current_is( 'A' )
@@ -1181,7 +1231,7 @@ Tests run on Mon Nov 27 18:41:51 2017
     ok: ! my_pa.current_is_in( alphabet_char_class_ABX )
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
-    rewind_on_reject class Tests [dsl-pa-test.cpp:1205]
+    rewind_on_reject class Tests [dsl-pa-test.cpp:1239]
     ===================================================
     ok: my_pa.rewind_on_reject( my_pa.get_fixed( &command, "Mode" ) && my_pa.space() && my_pa.get_fixed( &type, "empty" ) && my_pa.set( is_empty_mode, true ) || my_pa.on_fail( my_pa.clear( command ) && my_pa.clear( type ) ) ) || my_pa.get_fixed( &command, "Mode" ) && my_pa.space() && my_pa.get_fixed( &type, "full" )
     ok: command == "Mode"
@@ -1193,7 +1243,7 @@ Tests run on Mon Nov 27 18:41:51 2017
     ok: type == "empty"
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
-    DSL PA is_peek_at_end Tests [dsl-pa-test.cpp:1234]
+    DSL PA is_peek_at_end Tests [dsl-pa-test.cpp:1268]
     ==================================================
     ok: my_pa.is_peek_at_end()
     ok: ! my_pa.is_peek_at_end()
@@ -1201,7 +1251,7 @@ Tests run on Mon Nov 27 18:41:51 2017
     ok: my_pa.is_peek_at_end()
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
-    DSL PA is_current_at_end Tests [dsl-pa-test.cpp:1253]
+    DSL PA is_current_at_end Tests [dsl-pa-test.cpp:1287]
     =====================================================
     ok: my_pa.get_char() == false
     ok: my_pa.is_current_at_end()
@@ -1212,7 +1262,7 @@ Tests run on Mon Nov 27 18:41:51 2017
     ok: my_pa.is_current_at_end()
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
-    DSL PA get vs. read check [dsl-pa-test.cpp:1275]
+    DSL PA get vs. read check [dsl-pa-test.cpp:1309]
     ================================================
     ok: my_pa.read( &parsed, alphabet_char_class( "A" ) ) > 0
     ok: parsed == "originAAAAAA"
@@ -1268,7 +1318,7 @@ Tests run on Mon Nov 27 18:41:51 2017
     ok: parsed == "456"
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
-    accumulator test [dsl-pa-test.cpp:1475]
+    accumulator test [dsl-pa-test.cpp:1509]
     =======================================
     ok: my_pa.accumulate( alphabet_char_class( "A" ) )
     ok: my_pa.accumulate( alphabet_char_class( "B" ) )
@@ -1949,4 +1999,4 @@ Tests run on Mon Nov 27 18:41:51 2017
     ok: p_reader->is_open()
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
     ok: _CrtCheckMemory() != 0
-0 error(s), 0 todo(s), 1518 test(s)
+0 error(s), 0 todo(s), 1555 test(s)

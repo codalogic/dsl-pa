@@ -177,7 +177,7 @@ public:
     bool /*is_parsed*/ read_sci_float( std::string * p_num );
     bool /*is_parsed*/ get_sci_float( double * p_float );
     bool /*is_parsed*/ get_sci_float( float * p_float );
-    bool /*is_parsed*/ get_qstring_contents( std::string * p_string );   // Assumes opening quotes already read. Does NOT consume closing quotes.
+    bool /*is_parsed*/ get_qstring_contents( std::string * p_string, char delimiter = '"' );   // Assumes opening quotes already read. Does NOT consume closing quotes.
 
     // The primary workhorse functions
     // These get...() functions clear the output string before reading the input

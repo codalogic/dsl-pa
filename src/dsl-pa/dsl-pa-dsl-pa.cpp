@@ -324,19 +324,33 @@ class QStringParser : public dsl_pa
     //                     ( %x75 4HEXDIG ) ) ; uXXXX u+XXXX
 
 private:
+    class AlphabetIsUnescapedAscii : public cl::alphabet
+    {
+        char delimiter;
+    public:
+        AlphabetIsUnescapedAscii( char delimiter_in ) : delimiter( delimiter_in ) {}
+        virtual bool is_sought( char c ) const { return (c & 0x80) == 0 && c != '\\' && c != delimiter; }
+    };
+
     struct Members
     {
         std::string * p_v;
+        char delimiter;
+        AlphabetIsUnescapedAscii alphabet_is_unescaped_ascii;
         bool is_errored;
 
-        Members( std::string * p_v_in )
-            : p_v( p_v_in ), is_errored( false )
+        Members( std::string * p_v_in, char delimiter_in )
+            :
+            p_v( p_v_in ),
+            delimiter( delimiter_in ),
+            alphabet_is_unescaped_ascii( delimiter_in ),
+            is_errored( false )
         {}
     } m;
 
 public:
-    QStringParser( cl::dsl_pa * p_dsl_pa, std::string * p_v )
-        : dsl_pa( p_dsl_pa->get_reader() ), m( p_v )
+    QStringParser( cl::dsl_pa * p_dsl_pa, std::string * p_v, char delimiter = '"' )
+        : dsl_pa( p_dsl_pa->get_reader() ), m( p_v, delimiter )
     {}
 
     bool read() // Assumes we have already consumed the opening quotation mark
@@ -391,18 +405,11 @@ private:
         return unescaped_ascii() || unescaped_utf8();
     }
 
-    static bool is_unescaped_ascii( char c )
-    {
-        // unescaped-ascii        = %x20-21 / %x23-5B / %x5D-7F
-
-        return c >= 0x20 && c <= 0x21 || c >= 0x23 && c <= 0x5b || c >= 0x5d && c <= 0x7f;
-    }
-
     bool unescaped_ascii()
     {
         // unescaped_ascii        = %x20-21 / %x23-5B / %x5D-7F
 
-        return accumulate( cl::alphabet_function( is_unescaped_ascii ) );
+        return accumulate( m.alphabet_is_unescaped_ascii );
     }
 
     static bool is_unescaped_leading_utf8( char c )
@@ -477,7 +484,7 @@ private:
     bool escaped_code()
     {
         char c = peek();
-        return ( (c == '"' && accumulator_append( '"' )) ||
+        return ( (c == m.delimiter && accumulator_append( m.delimiter )) ||
                 (c == '\\' && accumulator_append( '\\' )) ||
                 (c == '/' && accumulator_append( '/' )) ||
                 (c == 'b' && accumulator_append( '\b' )) ||
@@ -563,9 +570,9 @@ private:
     bool error() { m.is_errored = true; return false; }
 };
 
-bool dsl_pa::get_qstring_contents( std::string * p_string )
+bool dsl_pa::get_qstring_contents( std::string * p_string, char delimiter /*= '"'*/ )
 {
-    return QStringParser( this, p_string ).read();
+    return QStringParser( this, p_string, delimiter ).read();
 }
 
 size_t dsl_pa::get( std::string * p_output, const alphabet & r_alphabet )

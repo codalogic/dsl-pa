@@ -978,6 +978,25 @@ void dsl_pa_qstring_test( std::string input, const std::string & r_expected_valu
     }
 }
 
+void dsl_pa_single_quoted_qstring_test( std::string input, const std::string & r_expected_value, bool is_valid )
+{
+    // Check with 'custom' delimter
+    input += '\'';
+    reader_string my_reader( input );
+    dsl_pa my_pa( my_reader );
+    std::string result;
+    TTEST( my_pa.get_qstring_contents( &result, '\'' ) == is_valid );
+    if( is_valid )
+    {
+        TTEST( result == r_expected_value );
+        TTEST( my_pa.is_get_char( '\'' ) );
+    }
+    else
+    {
+        TTEST( my_pa.get() == input[0] );   // Check input location rewound
+    }
+}
+
 TFUNCTION( dsl_pa_get_qstring_contents_test )
 {
     TBEGIN( "dsl_pa::get_qstring_contents() Tests" );
@@ -1079,6 +1098,21 @@ TFUNCTION( dsl_pa_get_qstring_contents_test )
 
     TCALL( dsl_pa_qstring_test( "abc\xE0\xAC\x8B\xE0\xE0\xAC\x8Bz", "", false ) );  // Duplicate UTF-8 start character \xE0
     TCALL( dsl_pa_qstring_test( "abc\xE0\xAC\x8B\xE0\xAC\x8B\x8Bz", "", false ) );  // Additional UTF-8 continuation character \x8B
+
+    TCALL( dsl_pa_single_quoted_qstring_test( "", "", true ) );
+    TCALL( dsl_pa_single_quoted_qstring_test( "a", "a", true ) );
+    TCALL( dsl_pa_single_quoted_qstring_test( "ba", "ba", true ) );
+    TCALL( dsl_pa_single_quoted_qstring_test( "b\\/a", "b/a", true ) );
+    TCALL( dsl_pa_single_quoted_qstring_test( "b\\'a", "b'a", true ) );
+    TCALL( dsl_pa_single_quoted_qstring_test( "b\\ta", "b\ta", true ) );
+    TCALL( dsl_pa_single_quoted_qstring_test( "b\\t\\r\\na", "b\t\r\na", true ) );
+    TCALL( dsl_pa_single_quoted_qstring_test( "b\\f\\ba", "b\f\ba", true ) );
+    TCALL( dsl_pa_single_quoted_qstring_test( "b\\\\a", "b\\a", true ) );
+    TCALL( dsl_pa_single_quoted_qstring_test( "b\\u0020a", "b a", true ) );
+
+    TCALL( dsl_pa_single_quoted_qstring_test( "a\xdf\x8Bz", "a\xdf\x8Bz", true ) );
+    TCALL( dsl_pa_single_quoted_qstring_test( "a\xdf\x8B\x8Bz", "", false ) );    // To long
+    TCALL( dsl_pa_single_quoted_qstring_test( "a\xdfz", "", false ) );            // To short
 }
 
 TFUNCTION( dsl_pa_current_is_test )
