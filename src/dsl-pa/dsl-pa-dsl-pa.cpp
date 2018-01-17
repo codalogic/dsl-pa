@@ -311,7 +311,7 @@ bool dsl_pa::get_sci_float( double * p_float )
 
 class QStringParser : public dsl_pa
 {
-    // This is a JSON q-string parser, that can have the delimters specified.
+    // This is a JSON q-string parser, that can have the delimiters specified.
     //
     //  ; The defintion of a JSON string, from RFC 4627 s 2
     //  q-string        = %x20-21 / %x23-5B / %x5D-10FFFF / "\" (
