@@ -311,6 +311,8 @@ bool dsl_pa::get_sci_float( double * p_float )
 
 class QStringParser : public dsl_pa
 {
+    // This is a JSON q-string parser, that can have the delimters specified.
+    //
     //  ; The defintion of a JSON string, from RFC 4627 s 2
     //  q-string        = %x20-21 / %x23-5B / %x5D-10FFFF / "\" (
     //                     %x22 /      ; "  u+0022
@@ -322,6 +324,9 @@ class QStringParser : public dsl_pa
     //                     %x72 /      ; CR u+000D
     //                     %x74 /      ; HT u+0009
     //                     ( %x75 4HEXDIG ) ) ; uXXXX u+XXXX
+    //
+    // In this class, %x22/" is the default string delimiter, but an
+    // alternative can be specified at construction time.
 
 private:
     class AlphabetIsUnescapedAscii : public cl::alphabet
@@ -396,6 +401,9 @@ private:
         //               %x72 /          ; r    carriage return U+000D
         //               %x74 /          ; t    tab             U+0009
         //               %x75 4HEXDIG )  ; uXXXX                U+XXXX
+        //
+        // Where %x22/" is the default string delimiter, but an
+        // alternative can be specified at construction time.
 
         return unescaped() || escape() && (escaped_code() || u() && (escaped_hex_code() || error()) );
     }
@@ -407,8 +415,6 @@ private:
 
     bool unescaped_ascii()
     {
-        // unescaped_ascii        = %x20-21 / %x23-5B / %x5D-7F
-
         return accumulate( m.alphabet_is_unescaped_ascii );
     }
 
