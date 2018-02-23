@@ -1,4 +1,4 @@
-Tests table of contents generated on Wed Jan 17 14:53:33 2018
+Tests table of contents generated on Fri Feb 23 16:45:14 2018
 
 # alphabet-test.cpp
 | Description | Line |
@@ -42,14 +42,15 @@ Tests table of contents generated on Wed Jan 17 14:53:33 2018
 | dsl_pa::get_float() Tests | 901 |
 | dsl_pa::get_sci_float() Tests | 934 |
 | dsl_pa::get_qstring_contents() Tests | 1002 |
-| dsl_pa::current_is() Tests | 1120 |
-| dsl_pa::peek_is() Tests | 1150 |
-| dsl_pa::peek_char() Tests | 1179 |
-| rewind_on_reject class Tests | 1239 |
-| DSL PA is_peek_at_end Tests | 1268 |
-| DSL PA is_current_at_end Tests | 1287 |
-| DSL PA get vs. read check | 1309 |
-| accumulator test | 1509 |
+| Unterminated dsl_pa::get_qstring_contents() Tests | 1120 |
+| dsl_pa::current_is() Tests | 1144 |
+| dsl_pa::peek_is() Tests | 1174 |
+| dsl_pa::peek_char() Tests | 1203 |
+| rewind_on_reject class Tests | 1263 |
+| DSL PA is_peek_at_end Tests | 1292 |
+| DSL PA is_current_at_end Tests | 1311 |
+| DSL PA get vs. read check | 1333 |
+| accumulator test | 1533 |
 
 # mutator-test.cpp
 | Description | Line |

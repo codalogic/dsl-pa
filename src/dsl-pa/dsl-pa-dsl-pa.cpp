@@ -334,7 +334,7 @@ private:
         char delimiter;
     public:
         AlphabetIsUnescapedAscii( char delimiter_in ) : delimiter( delimiter_in ) {}
-        virtual bool is_sought( char c ) const { return (c & 0x80) == 0 && c != '\\' && c != delimiter; }
+        virtual bool is_sought( char c ) const { return (c & 0x80) == 0 && c != reader::R_EOI && c != '\\' && c != delimiter; }
     };
 
     struct Members
@@ -365,6 +365,9 @@ public:
         cl::accumulator q_string_accumulator( this );
 
         star_qs_char();
+
+        if( peek() != m.delimiter )
+            error();
 
         *m.p_v = q_string_accumulator.get();
 
@@ -405,7 +408,7 @@ private:
         // Where %x22/" is the default string delimiter, but an
         // alternative can be specified at construction time.
 
-        return unescaped() || escape() && (escaped_code() || u() && (escaped_hex_code() || error()) );
+        return unescaped() || (escape() && (escaped_code() || (u() && escaped_hex_code()) || error()));
     }
 
     bool unescaped()

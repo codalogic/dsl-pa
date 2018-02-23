@@ -1111,8 +1111,32 @@ TFUNCTION( dsl_pa_get_qstring_contents_test )
     TCALL( dsl_pa_single_quoted_qstring_test( "b\\u0020a", "b a", true ) );
 
     TCALL( dsl_pa_single_quoted_qstring_test( "a\xdf\x8Bz", "a\xdf\x8Bz", true ) );
-    TCALL( dsl_pa_single_quoted_qstring_test( "a\xdf\x8B\x8Bz", "", false ) );    // To long
-    TCALL( dsl_pa_single_quoted_qstring_test( "a\xdfz", "", false ) );            // To short
+    TCALL( dsl_pa_single_quoted_qstring_test( "a\xdf\x8B\x8Bz", "", false ) );    // Too long
+    TCALL( dsl_pa_single_quoted_qstring_test( "a\xdfz", "", false ) );            // Too short
+}
+
+TFUNCTION( dsl_pa_get_unterminated_qstring_contents_test )
+{
+    TBEGIN( "Unterminated dsl_pa::get_qstring_contents() Tests" );
+
+    {
+    reader_string my_reader( "" );  // No terminating "
+    dsl_pa my_pa( my_reader );
+    std::string result;
+    TTEST( my_pa.get_qstring_contents( &result ) == false );
+    }
+    {
+    reader_string my_reader( "abc" );  // No terminating "
+    dsl_pa my_pa( my_reader );
+    std::string result;
+    TTEST( my_pa.get_qstring_contents( &result ) == false );
+    }
+    {
+    reader_string my_reader( "ab\\" );  // No terminating " preceded by \ escape
+    dsl_pa my_pa( my_reader );
+    std::string result;
+    TTEST( my_pa.get_qstring_contents( &result ) == false );
+    }
 }
 
 TFUNCTION( dsl_pa_current_is_test )

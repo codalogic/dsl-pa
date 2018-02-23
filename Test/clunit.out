@@ -1,4 +1,4 @@
-Tests run on Wed Jan 17 14:53:33 2018
+Tests run on Fri Feb 23 16:45:14 2018
 
     Alphabet tests [alphabet-test.cpp:42]
     =====================================
@@ -1182,7 +1182,14 @@ Tests run on Wed Jan 17 14:53:33 2018
     ok: my_pa.get() == input[0]
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
-    dsl_pa::current_is() Tests [dsl-pa-test.cpp:1120]
+    Unterminated dsl_pa::get_qstring_contents() Tests [dsl-pa-test.cpp:1120]
+    ========================================================================
+    ok: my_pa.get_qstring_contents( &result ) == false
+    ok: my_pa.get_qstring_contents( &result ) == false
+    ok: my_pa.get_qstring_contents( &result ) == false
+    ok: ! _CrtMemDifference( &s3, &s1, &s2 )
+
+    dsl_pa::current_is() Tests [dsl-pa-test.cpp:1144]
     =================================================
     ok: my_pa.get_char()
     ok: my_pa.current_is( 'A' )
@@ -1197,7 +1204,7 @@ Tests run on Wed Jan 17 14:53:33 2018
     ok: ! my_pa.current_is_in( alphabet_char_class_ABX )
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
-    dsl_pa::peek_is() Tests [dsl-pa-test.cpp:1150]
+    dsl_pa::peek_is() Tests [dsl-pa-test.cpp:1174]
     ==============================================
     ok: my_pa.peek_is( 'A' )
     ok: my_pa.peek_is( 'A' )
@@ -1211,7 +1218,7 @@ Tests run on Wed Jan 17 14:53:33 2018
     ok: ! my_pa.peek_is_in( alphabet_char_class_ABX )
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
-    dsl_pa::peek_char() Tests [dsl-pa-test.cpp:1179]
+    dsl_pa::peek_char() Tests [dsl-pa-test.cpp:1203]
     ================================================
     ok: my_pa.peek_char()
     ok: my_pa.current_is( 'A' )
@@ -1231,7 +1238,7 @@ Tests run on Wed Jan 17 14:53:33 2018
     ok: ! my_pa.current_is_in( alphabet_char_class_ABX )
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
-    rewind_on_reject class Tests [dsl-pa-test.cpp:1239]
+    rewind_on_reject class Tests [dsl-pa-test.cpp:1263]
     ===================================================
     ok: my_pa.rewind_on_reject( my_pa.get_fixed( &command, "Mode" ) && my_pa.space() && my_pa.get_fixed( &type, "empty" ) && my_pa.set( is_empty_mode, true ) || my_pa.on_fail( my_pa.clear( command ) && my_pa.clear( type ) ) ) || my_pa.get_fixed( &command, "Mode" ) && my_pa.space() && my_pa.get_fixed( &type, "full" )
     ok: command == "Mode"
@@ -1243,7 +1250,7 @@ Tests run on Wed Jan 17 14:53:33 2018
     ok: type == "empty"
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
-    DSL PA is_peek_at_end Tests [dsl-pa-test.cpp:1268]
+    DSL PA is_peek_at_end Tests [dsl-pa-test.cpp:1292]
     ==================================================
     ok: my_pa.is_peek_at_end()
     ok: ! my_pa.is_peek_at_end()
@@ -1251,7 +1258,7 @@ Tests run on Wed Jan 17 14:53:33 2018
     ok: my_pa.is_peek_at_end()
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
-    DSL PA is_current_at_end Tests [dsl-pa-test.cpp:1287]
+    DSL PA is_current_at_end Tests [dsl-pa-test.cpp:1311]
     =====================================================
     ok: my_pa.get_char() == false
     ok: my_pa.is_current_at_end()
@@ -1262,7 +1269,7 @@ Tests run on Wed Jan 17 14:53:33 2018
     ok: my_pa.is_current_at_end()
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
-    DSL PA get vs. read check [dsl-pa-test.cpp:1309]
+    DSL PA get vs. read check [dsl-pa-test.cpp:1333]
     ================================================
     ok: my_pa.read( &parsed, alphabet_char_class( "A" ) ) > 0
     ok: parsed == "originAAAAAA"
@@ -1318,7 +1325,7 @@ Tests run on Wed Jan 17 14:53:33 2018
     ok: parsed == "456"
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
-    accumulator test [dsl-pa-test.cpp:1509]
+    accumulator test [dsl-pa-test.cpp:1533]
     =======================================
     ok: my_pa.accumulate( alphabet_char_class( "A" ) )
     ok: my_pa.accumulate( alphabet_char_class( "B" ) )
@@ -1999,4 +2006,4 @@ Tests run on Wed Jan 17 14:53:33 2018
     ok: p_reader->is_open()
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
     ok: _CrtCheckMemory() != 0
-0 error(s), 0 todo(s), 1555 test(s)
+0 error(s), 0 todo(s), 1559 test(s)
