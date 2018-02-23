@@ -294,7 +294,7 @@ public:
         r_value.clear();
         return true;
     }
-    static bool clear( bool & r_value )
+    static bool clear( bool & r_value )    // Variant for simple boolean flag
     {
         r_value = false;
         return true;
