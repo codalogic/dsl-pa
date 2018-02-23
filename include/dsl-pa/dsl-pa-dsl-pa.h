@@ -275,6 +275,11 @@ public:
         r_variable = r_value;
         return true;
     }
+    static bool set( bool & r_variable )    // Variant for simple boolean flag
+    {
+        r_variable = true;
+        return true;
+    }
     // record() allows recording the return values of parsing functions in the
     // middle of a sequence of shortcircuit operators
     template< typename T, typename U >
@@ -287,6 +292,11 @@ public:
     static bool clear( T & r_value )
     {
         r_value.clear();
+        return true;
+    }
+    static bool clear( bool & r_value )
+    {
+        r_value = false;
         return true;
     }
     template< typename Tvar, typename Tval >

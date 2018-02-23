@@ -98,6 +98,10 @@ TFUNCTION( dsl_pa_set_test )
     enum { HOT, COLD } e = HOT;
     TSETUP( dsl_pa::set( e, COLD ) );
     TTEST( e == COLD );
+
+    bool is_flagged = false;
+    TSETUP( dsl_pa::set( is_flagged ) );
+    TTEST( is_flagged == true );
 }
 
 TFUNCTION( dsl_pa_record_test )
@@ -121,6 +125,10 @@ TFUNCTION( dsl_pa_clear_test )
     TTEST( ! v.empty() );
     TTEST( dsl_pa::clear( v ) );    // Test to ensure it returns true
     TTEST( v.empty() );
+
+    bool is_flagged = true;
+    TSETUP( dsl_pa::clear( is_flagged ) );
+    TTEST( is_flagged == false );
 }
 
 TFUNCTION( dsl_pa_append_test )
@@ -1133,6 +1141,12 @@ TFUNCTION( dsl_pa_get_unterminated_qstring_contents_test )
     }
     {
     reader_string my_reader( "ab\\" );  // No terminating " preceded by \ escape
+    dsl_pa my_pa( my_reader );
+    std::string result;
+    TTEST( my_pa.get_qstring_contents( &result ) == false );
+    }
+    {
+    reader_string my_reader( "ab\\u12" );  // No terminating " preceded by incomplete \u escape sequence
     dsl_pa my_pa( my_reader );
     std::string result;
     TTEST( my_pa.get_qstring_contents( &result ) == false );

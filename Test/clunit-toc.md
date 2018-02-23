@@ -1,4 +1,4 @@
-Tests table of contents generated on Fri Feb 23 16:45:14 2018
+Tests table of contents generated on Fri Feb 23 17:57:34 2018
 
 # alphabet-test.cpp
 | Description | Line |
@@ -17,40 +17,40 @@ Tests table of contents generated on Fri Feb 23 16:45:14 2018
 |-------------|------|
 | dsl_pa::optional() operation | 69 |
 | dsl_pa::set() operation | 92 |
-| dsl_pa::record() operation | 105 |
-| dsl_pa::clear() operation | 118 |
-| dsl_pa::append() operation | 128 |
-| dsl_pa::append_current() operation | 140 |
-| dsl_pa::push_back() operation | 154 |
-| dsl_pa::error() operation | 165 |
-| dsl pa location_top() return codes | 219 |
-| dsl pa location_revise() | 233 |
-| dsl pa low level read tests | 254 |
-| dsl pa ws tests | 288 |
-| dsl pa wsp tests | 321 |
-| dsl pa get() tests | 381 |
-| dsl pa get_until() tests | 466 |
-| dsl pa skip() tests | 550 |
-| dsl pa fixed and ifixed tests | 593 |
-| dsl_pa::get_char() Tests | 682 |
-| dsl_pa::get_char_no_space() Tests | 694 |
-| dsl_pa::peek_char_no_space() Tests | 721 |
-| dsl_pa::get_char(...) Tests | 762 |
-| dsl_pa::get_bool() Tests | 816 |
-| dsl_pa::get_int() Tests | 841 |
-| dsl_pa::get_uint() Tests | 871 |
-| dsl_pa::get_float() Tests | 901 |
-| dsl_pa::get_sci_float() Tests | 934 |
-| dsl_pa::get_qstring_contents() Tests | 1002 |
-| Unterminated dsl_pa::get_qstring_contents() Tests | 1120 |
-| dsl_pa::current_is() Tests | 1144 |
-| dsl_pa::peek_is() Tests | 1174 |
-| dsl_pa::peek_char() Tests | 1203 |
-| rewind_on_reject class Tests | 1263 |
-| DSL PA is_peek_at_end Tests | 1292 |
-| DSL PA is_current_at_end Tests | 1311 |
-| DSL PA get vs. read check | 1333 |
-| accumulator test | 1533 |
+| dsl_pa::record() operation | 109 |
+| dsl_pa::clear() operation | 122 |
+| dsl_pa::append() operation | 136 |
+| dsl_pa::append_current() operation | 148 |
+| dsl_pa::push_back() operation | 162 |
+| dsl_pa::error() operation | 173 |
+| dsl pa location_top() return codes | 227 |
+| dsl pa location_revise() | 241 |
+| dsl pa low level read tests | 262 |
+| dsl pa ws tests | 296 |
+| dsl pa wsp tests | 329 |
+| dsl pa get() tests | 389 |
+| dsl pa get_until() tests | 474 |
+| dsl pa skip() tests | 558 |
+| dsl pa fixed and ifixed tests | 601 |
+| dsl_pa::get_char() Tests | 690 |
+| dsl_pa::get_char_no_space() Tests | 702 |
+| dsl_pa::peek_char_no_space() Tests | 729 |
+| dsl_pa::get_char(...) Tests | 770 |
+| dsl_pa::get_bool() Tests | 824 |
+| dsl_pa::get_int() Tests | 849 |
+| dsl_pa::get_uint() Tests | 879 |
+| dsl_pa::get_float() Tests | 909 |
+| dsl_pa::get_sci_float() Tests | 942 |
+| dsl_pa::get_qstring_contents() Tests | 1010 |
+| Unterminated dsl_pa::get_qstring_contents() Tests | 1128 |
+| dsl_pa::current_is() Tests | 1158 |
+| dsl_pa::peek_is() Tests | 1188 |
+| dsl_pa::peek_char() Tests | 1217 |
+| rewind_on_reject class Tests | 1277 |
+| DSL PA is_peek_at_end Tests | 1306 |
+| DSL PA is_current_at_end Tests | 1325 |
+| DSL PA get vs. read check | 1347 |
+| accumulator test | 1547 |
 
 # mutator-test.cpp
 | Description | Line |
