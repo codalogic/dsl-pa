@@ -63,9 +63,13 @@ namespace cl {
 
 class dsl_pa_exception : public std::exception
 {
+private:
+    const char * p_what;
+
 public:
-    dsl_pa_exception( const char * const what ) : std::exception( what )
+    dsl_pa_exception( const char * const what ) : std::exception(), p_what( what )
     {}
+    virtual const char * what() const { return p_what; };
 };
 
 class dsl_pa_recoverable_exception : public dsl_pa_exception
