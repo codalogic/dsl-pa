@@ -485,7 +485,7 @@ private:
 
     bool escape()
     {
-        // escape           = %x5C              ; \
+        // escape           = %x5C              ; '\'
 
         return is_get_char( '\\' );
     }
