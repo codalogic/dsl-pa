@@ -109,17 +109,19 @@ private:
 public:
     line_counter_with_stack()
     {
-            set_position( 1, 0 );
+        set_position( 1, 0 );
     }
 
     void got_char( char c );
     void ungot_char( char c )
     {
+        (void)c;    // Unused
         if( current.history_buffer.has_back() )
             current.history_buffer.go_back();
     }
     void retrieved_ungot_char( char c )
     {
+        (void)c;    // Unused
         if( current.history_buffer.has_frwd() )
             current.history_buffer.go_frwd();
     }
