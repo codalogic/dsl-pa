@@ -1,4 +1,4 @@
-Tests run on Wed Mar 14 13:04:04 2018
+Tests run on Wed Mar 14 13:15:23 2018
 
     Alphabet tests [alphabet-test.cpp:42]
     =====================================
@@ -74,14 +74,14 @@ Tests run on Wed Mar 14 13:04:04 2018
     ok: character( '^' ).is_sought( '^' )
     ok: ! character( '^' ).is_sought( '-' )
     ok: digit().is_sought( '1' )
-    ok: not( digit() ).is_sought( 'x' )
-    ok: or( space(), digit() ).is_sought( '5' )
-    ok: or( space(), digit() ).is_sought( ' ' )
-    ok: ! or( space(), digit() ).is_sought( 'F' )
-    ok: and( char_class( "A-F" ), char_class( "C-K" ) ).is_sought( 'D' )
-    ok: ! and( char_class( "A-F" ), char_class( "C-K" ) ).is_sought( 'A' )
-    ok: ! and( char_class( "A-F" ), char_class( "C-K" ) ).is_sought( 'K' )
-    ok: ! and( char_class( "A-F" ), char_class( "C-K" ) ).is_sought( '0' )
+    ok: Not( digit() ).is_sought( 'x' )
+    ok: Or( space(), digit() ).is_sought( '5' )
+    ok: Or( space(), digit() ).is_sought( ' ' )
+    ok: ! Or( space(), digit() ).is_sought( 'F' )
+    ok: And( char_class( "A-F" ), char_class( "C-K" ) ).is_sought( 'D' )
+    ok: ! And( char_class( "A-F" ), char_class( "C-K" ) ).is_sought( 'A' )
+    ok: ! And( char_class( "A-F" ), char_class( "C-K" ) ).is_sought( 'K' )
+    ok: ! And( char_class( "A-F" ), char_class( "C-K" ) ).is_sought( '0' )
     ok: alpha().is_sought( 'a' )
     ok: line_space().is_sought( ' ' )
     ok: line_space().is_sought( '\t' )

@@ -453,9 +453,9 @@ namespace /*cl::*/ short_alphabets {
     typedef alphabet_word_first_char    word_first_char;
     typedef alphabet_word_char          word_char;
     typedef alphabet_uni                uni;
-    typedef alphabet_not                not;
-    typedef alphabet_or                 or;
-    typedef alphabet_and                and;
+    typedef alphabet_not                Not;    // Not, Or & And start with upper case to avoid confusion with C++03 alternative names for !, !! and &&
+    typedef alphabet_or                 Or;
+    typedef alphabet_and                And;
     typedef alphabet_sign               sign;
     typedef alphabet_point              point;
     typedef alphabet_dot                dot;

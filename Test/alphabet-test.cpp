@@ -165,14 +165,14 @@ TFUNCTION( alphabet_short_alphabets_test )
 
     TTEST( digit().is_sought( '1' ) );
 
-    TTEST( not( digit() ).is_sought( 'x' ) );
-    TTEST( or( space(), digit() ).is_sought( '5' ) );
-    TTEST( or( space(), digit() ).is_sought( ' ' ) );
-    TTEST( ! or( space(), digit() ).is_sought( 'F' ) );
-    TTEST( and( char_class( "A-F" ), char_class( "C-K" ) ).is_sought( 'D' ) );
-    TTEST( ! and( char_class( "A-F" ), char_class( "C-K" ) ).is_sought( 'A' ) );
-    TTEST( ! and( char_class( "A-F" ), char_class( "C-K" ) ).is_sought( 'K' ) );
-    TTEST( ! and( char_class( "A-F" ), char_class( "C-K" ) ).is_sought( '0' ) );
+    TTEST( Not( digit() ).is_sought( 'x' ) );
+    TTEST( Or( space(), digit() ).is_sought( '5' ) );
+    TTEST( Or( space(), digit() ).is_sought( ' ' ) );
+    TTEST( ! Or( space(), digit() ).is_sought( 'F' ) );
+    TTEST( And( char_class( "A-F" ), char_class( "C-K" ) ).is_sought( 'D' ) );
+    TTEST( ! And( char_class( "A-F" ), char_class( "C-K" ) ).is_sought( 'A' ) );
+    TTEST( ! And( char_class( "A-F" ), char_class( "C-K" ) ).is_sought( 'K' ) );
+    TTEST( ! And( char_class( "A-F" ), char_class( "C-K" ) ).is_sought( '0' ) );
 
     TTEST( alpha().is_sought( 'a' ) );
 
