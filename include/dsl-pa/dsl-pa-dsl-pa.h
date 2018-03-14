@@ -69,7 +69,7 @@ private:
 public:
     dsl_pa_exception( const char * const what ) : std::exception(), p_what( what )
     {}
-    virtual const char * what() const { return p_what; };
+    virtual const char * what() const throw() { return p_what; }
 };
 
 class dsl_pa_recoverable_exception : public dsl_pa_exception
