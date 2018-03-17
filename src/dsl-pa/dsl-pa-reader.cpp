@@ -36,6 +36,13 @@
 // more information.
 //----------------------------------------------------------------------------
 
+//----------------------------------------------------------------------------
+// Note:    Blank_line_counting: If the last character was a newline (as well
+//          as the current one), then we want to count any following newline
+//          as a genuine newline, and not suppress it.  Setting
+//          current.last_nl_char to '\0' will achieve this.
+//----------------------------------------------------------------------------
+
 #include "dsl-pa/dsl-pa-reader.h"
 
 namespace cl {
@@ -51,7 +58,10 @@ void line_counter_with_stack::got_char( char c )
         if( current.last_nl_char == '\0' || current.last_nl_char == c )
             ++line_number;
 
-        current.last_nl_char = c;
+         if( current.last_nl_char != '\0' )    // See Blank_line_counting
+            current.last_nl_char = '\0';
+         else
+            current.last_nl_char = c;
     }
     else
     {
