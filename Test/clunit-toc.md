@@ -1,4 +1,4 @@
-Tests table of contents generated on Wed Mar 14 13:57:39 2018
+Tests table of contents generated on Sat Mar 17 21:37:05 2018
 
 # alphabet-test.cpp
 | Description | Line |
@@ -83,4 +83,5 @@ Tests table of contents generated on Wed Mar 14 13:57:39 2018
 | Mem buf reader location logger tests | 324 |
 | is get char reader tests | 394 |
 | Reader line counting tests | 406 |
-| Reader::is_open() tests | 492 |
+| Reader blank line counting tests | 492 |
+| Reader::is_open() tests | 554 |

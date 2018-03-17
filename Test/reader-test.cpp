@@ -487,6 +487,68 @@ TFUNCTION( reader_line_counting_test )
     TSETUP( my_reader.location_pop() );
 }
 
+TFUNCTION( reader_blank_line_counting_test )
+{
+    TBEGIN( "Reader blank line counting tests" );
+
+    {
+    reader_string my_reader( "a\r\n\r\n\r\nb" );
+
+    TTEST( my_reader.get_line_number() == 1 );
+    TTEST( my_reader.get_column_number() == 0 );
+    TTEST( my_reader.get() == 'a' );
+    TTEST( my_reader.get_column_number() == 1 );
+    TTEST( my_reader.get() == '\r' );
+    TTEST( my_reader.get_line_number() == 2 );
+    TTEST( my_reader.get() == '\n' );
+    TTEST( my_reader.get_line_number() == 2 );
+    TTEST( my_reader.get() == '\r' );
+    TTEST( my_reader.get_line_number() == 3 );
+    TTEST( my_reader.get() == '\n' );
+    TTEST( my_reader.get_line_number() == 3 );
+    TTEST( my_reader.get() == '\r' );
+    TTEST( my_reader.get_line_number() == 4 );
+    TTEST( my_reader.get() == '\n' );
+    TTEST( my_reader.get_line_number() == 4 );
+    TTEST( my_reader.get() == 'b' );
+    TTEST( my_reader.get_line_number() == 4 );
+    }
+
+    {
+    reader_string my_reader( "a\n\n\nb" );
+
+    TTEST( my_reader.get_line_number() == 1 );
+    TTEST( my_reader.get_column_number() == 0 );
+    TTEST( my_reader.get() == 'a' );
+    TTEST( my_reader.get_column_number() == 1 );
+    TTEST( my_reader.get() == '\n' );
+    TTEST( my_reader.get_line_number() == 2 );
+    TTEST( my_reader.get() == '\n' );
+    TTEST( my_reader.get_line_number() == 3 );
+    TTEST( my_reader.get() == '\n' );
+    TTEST( my_reader.get_line_number() == 4 );
+    TTEST( my_reader.get() == 'b' );
+    TTEST( my_reader.get_line_number() == 4 );
+    }
+
+    {
+    reader_string my_reader( "a\r\r\rb" );
+
+    TTEST( my_reader.get_line_number() == 1 );
+    TTEST( my_reader.get_column_number() == 0 );
+    TTEST( my_reader.get() == 'a' );
+    TTEST( my_reader.get_column_number() == 1 );
+    TTEST( my_reader.get() == '\r' );
+    TTEST( my_reader.get_line_number() == 2 );
+    TTEST( my_reader.get() == '\r' );
+    TTEST( my_reader.get_line_number() == 3 );
+    TTEST( my_reader.get() == '\r' );
+    TTEST( my_reader.get_line_number() == 4 );
+    TTEST( my_reader.get() == 'b' );
+    TTEST( my_reader.get_line_number() == 4 );
+    }
+}
+
 TFUNCTION( reader_is_open_test )
 {
     TBEGIN( "Reader::is_open() tests" );

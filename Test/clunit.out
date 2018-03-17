@@ -1,4 +1,4 @@
-Tests run on Wed Mar 14 13:57:39 2018
+Tests run on Sat Mar 17 21:37:05 2018
 
     Alphabet tests [alphabet-test.cpp:42]
     =====================================
@@ -2003,7 +2003,53 @@ Tests run on Wed Mar 14 13:57:39 2018
       : my_reader.location_pop()
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
 
-    Reader::is_open() tests [reader-test.cpp:492]
+    Reader blank line counting tests [reader-test.cpp:492]
+    ======================================================
+    ok: my_reader.get_line_number() == 1
+    ok: my_reader.get_column_number() == 0
+    ok: my_reader.get() == 'a'
+    ok: my_reader.get_column_number() == 1
+    ok: my_reader.get() == '\r'
+    ok: my_reader.get_line_number() == 2
+    ok: my_reader.get() == '\n'
+    ok: my_reader.get_line_number() == 2
+    ok: my_reader.get() == '\r'
+not ok: my_reader.get_line_number() == 3 (506)
+    ok: my_reader.get() == '\n'
+not ok: my_reader.get_line_number() == 3 (508)
+    ok: my_reader.get() == '\r'
+not ok: my_reader.get_line_number() == 4 (510)
+    ok: my_reader.get() == '\n'
+not ok: my_reader.get_line_number() == 4 (512)
+    ok: my_reader.get() == 'b'
+not ok: my_reader.get_line_number() == 4 (514)
+    ok: my_reader.get_line_number() == 1
+    ok: my_reader.get_column_number() == 0
+    ok: my_reader.get() == 'a'
+    ok: my_reader.get_column_number() == 1
+    ok: my_reader.get() == '\n'
+    ok: my_reader.get_line_number() == 2
+    ok: my_reader.get() == '\n'
+    ok: my_reader.get_line_number() == 3
+    ok: my_reader.get() == '\n'
+    ok: my_reader.get_line_number() == 4
+    ok: my_reader.get() == 'b'
+    ok: my_reader.get_line_number() == 4
+    ok: my_reader.get_line_number() == 1
+    ok: my_reader.get_column_number() == 0
+    ok: my_reader.get() == 'a'
+    ok: my_reader.get_column_number() == 1
+    ok: my_reader.get() == '\r'
+    ok: my_reader.get_line_number() == 2
+    ok: my_reader.get() == '\r'
+    ok: my_reader.get_line_number() == 3
+    ok: my_reader.get() == '\r'
+    ok: my_reader.get_line_number() == 4
+    ok: my_reader.get() == 'b'
+    ok: my_reader.get_line_number() == 4
+    ok: ! _CrtMemDifference( &s3, &s1, &s2 )
+
+    Reader::is_open() tests [reader-test.cpp:554]
     =============================================
     ok: my_reader.is_open()
     ok: ! my_reader.is_open()
@@ -2011,4 +2057,4 @@ Tests run on Wed Mar 14 13:57:39 2018
     ok: p_reader->is_open()
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
     ok: _CrtCheckMemory() != 0
-0 error(s), 0 todo(s), 1562 test(s)
+5 error(s), 0 todo(s), 1605 test(s)
