@@ -302,6 +302,23 @@ append the specified char or string to the active accumulator.  Their use-case i
 code such as `is_get_char( 'n' ) && accumulator_append( '\n' ) || is_get_char( 'r' )
 && accumulator_append( '\r' )`.
 
+`dsl_pa::accumulator_to_previous()` will append the contents of the current
+accumulator to the previous accumulator, if one is present.
+
+`dsl_pa::accumulate_atomic( bool is_valid )` will append the contents of the
+current accumulator to the previous accumulator if `is_valid` is `true`, and
+return the value of `is_valid`.  It is intended to be used in `return`
+statements, such as:
+
+```c++
+bool fragment()
+{
+    accumulator acc( this );
+
+    return accumulate_atomic( /* dsl-pa calls */ );
+}
+```
+
 To retrieve the accumulated value from an accumulator as a string, use the `get()`
 method.  The accumulated value can also be retrieved as an int using the `to_int()`
 method and as a float / double using the `to_float()` method.

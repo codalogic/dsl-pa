@@ -227,6 +227,8 @@ public:
     bool accumulator_append( const char * s );  // Append the string s to the active accumulator
     bool accumulator_append( const std::string & r_s );  // Append the string r_s to the active accumulator
     bool accumulator_append( const accumulator_deferred & r_a );  // Append another accumulator to the active accumulator
+    bool accumulator_to_previous();  // Append current accummulator content to previous accummulator. Returns true.
+    bool accumulate_atomic( bool is_valid );  // Append current accummulator content to previous accummulator if is_valid is true. Returns is_valid value.
 
     // Low-level reader access
     reader & get_reader() { return r_reader; }  // Primarily for use with locator class

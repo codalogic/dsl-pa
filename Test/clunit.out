@@ -1,4 +1,4 @@
-Tests run on Sat Mar 17 22:25:56 2018
+Tests run on Thu Mar 22 14:52:10 2018
 
     Alphabet tests [alphabet-test.cpp:42]
     =====================================
@@ -1389,6 +1389,22 @@ Tests run on Sat Mar 17 22:25:56 2018
     ok: other_accumulator.get() == "def"
     ok: other_accumulator.append_to_previous()
     ok: my_accumulator.get() == "abcdef"
+      Accumulators can be appended to the previous accumulator conditionally using accumulator_to_previous()
+    ok: my_pa.accumulator_append( "abc" )
+    ok: my_pa.accumulator_append( "def" )
+    ok: my_accumulator.get() == "abc"
+    ok: other_accumulator.get() == "def"
+    ok: my_pa.accumulator_to_previous()
+    ok: my_accumulator.get() == "abcdef"
+      Accumulators can be appended to the previous accumulator conditionally using accumulate_atomic()
+    ok: my_pa.accumulator_append( "abc" )
+    ok: my_pa.accumulator_append( "def" )
+    ok: my_accumulator.get() == "abc"
+    ok: other_accumulator.get() == "def"
+    ok: my_pa.accumulate_atomic( false ) == false
+    ok: my_accumulator.get() == "abc"
+    ok: my_pa.accumulate_atomic( true )
+    ok: my_accumulator.get() == "abcdef"
       Accumulators can be directly appended to using accumulator::append()
     ok: my_accumulator.append( 'X' )
     ok: my_accumulator.append( "yz" )
@@ -2057,4 +2073,4 @@ Tests run on Sat Mar 17 22:25:56 2018
     ok: p_reader->is_open()
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
     ok: _CrtCheckMemory() != 0
-0 error(s), 0 todo(s), 1605 test(s)
+0 error(s), 0 todo(s), 1619 test(s)

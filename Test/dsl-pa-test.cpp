@@ -1734,6 +1734,44 @@ TFUNCTION( accumulator_check )
     }
 
     {
+    TDOC( "Accumulators can be appended to the previous accumulator conditionally using accumulator_to_previous()" );
+    std::string in( "" );
+
+    reader_string my_reader( in );
+    dsl_pa my_pa( my_reader );
+    accumulator my_accumulator( &my_pa );
+
+    TTEST( my_pa.accumulator_append( "abc" ) );
+    accumulator other_accumulator( &my_pa );
+
+    TTEST( my_pa.accumulator_append( "def" ) );
+    TTEST( my_accumulator.get() == "abc" );
+    TTEST( other_accumulator.get() == "def" );
+    TTEST( my_pa.accumulator_to_previous() );
+    TTEST( my_accumulator.get() == "abcdef" );
+    }
+
+    {
+    TDOC( "Accumulators can be appended to the previous accumulator conditionally using accumulate_atomic()" );
+    std::string in( "" );
+
+    reader_string my_reader( in );
+    dsl_pa my_pa( my_reader );
+    accumulator my_accumulator( &my_pa );
+
+    TTEST( my_pa.accumulator_append( "abc" ) );
+    accumulator other_accumulator( &my_pa );
+
+    TTEST( my_pa.accumulator_append( "def" ) );
+    TTEST( my_accumulator.get() == "abc" );
+    TTEST( other_accumulator.get() == "def" );
+    TTEST( my_pa.accumulate_atomic( false ) == false );   // accumulator_update_previous() returns what it is given
+    TTEST( my_accumulator.get() == "abc" );
+    TTEST( my_pa.accumulate_atomic( true ) );
+    TTEST( my_accumulator.get() == "abcdef" );
+    }
+
+    {
     TDOC( "Accumulators can be directly appended to using accumulator::append()" );
     std::string in( "" );
 

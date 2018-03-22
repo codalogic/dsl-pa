@@ -924,6 +924,20 @@ bool dsl_pa::accumulator_append( const accumulator_deferred & r_a )
     return true;
 }
 
+bool dsl_pa::accumulator_to_previous()
+{
+    if( p_accumulator )
+        p_accumulator->append_to_previous();
+    return true;
+}
+
+bool dsl_pa::accumulate_atomic( bool is_valid )
+{
+    if( is_valid )
+        accumulator_to_previous();
+    return is_valid;
+}
+
 //----------------------------------------------------------------------------
 //                             accumulator implementation
 //----------------------------------------------------------------------------
