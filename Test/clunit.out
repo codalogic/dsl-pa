@@ -1,4 +1,4 @@
-Tests run on Thu Mar 22 14:52:10 2018
+Tests run on Thu Mar 22 17:48:50 2018
 
     Alphabet tests [alphabet-test.cpp:42]
     =====================================
@@ -1402,7 +1402,10 @@ Tests run on Thu Mar 22 14:52:10 2018
     ok: my_accumulator.get() == "abc"
     ok: other_accumulator.get() == "def"
     ok: my_pa.accumulate_atomic( false ) == false
+    ok: other_accumulator.get() == ""
     ok: my_accumulator.get() == "abc"
+    ok: my_pa.accumulator_append( "def" )
+    ok: other_accumulator.get() == "def"
     ok: my_pa.accumulate_atomic( true )
     ok: my_accumulator.get() == "abcdef"
       Accumulators can be directly appended to using accumulator::append()
@@ -2073,4 +2076,4 @@ Tests run on Thu Mar 22 14:52:10 2018
     ok: p_reader->is_open()
     ok: ! _CrtMemDifference( &s3, &s1, &s2 )
     ok: _CrtCheckMemory() != 0
-0 error(s), 0 todo(s), 1619 test(s)
+0 error(s), 0 todo(s), 1622 test(s)

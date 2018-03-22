@@ -933,8 +933,14 @@ bool dsl_pa::accumulator_to_previous()
 
 bool dsl_pa::accumulate_atomic( bool is_valid )
 {
-    if( is_valid )
-        accumulator_to_previous();
+    if( p_accumulator )
+    {
+        if( is_valid )
+            p_accumulator->append_to_previous();
+        else
+            p_accumulator->clear();
+    }
+
     return is_valid;
 }
 

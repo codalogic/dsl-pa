@@ -306,16 +306,18 @@ code such as `is_get_char( 'n' ) && accumulator_append( '\n' ) || is_get_char( '
 accumulator to the previous accumulator, if one is present.
 
 `dsl_pa::accumulate_atomic( bool is_valid )` will append the contents of the
-current accumulator to the previous accumulator if `is_valid` is `true`, and
-return the value of `is_valid`.  It is intended to be used in `return`
-statements, such as:
+current accumulator to the previous accumulator if `is_valid` is `true`, or
+clear its contents if `is_valid` is `false`.  It returns the value of
+`is_valid`.  It is intended to be used in statements such as:
 
 ```c++
 bool fragment()
 {
     accumulator acc( this );
 
-    return accumulate_atomic( /* dsl-pa calls */ );
+    return rewind_on_reject( accumulate_atomic( /* dsl-pa calls */ ) ) ||
+            rewind_on_reject( accumulate_atomic( /* dsl-pa calls */ ) ) ||;
+            rewind_on_reject( accumulate_atomic( /* dsl-pa calls */ ) );
 }
 ```
 

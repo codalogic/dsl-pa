@@ -1765,8 +1765,15 @@ TFUNCTION( accumulator_check )
     TTEST( my_pa.accumulator_append( "def" ) );
     TTEST( my_accumulator.get() == "abc" );
     TTEST( other_accumulator.get() == "def" );
-    TTEST( my_pa.accumulate_atomic( false ) == false );   // accumulator_update_previous() returns what it is given
+
+    // Given false, accumulate_atomic() clears itself, and leave previous accumulator unchanged
+    TTEST( my_pa.accumulate_atomic( false ) == false );   // accumulate_atomic() returns what it is given
+    TTEST( other_accumulator.get() == "" );
     TTEST( my_accumulator.get() == "abc" );
+
+    TTEST( my_pa.accumulator_append( "def" ) );
+    TTEST( other_accumulator.get() == "def" );
+    // Given true, accumulate_atomic() adds its contents to the previous accumulator
     TTEST( my_pa.accumulate_atomic( true ) );
     TTEST( my_accumulator.get() == "abcdef" );
     }
